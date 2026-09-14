@@ -1,68 +1,46 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Submit a Manuscript | RLLS</title>
-<meta name="description" content="Manuscript submission form for Russian Language & Linguistics Studies (RLLS).">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<header class="site-header"><div class="container header-inner">
-<a class="brand" href="index.html"><span class="brand-mark">RLLS</span><span><strong>Russian Language & Linguistics Studies</strong><small>Journal of Russian Language, Linguistics, Literature & Culture</small></span></a>
-<button class="menu-btn" aria-label="Open navigation">☰</button>
-<nav class="main-nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="editorial-board.html">Editorial Board</a><a href="editorial-policy.html">Policies</a><a href="author-guidelines.html">For Authors</a><a href="archive.html">Archive</a><a class="nav-submit active" href="submit.html">Submit</a></nav>
-</div></header>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><strong>Russian Language &amp; Linguistics Studies</strong><span>RLLS</span></a><button class="menu-btn" aria-label="Open navigation">☰</button><nav class="main-nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="editorial-board.html">Editorial Board</a><a href="editorial-policy.html">Policies</a><a href="author-guidelines.html">For Authors</a><a href="archive.html">Archive</a><a class="active" href="submit.html">Submit</a></nav></div></header>
 <main>
-<section class="page-hero"><div class="container"><div class="eyebrow">MANUSCRIPT SUBMISSION</div><h1>Submit a Manuscript</h1><p>A structured submission form for authors. Manuscripts should be prepared according to the Author Guidelines before submission.</p></div></section>
-<section class="section"><div class="container">
-<div class="notice" style="margin-top:0"><strong>Submission service:</strong> the form interface is ready. The final submission endpoint must be connected to the journal's secure form account before manuscripts are accepted. Do not submit confidential material until the status changes to <strong>ACTIVE</strong>.</div>
-<div class="form-box" style="max-width:900px;margin-top:25px">
-<span class="status">BACKEND CONNECTION PENDING</span>
-<h2>Manuscript Submission</h2>
-<p>Please complete all required fields. The journal will use the submitted metadata for editorial screening and subsequent peer-review administration.</p>
-<form method="POST" action="https://formspree.io/f/YOUR_FORM_ID" enctype="multipart/form-data">
-<input type="hidden" name="journal" value="Russian Language & Linguistics Studies (RLLS)">
-<input type="hidden" name="submission_type" value="New Manuscript">
-<label for="article_type">Article type *</label>
-<select id="article_type" name="article_type" required style="width:100%;padding:11px;border:1px solid var(--line);border-radius:6px;font:inherit"><option value="">Select</option><option>Research Article</option><option>Review Article</option><option>Short Communication</option><option>Book Review</option><option>Other</option></select>
-<label for="title">Manuscript title *</label>
-<input id="title" name="manuscript_title" type="text" required maxlength="300">
-<label for="abstract">Abstract *</label>
-<textarea id="abstract" name="abstract" required maxlength="5000"></textarea>
-<label for="keywords">Keywords *</label>
-<input id="keywords" name="keywords" type="text" required placeholder="Russian language; linguistics; ...">
-<h3>Corresponding Author</h3>
-<label for="author_name">Full name *</label>
-<input id="author_name" name="corresponding_author" type="text" required>
-<label for="affiliation">Institutional affiliation *</label>
-<input id="affiliation" name="institutional_affiliation" type="text" required>
-<label for="country">Country *</label>
-<input id="country" name="country" type="text" required>
-<label for="email">Email *</label>
-<input id="email" name="email" type="email" required>
-<label for="orcid">ORCID iD</label>
-<input id="orcid" name="orcid" type="url" placeholder="https://orcid.org/0000-0000-0000-0000">
-<label for="coauthors">Co-authors and affiliations</label>
-<textarea id="coauthors" name="coauthors" placeholder="Full name — affiliation — ORCID (if available)"></textarea>
-<h3>Manuscript File</h3>
-<label for="manuscript">Manuscript file *</label>
-<input id="manuscript" name="manuscript" type="file" accept=".doc,.docx,.pdf" required>
-<p style="font-size:12px;color:var(--muted)">Accepted formats: DOC, DOCX or PDF. The final file-size limit will be determined by the connected submission provider.</p>
-<h3>Declarations</h3>
-<label for="funding">Funding statement</label>
-<textarea id="funding" name="funding" placeholder="State funding information or write 'No external funding'."></textarea>
-<label for="ethics">Research ethics statement</label>
-<textarea id="ethics" name="ethics" placeholder="Where applicable, provide ethics approval information."></textarea>
-<label for="conflict">Conflict of interest statement *</label>
-<textarea id="conflict" name="conflict_of_interest" required placeholder="State any conflicts of interest, or write 'The authors declare no conflict of interest.'"></textarea>
-<label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" name="originality_declaration" value="accepted" required style="width:auto;margin-top:4px"> I confirm that this manuscript is original, is not under consideration elsewhere, and that all authors have approved its submission. *</label>
-<label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" name="policy_agreement" value="accepted" required style="width:auto;margin-top:4px"> I have read the RLLS Author Guidelines and Editorial Policies and agree to comply with them. *</label>
-<div class="notice" style="margin:20px 0 0">For the actual publication workflow, submitted manuscripts must be handled confidentially. Do not upload a manuscript until the form is connected to the journal's controlled submission account.</div>
-<div class="actions"><button class="button primary" type="submit">Submit Manuscript</button><a class="button secondary" href="author-guidelines.html">Read Author Guidelines</a></div>
+<section class="page-hero"><div class="container"><p class="eyebrow">MANUSCRIPT SUBMISSION</p><h1>Submit a Manuscript</h1><p>Russian Language &amp; Linguistics Studies (RLLS)</p></div></section>
+<section class="container section">
+<div class="notice success"><strong>SUBMISSION SYSTEM ACTIVE</strong><br>The online submission form is connected. Complete all required fields and upload the manuscript file before submitting.</div>
+<div class="notice"><strong>Important:</strong> Please do not submit material unless you have read the <a href="author-guidelines.html">Author Guidelines</a> and <a href="editorial-policy.html">Editorial Policies</a>.</div>
+<div class="form-box">
+<form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="journal" value="Russian Language & Linguistics Studies (RLLS)"><input type="hidden" name="submission_type" value="Manuscript submission">
+<h2>1. Manuscript Information</h2>
+<label>Article type <span class="required">*</span><select name="article_type" required><option value="">Select</option><option>Research Article</option><option>Review Article</option><option>Short Communication</option><option>Book Review</option><option>Other</option></select></label>
+<label>Manuscript title <span class="required">*</span><input type="text" name="manuscript_title" required></label>
+<label>Abstract <span class="required">*</span><textarea name="abstract" rows="8" required></textarea></label>
+<label>Keywords <span class="required">*</span><input type="text" name="keywords" placeholder="3–7 keywords, separated by commas" required></label>
+<h2>2. Corresponding Author</h2>
+<label>Full name <span class="required">*</span><input type="text" name="corresponding_author" required></label>
+<label>Institutional affiliation <span class="required">*</span><input type="text" name="affiliation" required></label>
+<label>Country <span class="required">*</span><input type="text" name="country" required></label>
+<label>Email <span class="required">*</span><input type="email" name="email" required></label>
+<label>ORCID iD <input type="text" name="orcid" placeholder="https://orcid.org/0000-0000-0000-0000"></label>
+<label>Co-authors and affiliations<textarea name="coauthors" rows="5" placeholder="Full name — affiliation — ORCID (if available)"></textarea></label>
+<h2>3. Files and Declarations</h2>
+<label>Manuscript file <span class="required">*</span><input type="file" name="manuscript_file" accept=".doc,.docx,.pdf" required></label>
+<label>Funding statement <textarea name="funding_statement" rows="3" placeholder="State funding or write: No external funding."></textarea></label>
+<label>Research ethics statement <textarea name="ethics_statement" rows="3"></textarea></label>
+<label>Conflict of interest statement <textarea name="conflict_of_interest" rows="3" placeholder="State conflicts or write: The authors declare no conflict of interest."></textarea></label>
+<label class="check"><input type="checkbox" name="originality_declaration" value="I confirm that the manuscript is original and is not under consideration elsewhere." required> I confirm that the manuscript is original and is not under consideration elsewhere. <span class="required">*</span></label>
+<label class="check"><input type="checkbox" name="policy_agreement" value="I agree to the journal policies and author guidelines." required> I have read and agree to the journal policies and author guidelines. <span class="required">*</span></label>
+<input type="hidden" name="_subject" value="New RLLS Manuscript Submission">
+<input type="hidden" name="_next" value="https://Mohammadmahdirubin.github.io/Russian-Language-Linguistics-Studies-RLLS-/submission-success.html">
+<button class="btn primary" type="submit">Submit Manuscript</button>
 </form>
 </div>
-</div></section>
+</section>
 </main>
-<footer><div class="container footer-grid"><div><strong>Russian Language & Linguistics Studies</strong><p>Journal of Russian Language, Linguistics, Literature & Culture</p></div><div><p>ISSN: Pending</p><p>Email: <a href="mailto:editor@example.com">editor@example.com</a></p></div><div><p><a href="privacy.html">Privacy</a> · <a href="contact.html">Contact</a></p><p>© 2026 RLLS</p></div></div></footer>
+<footer class="site-footer"><div class="container"><p><strong>RLLS</strong> — Russian Language &amp; Linguistics Studies</p><p>Academic journal in establishment phase. ISSN, DOI registration, indexing, and publication details will be updated after formal confirmation.</p></div></footer>
 <script src="assets/script.js"></script>
 </body></html>
