@@ -7,20 +7,21 @@ const currentPath=location.pathname;
 const currentFile=currentPath.split('/').pop() || 'index.html';
 const assetPrefix=currentPath.includes('/en/')||currentPath.includes('/ru/')?'../':'';
 
-// Official RLS branding: the approved rectangular header logo is used on every page.
+// Approved rectangular RLS header logo — same visual identity on every page.
 const brand=document.querySelector('.brand');
 if(brand){
   brand.innerHTML=`<img class="brand-horizontal-logo" src="${assetPrefix}assets/rls-header.svg" alt="RLS — Russian Language Studies">`;
   brand.style.gap='0';
   const logo=brand.querySelector('.brand-horizontal-logo');
-  logo.style.width='220px'; logo.style.height='62px'; logo.style.objectFit='contain'; logo.style.display='block';
-  const compact=()=>{ if(window.innerWidth<=560){logo.style.width='155px';logo.style.height='48px';} else if(window.innerWidth<=900){logo.style.width='185px';logo.style.height='52px';} else {logo.style.width='220px';logo.style.height='62px';} };
+  logo.style.width='220px'; logo.style.height='46px'; logo.style.objectFit='contain'; logo.style.display='block';
+  const compact=()=>{ if(window.innerWidth<=560){logo.style.width='150px';logo.style.height='42px';} else if(window.innerWidth<=900){logo.style.width='185px';logo.style.height='44px';} else {logo.style.width='220px';logo.style.height='46px';} };
   compact(); window.addEventListener('resize',compact);
 }
 
-// The approved circular emblem is shown prominently, but not oversized, on the homepage.
+// Approved circular emblem on the homepage, at a moderate size.
 const heroLogo=document.querySelector('.hero .hero-logo');
 if(heroLogo){
+  heroLogo.src=assetPrefix+'assets/rls-approved-main.svg';
   heroLogo.style.width='190px';
   heroLogo.style.height='190px';
   heroLogo.style.maxWidth='62vw';
