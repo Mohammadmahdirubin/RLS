@@ -2,21 +2,15 @@ const menu=document.querySelector('.menu-btn');
 if(menu){menu.addEventListener('click',()=>document.body.classList.toggle('nav-open'));}
 document.querySelectorAll('.main-nav a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
 
-// Multilingual navigation: Persian, English and Russian are available on every page.
 const nav=document.querySelector('.main-nav');
 const currentPath=location.pathname;
 const currentFile=currentPath.split('/').pop() || 'index.html';
 const assetPrefix=currentPath.includes('/en/')||currentPath.includes('/ru/')?'../':'';
 
-// Official RLS visual identity: logo in the site header and favicon on every page.
-const brandMark=document.querySelector('.brand-mark');
-if(brandMark){
-  brandMark.textContent='';
-  const logo=document.createElement('img');
-  logo.src=assetPrefix+'assets/rls-logo.svg';
-  logo.alt='RLS — Russian Language Studies';
-  logo.className='brand-logo';
-  brandMark.appendChild(logo);
+// Official RLS branding: use the horizontal logo in the desktop header and the compact emblem on mobile.
+const brand=document.querySelector('.brand');
+if(brand){
+  brand.innerHTML=`<img class="brand-horizontal-logo" src="${assetPrefix}assets/rls-header.svg" alt="RLS — Russian Language Studies"><span class="brand-persian-title">دوفصلنامه مطالعات زبان روسی</span>`;
 }
 if(!document.querySelector('link[rel="icon"]')){
   const icon=document.createElement('link');
