@@ -26,6 +26,9 @@ const initRLS=()=>{
         .rls-site-banner{width:100%;background:#fff;line-height:0;overflow:hidden;}
         .rls-site-banner img{display:block;width:100%;height:auto;max-width:none;margin:0;padding:0;border:0;}
         .site-header .header-inner{width:100%;max-width:1200px;}
+        @media(min-width:901px){
+          .rls-site-banner img{height:220px;width:100%;object-fit:contain;}
+        }
         @media(max-width:900px){
           .site-header .header-inner{min-height:70px!important;}
           .nav-open .main-nav{top:100%!important;}
