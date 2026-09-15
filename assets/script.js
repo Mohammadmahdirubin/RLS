@@ -52,19 +52,26 @@ const initRLS=()=>{
   });
 
   const nav=document.querySelector('.main-nav');
-  if(nav&&!nav.querySelector('.language-switcher')){
+  const inner=header&&header.querySelector('.header-inner');
+  let select=nav&&nav.querySelector('.language-switcher');
+  if(select){
+    select.classList.add('header-language-switcher');
+    if(inner&&!inner.contains(select))inner.appendChild(select);
+  }
+  if(!select&&nav){
     const file=currentPath.split('/').pop()||'index.html';
     let fa='index.html',en='en/index.html',ru='ru/index.html';
     if(currentPath.includes('/en/')){fa='../'+file;en=file;ru='../ru/'+file;}
     else if(currentPath.includes('/ru/')){fa='../'+file;en='../en/'+file;ru=file;}
     else{fa=file;en='en/'+file;ru='ru/'+file;}
-    const select=document.createElement('select');
-    select.className='language-switcher';
+    select=document.createElement('select');
+    select.className='language-switcher header-language-switcher';
     select.setAttribute('aria-label','Language');
     select.innerHTML=`<option value="${fa}">فارسی</option><option value="${en}">English</option><option value="${ru}">Русский</option>`;
     select.value=currentPath.includes('/en/')?en:currentPath.includes('/ru/')?ru:fa;
     select.addEventListener('change',()=>location.href=select.value);
     nav.appendChild(select);
+    if(inner)inner.appendChild(select);
   }
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
