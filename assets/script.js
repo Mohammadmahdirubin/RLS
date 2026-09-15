@@ -7,10 +7,17 @@ const currentPath=location.pathname;
 const currentFile=currentPath.split('/').pop() || 'index.html';
 const assetPrefix=currentPath.includes('/en/')||currentPath.includes('/ru/')?'../':'';
 
-// Official RLS branding: use the horizontal logo in the desktop header and the compact emblem on mobile.
+// Official RLS branding: horizontal logo in the header, with compact sizing on small screens.
 const brand=document.querySelector('.brand');
 if(brand){
   brand.innerHTML=`<img class="brand-horizontal-logo" src="${assetPrefix}assets/rls-header.svg" alt="RLS — Russian Language Studies"><span class="brand-persian-title">دوفصلنامه مطالعات زبان روسی</span>`;
+  brand.style.gap='10px';
+  const logo=brand.querySelector('.brand-horizontal-logo');
+  logo.style.width='245px'; logo.style.height='58px'; logo.style.objectFit='contain'; logo.style.display='block';
+  const title=brand.querySelector('.brand-persian-title');
+  title.style.display='block'; title.style.color='#8b2635'; title.style.fontWeight='800'; title.style.fontSize='10px'; title.style.whiteSpace='nowrap';
+  const compact=()=>{ if(window.innerWidth<=560){logo.style.width='150px';logo.style.height='42px';title.style.display='none';} else if(window.innerWidth<=900){logo.style.width='190px';logo.style.height='48px';title.style.display='none';} else {logo.style.width='245px';logo.style.height='58px';title.style.display='block';} };
+  compact(); window.addEventListener('resize',compact);
 }
 if(!document.querySelector('link[rel="icon"]')){
   const icon=document.createElement('link');
