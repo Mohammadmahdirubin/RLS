@@ -1,6 +1,6 @@
-# Russian Language & Linguistics Studies (RLLS)
+# Russian Language Studies (RLS)
 
-Official website repository for **Russian Language & Linguistics Studies**, a scholarly journal focused on Russian language, linguistics, literature, culture, translation, and language education.
+Official website repository for **Russian Language Studies**, a scholarly journal focused on Russian language, linguistics, literature, culture, translation, and language education.
 
 ## Website
 
