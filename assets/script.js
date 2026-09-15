@@ -7,18 +7,27 @@ const currentPath=location.pathname;
 const currentFile=currentPath.split('/').pop() || 'index.html';
 const assetPrefix=currentPath.includes('/en/')||currentPath.includes('/ru/')?'../':'';
 
-// Official RLS branding: horizontal logo in the header, with compact sizing on small screens.
+// Official RLS branding: the approved rectangular header logo is used on every page.
 const brand=document.querySelector('.brand');
 if(brand){
-  brand.innerHTML=`<img class="brand-horizontal-logo" src="${assetPrefix}assets/rls-header.svg" alt="RLS — Russian Language Studies"><span class="brand-persian-title">دوفصلنامه مطالعات زبان روسی</span>`;
-  brand.style.gap='10px';
+  brand.innerHTML=`<img class="brand-horizontal-logo" src="${assetPrefix}assets/rls-header.svg" alt="RLS — Russian Language Studies">`;
+  brand.style.gap='0';
   const logo=brand.querySelector('.brand-horizontal-logo');
-  logo.style.width='245px'; logo.style.height='58px'; logo.style.objectFit='contain'; logo.style.display='block';
-  const title=brand.querySelector('.brand-persian-title');
-  title.style.display='block'; title.style.color='#8b2635'; title.style.fontWeight='800'; title.style.fontSize='10px'; title.style.whiteSpace='nowrap';
-  const compact=()=>{ if(window.innerWidth<=560){logo.style.width='150px';logo.style.height='42px';title.style.display='none';} else if(window.innerWidth<=900){logo.style.width='190px';logo.style.height='48px';title.style.display='none';} else {logo.style.width='245px';logo.style.height='58px';title.style.display='block';} };
+  logo.style.width='220px'; logo.style.height='62px'; logo.style.objectFit='contain'; logo.style.display='block';
+  const compact=()=>{ if(window.innerWidth<=560){logo.style.width='155px';logo.style.height='48px';} else if(window.innerWidth<=900){logo.style.width='185px';logo.style.height='52px';} else {logo.style.width='220px';logo.style.height='62px';} };
   compact(); window.addEventListener('resize',compact);
 }
+
+// The approved circular emblem is shown prominently, but not oversized, on the homepage.
+const heroLogo=document.querySelector('.hero .hero-logo');
+if(heroLogo){
+  heroLogo.style.width='190px';
+  heroLogo.style.height='190px';
+  heroLogo.style.maxWidth='62vw';
+  heroLogo.style.objectFit='contain';
+  heroLogo.style.margin='0 auto 18px';
+}
+
 if(!document.querySelector('link[rel="icon"]')){
   const icon=document.createElement('link');
   icon.rel='icon'; icon.type='image/svg+xml'; icon.href=assetPrefix+'assets/rls-favicon.svg';
