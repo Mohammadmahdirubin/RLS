@@ -4,9 +4,29 @@ document.querySelectorAll('.main-nav a').forEach(a=>a.addEventListener('click',(
 
 // Multilingual navigation: Persian, English and Russian are available on every page.
 const nav=document.querySelector('.main-nav');
+const currentPath=location.pathname;
+const currentFile=currentPath.split('/').pop() || 'index.html';
+const assetPrefix=currentPath.includes('/en/')||currentPath.includes('/ru/')?'../':'';
+
+// Official RLS visual identity: logo in the site header and favicon on every page.
+const brandMark=document.querySelector('.brand-mark');
+if(brandMark){
+  brandMark.textContent='';
+  const logo=document.createElement('img');
+  logo.src=assetPrefix+'assets/rls-logo.svg';
+  logo.alt='RLS — Russian Language Studies';
+  logo.className='brand-logo';
+  brandMark.appendChild(logo);
+}
+if(!document.querySelector('link[rel="icon"]')){
+  const icon=document.createElement('link');
+  icon.rel='icon'; icon.type='image/svg+xml'; icon.href=assetPrefix+'assets/rls-favicon.svg';
+  document.head.appendChild(icon);
+}
+
 if(nav && !nav.querySelector('.language-switcher')){
-  const path=location.pathname;
-  const file=path.split('/').pop() || 'index.html';
+  const path=currentPath;
+  const file=currentFile;
   let fa='index.html', en='en/index.html', ru='ru/index.html';
   if(path.includes('/en/')){ fa='../'+file; en=file; ru='../ru/'+file; }
   else if(path.includes('/ru/')){ fa='../'+file; en='../en/'+file; ru=file; }
