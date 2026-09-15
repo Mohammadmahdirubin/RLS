@@ -26,13 +26,8 @@ const initRLS=()=>{
         .rls-site-banner{width:100%;background:#fff;line-height:0;overflow:hidden;}
         .rls-site-banner img{display:block;width:100%;height:auto;max-width:none;margin:0;padding:0;border:0;}
         .site-header .header-inner{width:100%;max-width:1200px;}
-        @media(min-width:901px){
-          .rls-site-banner img{height:220px;width:100%;object-fit:contain;}
-        }
-        @media(max-width:900px){
-          .site-header .header-inner{min-height:70px!important;}
-          .nav-open .main-nav{top:100%!important;}
-        }
+        @media(min-width:901px){.rls-site-banner img{height:220px;width:100%;object-fit:contain;}}
+        @media(max-width:900px){.site-header .header-inner{min-height:70px!important;}.nav-open .main-nav{top:100%!important;}}
       `;
       document.head.appendChild(style);
     }
@@ -54,9 +49,9 @@ const initRLS=()=>{
   const nav=document.querySelector('.main-nav');
   const inner=header&&header.querySelector('.header-inner');
   let select=nav&&nav.querySelector('.language-switcher');
-  if(select){
+  if(select&&inner){
     select.classList.add('header-language-switcher');
-    if(inner&&!inner.contains(select))inner.appendChild(select);
+    if(!inner.contains(select))inner.insertBefore(select,nav);
   }
   if(!select&&nav){
     const file=currentPath.split('/').pop()||'index.html';
@@ -70,8 +65,7 @@ const initRLS=()=>{
     select.innerHTML=`<option value="${fa}">فارسی</option><option value="${en}">English</option><option value="${ru}">Русский</option>`;
     select.value=currentPath.includes('/en/')?en:currentPath.includes('/ru/')?ru:fa;
     select.addEventListener('change',()=>location.href=select.value);
-    nav.appendChild(select);
-    if(inner)inner.appendChild(select);
+    if(inner)inner.insertBefore(select,nav);else nav.appendChild(select);
   }
 };
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
