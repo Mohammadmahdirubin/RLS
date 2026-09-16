@@ -32,10 +32,32 @@ const initRLS=()=>{
   if(nav){
     nav.style.removeProperty('display');
   }
+
+  // Keep one clean, consistent footer across Persian, English and Russian pages.
+  const footer=document.querySelector('footer');
+  if(footer){
+    footer.innerHTML=`
+      <div class="container footer-grid rls-unified-footer">
+        <div>
+          <strong dir="ltr">Russian Language Studies (RLS)</strong>
+          <p>Biannual journal</p>
+        </div>
+        <div>
+          <p>Publisher &amp; Managing Editor: Mohammadmahdi Rubin</p>
+          <p>Ministry License No. 94254</p>
+          <p>License Date: 2023/07/24</p>
+        </div>
+        <div>
+          <p>ISSN: Pending</p>
+          <p>Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p>
+          <p>© 2026 RLS</p>
+        </div>
+      </div>`;
+  }
 };
 
 if(document.readyState==='loading'){
- document.addEventListener('DOMContentLoaded',initRLS);
+  document.addEventListener('DOMContentLoaded',initRLS);
 }else{
- initRLS();
+  initRLS();
 }
