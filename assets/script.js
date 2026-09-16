@@ -65,6 +65,24 @@ const initRLS=()=>{
     }
   }
 
+  /* Force the unified English footer to remain LTR and left-aligned,
+     including on Persian/Russian pages where body direction is RTL. */
+  if(!document.getElementById('rls-unified-footer-style')){
+    const style=document.createElement('style');
+    style.id='rls-unified-footer-style';
+    style.textContent=`
+      footer .rls-unified-footer,
+      footer .rls-unified-footer *{
+        direction:ltr!important;
+        text-align:left!important;
+      }
+      footer .rls-unified-footer{
+        unicode-bidi:plaintext;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   /* Remove the homepage identity/CTA block that duplicated footer information. */
   document.querySelectorAll('.dark-section').forEach(el=>el.remove());
 };
