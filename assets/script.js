@@ -2,7 +2,10 @@ const initRLS=()=>{
   const currentPath=location.pathname;
   const header=document.querySelector('.site-header');
   const isRealMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||((navigator.maxTouchPoints||0)>0&&Math.min(screen.width,screen.height)<=900);
-  if(isRealMobile) document.documentElement.classList.add('rls-mobile-mode');
+
+  if(isRealMobile){
+    document.documentElement.classList.add('rls-mobile-mode');
+  }
 
   if(header&&!header.querySelector('.rls-site-banner')){
     const banner=document.createElement('div');
@@ -19,15 +22,15 @@ const initRLS=()=>{
 
   if(menu&&!menu.dataset.bound){
     menu.dataset.bound='1';
-    menu.onclick=(e)=>{
+    menu.addEventListener('click',(e)=>{
       e.preventDefault();
+      document.documentElement.classList.toggle('nav-open');
       document.body.classList.toggle('nav-open');
-    };
+    });
   }
 
-  if(nav && isRealMobile){
-    nav.querySelectorAll('a').forEach(a=>a.style.display='block');
-    nav.style.display='';
+  if(nav){
+    nav.style.removeProperty('display');
   }
 };
 
