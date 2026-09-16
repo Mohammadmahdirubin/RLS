@@ -12,27 +12,27 @@ const initRLS=()=>{
     image.alt='Russian Language Studies Journal';
     banner.appendChild(image);
     header.insertBefore(banner,header.firstChild);
-    const brand=header.querySelector('.brand');
-    if(brand) brand.style.display='none';
   }
 
   const menu=document.querySelector('.menu-btn');
+  const nav=document.querySelector('.main-nav');
+
   if(menu&&!menu.dataset.bound){
     menu.dataset.bound='1';
-    menu.onclick=()=>document.body.classList.toggle('nav-open');
+    menu.onclick=(e)=>{
+      e.preventDefault();
+      document.body.classList.toggle('nav-open');
+    };
   }
 
-  const inner=header&&header.querySelector('.header-inner');
-  if(inner&&!inner.querySelector('.header-language-switcher')){
-    const select=document.createElement('select');
-    select.className='language-switcher header-language-switcher';
-    const file=currentPath.split('/').pop()||'index.html';
-    let fa=file,en='en/'+file,ru='ru/'+file;
-    if(currentPath.includes('/en/')){fa='../'+file;en=file;ru='../ru/'+file;}
-    if(currentPath.includes('/ru/')){fa='../'+file;en='../en/'+file;ru=file;}
-    select.innerHTML=`<option value="${fa}">فارسی</option><option value="${en}">English</option><option value="${ru}">Русский</option>`;
-    select.onchange=()=>location.href=select.value;
-    inner.insertBefore(select,menu||inner.firstChild);
+  if(nav && isRealMobile){
+    nav.querySelectorAll('a').forEach(a=>a.style.display='block');
+    nav.style.display='';
   }
 };
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
+
+if(document.readyState==='loading'){
+ document.addEventListener('DOMContentLoaded',initRLS);
+}else{
+ initRLS();
+}
