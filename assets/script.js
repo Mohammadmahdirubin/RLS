@@ -7,6 +7,13 @@ const initRLS=()=>{
     document.documentElement.classList.add('rls-mobile-mode');
   }
 
+  /* Normalize the journal's current official name on every page. */
+  document.querySelectorAll('body *').forEach(el=>{
+    if(el.children.length===0&&el.textContent){
+      el.textContent=el.textContent.replace(/Russian Language & Linguistics Studies/g,'Russian Language Studies').replace(/\bRLLS\b/g,'RLS');
+    }
+  });
+
   if(header&&!header.querySelector('.rls-site-banner')){
     const banner=document.createElement('div');
     banner.className='rls-site-banner';
