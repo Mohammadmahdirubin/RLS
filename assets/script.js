@@ -17,8 +17,6 @@ const initRLS=()=>{
     ru:{home:'Главная',about:'О журнале',board:'Редколлегия',policies:'Политики',review:'Рецензирование',ethics:'Этика публикации',plagiarism:'Плагиат',conflict:'Конфликт интересов',copyright:'Авторские права',fees:'Публикационные сборы',corrections:'Исправления и ретракции',publication:'Публикация',articles:'Статьи',issues:'Выпуски',archive:'Архив',authors:'Авторам',guidelines:'Руководство для авторов',authorInfo:'Информация об авторах',metrics:'Информация и статистика',contact:'Контакты',privacy:'Конфиденциальность',submit:'Отправить рукопись'}
   }[lang];
 
-  // Navigation links must stay inside the current language folder.
-  // Only the language switcher uses root-relative paths to change language.
   const p=name=>name;
   const active=name=>file===name?' class="active"':'';
   const link=(name,label)=>`<a href="${p(name)}"${active(name)}>${label}</a>`;
@@ -80,7 +78,7 @@ const initRLS=()=>{
     footer.innerHTML=`<div class="container rls-footer-inner">
       <div class="rls-footer-main">
         <div class="rls-footer-col"><strong>Russian Language Studies (RLS)</strong><p>Biannual journal</p></div>
-        <div class="rls-footer-col"><p>Publisher &amp; Managing Editor: Mohammadmahdi Rubin</p><p>Ministry License No. 94254</p><p>License Date: 2023/07/24</p></div>
+        <div class="rls-footer-col"><p>Publisher & Managing Editor: Mohammadmahdi Rubin</p><p>Ministry License No. 94254</p><p>License Date: 2023/07/24</p></div>
         <div class="rls-footer-col"><p>ISSN: Pending</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
       </div>
       <div class="rls-footer-official-logos">
@@ -106,6 +104,10 @@ const initRLS=()=>{
     const style=document.createElement('style');
     style.id='rls-runtime-style';
     style.textContent=`
+:root{--paper:#faf7ec!important}
+html,body{background:#faf7ec!important}
+.site-header{background:#faf7ec!important;box-shadow:none!important}
+.rls-site-banner{background:#faf7ec!important}
 .site-header .header-inner{position:relative;display:flex;align-items:center;gap:12px}
 .site-header .main-nav{order:1;flex:1 1 auto;display:flex!important;align-items:center;justify-content:flex-end;gap:12px;font-size:13px;font-weight:700;min-width:0}
 .site-header .header-language-switcher{order:2;flex:0 0 86px;width:86px;max-width:86px;height:36px;margin:0}
@@ -115,7 +117,7 @@ const initRLS=()=>{
 .nav-group>summary{list-style:none;cursor:pointer;color:var(--ink);white-space:nowrap}
 .nav-group>summary::-webkit-details-marker{display:none}
 .nav-group>summary:after{content:'⌄';font-size:10px;margin-inline-start:4px;color:var(--accent3)}
-.nav-submenu{position:absolute;top:100%;min-width:210px;background:#fffdfb;border:1px solid var(--line);border-top:3px solid var(--accent3);box-shadow:0 12px 28px rgba(91,23,35,.12);padding:8px;z-index:200}
+.nav-submenu{position:absolute;top:100%;min-width:210px;background:#faf7ec;border:1px solid var(--line);border-top:3px solid var(--accent3);box-shadow:0 12px 28px rgba(91,23,35,.12);padding:8px;z-index:200}
 [dir="rtl"] .nav-submenu{right:0}[dir="ltr"] .nav-submenu{left:0}
 .nav-submenu a{display:block!important;padding:9px 10px!important;white-space:normal!important}
 .nav-submenu a.active{color:var(--accent)}.nav-submenu a.active:after{display:none!important}
@@ -131,7 +133,8 @@ footer .rls-footer-official-logo{display:flex;flex-direction:column;align-items:
 footer .rls-footer-logo-box{width:106px;height:74px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px;padding:6px;border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 12px rgba(0,0,0,.12);text-decoration:none}
 footer .rls-footer-logo-box img{display:block;width:auto;height:auto;max-width:94px;max-height:62px;object-fit:contain}
 footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height:1.5;text-align:center;color:inherit;max-width:190px}
-@media(max-width:1100px){.site-header .header-inner{min-height:62px}.site-header .main-nav{display:none!important}.site-header .header-language-switcher{order:2}.site-header .menu-btn{order:3}.nav-group{width:100%}.nav-group>summary{padding:9px 0;font-size:14px;white-space:normal}.nav-submenu{position:static;min-width:0;border:0;border-inline-start:3px solid var(--accent3);box-shadow:none;margin:0 0 6px;padding:3px 10px}.nav-submenu a{padding:8px 0!important}.nav-open .main-nav{display:flex!important;position:absolute;top:62px;left:0;right:0;width:100%;max-width:none;background:#fffdfb;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:10px 24px;box-shadow:0 12px 25px rgba(91,23,35,.1);max-height:calc(100vh - 62px);overflow-y:auto}}
+@media(min-width:1101px){.rls-site-banner img{max-height:120px!important;width:100%!important;object-fit:contain!important}.header-inner{min-height:72px!important}.main-nav>a,.nav-group>summary{padding-top:20px!important;padding-bottom:20px!important}.main-nav a.active:after{bottom:14px!important}}
+@media(max-width:1100px){.site-header .header-inner{min-height:62px}.site-header .main-nav{display:none!important}.site-header .header-language-switcher{order:2}.site-header .menu-btn{order:3}.nav-group{width:100%}.nav-group>summary{padding:9px 0;font-size:14px;white-space:normal}.nav-submenu{position:static;min-width:0;border:0;border-inline-start:3px solid var(--accent3);box-shadow:none;margin:0 0 6px;padding:3px 10px}.nav-submenu a{padding:8px 0!important}.nav-open .main-nav{display:flex!important;position:absolute;top:62px;left:0;right:0;width:100%;max-width:none;background:#faf7ec;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:10px 24px;box-shadow:0 12px 25px rgba(91,23,35,.1);max-height:calc(100vh - 62px);overflow-y:auto}}
 @media(min-width:1101px){.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}}
 @media(max-width:760px){footer .rls-footer-main{grid-template-columns:1fr 1fr}.rls-footer-official-logos{gap:24px}}
 @media(max-width:560px){.site-header .header-inner{min-height:56px}.site-header .header-language-switcher{flex-basis:76px;width:76px;max-width:76px;height:34px;font-size:11px}.nav-open .main-nav{top:56px;max-height:calc(100vh - 56px);padding:10px 18px}footer .rls-footer-inner{padding:20px 14px 18px}footer .rls-footer-main{grid-template-columns:1fr;gap:12px}footer .rls-email-line,footer .rls-email-line a{white-space:normal}footer .rls-footer-official-logos{gap:20px;margin-top:16px;padding-top:14px}footer .rls-footer-official-logo{min-width:120px}footer .rls-footer-logo-box{width:92px;height:66px}footer .rls-footer-logo-box img{max-width:82px;max-height:54px}}
