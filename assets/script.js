@@ -143,6 +143,31 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
 `;
     document.head.appendChild(style);
   }
+
+  // Final runtime normalization for all Russian HTML pages.
+  if(inRu){
+    const oldNames=['Исследования русского языка','Russian Language & Linguistics Studies','Russian Language and Linguistics Studies','Russian Language Linguistics Studies','RLLS'];
+    const correctName='Исследования по русскому языку';
+    document.title=document.title.replace(/Исследования русского языка|Russian Language & Linguistics Studies|Russian Language and Linguistics Studies|Russian Language Linguistics Studies|RLLS/g,correctName);
+    document.querySelectorAll('meta[content],meta[property],meta[name]').forEach(el=>{
+      if(el.content)el.content=el.content.replace(/Исследования русского языка|Russian Language & Linguistics Studies|Russian Language and Linguistics Studies|Russian Language Linguistics Studies|RLLS/g,correctName);
+    });
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      if(node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName))return;
+      let text=node.nodeValue;
+      oldNames.forEach(name=>{text=text.split(name).join(correctName);});
+      node.nodeValue=text;
+    });
+    document.querySelectorAll('[alt],[aria-label],[title]').forEach(el=>{
+      ['alt','aria-label','title'].forEach(attr=>{
+        const value=el.getAttribute(attr);
+        if(value){let v=value;oldNames.forEach(name=>{v=v.split(name).join(correctName);});el.setAttribute(attr,v);}
+      });
+    });
+  }
 };
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
