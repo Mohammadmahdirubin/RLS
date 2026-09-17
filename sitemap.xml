@@ -1,110 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/</loc>
-    <xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/"/>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/en/</loc>
-    <xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/"/>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/ru/</loc>
-    <xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/"/>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/about.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/en/about.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/ru/about.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/submit.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/en/submit.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/ru/submit.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/editorial-board.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/author-guidelines.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/peer-review.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/publication-ethics.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/articles.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/issues.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mohammadmahdirubin.github.io/RLS/contact.html</loc>
-    <lastmod>2026-09-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/"/><lastmod>2026-09-17</lastmod><priority>1.0</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/"/><lastmod>2026-09-17</lastmod><priority>0.9</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/"/><lastmod>2026-09-17</lastmod><priority>0.9</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/articles.html</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/articles.html"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/articles.html"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/articles.html"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/articles.html"/><lastmod>2026-09-17</lastmod><priority>0.9</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/articles.html</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/articles.html"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/articles.html"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/articles.html"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/articles.html"/><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/articles.html</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/articles.html"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/articles.html"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/articles.html"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/articles.html"/><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html"/><lastmod>2026-09-17</lastmod><priority>0.95</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/article-ai-supported-multimodal-russian-language-learning.html</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html"/><lastmod>2026-09-17</lastmod><priority>0.95</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/article-ai-supported-multimodal-russian-language-learning.html</loc><xhtml:link rel="alternate" hreflang="fa" href="https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="en" href="https://mohammadmahdirubin.github.io/RLS/en/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="ru" href="https://mohammadmahdirubin.github.io/RLS/ru/article-ai-supported-multimodal-russian-language-learning.html"/><xhtml:link rel="alternate" hreflang="x-default" href="https://mohammadmahdirubin.github.io/RLS/article-ai-supported-multimodal-russian-language-learning.html"/><lastmod>2026-09-17</lastmod><priority>0.95</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/about.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/about.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/about.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/submit.html</loc><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/submit.html</loc><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/submit.html</loc><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/editorial-board.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/editorial-board.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/editorial-board.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/author-guidelines.html</loc><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/author-guidelines.html</loc><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/author-guidelines.html</loc><lastmod>2026-09-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/peer-review.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/peer-review.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/peer-review.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/publication-ethics.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/publication-ethics.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/publication-ethics.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/journal-metrics.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/en/journal-metrics.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://mohammadmahdirubin.github.io/RLS/ru/journal-metrics.html</loc><lastmod>2026-09-17</lastmod><priority>0.7</priority></url>
 </urlset>
