@@ -38,6 +38,40 @@ const initRLS=()=>{
   const footers=document.querySelectorAll('body>footer');footers.forEach((item,index)=>{if(index>0)item.remove();});
   const footer=document.querySelector('body>footer');
   if(footer)footer.innerHTML='<div class="container footer-grid rls-unified-footer"><div><strong>Russian Language Studies (RLS)</strong><p>Biannual journal</p></div><div><p>Publisher &amp; Managing Editor: Mohammadmahdi Rubin</p><p>Ministry License No. 94254</p><p>License Date: 2023/07/24</p></div><div><p>ISSN: Pending</p><p>Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div></div>';
+  if(footer){
+    const oldLogos=document.querySelector('.rls-official-logos');
+    if(oldLogos)oldLogos.remove();
+    const strip=document.createElement('div');
+    strip.className='rls-official-logos';
+    const ministry=document.createElement('div');
+    ministry.className='rls-official-logo';
+    const ministryImg=document.createElement('img');
+    ministryImg.src=lang==='fa'?'وزارت فرهنگ و ارشاد اسلامی.webp':'../وزارت فرهنگ و ارشاد اسلامی.webp';
+    ministryImg.alt='وزارت فرهنگ و ارشاد اسلامی';
+    ministryImg.loading='lazy';
+    ministry.appendChild(ministryImg);
+    const ministryLabel=document.createElement('span');
+    ministryLabel.textContent=lang==='fa'?'وزارت فرهنگ و ارشاد اسلامی':lang==='en'?'Ministry of Culture and Islamic Guidance':'Министерство культуры и исламской ориентации';
+    ministry.appendChild(ministryLabel);
+    const media=document.createElement('div');
+    media.className='rls-official-logo';
+    const mediaLink=document.createElement('a');
+    mediaLink.href='https://www.e-rasaneh.ir/';
+    mediaLink.target='_blank';
+    mediaLink.rel='noopener noreferrer';
+    const mediaImg=document.createElement('img');
+    mediaImg.src=lang==='fa'?'سامانه جامع مطبوعات کشور.jpg':'../سامانه جامع مطبوعات کشور.jpg';
+    mediaImg.alt='سامانه جامع مطبوعات کشور';
+    mediaImg.loading='lazy';
+    mediaLink.appendChild(mediaImg);
+    media.appendChild(mediaLink);
+    const mediaLabel=document.createElement('span');
+    mediaLabel.textContent=lang==='fa'?'سامانه جامع رسانه‌های کشور':lang==='en'?'National Comprehensive Media System':'Национальная комплексная медиасистема';
+    media.appendChild(mediaLabel);
+    strip.appendChild(ministry);
+    strip.appendChild(media);
+    footer.insertAdjacentElement('afterend',strip);
+  }
   if(!document.getElementById('rls-runtime-style')){const style=document.createElement('style');style.id='rls-runtime-style';style.textContent=`
 .site-header .header-inner{position:relative;display:flex;align-items:center;gap:12px}
 .site-header .main-nav{order:1;flex:1 1 auto;display:flex!important;align-items:center;justify-content:flex-end;gap:12px;font-size:13px;font-weight:700;min-width:0}
@@ -53,9 +87,14 @@ const initRLS=()=>{
 .nav-submenu a{display:block!important;padding:9px 10px!important;white-space:normal!important}
 .nav-submenu a.active{color:var(--accent)}.nav-submenu a.active:after{display:none!important}
 footer .rls-unified-footer,footer .rls-unified-footer *{direction:ltr!important;text-align:left!important}
+.rls-official-logos{display:flex;justify-content:center;align-items:center;gap:34px;flex-wrap:wrap;padding:18px 16px 24px;background:#fffdfb;border-top:1px solid var(--line)}
+.rls-official-logo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:150px}
+.rls-official-logo img{display:block;width:auto;max-width:190px;height:76px;object-fit:contain}
+.rls-official-logo span{font-size:12px;font-weight:700;color:var(--muted);text-align:center;line-height:1.6}
+.rls-official-logo a{display:flex;align-items:center;justify-content:center}
 @media(max-width:1100px){.site-header .header-inner{min-height:62px}.site-header .main-nav{display:none!important}.site-header .header-language-switcher{order:2}.site-header .menu-btn{order:3}.nav-group{width:100%}.nav-group>summary{padding:9px 0;font-size:14px;white-space:normal}.nav-submenu{position:static;min-width:0;border:0;border-inline-start:3px solid var(--accent3);box-shadow:none;margin:0 0 6px;padding:3px 10px}.nav-submenu a{padding:8px 0!important}.nav-open .main-nav{display:flex!important;position:absolute;top:62px;left:0;right:0;width:100%;max-width:none;background:#fffdfb;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:10px 24px;box-shadow:0 12px 25px rgba(91,23,35,.1);max-height:calc(100vh - 62px);overflow-y:auto}}
 @media(min-width:1101px){.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}}
-@media(max-width:560px){.site-header .header-inner{min-height:56px}.site-header .header-language-switcher{flex-basis:76px;width:76px;max-width:76px;height:34px;font-size:11px}.nav-open .main-nav{top:56px;max-height:calc(100vh - 56px);padding:10px 18px}}
+@media(max-width:560px){.site-header .header-inner{min-height:56px}.site-header .header-language-switcher{flex-basis:76px;width:76px;max-width:76px;height:34px;font-size:11px}.nav-open .main-nav{top:56px;max-height:calc(100vh - 56px);padding:10px 18px}.rls-official-logos{gap:20px;padding:16px 10px 20px}.rls-official-logo{min-width:120px}.rls-official-logo img{max-width:150px;height:64px}.rls-official-logo span{font-size:11px}}
 @media(orientation:landscape) and (max-width:900px){.site-header .header-inner{min-height:52px}.site-header .header-language-switcher{height:32px}.rls-site-banner img{height:78px!important;max-height:78px!important;object-fit:contain!important}.nav-open .main-nav{top:52px;max-height:calc(100vh - 52px)}}`;
     document.head.appendChild(style);}
   if(header&&!header.querySelector('.rls-site-banner')){const banner=document.createElement('div');banner.className='rls-site-banner';const image=document.createElement('img');image.src=lang==='fa'?'1789594059145.png':'../1789594059145.png';image.alt='Russian Language Studies Journal';image.loading='eager';image.decoding='async';banner.appendChild(image);header.insertBefore(banner,header.firstChild);}
