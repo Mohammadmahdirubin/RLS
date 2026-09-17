@@ -4,3 +4,24 @@ html.rls-mobile-mode,html.rls-mobile-mode body{width:100%!important;min-width:0!
 @media(orientation:landscape) and (max-width:900px){html.rls-mobile-mode .header-inner{min-height:52px!important}html.rls-mobile-mode .rls-site-banner img{height:78px!important;max-height:78px!important}html.rls-mobile-mode .nav-open .main-nav{top:52px!important;max-height:calc(100vh - 52px)!important}}
 /* Remove the redundant identity block above the footer on the Persian homepage. */
 .dark-section{display:none!important}
+
+/* ===== Thinner header on desktop (safe append) ===== */
+@media (min-width: 1101px) {
+  .rls-site-banner img {
+    max-height: 120px;
+    width: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  .header-inner {
+    min-height: 72px;
+  }
+  .main-nav > a,
+  .nav-group > summary {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .main-nav a.active:after {
+    bottom: 14px;
+  }
+}
