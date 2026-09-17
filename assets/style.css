@@ -25,3 +25,12 @@ html.rls-mobile-mode,html.rls-mobile-mode body{width:100%!important;min-width:0!
     bottom: 14px;
   }
 }
+
+/* ===== Header background matches site ===== */
+.site-header {
+  background: var(--paper) !important;
+  box-shadow: none;
+}
+.rls-site-banner {
+  background: var(--paper) !important;
+}
