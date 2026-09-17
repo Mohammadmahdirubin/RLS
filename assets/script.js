@@ -17,7 +17,9 @@ const initRLS=()=>{
     ru:{home:'Главная',about:'О журнале',board:'Редколлегия',policies:'Политики',review:'Рецензирование',ethics:'Этика публикации',plagiarism:'Плагиат',conflict:'Конфликт интересов',copyright:'Авторские права',fees:'Публикационные сборы',corrections:'Исправления и ретракции',publication:'Публикация',articles:'Статьи',issues:'Выпуски',archive:'Архив',authors:'Авторам',guidelines:'Руководство для авторов',authorInfo:'Информация об авторах',metrics:'Информация и статистика',contact:'Контакты',privacy:'Конфиденциальность',submit:'Отправить рукопись'}
   }[lang];
 
-  const p=name=>root+name;
+  // Navigation links must stay inside the current language folder.
+  // Only the language switcher uses root-relative paths to change language.
+  const p=name=>name;
   const active=name=>file===name?' class="active"':'';
   const link=(name,label)=>`<a href="${p(name)}"${active(name)}>${label}</a>`;
   const group=(label,items)=>{
@@ -133,8 +135,10 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
 @media(min-width:1101px){.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}}
 @media(max-width:760px){footer .rls-footer-main{grid-template-columns:1fr 1fr}.rls-footer-official-logos{gap:24px}}
 @media(max-width:560px){.site-header .header-inner{min-height:56px}.site-header .header-language-switcher{flex-basis:76px;width:76px;max-width:76px;height:34px;font-size:11px}.nav-open .main-nav{top:56px;max-height:calc(100vh - 56px);padding:10px 18px}footer .rls-footer-inner{padding:20px 14px 18px}footer .rls-footer-main{grid-template-columns:1fr;gap:12px}footer .rls-email-line,footer .rls-email-line a{white-space:normal}footer .rls-footer-official-logos{gap:20px;margin-top:16px;padding-top:14px}footer .rls-footer-official-logo{min-width:120px}footer .rls-footer-logo-box{width:92px;height:66px}footer .rls-footer-logo-box img{max-width:82px;max-height:54px}}
-@media(orientation:landscape) and (max-width:900px){.site-header .header-inner{min-height:52px}.site-header .header-language-switcher{height:32px}.rls-site-banner img{height:78px!important;max-height:78px!important;object-fit:contain!important}.nav-open .main-nav{top:52px;max-height:calc(100vh - 52px)}}`;
+@media(orientation:landscape) and (max-width:900px){.site-header .header-inner{min-height:52px}.site-header .rls-site-banner img{height:78px!important;max-height:78px!important}.nav-open .main-nav{top:52px!important;max-height:calc(100vh - 52px)!important}}
+`;
     document.head.appendChild(style);
   }
 };
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
