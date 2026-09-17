@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Replace Russian journal name
+      - name: Replace Russian journal name everywhere
         run: |
           OLD='Исследования русского языка'
           NEW='Исследования по русскому языку'
@@ -29,6 +29,6 @@ jobs:
             echo 'No changes needed.'
           else
             git add .
-            git commit -m 'Update Russian journal name to Исследования по русскому языку'
+            git commit -m 'Set Russian journal name to Исследования по русскому языку everywhere'
             git push
           fi
