@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mohammadmahdirubin.github.io/RLS/sitemap.xml
