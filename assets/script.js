@@ -47,25 +47,29 @@ const initRLS=()=>{
       if(!switcher){
         switcher=document.createElement('select');
         switcher.className='language-switcher header-language-switcher';
-        switcher.setAttribute('aria-label',lang==='fa'?'انتخاب زبان':lang==='en'?'Language':'Язык');
         inner.appendChild(switcher);
       }
+      switcher.setAttribute('aria-label',lang==='fa'?'انتخاب زبان':lang==='en'?'Language':'Язык');
       switcher.innerHTML=`<option value="${langUrls.fa}">فارسی</option><option value="${langUrls.en}">English</option><option value="${langUrls.ru}">Русский</option>`;
       switcher.value=langUrls[lang];
       switcher.onchange=()=>{location.href=switcher.value;};
     }
     const banner=document.createElement('div');
     banner.className='rls-site-banner';
+    const bannerLink=document.createElement('a');
+    bannerLink.href=langUrls[lang];
+    bannerLink.setAttribute('aria-label',lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies':'دوفصلنامه مطالعات زبان روسی');
     const image=document.createElement('img');
     image.src=asset('Banner.png');
-    image.alt='Russian Language Studies Journal';
+    image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
     image.loading='eager';
     image.decoding='async';
-    banner.appendChild(image);
+    bannerLink.appendChild(image);
+    banner.appendChild(bannerLink);
     header.insertBefore(banner,header.firstChild);
   }
 
-  const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования русского языка';
+  const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования по русскому языку';
   const pageNames={'index.html':title,'about.html':labels.about,'editorial-board.html':labels.board,'editorial-policy.html':labels.policies,'peer-review.html':labels.review,'publication-ethics.html':labels.ethics,'plagiarism.html':labels.plagiarism,'conflict-of-interest.html':labels.conflict,'copyright.html':labels.copyright,'publication-fees.html':labels.fees,'corrections-retractions.html':labels.corrections,'author-guidelines.html':labels.guidelines,'authors.html':labels.authorInfo,'articles.html':labels.articles,'issues.html':labels.issues,'archive.html':labels.archive,'journal-metrics.html':labels.metrics,'submit.html':labels.submit,'submission-success.html':lang==='fa'?'ارسال با موفقیت انجام شد':lang==='en'?'Submission received':'Отправка получена','contact.html':labels.contact,'privacy.html':labels.privacy,'article-sample.html':lang==='fa'?'نمونه مقاله':lang==='en'?'Article Sample':'Образец статьи'};
   if(pageNames[file])document.title=`${pageNames[file]} | ${title}`;
 
@@ -74,22 +78,17 @@ const initRLS=()=>{
   const footer=document.querySelector('body>footer');
   const ministryLabel=lang==='fa'?'وزارت فرهنگ و ارشاد اسلامی':lang==='en'?'Ministry of Culture and Islamic Guidance':'Министерство культуры и исламской ориентации';
   const mediaLabel=lang==='fa'?'سامانه جامع رسانه‌های کشور':lang==='en'?'National Comprehensive Media System':'Национальная комплексная медиасистема';
+  const footerJournalName=lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies (RLS)':'دوفصلنامه مطالعات زبان روسی';
   if(footer){
     footer.innerHTML=`<div class="container rls-footer-inner">
       <div class="rls-footer-main">
-        <div class="rls-footer-col"><strong>Russian Language Studies (RLS)</strong><p>Biannual journal</p></div>
-        <div class="rls-footer-col"><p>Publisher & Managing Editor: Mohammadmahdi Rubin</p><p>Ministry License No. 94254</p><p>License Date: 2023/07/24</p></div>
-        <div class="rls-footer-col"><p>ISSN: Pending</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
+        <div class="rls-footer-col"><strong>${footerJournalName}</strong><p>${lang==='ru'?'Научный журнал, выходящий два раза в год':lang==='en'?'Biannual journal':'نشریه علمی دو فصلنامه'}</p></div>
+        <div class="rls-footer-col"><p>${lang==='ru'?'Главный редактор и издатель: Mohammadmahdi Rubin':lang==='en'?'Publisher & Managing Editor: Mohammadmahdi Rubin':'مدیرمسئول و صاحب‌امتیاز: محمدمهدی روبین'}</p><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
+        <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
       </div>
       <div class="rls-footer-official-logos">
-        <div class="rls-footer-official-logo">
-          <div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div>
-          <span>${ministryLabel}</span>
-        </div>
-        <div class="rls-footer-official-logo">
-          <a class="rls-footer-logo-box" href="https://www.e-rasaneh.ir/" target="_blank" rel="noopener noreferrer"><img src="${asset('سامانه جامع مطبوعات کشور.jpg')}" alt="${mediaLabel}" loading="lazy"></a>
-          <span>${mediaLabel}</span>
-        </div>
+        <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div><span>${ministryLabel}</span></div>
+        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.e-rasaneh.ir/" target="_blank" rel="noopener noreferrer"><img src="${asset('سامانه جامع مطبوعات کشور.jpg')}" alt="${mediaLabel}" loading="lazy"></a><span>${mediaLabel}</span></div>
       </div>
     </div>`;
   }
@@ -108,6 +107,8 @@ const initRLS=()=>{
 html,body{background:#faf7ec!important}
 .site-header{background:#faf7ec!important;box-shadow:none!important}
 .rls-site-banner{background:#faf7ec!important}
+.rls-site-banner a{display:block;text-decoration:none}
+.rls-site-banner img{display:block}
 .site-header .header-inner{position:relative;display:flex;align-items:center;gap:12px}
 .site-header .main-nav{order:1;flex:1 1 auto;display:flex!important;align-items:center;justify-content:flex-end;gap:12px;font-size:13px;font-weight:700;min-width:0}
 .site-header .header-language-switcher{order:2;flex:0 0 86px;width:86px;max-width:86px;height:36px;margin:0}
