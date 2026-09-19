@@ -70,36 +70,7 @@ const initRLS=()=>{
   }
 
 
-  // ===== Global visitor counter =====
-  if(!document.getElementById('rls-visitor-counter')){
-    const counter=document.createElement('aside');
-    counter.id='rls-visitor-counter';
-    counter.className='rls-visitor-counter';
-    counter.setAttribute('aria-label',lang==='fa'?'شمارنده بازدید سایت':lang==='en'?'Website visitor counter':'Счётчик посещений сайта');
-    counter.innerHTML=`
-      <div class="rls-counter-title">${lang==='fa'?'بازدید سایت':lang==='en'?'Site Visits':'Посещения сайта'}</div>
-      <div class="rls-counter-number" id="rls-counter-number">…</div>
-    `;
-    document.body.appendChild(counter);
 
-    const callbackName='rlsCounterCallback_'+Date.now();
-    window[callbackName]=(data)=>{
-      const el=document.getElementById('rls-counter-number');
-      if(el && data && typeof data.value!=='undefined'){
-        el.textContent=Number(data.value).toLocaleString(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US');
-      }
-      delete window[callbackName];
-    };
-    const cs=document.createElement('script');
-    cs.src='https://counterapi.com/api/rlsj.ir/view/site?callback='+callbackName;
-    cs.async=true;
-    cs.onerror=()=>{
-      const el=document.getElementById('rls-counter-number');
-      if(el)el.textContent='—';
-      delete window[callbackName];
-    };
-    document.head.appendChild(cs);
-  }
 
 
   const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования по русскому языку';
@@ -119,6 +90,7 @@ const initRLS=()=>{
         <div class="rls-footer-col"><p>${lang==='ru'?'Главный редактор и издатель: Mohammadmahdi Rubin':lang==='en'?'Publisher & Managing Editor: Mohammadmahdi Rubin':'مدیرمسئول و صاحب‌امتیاز: محمدمهدی روبین'}</p><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
       </div>
+      <div class="rls-footer-visitor-counter"><span>${lang==='fa'?'بازدید سایت':lang==='en'?'Site Visits':'Посещения сайта'}</span><img src="https://counterapi.com/counter.svg?ns=rlsj.ir&action=view&key=site&label=views&noIcon=true" alt="Visitor counter" loading="lazy"></div>
       <div class="rls-footer-official-logos">
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div><span>${ministryLabel}</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.e-rasaneh.ir/" target="_blank" rel="noopener noreferrer"><img src="${asset('سامانه جامع مطبوعات کشور.jpg')}" alt="${mediaLabel}" loading="lazy"></a><span>${mediaLabel}</span></div>
