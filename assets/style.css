@@ -22,3 +22,49 @@
 .content .notice .button,.side-card .button{margin-top:6px;}
 @media(max-width:960px){.article-layout{grid-template-columns:1fr;gap:24px;}.article-sidebar{position:static;order:-1;}}
 @media(max-width:560px){.article-layout .content > p,.content p{text-align:justify;line-height:1.9;}.side-card{padding:14px}}
+
+/* ===== Global visitor counter ===== */
+.rls-visitor-counter{
+  position:fixed;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:90;
+  width:170px;
+  padding:12px 14px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-right:4px solid var(--accent);
+  border-radius:10px;
+  box-shadow:0 10px 26px rgba(91,23,35,.12);
+  text-align:center;
+  direction:rtl;
+}
+.rls-counter-title{
+  color:var(--accent2);
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+.rls-visitor-counter .counterapi{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  direction:ltr;
+}
+@media(max-width:1100px){
+  .rls-visitor-counter{right:12px;width:155px;padding:10px 11px;}
+}
+@media(max-width:560px){
+  .rls-visitor-counter{
+    top:auto;
+    right:10px;
+    bottom:12px;
+    transform:none;
+    width:145px;
+    padding:8px 10px;
+    border-right-width:3px;
+  }
+  .rls-counter-title{font-size:11px;margin-bottom:2px;}
+}
