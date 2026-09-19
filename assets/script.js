@@ -90,21 +90,12 @@ const initRLS=()=>{
         <div class="rls-footer-col"><p>${lang==='ru'?'Главный редактор и издатель: Mohammadmahdi Rubin':lang==='en'?'Publisher & Managing Editor: Mohammadmahdi Rubin':'مدیرمسئول و صاحب‌امتیاز: محمدمهدی روبین'}</p><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
       </div>
-      <div class="rls-footer-visitor-counter"><span>${lang==='fa'?'بازدید سایت':lang==='en'?'Site Visits':'Посещения сайта'}</span><div class="counterapi" ns="rlsj.ir" action="view" key="site" noIcon="true"></div></div>
+      <div class="rls-footer-visitor-counter"><span>${lang==='fa'?'بازدید سایت':lang==='en'?'Site Visits':'Посещения сайта'}</span><img src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Frlsj.ir&label=views&icon=eye&color=%238b2635&style=flat" alt="${lang==='fa'?'شمارنده بازدید سایت':lang==='en'?'Website visitor counter':'Счётчик посещений сайта'}" loading="lazy"></div>
       <div class="rls-footer-official-logos">
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div><span>${ministryLabel}</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.e-rasaneh.ir/" target="_blank" rel="noopener noreferrer"><img src="${asset('سامانه جامع مطبوعات کشور.jpg')}" alt="${mediaLabel}" loading="lazy"></a><span>${mediaLabel}</span></div>
       </div>
     </div>`;
-  }
-
-  // Load CounterAPI official embed after footer rendering.
-  if(!document.getElementById('rls-counterapi-script')){
-    const counterScript=document.createElement('script');
-    counterScript.id='rls-counterapi-script';
-    counterScript.src='https://counterapi.com/c.js?ns=rlsj.ir';
-    counterScript.async=true;
-    document.head.appendChild(counterScript);
   }
 
   const menu=document.querySelector('.menu-btn');
