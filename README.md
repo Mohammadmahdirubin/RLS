@@ -22,4 +22,4 @@ Do not publish manuscript files or confidential peer-review material in this rep
 
 Enable **Settings → Pages → Deploy from a branch → main → /(root)** to publish the site.
 
-The project site will use the repository-based GitHub Pages address associated with the account.
+The official site is available at https://rlsj.ir/ after the custom domain DNS configuration.
