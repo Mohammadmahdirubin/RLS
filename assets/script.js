@@ -78,17 +78,29 @@ const initRLS=()=>{
     counter.setAttribute('aria-label',lang==='fa'?'شمارنده بازدید سایت':lang==='en'?'Website visitor counter':'Счётчик посещений сайта');
     counter.innerHTML=`
       <div class="rls-counter-title">${lang==='fa'?'بازدید سایت':lang==='en'?'Site Visits':'Посещения сайта'}</div>
-      <div class="counterapi" style="min-height:44px"></div>
+      <div class="rls-counter-number" id="rls-counter-number">…</div>
     `;
     document.body.appendChild(counter);
-    if(!document.getElementById('counterapi-script')){
-      const cs=document.createElement('script');
-      cs.id='counterapi-script';
-      cs.src='https://counterapi.com/c.js?ns=rlsj.ir';
-      cs.async=true;
-      document.head.appendChild(cs);
-    }
+
+    const callbackName='rlsCounterCallback_'+Date.now();
+    window[callbackName]=(data)=>{
+      const el=document.getElementById('rls-counter-number');
+      if(el && data && typeof data.value!=='undefined'){
+        el.textContent=Number(data.value).toLocaleString(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US');
+      }
+      delete window[callbackName];
+    };
+    const cs=document.createElement('script');
+    cs.src='https://counterapi.com/api/rlsj.ir/view/site?callback='+callbackName;
+    cs.async=true;
+    cs.onerror=()=>{
+      const el=document.getElementById('rls-counter-number');
+      if(el)el.textContent='—';
+      delete window[callbackName];
+    };
+    document.head.appendChild(cs);
   }
+
 
   const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования по русскому языку';
   const pageNames={'index.html':title,'about.html':labels.about,'editorial-board.html':labels.board,'editorial-policy.html':labels.policies,'peer-review.html':labels.review,'publication-ethics.html':labels.ethics,'plagiarism.html':labels.plagiarism,'conflict-of-interest.html':labels.conflict,'copyright.html':labels.copyright,'publication-fees.html':labels.fees,'corrections-retractions.html':labels.corrections,'author-guidelines.html':labels.guidelines,'authors.html':labels.authorInfo,'articles.html':labels.articles,'issues.html':labels.issues,'archive.html':labels.archive,'journal-metrics.html':labels.metrics,'submit.html':labels.submit,'submission-success.html':lang==='fa'?'ارسال با موفقیت انجام شد':lang==='en'?'Submission received':'Отправка получена','contact.html':labels.contact,'privacy.html':labels.privacy,'article-sample.html':lang==='fa'?'نمونه مقاله':lang==='en'?'Article Sample':'Образец статьи'};
