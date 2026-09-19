@@ -69,6 +69,27 @@ const initRLS=()=>{
     header.insertBefore(banner,header.firstChild);
   }
 
+
+  // ===== Global visitor counter =====
+  if(!document.getElementById('rls-visitor-counter')){
+    const counter=document.createElement('aside');
+    counter.id='rls-visitor-counter';
+    counter.className='rls-visitor-counter';
+    counter.setAttribute('aria-label',lang==='fa'?'شمارنده بازدید سایت':lang==='en'?'Website visitor counter':'Счётчик посещений сайта');
+    counter.innerHTML=`
+      <div class="rls-counter-title">${lang==='fa'?'بازدید سایت':lang==='en'?'Site Visits':'Посещения сайта'}</div>
+      <div class="counterapi" style="min-height:44px"></div>
+    `;
+    document.body.appendChild(counter);
+    if(!document.getElementById('counterapi-script')){
+      const cs=document.createElement('script');
+      cs.id='counterapi-script';
+      cs.src='https://counterapi.com/c.js?ns=rlsj.ir';
+      cs.async=true;
+      document.head.appendChild(cs);
+    }
+  }
+
   const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования по русскому языку';
   const pageNames={'index.html':title,'about.html':labels.about,'editorial-board.html':labels.board,'editorial-policy.html':labels.policies,'peer-review.html':labels.review,'publication-ethics.html':labels.ethics,'plagiarism.html':labels.plagiarism,'conflict-of-interest.html':labels.conflict,'copyright.html':labels.copyright,'publication-fees.html':labels.fees,'corrections-retractions.html':labels.corrections,'author-guidelines.html':labels.guidelines,'authors.html':labels.authorInfo,'articles.html':labels.articles,'issues.html':labels.issues,'archive.html':labels.archive,'journal-metrics.html':labels.metrics,'submit.html':labels.submit,'submission-success.html':lang==='fa'?'ارسال با موفقیت انجام شد':lang==='en'?'Submission received':'Отправка получена','contact.html':labels.contact,'privacy.html':labels.privacy,'article-sample.html':lang==='fa'?'نمونه مقاله':lang==='en'?'Article Sample':'Образец статьи'};
   if(pageNames[file])document.title=`${pageNames[file]} | ${title}`;
