@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mohammadmahdirubin.github.io/RLS/sitemap.xml
+Sitemap: https://rlsj.ir/sitemap.xml
