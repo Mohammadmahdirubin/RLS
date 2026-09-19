@@ -68,3 +68,8 @@
   }
   .rls-counter-title{font-size:11px;margin-bottom:2px;}
 }
+
+/* ===== Footer visitor counter ===== */
+.rls-footer-visitor-counter{display:flex;justify-content:center;align-items:center;gap:10px;margin:20px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.28);font-size:12px;font-weight:800;color:#f1d38a;direction:rtl}
+.rls-footer-visitor-counter img{display:block;width:auto;height:28px;max-width:180px}
+@media(max-width:560px){.rls-footer-visitor-counter{margin-top:16px;padding-top:13px;gap:7px;font-size:11px}.rls-footer-visitor-counter img{height:26px;max-width:160px}}
