@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#7a1f2b"/>
+      <stop offset="55%" stop-color="#5b1723"/>
+      <stop offset="100%" stop-color="#3d0f18"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4d27a"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#a67c00"/>
+    </linearGradient>
+    <linearGradient id="book" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f4e79"/>
+      <stop offset="100%" stop-color="#0d2b4a"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="300" cy="300" r="290" fill="url(#bg)"/>
+  <circle cx="300" cy="300" r="290" fill="none" stroke="url(#gold)" stroke-width="6"/>
+  <circle cx="300" cy="300" r="270" fill="none" stroke="url(#gold)" stroke-width="2" opacity="0.7"/>
+
+  <g fill="url(#gold)">
+    <circle cx="300" cy="40" r="5"/>
+    <circle cx="300" cy="560" r="5"/>
+    <circle cx="40" cy="300" r="5"/>
+    <circle cx="560" cy="300" r="5"/>
+    <circle cx="95" cy="95" r="4"/>
+    <circle cx="505" cy="95" r="4"/>
+    <circle cx="95" cy="505" r="4"/>
+    <circle cx="505" cy="505" r="4"/>
+  </g>
+
+  <g transform="translate(300,300)">
+    <path d="M -70 -150 Q -70 -175 -40 -175 L 40 -175 Q 70 -175 70 -150 L 70 -130 L -70 -130 Z" fill="url(#gold)" stroke="#5b1723" stroke-width="1.5"/>
+    <rect x="-78" y="-132" width="156" height="8" fill="url(#gold)"/>
+    <path d="M -70 -150 Q -95 -150 -95 -125 Q -95 -100 -70 -100" fill="none" stroke="url(#gold)" stroke-width="4"/>
+    <path d="M 70 -150 Q 95 -150 95 -125 Q 95 -100 70 -100" fill="none" stroke="url(#gold)" stroke-width="4"/>
+    <g stroke="#3d0f18" stroke-width="1.2" opacity="0.5">
+      <line x1="-45" y1="-130" x2="-45" y2="40"/>
+      <line x1="-22" y1="-130" x2="-22" y2="40"/>
+      <line x1="0" y1="-130" x2="0" y2="40"/>
+      <line x1="22" y1="-130" x2="22" y2="40"/>
+      <line x1="45" y1="-130" x2="45" y2="40"/>
+    </g>
+    <rect x="-55" y="-130" width="110" height="170" fill="none" stroke="url(#gold)" stroke-width="3"/>
+    <rect x="-78" y="40" width="156" height="10" fill="url(#gold)"/>
+    <path d="M -70 50 Q -70 75 -40 75 L 40 75 Q 70 75 70 50 L 70 70 L -70 70 Z" fill="url(#gold)" stroke="#5b1723" stroke-width="1.5"/>
+  </g>
+
+  <g transform="translate(300,250)">
+    <path d="M -95 30 Q -95 70 0 70 Q 95 70 95 30 Q 95 -10 0 -10 Q -95 -10 -95 30 Z" fill="url(#book)" stroke="url(#gold)" stroke-width="2.5"/>
+    <path d="M 0 -10 L 0 70" stroke="url(#gold)" stroke-width="2"/>
+    <g stroke="#f4d27a" stroke-width="1.5" opacity="0.85">
+      <path d="M -70 10 Q -35 5 0 10"/>
+      <path d="M -70 22 Q -35 17 0 22"/>
+      <path d="M -60 34 Q -30 29 0 34"/>
+      <path d="M 70 10 Q 35 5 0 10"/>
+      <path d="M 70 22 Q 35 17 0 22"/>
+      <path d="M 60 34 Q 30 29 0 34"/>
+    </g>
+    <path d="M -95 30 Q 0 55 95 30" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.6"/>
+  </g>
+
+  <path id="topArc" d="M 70 300 A 230 230 0 0 1 530 300" fill="none"/>
+  <text fill="url(#gold)" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="bold" letter-spacing="3">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">RUSSIAN LANGUAGE STUDIES</textPath>
+  </text>
+
+  <path id="botArc" d="M 530 300 A 230 230 0 0 1 70 300" fill="none"/>
+  <text fill="url(#gold)" font-family="Tahoma, 'Segoe UI', sans-serif" font-size="30" font-weight="bold" direction="rtl">
+    <textPath href="#botArc" startOffset="50%" text-anchor="middle">یووس نابز تالاعاتمط</textPath>
+  </text>
+
+  <line x1="150" y1="300" x2="450" y2="300" stroke="url(#gold)" stroke-width="1.5" opacity="0.5"/>
+</svg>
