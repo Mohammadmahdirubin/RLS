@@ -21,5 +21,17 @@ const records={
 "RLS-2026-MZ-4T8N1":{name:"دکتر مجتبی زهرائی",role:"عضو هیئت تحریریه",en:"Dr. Mojtaba Zahraei",doc:"assets/verification/letters/mojtabazahraei.pdf"},
 "RLS-2026-MR-5X2L8":{name:"محمدمهدی روبین",role:"صاحب‌امتیاز و مدیرمسئول",en:"Mohammadmahdi Rubin",doc:"assets/verification/letters/mohammadmahdi-rubin.pdf"}};
 function verify(){const code=document.getElementById("code").value.trim().toUpperCase(),result=document.getElementById("result"),error=document.getElementById("error"),r=records[code];error.classList.remove("show");result.classList.remove("show");if(!r){error.classList.add("show");return}result.innerHTML='<div class="verified">✓ نامه در سامانه ثبت شده است</div><div><span class="label">نام:</span> '+r.name+'</div><div><span class="label">نام انگلیسی:</span> '+r.en+'</div><div><span class="label">سمت:</span> '+r.role+'</div><div><span class="label">کد استعلام:</span> <span dir="ltr">'+code+'</span></div><div class="doc"><span class="label">نامه همکاری:</span> <a href="'+r.doc+'" target="_blank" rel="noopener">مشاهده نامه ثبت‌شده</a></div>';result.classList.add("show")}
-document.getElementById("code").addEventListener("keydown",e=>{if(e.key==="Enter")verify()});const q=new URLSearchParams(location.search).get("code");if(q){document.getElementById("code").value=q;verify()}
+document.getElementById("code").addEventListener("keydown",e=>{if(e.key==="Enter")verify()});const q=new URLSearchParams(location.search).get("code");
+const member=new URLSearchParams(location.search).get("member");
+const target=member||q;
+if(target){
+ const key=target.trim().toUpperCase();
+ if(records[key]){
+   document.getElementById("code").value=key;
+   verify();
+ } else if(member){
+   document.getElementById("error").textContent="شناسه عضو معتبر نیست.";
+   document.getElementById("error").classList.add("show");
+ }
+}
 </script></body></html>
