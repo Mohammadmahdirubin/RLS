@@ -9,10 +9,11 @@
 <link rel="stylesheet" href="../assets/style.css">
 <style>
 .board-intro{max-width:900px;margin:0 auto 28px;line-height:1.9}
-.board-section-title{margin:40px 0 20px;color:var(--accent2);font-size:20px;border-bottom:2px solid var(--accent3);padding-bottom:6px}
+.board-section-title{margin:40px 0 20px}
 .board-profile{display:grid;grid-template-columns:170px 1fr;gap:24px;align-items:start;background:#cfeecf !important;border:1px solid #8fc98f;padding:24px;margin:0 0 20px;box-shadow:0 10px 24px rgba(64,130,170,.10)}
 .board-photo{width:170px;height:200px;border:1px solid var(--line);background:#f4eee9;display:flex;align-items:center;justify-content:center;color:#8b6b62;font-size:13px;text-align:center;overflow:hidden}
-.board-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.board-photo img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.board-profile>div:nth-child(2){background:#cfeecf !important;padding:4px 8px 12px;border-radius:4px}
 .board-profile h3{margin-top:0;margin-bottom:8px}
 .board-role{color:var(--accent);font-weight:700;margin-bottom:10px}
 .board-meta{line-height:1.9}
@@ -22,143 +23,38 @@
 .profile-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
 .profile-fields div{padding:10px 12px;background:#faf7f4;border:1px solid var(--line)}
 .profile-fields strong{display:block;margin-bottom:3px}
+.membership-list{margin:12px 0 0;padding-left:18px;line-height:1.9}
 .university-logo-box{width:84px;height:84px;margin:8px auto 0;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;border-radius:50%}
 .university-logo-box img{width:62px;height:62px;object-fit:contain;display:block}
 .university-logo-box a{display:flex;width:100%;height:100%;align-items:center;justify-content:center;text-decoration:none}
 .photo-logo-wrap{display:flex;flex-direction:column;align-items:center;width:100%}
-@media(max-width:700px){
-.board-profile{grid-template-columns:1fr;justify-items:center;text-align:center}
-.board-photo{width:150px;height:175px}
-.profile-fields{grid-template-columns:1fr}
-.board-links{justify-content:center}
-}
+@media(max-width:700px){.board-profile{grid-template-columns:1fr}.board-photo{width:150px;height:175px}.profile-fields{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>Biannual Journal</small></span></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="main-nav"></nav></div></header>
 <main>
-<section class="page-hero"><div class="container"><h1>Editorial Board</h1><p>Academic structure and member profiles of the journal</p></div></section>
+<section class="page-hero"><div class="container"><div class="eyebrow">Academic structure & editorial board</div><h1>Editorial Board</h1><p>Transparent academic introduction of members responsible for policy, evaluation, and guidance of journal content.</p></div></section>
 <section class="section"><div class="container content">
+<div class="board-intro"><p>The Editorial Board is a core pillar of a journal’s scholarly credibility. Member information is presented independently and is open to verification.</p></div>
 
-<div class="board-intro">
-<p>The Editorial Board of <strong>Russian Language Studies</strong> brings together scholars in Russian language, linguistics, language education, literature, culture, and translation. Profiles below list currently confirmed members and will be updated as appointments are finalized.</p>
-</div>
+<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="../1789329812647.jpg" alt="Mohammadmahdi Rubin"></div><div class="university-logo-box" title="University of Tehran"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="../tehran-logo.png" alt="University of Tehran"></a></div></div><div><h3>Mohammadmahdi Rubin</h3><div class="board-role">Publisher & Managing Editor</div><p class="board-meta">Instructor, translator, and author of more than 20 Russian language textbooks. Researcher and curriculum developer in Russian language studies. Responsible for overall policy, executive management, and scholarly direction of the journal.</p><div class="profile-fields"><div><strong>Affiliation</strong>Independent researcher · Iran</div><div><strong>Specialization</strong><br>Russian language teaching · Translation · Curriculum · Language studies</div><div><strong>Email</strong><a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></div><div><strong>ORCID</strong><a href="https://orcid.org/0009-0004-8475-2804" target="_blank" rel="noopener">0009-0004-8475-2804</a></div><div style="grid-column:1/-1"><strong>Memberships</strong><ul class="membership-list"><li>Member, German Cognitive Linguistics Association (DGKL/GCLA)</li><li>Member, Iran Book and Literature House</li><li>Member, Authors’ Guild of Saraye Ahl-e Qalam</li></ul></div><div><strong>Selected academic record</strong>Selected scholarly details will be completed later.</div></div><div class="board-links"><a href="https://orcid.org/0009-0004-8475-2804" target="_blank" rel="noopener">ORCID</a><a href="https://github.com/Mohammadmahdirubin" target="_blank" rel="noopener">GitHub</a><a href="mailto:mm.rubin@ut.ac.ir">Email</a></div></div></article>
 
-<article class="board-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo"><img src="../1789329812647.jpg" alt="Mohammadmahdi Rubin"></div>
-<div class="university-logo-box" title="University of Tehran"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="../tehran-logo.png" alt="University of Tehran"></a></div>
-</div>
-<div>
-<h3>Mohammadmahdi Rubin</h3>
-<div class="board-role">Editor-in-Chief & Publisher</div>
-<p class="board-meta">University of Tehran · Iranian researcher in Russian language and culture studies. Founder and managing editor of the journal.</p>
-<div class="board-links"><a href="mailto:mm.rubin@ut.ac.ir">Email</a></div>
-</div>
-</article>
+<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="../babazade.jpg" alt="Dr. Jamileh Babazadeh"></div><div class="university-logo-box" title="University of Tehran"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="../tehran-logo.png" alt="University of Tehran"></a></div></div><div><h3>Dr. Jamileh Babazadeh</h3><div class="board-role">Editor-in-Chief</div><p class="board-meta">Retired Assistant Professor, Faculty of Foreign Languages and Literatures, University of Tehran.</p><div class="profile-fields"><div><strong>Academic title</strong>PhD, Retired Assistant Professor</div><div><strong>Affiliation</strong>Faculty of Foreign Languages and Literatures, University of Tehran · Iran</div><div><strong>Specialization</strong><br>Russian language teaching</div><div><strong>Email</strong><a href="mailto:babazade@ut.ac.ir">babazade@ut.ac.ir</a></div><div><strong>Education</strong><br>PhD in Russian Language Teaching, Pushkin State Russian Language Institute · 2003–2006</div><div><strong>Selected academic record</strong>Selected scholarly details will be completed later.</div></div><div class="board-links"><a href="https://ffll.ut.ac.ir/~babazade/home" target="_blank" rel="noopener">University of Tehran profile</a><a href="mailto:babazade@ut.ac.ir">Email</a></div></div></article>
 
-<article class="board-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo"><img src="../babazade.jpg" alt="Dr. Jamileh Babazadeh"></div>
-<div class="university-logo-box" title="University of Tehran"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="../tehran-logo.png" alt="University of Tehran"></a></div>
-</div>
-<div>
-<h3>Dr. Jamileh Babazadeh</h3>
-<div class="board-role">Editor</div>
-<p class="board-meta">Retired Assistant Professor, Faculty of Foreign Languages and Literatures, University of Tehran.</p>
-<div class="board-links"><a href="mailto:babazade@ut.ac.ir">Email</a></div>
-</div>
-</article>
+<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="../faculty.jpg" alt="Dr. Kosar Salimi Abdolmaleki"></div><div class="university-logo-box" title="University of Bojnurd"><a href="https://ub.ac.ir/" target="_blank" rel="noopener"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Bojnord.jpg" alt="University of Bojnurd"></a></div></div><div><h3>Dr. Kosar Salimi Abdolmaleki</h3><div class="board-role">Associate Professor</div><p class="board-meta">Associate Professor and faculty member, University of Bojnurd.</p><div class="profile-fields"><div><strong>Academic title</strong>Associate Professor</div><div><strong>Affiliation</strong>University of Bojnurd · Iran</div><div><strong>Specialization</strong><br>Russian language</div><div><strong>Email</strong><a href="mailto:k.salimi@ub.ac.ir">k.salimi@ub.ac.ir</a></div><div><strong>Selected academic record</strong>Selected scholarly details will be completed later.</div></div><div class="board-links"><a href="mailto:k.salimi@ub.ac.ir">Email</a></div></div></article>
 
-<article class="board-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo"><img src="../faculty.jpg" alt="Dr. Kosar Salimi Abdolmaleki"></div>
-<div class="university-logo-box" title="University of Bojnurd"><a href="https://ub.ac.ir/" target="_blank" rel="noopener"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Bojnord.jpg" alt="University of Bojnurd"></a></div>
-</div>
-<div>
-<h3>Dr. Kosar Salimi Abdolmaleki</h3>
-<div class="board-role">Associate Professor</div>
-<p class="board-meta">University of Bojnurd · Faculty member contributing to peer review and scholarly assessment.</p>
-<div class="board-links"><a href="mailto:k.salimi@ub.ac.ir">Email</a></div>
-</div>
-</article>
+<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo">Official photo forthcoming</div><div class="university-logo-box" title="Tarbiat Modares University"><a href="https://www.modares.ac.ir/" target="_blank" rel="noopener"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Tarbiat_Modares_University.png" alt="Tarbiat Modares University"></a></div></div><div><h3>Dr. Azam Shirazi</h3><div class="board-role">Editorial Board Member</div><p class="board-meta">PhD in Russian language with a specialization in teaching.</p><div class="profile-fields"><div><strong>Academic title</strong>PhD</div><div><strong>Affiliation</strong>Tarbiat Modares University · Iran</div><div><strong>Specialization</strong><br>Russian language · Russian language teaching</div><div><strong>Email</strong><a href="mailto:azam_shirazi@yahoo.com">azam_shirazi@yahoo.com</a></div><div><strong>Education</strong><br>PhD in Russian Language (Teaching), Tarbiat Modares University</div><div><strong>Selected academic record</strong>Selected scholarly details will be completed later.</div></div><div class="board-links"><a href="mailto:azam_shirazi@yahoo.com">Email</a></div></div></article>
 
-<article class="board-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo" style="background:#f4eee9;display:flex;align-items:center;justify-content:center;color:#8b6b62;font-size:13px;text-align:center;padding:8px">Photo forthcoming</div>
-<div class="university-logo-box" title="Tarbiat Modares University"><a href="https://www.modares.ac.ir/" target="_blank" rel="noopener"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Tarbiat_Modares_University.png" alt="Tarbiat Modares University"></a></div>
-</div>
-<div>
-<h3>Dr. Azam Shirazi</h3>
-<div class="board-role">Editorial Board Member</div>
-<p class="board-meta">Tarbiat Modares University · Iran</p>
-<div class="board-links"><a href="mailto:azam_shirazi@yahoo.com">Email</a></div>
-</div>
-</article>
-
-<article class="board-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo" style="background:#f4eee9;display:flex;align-items:center;justify-content:center;color:#8b6b62;font-size:13px;text-align:center;padding:8px">Photo forthcoming</div>
-<div class="university-logo-box" title="University of Isfahan"><a href="https://ui.ac.ir/" target="_blank" rel="noopener"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Isfahan_Logo.png" alt="University of Isfahan"></a></div>
-</div>
-<div>
-<h3>Dr. Mojtaba Zahraei</h3>
-<div class="board-role">Editorial Board Member</div>
-<p class="board-meta">University of Isfahan · Iran</p>
-<div class="board-links"><a href="mailto:mojtabazahraei1991@gmail.com">Email</a></div>
-</div>
-</article>
+<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo">Official photo forthcoming</div><div class="university-logo-box" title="University of Isfahan"><a href="https://ui.ac.ir/" target="_blank" rel="noopener"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Isfahan_Logo.png" alt="University of Isfahan"></a></div></div><div><h3>Dr. Mojtaba Zahraei</h3><div class="board-role">Editorial Board Member</div><p class="board-meta">Faculty member, Department of Russian Language, University of Isfahan.</p><div class="profile-fields"><div><strong>Academic title</strong>PhD</div><div><strong>Affiliation</strong>Department of Russian Language, University of Isfahan · Iran</div><div><strong>Specialization</strong><br>Russian language teaching</div><div><strong>Email</strong><a href="mailto:mojtabazahraei1991@gmail.com">mojtabazahraei1991@gmail.com</a></div><div><strong>Education</strong><br>PhD in Russian Language (Teaching), University of Tehran</div><div><strong>Selected academic record</strong>Selected scholarly details will be completed later.</div></div><div class="board-links"><a href="mailto:mojtabazahraei1991@gmail.com">Email</a></div></div></article>
 
 <h2 class="board-section-title">International Editorial Board</h2>
 
-<article class="board-profile international-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo"><img src="../Sonu%20Saini.%20Picture.png" alt="Dr. Sonu Saini"></div>
-<div class="university-logo-box" title="Jawaharlal Nehru University"><a href="https://www.jnu.ac.in/" target="_blank" rel="noopener"><img src="https://www.jnu.ac.in/main/img/webtheme-logo.png" alt="JNU"></a></div>
-</div>
-<div>
-<h3>Dr. Sonu Saini</h3>
-<div class="board-role">International Editorial Board Member</div>
-<p class="board-meta">Associate Professor, Centre of Russian Studies, Jawaharlal Nehru University (JNU), New Delhi, India.</p>
-<div class="board-links"><a href="mailto:sonusaini@jnu.ac.in">Email</a></div>
-</div>
-</article>
+<article class="board-profile international-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="../Sonu%20Saini.%20Picture.png" alt="Dr. Sonu Saini"></div><div class="university-logo-box" title="Jawaharlal Nehru University"><a href="https://www.jnu.ac.in/" target="_blank" rel="noopener"><img src="https://www.jnu.ac.in/main/img/webtheme-logo.png" alt="JNU"></a></div></div><div><h3>Dr. Sonu Saini</h3><div class="board-role">International Editorial Board Member</div><p class="board-meta">Associate Professor, Centre of Russian Studies, Jawaharlal Nehru University (JNU), New Delhi, India. Specialist in Russian literature, Russian language teaching, Russian–Hindi–English translation and interpretation, and modern language-teaching technologies.</p><div class="profile-fields"><div><strong>Academic title</strong>Associate Professor</div><div><strong>Affiliation</strong>Centre of Russian Studies, Jawaharlal Nehru University · India</div><div><strong>Specialization</strong>Russian literature · Russian language teaching · CALL & ICT · Translation and interpretation</div><div><strong>Email</strong><a href="mailto:sonusaini@jnu.ac.in">sonusaini@jnu.ac.in</a></div><div><strong>Selected academic record</strong>More than 40 research articles · More than 20 books and textbooks</div><div><strong>International honors</strong>Pushkin Prize (2022) · InteRussia Fellowship (2022)</div></div><div class="board-links"><a href="https://www.jnu.ac.in/content/sonusaini" target="_blank" rel="noopener">Official JNU profile</a><a href="mailto:sonusaini@jnu.ac.in">Email</a></div></div></article>
 
-<article class="board-profile international-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo"><img src="../handra-kaprisma.jpg" alt="Dr. Hendra Kaprisma"></div>
-<div class="university-logo-box" title="Universitas Indonesia"><a href="https://www.ui.ac.id/" target="_blank" rel="noopener"><img src="https://apps.acts.ui.ac.id/images/Logo%20Univ/UI.png" alt="Universitas Indonesia"></a></div>
-</div>
-<div>
-<h3>Dr. Hendra Kaprisma, S.Hum.</h3>
-<div class="board-role">International Editorial Board Member</div>
-<p class="board-meta">Associate Professor, Russian Studies Programme, Faculty of Humanities, Universitas Indonesia.</p>
-<div class="board-links"><a href="mailto:kaprisma@ui.ac.id">Email</a></div>
-</div>
-</article>
+<article class="board-profile international-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="../handra-kaprisma.jpg" alt="Dr. Hendra Kaprisma"></div><div class="university-logo-box" title="Universitas Indonesia"><a href="https://www.ui.ac.id/" target="_blank" rel="noopener"><img src="https://apps.acts.ui.ac.id/images/Logo%20Univ/UI.png" alt="Universitas Indonesia"></a></div></div><div><h3>Dr. Hendra Kaprisma, S.Hum.</h3><div class="board-role">International Editorial Board Member</div><p class="board-meta">Associate Professor, Russian Studies Programme, Faculty of Humanities, Universitas Indonesia, Depok, Indonesia. Specialist in Russian literature, literary studies, and hermeneutics.</p><div class="profile-fields"><div><strong>Academic title</strong>Associate Professor</div><div><strong>Affiliation</strong>Russian Studies Programme, Faculty of Humanities, Universitas Indonesia · Indonesia</div><div><strong>Specialization</strong>Russian literature · Literary studies · Hermeneutics</div><div><strong>Email</strong><a href="mailto:kaprisma@ui.ac.id">kaprisma@ui.ac.id</a></div><div><strong>Education</strong>PhD in Literary Studies, Universitas Indonesia</div><div><strong>Research area</strong>Russian studies and literature</div><div><strong>Selected academic record</strong>Selected scholarly details will be completed later.</div></div><div class="board-links"><a href="https://fib.ui.ac.id/hendra-kaprisma/" target="_blank" rel="noopener">Official UI profile</a><a href="mailto:kaprisma@ui.ac.id">Email</a></div></div></article>
 
-<article class="board-profile international-profile">
-<div class="photo-logo-wrap">
-<div class="board-photo"><img src="../%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9%20%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%20%D0%9D%D0%B5%D0%B9%D1%87%D0%B5%D0%B2.jpg" alt="Professor Nikolay Neychev"></div>
-<div class="university-logo-box" title="University of Plovdiv"><a href="https://rusfil.uni-plovdiv.bg/?page_id=237" target="_blank" rel="noopener"><img src="../logoPuUni.png" alt="Paisii Hilendarski University of Plovdiv"></a></div>
-</div>
-<div>
-<h3>Professor Nikolay Neychev</h3>
-<div class="board-role">International Editorial Board Member</div>
-<p class="board-meta">Professor, Department of Russian Language and Literature, Paisii Hilendarski University of Plovdiv, Bulgaria. Specialist in classical Russian literature and 19th-century Russian literature; research in history, theory and hermeneutics of Russian literature, with a focus on Dostoevsky studies and Christian themes in Russian literature.</p>
-<div class="profile-fields">
-<div><strong>Title</strong>Professor</div>
-<div><strong>Affiliation</strong>University of Plovdiv · Bulgaria</div>
-<div><strong>Specialization</strong>Classical Russian literature · 19th-century Russian literature</div>
-<div><strong>Research areas</strong>History, theory and hermeneutics of Russian literature</div>
-<div><strong>Expertise</strong>Dostoevsky studies · Christian themes in Russian literature</div>
-<div><strong>Degrees</strong>Doctor of Sciences (2023) · PhD in Philology (1998)</div>
-<div><strong>Memberships</strong>MAPRYAL · Association of Bulgarian Russists</div>
-<div><strong>Email</strong><a href="mailto:neychev@uni-plovdiv.bg">neychev@uni-plovdiv.bg</a></div>
-</div>
-<div class="board-links"><a href="https://rusfil.uni-plovdiv.bg/?page_id=237" target="_blank" rel="noopener">Personal page</a><a href="mailto:neychev@uni-plovdiv.bg">Email</a></div>
-</div>
-</article>
+<article class="board-profile international-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="../%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9%20%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%20%D0%9D%D0%B5%D0%B9%D1%87%D0%B5%D0%B2.jpg" alt="Professor Nikolay Neychev"></div><div class="university-logo-box" title="University of Plovdiv"><a href="https://rusfil.uni-plovdiv.bg/?page_id=237" target="_blank" rel="noopener"><img src="../logoPuUni.png" alt="Paisii Hilendarski University of Plovdiv"></a></div></div><div><h3>Professor Nikolay Neychev</h3><div class="board-role">International Editorial Board Member</div><p class="board-meta">Professor, Department of Russian Language and Literature, Paisii Hilendarski University of Plovdiv, Bulgaria. Specialist in classical Russian literature and 19th-century Russian literature; researcher in the history, theory, and hermeneutics of Russian literature, with a focus on Dostoevsky studies and Christian themes in Russian literature.</p><div class="profile-fields"><div><strong>Academic title</strong>Professor</div><div><strong>Affiliation</strong>Department of Russian Language and Literature, Paisii Hilendarski University of Plovdiv · Bulgaria</div><div><strong>Specialization</strong>Classical Russian literature · 19th-century Russian literature</div><div><strong>Research areas</strong>History, theory, and hermeneutics of Russian literature</div><div><strong>Expertise</strong>Dostoevsky studies · Christian themes in Russian literature</div><div><strong>Degrees</strong>Doctor of Sciences (2023) · PhD in Philology (1998)</div><div><strong>Memberships</strong>MAPRYAL · Association of Bulgarian Russists</div><div><strong>Email</strong><a href="mailto:neychev@uni-plovdiv.bg">neychev@uni-plovdiv.bg</a></div></div><div class="board-links"><a href="https://rusfil.uni-plovdiv.bg/?page_id=237" target="_blank" rel="noopener">Personal page</a><a href="mailto:neychev@uni-plovdiv.bg">Email</a></div></div></article>
 
 </div></section></main>
 <script src="../assets/script.js"></script>
