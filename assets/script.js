@@ -86,7 +86,7 @@ const initRLS=()=>{
     footer.innerHTML=`<div class="container rls-footer-inner">
       <div class="rls-footer-main">
         <div class="rls-footer-col"><strong>${footerJournalName}</strong><p>${lang==='ru'?'Научный журнал, выходящий два раза в год':lang==='en'?'Biannual journal':'نشریه علمی دو فصلنامه'}</p></div>
-        <div class="rls-footer-col"><p>${lang==='ru'?'Главный редактор и издатель: Mohammadmahdi Rubin':lang==='en'?'Publisher & Managing Editor: Mohammadmahdi Rubin':'مدیرمسئول و صاحب‌امتیاز: محمدمهدی روبین'}</p><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
+        <div class="rls-footer-col"><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
       </div>
       <div class="rls-footer-official-logos">
