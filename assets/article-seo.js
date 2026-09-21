@@ -63,7 +63,7 @@
   document.head.appendChild(script);
 
   var labels = lang === 'fa' ? ['صفحه اصلی', 'مقالات', 'مقاله'] : lang === 'ru' ? ['Главная', 'Статьи', 'Статья'] : ['Home', 'Articles', 'Article'];
-  var bases = lang === 'fa' ? ['https://mohammadmahdirubin.github.io/RLS/', 'https://mohammadmahdirubin.github.io/RLS/articles.html'] : lang === 'ru' ? ['https://mohammadmahdirubin.github.io/RLS/ru/', 'https://mohammadmahdirubin.github.io/RLS/ru/articles.html'] : ['https://mohammadmahdirubin.github.io/RLS/en/', 'https://mohammadmahdirubin.github.io/RLS/en/articles.html'];
+  var bases = lang === 'fa' ? ['https://rlsj.ir/', 'https://rlsj.ir/articles.html'] : lang === 'ru' ? ['https://rlsj.ir/ru/', 'https://rlsj.ir/ru/articles.html'] : ['https://rlsj.ir/en/', 'https://rlsj.ir/en/articles.html'];
   var breadcrumb = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
       {'@type':'ListItem','position':1,'name':labels[0],'item':bases[0]},
