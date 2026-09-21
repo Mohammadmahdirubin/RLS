@@ -8,7 +8,6 @@ const initRLS=()=>{
   const asset=name=>root+encodeURI(name);
   const header=document.querySelector('.site-header');
   const nav=document.querySelector('.main-nav');
-  // Only real phones/tablets get mobile-mode; desktop (even touch) stays desktop
   const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const mobile=isMobileUA && Math.min(window.innerWidth||9999, screen.width||9999)<=900;
   if(mobile)document.documentElement.classList.add('rls-mobile-mode');
@@ -35,7 +34,11 @@ const initRLS=()=>{
       group(labels.authors,[['author-guidelines.html',labels.guidelines],['authors.html',labels.authorInfo],['submit.html',labels.submit]]),
       link('journal-metrics.html',labels.metrics),link('contact.html',labels.contact),link('privacy.html',labels.privacy)
     ].join('');
-    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('nav-open')));
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      document.body.classList.remove('nav-open');
+      document.documentElement.classList.remove('nav-open');
+      nav.querySelectorAll('details').forEach(d=>d.removeAttribute('open'));
+    }));
     nav.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)nav.querySelectorAll('details').forEach(other=>{if(other!==d)other.removeAttribute('open');});}));
   }
 
