@@ -34,11 +34,12 @@ const initRLS=()=>{
       group(labels.authors,[['author-guidelines.html',labels.guidelines],['authors.html',labels.authorInfo],['submit.html',labels.submit]]),
       link('journal-metrics.html',labels.metrics),link('contact.html',labels.contact),link('privacy.html',labels.privacy)
     ].join('');
-    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
       document.body.classList.remove('nav-open');
       document.documentElement.classList.remove('nav-open');
-      nav.querySelectorAll('details').forEach(d=>d.removeAttribute('open'));
-    }));
+      nav.querySelectorAll('details[open]').forEach(d=>d.removeAttribute('open'));
+      nav.style.removeProperty('display');
+    },true));
     nav.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)nav.querySelectorAll('details').forEach(other=>{if(other!==d)other.removeAttribute('open');});}));
   }
 
