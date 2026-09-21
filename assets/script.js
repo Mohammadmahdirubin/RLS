@@ -8,8 +8,11 @@ const initRLS=()=>{
   const asset=name=>root+encodeURI(name);
   const header=document.querySelector('.site-header');
   const nav=document.querySelector('.main-nav');
-  const mobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||((navigator.maxTouchPoints||0)>0&&Math.min(screen.width,screen.height)<=900);
+  // Only real phones/tablets get mobile-mode; desktop (even touch) stays desktop
+  const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const mobile=isMobileUA && Math.min(window.innerWidth||9999, screen.width||9999)<=900;
   if(mobile)document.documentElement.classList.add('rls-mobile-mode');
+  else document.documentElement.classList.remove('rls-mobile-mode');
 
   const labels={
     fa:{home:'صفحه اصلی',about:'درباره نشریه',board:'هیئت تحریریه',policies:'سیاست‌ها',review:'داوری',ethics:'اخلاق نشر',plagiarism:'سرقت علمی',conflict:'تعارض منافع',copyright:'حقوق نشر',fees:'هزینه‌های انتشار',corrections:'اصلاح و ابطال',publication:'انتشار',articles:'مقالات',issues:'شماره‌ها',archive:'آرشیو',authors:'نویسندگان',guidelines:'راهنمای نویسندگان',authorInfo:'اطلاعات نویسندگان',metrics:'اطلاعات و آمار',contact:'تماس با نشریه',privacy:'حریم خصوصی',submit:'ارسال مقاله'},
@@ -110,10 +113,10 @@ html,body{background:#faf7ec!important}
 .rls-site-banner a{display:block;text-decoration:none}
 .rls-site-banner img{display:block}
 .site-header .header-inner{position:relative;display:flex;align-items:center;gap:12px}
-.site-header .main-nav{order:1;flex:1 1 auto;display:flex!important;align-items:center;justify-content:flex-end;gap:12px;font-size:13px;font-weight:700;min-width:0}
+.site-header .main-nav{order:1;flex:1 1 auto;display:flex!important;align-items:center;justify-content:flex-end;gap:10px;font-size:12.5px;font-weight:700;min-width:0}
 .site-header .header-language-switcher{order:2;flex:0 0 86px;width:86px;max-width:86px;height:36px;margin:0}
 .site-header .menu-btn{order:3}
-.main-nav>a,.nav-group>summary{padding:24px 0}
+.main-nav>a,.nav-group>summary{padding:14px 0}
 .nav-group{position:relative;display:block}
 .nav-group>summary{list-style:none;cursor:pointer;color:var(--ink);white-space:nowrap}
 .nav-group>summary::-webkit-details-marker{display:none}
@@ -134,7 +137,7 @@ footer .rls-footer-official-logo{display:flex;flex-direction:column;align-items:
 footer .rls-footer-logo-box{width:106px;height:74px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px;padding:6px;border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 12px rgba(0,0,0,.12);text-decoration:none}
 footer .rls-footer-logo-box img{display:block;width:auto;height:auto;max-width:94px;max-height:62px;object-fit:contain}
 footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height:1.5;text-align:center;color:inherit;max-width:190px}
-@media(min-width:1101px){.rls-site-banner img{max-height:120px!important;width:100%!important;object-fit:contain!important}.header-inner{min-height:72px!important}.main-nav>a,.nav-group>summary{padding-top:20px!important;padding-bottom:20px!important}.main-nav a.active:after{bottom:14px!important}}
+@media(min-width:1101px){.rls-site-banner img{max-height:90px!important;width:100%!important;object-fit:contain!important}.header-inner{min-height:56px!important}.main-nav>a,.nav-group>summary{padding-top:14px!important;padding-bottom:14px!important}.main-nav a.active:after{bottom:9px!important}.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}.site-header .main-nav{gap:10px!important;font-size:12.5px!important}}
 @media(max-width:1100px){.site-header .header-inner{min-height:62px}.site-header .main-nav{display:none!important}.site-header .header-language-switcher{order:2}.site-header .menu-btn{order:3}.nav-group{width:100%}.nav-group>summary{padding:9px 0;font-size:14px;white-space:normal}.nav-submenu{position:static;min-width:0;border:0;border-inline-start:3px solid var(--accent3);box-shadow:none;margin:0 0 6px;padding:3px 10px}.nav-submenu a{padding:8px 0!important}.nav-open .main-nav{display:flex!important;position:absolute;top:62px;left:0;right:0;width:100%;max-width:none;background:#faf7ec;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:10px 24px;box-shadow:0 12px 25px rgba(91,23,35,.1);max-height:calc(100vh - 62px);overflow-y:auto}}
 @media(min-width:1101px){.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}}
 @media(max-width:760px){footer .rls-footer-main{grid-template-columns:1fr 1fr}.rls-footer-official-logos{gap:24px}}
