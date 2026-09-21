@@ -1,1 +1,28 @@
-PLACEHOLDER
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>دانلود راهنمای نویسندگان</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body style="padding:40px;text-align:center;font-family:Tahoma,sans-serif;background:#faf7ec">
+<p id="msg">در حال آماده‌سازی فایل PDF…</p>
+<script src="assets/author-guidelines-pdf-data.js"></script>
+<script>
+(function(){
+  try{
+    const b64=window.RLS_AG_PDF_B64;
+    const bin=atob(b64);
+    const arr=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+    const blob=new Blob([arr],{type:"application/pdf"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download="راهنمای-نویسندگان-RLS.pdf";
+    document.body.appendChild(a);a.click();
+    document.getElementById("msg").innerHTML='اگر دانلود آغاز نشد، <a href="'+url+'" target="_blank">اینجا کلیک کنید</a> تا فایل باز شود.';
+    setTimeout(function(){ location.href=url; }, 400);
+  }catch(e){
+    document.getElementById("msg").textContent="خطا در آماده‌سازی فایل: "+e.message;
+  }
+})();
+</script>
+</body></html>
