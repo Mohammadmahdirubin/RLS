@@ -1,0 +1,32 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8">
+<style>
+body{font-family:Times New Roman,serif;font-size:12pt;direction:ltr}
+h1{color:#5b1723;font-size:14pt}
+b{color:#5b1723}
+</style>
+</head>
+<body>
+<h1>Russian Language Studies (RLS)</h1>
+<p><b>Article template — English</b></p>
+<p><b>Title</b><br>[Write a clear and concise title]</p>
+<p><b>Abstract</b><br>[150–250 words: aim, method, main findings, conclusion]</p>
+<p><b>Keywords</b><br>[4–7 keywords, comma-separated]</p>
+<p><b>1. Introduction and problem statement</b><br>[Text]</p>
+<p><b>2. Research aim(s)</b><br>[Text]</p>
+<p><b>3. Literature review</b><br>[Text]</p>
+<p><b>4. Theoretical framework</b><br>[Text]</p>
+<p><b>5. Research method</b><br>[Text]</p>
+<p><b>6. Findings and analysis</b><br>[Text]</p>
+<p><b>7. Discussion</b><br>[Text]</p>
+<p><b>8. Conclusion</b><br>[Text]</p>
+<p><b>9. Limitations and suggestions</b><br>[Optional]</p>
+<p><b>Funding statement</b><br>[If any / This research received no funding.]</p>
+<p><b>Conflict of interest</b><br>[The authors declare no conflict of interest.]</p>
+<p><b>Statement on the use of artificial intelligence</b><br>[If used, describe; otherwise state that generative AI was not used.]</p>
+<p><b>Acknowledgements</b><br>[Optional]</p>
+<p><b>References</b><br>[APA 7th edition]</p>
+<p><i>Note: Submit this file without author names or identifying information.</i></p>
+</body></html>
