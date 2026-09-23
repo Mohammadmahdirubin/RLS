@@ -39,6 +39,16 @@ const initRLS=()=>{
       document.documentElement.classList.remove('nav-open');
       nav.querySelectorAll('details[open]').forEach(d=>d.removeAttribute('open'));
       nav.style.removeProperty('display');
+      // On desktop, close the dropdown immediately before navigation so it cannot
+      // remain visually open over the destination page during the transition.
+      if(window.matchMedia('(min-width: 901px)').matches){
+        const group=a.closest('details.nav-group');
+        if(group)group.removeAttribute('open');
+        nav.querySelectorAll('.nav-submenu').forEach(sub=>{
+          sub.style.display='none';
+          requestAnimationFrame(()=>sub.style.removeProperty('display'));
+        });
+      }
     },true));
     nav.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)nav.querySelectorAll('details').forEach(other=>{if(other!==d)other.removeAttribute('open');});}));
   }
