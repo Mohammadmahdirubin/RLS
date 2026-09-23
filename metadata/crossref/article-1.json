@@ -1,0 +1,36 @@
+{
+  "journal": {
+    "title": "Russian Language Studies",
+    "abbrev_title": "RLS",
+    "publication_frequency": "biannual",
+    "publisher": "Mohammadmahdi Rubin",
+    "url": "https://rlsj.ir/",
+    "issn": null
+  },
+  "issue": {
+    "volume": 1,
+    "issue": 1,
+    "publication_date": "2026-09-17"
+  },
+  "articles": [
+    {
+      "id": "ai-supported-multimodal-russian-language-learning",
+      "title": "Designing AI-Supported Multimodal Russian Language Learning: A Conceptual Framework for Learner Autonomy, Critical AI Literacy, and Intercultural Competence",
+      "author": {
+        "given": "Mohammadmahdi",
+        "family": "Rubin",
+        "orcid": "0009-0004-8475-2804",
+        "affiliation": "Faculty of Languages and Foreign Literature, University of Tehran, Iran"
+      },
+      "type": "research-article",
+      "language": "en",
+      "received": "2026-08-17",
+      "published": "2026-09-17",
+      "landing_page": "https://rlsj.ir/en/article-ai-supported-multimodal-russian-language-learning.html",
+      "fulltext": "https://rlsj.ir/articles/rubin-2026-ai-supported-multimodal-rfl.pdf.pdf",
+      "doi": null,
+      "abstract": "This conceptual article develops a framework for AI-supported multimodal Russian language learning that connects technological affordances with learner development. The framework is organized around AI-supported personalization, multimodal task design, learner autonomy, critical AI literacy, and intercultural communicative competence."
+    }
+  ],
+  "registration_note": "DOI values must be assigned only after the journal has a Crossref membership and DOI prefix. ISSN must be inserted after official assignment. Do not publish placeholder DOI values."
+}
