@@ -34,23 +34,21 @@ const initRLS=()=>{
       group(labels.authors,[['author-guidelines.html',labels.guidelines],['authors.html',labels.authorInfo],['submit.html',labels.submit]]),
       link('journal-metrics.html',labels.metrics),link('contact.html',labels.contact),link('privacy.html',labels.privacy)
     ].join('');
-    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
+    const closeNavGroups=()=>{
+      nav.querySelectorAll('details.nav-group[open]').forEach(d=>d.removeAttribute('open'));
       document.body.classList.remove('nav-open');
       document.documentElement.classList.remove('nav-open');
-      nav.querySelectorAll('details[open]').forEach(d=>d.removeAttribute('open'));
       nav.style.removeProperty('display');
-      // On desktop, close the dropdown immediately before navigation so it cannot
-      // remain visually open over the destination page during the transition.
-      if(window.matchMedia('(min-width: 901px)').matches){
-        const group=a.closest('details.nav-group');
-        if(group)group.removeAttribute('open');
-        nav.querySelectorAll('.nav-submenu').forEach(sub=>{
-          sub.style.display='none';
-          requestAnimationFrame(()=>sub.style.removeProperty('display'));
-        });
-      }
+    };
+    nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
+      closeNavGroups();
     },true));
-    nav.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)nav.querySelectorAll('details').forEach(other=>{if(other!==d)other.removeAttribute('open');});}));
+    nav.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{
+      if(d.open)nav.querySelectorAll('details').forEach(other=>{if(other!==d)other.removeAttribute('open');});
+    }));
+    // Also reset the menu when a page is restored from the browser back/forward cache.
+    window.addEventListener('pageshow',()=>{ if(!mobile) closeNavGroups(); });
+    window.addEventListener('pagehide',closeNavGroups);
   }
 
   const langUrls=lang==='fa'?{fa:'index.html',en:'en/index.html',ru:'ru/index.html'}:lang==='en'?{fa:'../index.html',en:'index.html',ru:'../ru/index.html'}:{fa:'../index.html',en:'../en/index.html',ru:'index.html'};
@@ -137,7 +135,7 @@ html,body{background:#faf7ec!important}
 .nav-group>summary{list-style:none;cursor:pointer;color:var(--ink);white-space:nowrap}
 .nav-group>summary::-webkit-details-marker{display:none}
 .nav-group>summary:after{content:'⌄';font-size:10px;margin-inline-start:4px;color:var(--accent3)}
-.nav-submenu{position:absolute;top:100%;min-width:210px;background:#faf7ec;border:1px solid var(--line);border-top:3px solid var(--accent3);box-shadow:0 12px 28px rgba(91,23,35,.12);padding:8px;z-index:200}
+.nav-group:not([open])>.nav-submenu{display:none!important}.nav-submenu{position:absolute;top:100%;min-width:210px;background:#faf7ec;border:1px solid var(--line);border-top:3px solid var(--accent3);box-shadow:0 12px 28px rgba(91,23,35,.12);padding:8px;z-index:200}
 [dir="rtl"] .nav-submenu{right:0}[dir="ltr"] .nav-submenu{left:0}
 .nav-submenu a{display:block!important;padding:9px 10px!important;white-space:normal!important}
 .nav-submenu a.active{color:var(--accent)}.nav-submenu a.active:after{display:none!important}
