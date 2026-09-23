@@ -15,6 +15,10 @@ window.RLS_ARTICLES = [
       ru: "Проектирование мультимодального обучения русскому языку с поддержкой искусственного интеллекта: концептуальная модель автономии учащегося, критической ИИ-грамотности и межкультурной компетентности"
     },
     author: "Mohammadmahdi Rubin",
+    authorGiven: "Mohammadmahdi",
+    authorFamily: "Rubin",
+    orcid: "0009-0004-8475-2804",
+    language: "en",
     affiliation: {
       fa: "پژوهشگر مستقل، ایران",
       en: "Independent researcher, Iran",
@@ -23,6 +27,7 @@ window.RLS_ARTICLES = [
     received: "2026/08/17",
     online: "2026/09/17",
     doi: "",
+    license: "",
     abstract: {
       fa: "این مقاله یک چارچوب مفهومی برای یادگیری چندوجهی زبان روسی با پشتیبانی هوش مصنوعی پیشنهاد می‌کند و بر خودمختاری یادگیرنده، سواد انتقادی هوش مصنوعی، طراحی تکلیف چندوجهی و شایستگی ارتباطی میان‌فرهنگی تمرکز دارد.",
       en: "This article proposes a conceptual framework for AI-supported multimodal Russian language learning, focusing on learner autonomy, critical AI literacy, multimodal task design and intercultural communicative competence.",
