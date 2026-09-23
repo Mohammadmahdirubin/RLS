@@ -20,9 +20,9 @@ window.RLS_ARTICLES = [
     orcid: "0009-0004-8475-2804",
     language: "en",
     affiliation: {
-      fa: "پژوهشگر مستقل، ایران",
-      en: "Independent researcher, Iran",
-      ru: "Независимый исследователь, Иран"
+      fa: "دانشکده زبان‌ها و ادبیات خارجی، دانشگاه تهران، ایران",
+      en: "Faculty of Languages and Foreign Literature, University of Tehran, Iran",
+      ru: "Факультет языков и зарубежной литературы, Тегеранский университет, Иран"
     },
     received: "2026/08/17",
     online: "2026/09/17",
