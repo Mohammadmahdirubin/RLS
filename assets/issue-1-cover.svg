@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1754" viewBox="0 0 1240 1754">
+<defs>
+  <linearGradient id="mag" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#8d175d"/><stop offset="1" stop-color="#d02b63"/></linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffbf16"/><stop offset="1" stop-color="#e59b00"/></linearGradient>
+</defs>
+<rect width="1240" height="1754" fill="#061a3b"/>
+<polygon points="0,0 850,0 1030,300 0,1380" fill="#081f45"/>
+<polygon points="0,0 0,260 200,0" fill="url(#gold)"/>
+<polygon points="850,0 1240,0 1240,430 1050,310" fill="#f5ead7"/>
+<polygon points="0,730 0,1450 430,1450" fill="url(#mag)"/>
+<polygon points="1050,310 1240,430 1240,1450 930,1450" fill="#f5ead7"/>
+<g fill="none" stroke="#102d5b" stroke-width="9">
+  <path d="M760 1400V980 M820 1400V700 M900 1400V520 M1000 1400V760 M1080 1400V900"/>
+  <path d="M700 1400l60-260 60 260 M760 1140l-55-100 55-100 55 100z"/>
+  <path d="M820 1400l0-420 70-130 70 130v420 M890 850v-210l-45-75 45-75 45 75-45 75"/>
+  <path d="M1000 1400V900l80-120 80 120v500 M1080 780v-180l-45-70 45-70 45 70-45 70"/>
+</g>
+<g fill="#102d5b" stroke="#f5ead7" stroke-width="6">
+ <path d="M850 920q-95-95 0-190q95 95 0 190z"/>
+ <path d="M1000 760q-110-110 0-220q110 110 0 220z"/>
+ <path d="M1080 940q-85-85 0-170q85 85 0 170z"/>
+</g>
+<g font-family="Georgia, 'Times New Roman', serif">
+ <text x="105" y="155" fill="#ffbf16" font-size="42" font-weight="700">دوفصلنامه</text>
+ <text x="105" y="270" fill="#fff" font-size="90" font-weight="800">مطالعات</text>
+ <text x="105" y="375" fill="#fff" font-size="90" font-weight="800">زبان روسی</text>
+ <line x1="105" y1="425" x2="650" y2="425" stroke="#ffbf16" stroke-width="5"/>
+ <text x="105" y="490" fill="#fff" font-size="30">در حوزه زبان، ادبیات و فرهنگ روسی</text>
+ <text x="105" y="570" fill="#ffbf16" font-size="32" font-weight="700">ИССЛЕДОВАНИЯ РУССКОГО ЯЗЫКА</text>
+ <text x="105" y="615" fill="#fff" font-size="24">в области языка, литературы и культуры</text>
+ <text x="105" y="690" fill="#ffbf16" font-size="32" font-weight="700">STUDIES IN RUSSIAN LANGUAGE</text>
+ <text x="105" y="735" fill="#fff" font-size="24">in the field of language, literature and culture</text>
+ <text x="80" y="1050" fill="#fff" font-size="150" font-weight="700">۱</text>
+ <text x="85" y="1110" fill="#fff" font-size="34">شماره نخست</text>
+ <text x="85" y="1165" fill="#fff" font-size="30">بهار و تابستان ۱۴۰۵</text>
+ <line x1="75" y1="1195" x2="380" y2="1195" stroke="#ffbf16" stroke-width="3"/>
+ <text x="85" y="1245" fill="#fff" font-size="26">Vol. 1, No. 1</text>
+ <text x="85" y="1285" fill="#fff" font-size="26">Spring &amp; Summer 2026</text>
+</g>
+<rect y="1450" width="1240" height="304" fill="#06152f"/>
+<g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle">
+ <circle cx="210" cy="1525" r="45" fill="none" stroke="#ffbf16" stroke-width="4"/><text x="210" y="1540" fill="#ffbf16" font-size="42">▱</text>
+ <circle cx="620" cy="1525" r="45" fill="none" stroke="#ffbf16" stroke-width="4"/><text x="620" y="1540" fill="#ffbf16" font-size="38">◎</text>
+ <circle cx="1030" cy="1525" r="45" fill="none" stroke="#ffbf16" stroke-width="4"/><text x="1030" y="1540" fill="#ffbf16" font-size="38">◉</text>
+ <text x="210" y="1600" fill="#fff" font-size="24">پذیرش مقاله به سه زبان:</text><text x="210" y="1640" fill="#fff" font-size="23">فارسی · روسی · انگلیسی</text>
+ <text x="620" y="1600" fill="#fff" font-size="23">Приём статей на трёх языках:</text><text x="620" y="1640" fill="#fff" font-size="22">персидском · русском · английском</text>
+ <text x="1030" y="1600" fill="#fff" font-size="23">Articles accepted in three languages:</text><text x="1030" y="1640" fill="#fff" font-size="22">Persian · Russian · English</text>
+ <line x1="80" y1="1680" x2="1160" y2="1680" stroke="#ffbf16" stroke-width="2"/>
+ <text x="620" y="1722" fill="#ffbf16" font-size="22">نشریه علمی پژوهشی در حوزه زبان، ادبیات و فرهنگ روسی</text>
+</g></svg>
