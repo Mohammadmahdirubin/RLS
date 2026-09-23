@@ -54,7 +54,7 @@ window.renderRLSArticleList = function (containerId, lang) {
     var abstractText = a.abstract[lang] || a.abstract.en;
     var receivedLabel = lang === "fa" ? "دریافت" : lang === "ru" ? "Получено" : "Received";
     var onlineLabel = lang === "fa" ? "انتشار آنلاین" : lang === "ru" ? "Онлайн-публикация" : "Online publication";
-    var issueLabel = lang === "fa" ? "دوره ۱، شماره ۱" : lang === "ru" ? "Том 1, выпуск 1" : "Volume 1, Issue 1";
+    var issueLabel = lang === "fa" ? "دوره ۱&nbsp;، شماره ۱" : lang === "ru" ? "Том 1, выпуск 1" : "Volume 1, Issue 1";
     var viewLabel = lang === "fa" ? "مشاهده مقاله" : lang === "ru" ? "Открыть статью" : "View article";
     var doiText = a.doi ? "DOI: " + a.doi : lang === "fa" ? "DOI: هنوز اختصاص نیافته" : lang === "ru" ? "DOI: ещё не присвоен" : "DOI: Not yet assigned";
     return '<article class="article-record" data-article-id="' + a.id + '">' +
