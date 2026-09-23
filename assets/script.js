@@ -23,7 +23,7 @@ const initRLS=()=>{
   const active=name=>file===name?' class="active"':'';
   const link=(name,label)=>`<a href="${p(name)}"${active(name)}>${label}</a>`;
   const group=(label,items)=>{
-    const open=items.some(([name])=>file===name)?' open':'';
+    const open=mobile && items.some(([name])=>file===name)?' open':'';
     return `<details class="nav-group"${open}><summary>${label}</summary><div class="nav-submenu">${items.map(([name,text])=>link(name,text)).join('')}</div></details>`;
   };
   if(nav){
