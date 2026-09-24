@@ -32,14 +32,17 @@
 <p class="stat-note">نرخ پذیرش و میانگین زمان‌ها پس از تجمع داده کافی و آغاز رسمی فرآیند داوری گزارش می‌شوند تا از ارائه آمار گمراه‌کننده جلوگیری شود.</p>
 
 <h2>۳. نمودار عملکرد مقالات</h2>
-<div class="metrics-chart">
-  <div class="chart-head"><strong>وضعیت مقالات</strong><span>داده‌های ثبت‌شده فعلی</span></div>
-  <div class="chart-bars">
-    <div class="chart-row"><span>دریافت‌شده</span><div class="chart-track"><span style="width:100%"></span></div><strong>۱</strong></div>
-    <div class="chart-row"><span>پذیرفته‌شده</span><div class="chart-track"><span style="width:100%"></span></div><strong>۱</strong></div>
-    <div class="chart-row"><span>ردشده</span><div class="chart-track"><span style="width:0%"></span></div><strong>۰</strong></div>
-  </div>
-</div>
+<div class="real-bar-chart" aria-label="نمودار ستونی وضعیت مقالات">
+<div class="real-chart-title"><strong>نمودار وضعیت مقالات</strong><span>بر اساس داده‌های واقعی ثبت‌شده</span></div>
+<svg viewBox="0 0 720 320" role="img" aria-labelledby="fa-chart-title fa-chart-desc">
+<title id="fa-chart-title">وضعیت مقالات</title><desc id="fa-chart-desc">یک مقاله دریافت شده، یک مقاله پذیرفته شده و صفر مقاله رد شده است.</desc>
+<line x1="90" y1="30" x2="90" y2="260" class="chart-axis"/><line x1="90" y1="260" x2="680" y2="260" class="chart-axis"/>
+<line x1="90" y1="145" x2="680" y2="145" class="chart-gridline"/><line x1="90" y1="30" x2="680" y2="30" class="chart-gridline"/>
+<text x="70" y="265" class="chart-label" text-anchor="end">۰</text><text x="70" y="150" class="chart-label" text-anchor="end">۰٫۵</text><text x="70" y="35" class="chart-label" text-anchor="end">۱</text>
+<rect x="150" y="30" width="100" height="230" rx="6" class="chart-bar"/><rect x="330" y="30" width="100" height="230" rx="6" class="chart-bar"/><rect x="510" y="260" width="100" height="0" rx="6" class="chart-bar"/>
+<text x="200" y="285" class="chart-label" text-anchor="middle">دریافت‌شده</text><text x="380" y="285" class="chart-label" text-anchor="middle">پذیرفته‌شده</text><text x="560" y="285" class="chart-label" text-anchor="middle">ردشده</text>
+<text x="200" y="20" class="chart-value" text-anchor="middle">۱</text><text x="380" y="20" class="chart-value" text-anchor="middle">۱</text><text x="560" y="250" class="chart-value" text-anchor="middle">۰</text>
+</svg></div>
 
 <h2>۴. زمان‌بندی داوری و بررسی</h2>
 <div class="metric-grid timing-grid">
