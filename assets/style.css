@@ -727,3 +727,111 @@ footer .rls-footer-official-logos{opacity:.94}
   .author-card{padding:19px 16px!important}
   .author-meta p{font-size:12.5px}
 }
+
+
+/* ===== Journal metrics / transparency dashboard ===== */
+.metric-grid{
+  max-width:980px;
+  margin:24px auto 28px!important;
+  gap:16px!important;
+}
+.metric-card{
+  position:relative;
+  min-height:118px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:22px 18px!important;
+  background:var(--white)!important;
+  border:1px solid var(--line)!important;
+  border-top:3px solid var(--accent3)!important;
+  border-radius:9px!important;
+  box-shadow:0 8px 22px rgba(36,27,29,.05)!important;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.metric-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(36,27,29,.075)!important;
+}
+.metric-card .num{
+  font-size:30px!important;
+  line-height:1.2;
+  color:var(--accent2)!important;
+  margin-bottom:7px;
+}
+.metric-card .label{
+  font-size:12.5px!important;
+  color:var(--muted)!important;
+  line-height:1.7;
+}
+.content>.notice{
+  max-width:980px;
+  margin:0 auto 30px!important;
+}
+.content>.table-wrap{
+  max-width:980px;
+  margin:0 auto 34px;
+}
+.content>.table-wrap .academic-table{
+  width:100%;
+  box-shadow:0 7px 20px rgba(36,27,29,.04);
+}
+.content>.table-wrap .academic-table th{
+  width:32%;
+  background:var(--alt);
+}
+.content>h2{
+  max-width:980px;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-top:6px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:10px;
+}
+.stat-chart{
+  max-width:980px;
+  margin:22px auto 30px!important;
+  padding:22px 24px!important;
+  background:var(--white)!important;
+  border:1px solid var(--line)!important;
+  border-radius:9px!important;
+  box-shadow:0 8px 22px rgba(36,27,29,.045);
+}
+.bar-row{
+  grid-template-columns:minmax(120px,180px) 1fr 55px!important;
+  gap:12px!important;
+  margin:8px 0 14px!important;
+}
+.bar{
+  height:10px!important;
+  background:#eee5e0!important;
+  border-radius:99px!important;
+}
+.bar span{
+  background:linear-gradient(90deg,var(--accent),var(--accent3))!important;
+}
+.stat-note{
+  color:var(--muted)!important;
+  line-height:1.9;
+}
+.status-badge{
+  background:var(--soft)!important;
+  color:var(--accent2)!important;
+  border:1px solid rgba(139,38,53,.12);
+}
+@media(max-width:700px){
+  .metric-grid{grid-template-columns:1fr 1fr!important}
+  .metric-card{min-height:105px;padding:18px 12px!important}
+  .metric-card .num{font-size:26px!important}
+  .content>.table-wrap .academic-table th{width:38%}
+  .stat-chart{padding:18px 16px!important}
+  .bar-row{grid-template-columns:1fr 52px!important}
+  .bar-row .bar{grid-column:1 / -1;grid-row:2}
+}
+@media(max-width:480px){
+  .metric-grid{grid-template-columns:1fr!important}
+  .metric-card{min-height:96px}
+  .content>.table-wrap .academic-table{font-size:12.5px}
+  .content>.table-wrap .academic-table th{width:40%}
+}
