@@ -865,3 +865,9 @@ footer .rls-footer-official-logos{opacity:.94}
  .chart-row{grid-template-columns:1fr 42px}
  .chart-row .chart-track{grid-column:1/-1;grid-row:2}
 }
+
+/* ===== Real SVG performance chart ===== */
+.real-bar-chart{max-width:980px;margin:22px auto 30px;padding:22px 24px;background:var(--white);border:1px solid var(--line);border-top:3px solid var(--accent3);border-radius:9px;box-shadow:0 8px 22px rgba(36,27,29,.045)}
+.real-chart-title{display:flex;justify-content:space-between;align-items:baseline;gap:15px;margin-bottom:8px}.real-chart-title strong{color:var(--accent2);font-size:15px}.real-chart-title span{color:var(--muted);font-size:12px}
+.real-bar-chart svg{display:block;width:100%;height:auto;overflow:visible}.chart-axis{stroke:#8d7b7e;stroke-width:1.5}.chart-gridline{stroke:#e8dfdb;stroke-width:1;stroke-dasharray:4 5}.chart-label{fill:#6e6164;font-size:13px;font-family:inherit}.chart-value{fill:var(--accent2);font-size:15px;font-weight:800;font-family:inherit}.chart-bar{fill:var(--accent)}
+@media(max-width:600px){.real-bar-chart{padding:18px 12px}.real-chart-title{display:block}.real-chart-title span{display:block;margin-top:4px}.real-bar-chart svg{min-width:560px}.real-bar-chart{overflow-x:auto}}
