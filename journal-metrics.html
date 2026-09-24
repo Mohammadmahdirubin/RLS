@@ -31,18 +31,24 @@
 </div>
 <p class="stat-note">نرخ پذیرش و میانگین زمان‌ها پس از تجمع داده کافی و آغاز رسمی فرآیند داوری گزارش می‌شوند تا از ارائه آمار گمراه‌کننده جلوگیری شود.</p>
 
-<h2>۳. نمودار عملکرد مقالات</h2>
-<div class="real-bar-chart" aria-label="نمودار ستونی وضعیت مقالات">
-<div class="real-chart-title"><strong>نمودار وضعیت مقالات</strong><span>بر اساس داده‌های واقعی ثبت‌شده</span></div>
-<svg viewBox="0 0 720 320" role="img" aria-labelledby="fa-chart-title fa-chart-desc">
-<title id="fa-chart-title">وضعیت مقالات</title><desc id="fa-chart-desc">یک مقاله دریافت شده، یک مقاله پذیرفته شده و صفر مقاله رد شده است.</desc>
-<line x1="90" y1="30" x2="90" y2="260" class="chart-axis"/><line x1="90" y1="260" x2="680" y2="260" class="chart-axis"/>
-<line x1="90" y1="145" x2="680" y2="145" class="chart-gridline"/><line x1="90" y1="30" x2="680" y2="30" class="chart-gridline"/>
-<text x="70" y="265" class="chart-label" text-anchor="end">۰</text><text x="70" y="150" class="chart-label" text-anchor="end">۰٫۵</text><text x="70" y="35" class="chart-label" text-anchor="end">۱</text>
-<rect x="150" y="30" width="100" height="230" rx="6" class="chart-bar"/><rect x="330" y="30" width="100" height="230" rx="6" class="chart-bar"/><rect x="510" y="260" width="100" height="0" rx="6" class="chart-bar"/>
-<text x="200" y="285" class="chart-label" text-anchor="middle">دریافت‌شده</text><text x="380" y="285" class="chart-label" text-anchor="middle">پذیرفته‌شده</text><text x="560" y="285" class="chart-label" text-anchor="middle">ردشده</text>
-<text x="200" y="20" class="chart-value" text-anchor="middle">۱</text><text x="380" y="20" class="chart-value" text-anchor="middle">۱</text><text x="560" y="250" class="chart-value" text-anchor="middle">۰</text>
-</svg></div>
+<h2>۳. روند عملکرد مقالات</h2>
+<div class="stat-chart" aria-label="نمودار خطی روند مقالات">
+<div class="real-chart-title"><strong>نمودار روند وضعیت مقالات</strong><span>بر اساس داده‌های واقعی ثبت‌شده</span></div>
+<svg viewBox="0 0 720 320" role="img" aria-labelledby="fa-line-title fa-line-desc" style="width:100%;height:auto">
+<title id="fa-line-title">روند وضعیت مقالات</title>
+<desc id="fa-line-desc">نمودار خطی تعداد مقالات دریافت‌شده، پذیرفته‌شده و ردشده را در مراحل ثبت‌شده نمایش می‌دهد.</desc>
+<line x1="80" y1="30" x2="80" y2="255" class="chart-axis"/><line x1="80" y1="255" x2="670" y2="255" class="chart-axis"/>
+<line x1="80" y1="142" x2="670" y2="142" class="chart-gridline"/><line x1="80" y1="30" x2="670" y2="30" class="chart-gridline"/>
+<text x="60" y="260" class="chart-label" text-anchor="end">۰</text><text x="60" y="147" class="chart-label" text-anchor="end">۰٫۵</text><text x="60" y="35" class="chart-label" text-anchor="end">۱</text>
+<polyline points="140,30 360,30 580,255" fill="none" class="chart-line"/>
+<polyline points="140,255 360,30 580,255" fill="none" class="chart-line chart-line-alt"/>
+<polyline points="140,255 360,255 580,255" fill="none" class="chart-line chart-line-zero"/>
+<circle cx="140" cy="30" r="6" class="chart-point"/><circle cx="360" cy="30" r="6" class="chart-point"/><circle cx="580" cy="255" r="6" class="chart-point"/>
+<circle cx="140" cy="255" r="6" class="chart-point"/><circle cx="360" cy="30" r="6" class="chart-point"/><circle cx="580" cy="255" r="6" class="chart-point"/>
+<text x="140" y="280" class="chart-label" text-anchor="middle">دریافت‌شده</text><text x="360" y="280" class="chart-label" text-anchor="middle">پذیرفته‌شده</text><text x="580" y="280" class="chart-label" text-anchor="middle">ردشده</text>
+</svg>
+<p class="stat-note">این نمودار به‌صورت خطی و موجی نمایش داده می‌شود و با ثبت داده‌های جدید قابل به‌روزرسانی است.</p>
+</div>
 
 <h2>۴. زمان‌بندی داوری و بررسی</h2>
 <div class="metric-grid timing-grid">
