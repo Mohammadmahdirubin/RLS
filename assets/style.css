@@ -89,3 +89,88 @@
 #rls-back-to-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
 #rls-back-to-top:hover{filter:brightness(1.08)}
 @media(max-width:700px){#rls-back-to-top{right:14px;bottom:14px;width:40px;height:40px;font-size:21px}}
+
+/* RLS academic journal visual redesign 2026 */
+:root{
+  --paper:#fbf8f1;
+  --alt:#f5efea;
+  --white:#fffdf9;
+  --ink:#292022;
+  --muted:#75696b;
+  --line:#ded4cf;
+  --accent:#8b2635;
+  --accent2:#5b1723;
+  --accent3:#c79a3b;
+  --soft:#f2e3e0;
+  --max:1160px;
+}
+body{font-size:15px;line-height:1.9;letter-spacing:.005em}
+.container{max-width:1160px;padding-left:28px;padding-right:28px}
+.site-header{border-bottom:1px solid var(--line);box-shadow:0 4px 18px rgba(36,27,29,.055);backdrop-filter:blur(8px)}
+.rls-site-banner{border-bottom:1px solid rgba(199,154,59,.28)}
+.rls-site-banner img{max-height:96px!important}
+.header-inner{min-height:60px!important}
+.main-nav{gap:16px!important}
+.main-nav>a,.nav-group>summary{font-size:12.5px!important;font-weight:750!important;letter-spacing:.01em}
+.nav-group>summary:after{transition:transform .2s ease}
+.nav-group[open]>summary:after{display:inline-block;transform:rotate(180deg)}
+.nav-submenu{border-radius:0 0 10px 10px!important;background:rgba(255,253,249,.98)!important}
+.nav-submenu a:hover{background:var(--soft);border-radius:6px}
+.hero{padding:58px 0 50px;background:
+ radial-gradient(circle at 12% 18%,rgba(255,255,255,.98) 0,rgba(255,255,255,.5) 23%,transparent 45%),
+ linear-gradient(135deg,#fbf8f1 0%,#f7efeb 100%);border-bottom:1px solid var(--line)}
+.hero-grid{grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:58px}
+.hero-brand-block{padding:12px 0}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.hero h1{font-size:clamp(34px,4vw,52px);line-height:1.25;letter-spacing:-.02em;margin:0 0 16px}
+.hero .lead{font-size:17px;line-height:2;max-width:760px}
+.actions{margin-top:30px;gap:10px}
+.button{border-radius:6px;padding:10px 20px;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.button.primary{box-shadow:0 8px 18px rgba(139,38,53,.16)}
+.button:hover{transform:translateY(-1px)}
+.journal-card{border-radius:8px;border-top-width:3px;padding:25px;box-shadow:0 18px 42px rgba(91,23,35,.09)}
+.card-title{font-size:16px;letter-spacing:.01em}
+.journal-card>div:not(.card-title){padding:10px 0}
+.notice{margin-top:28px;padding:18px 22px;border-radius:6px;box-shadow:0 7px 20px rgba(91,23,35,.04)}
+.section{padding:58px 0}
+.section.alt{border-top:1px solid rgba(222,212,207,.55);border-bottom:1px solid rgba(222,212,207,.55)}
+.section-head{margin-bottom:30px;align-items:center}
+.section-head>span{font-size:13px;letter-spacing:.08em}
+.section-head h2{font-size:27px;letter-spacing:-.01em}
+.feature-grid,.policy-grid,.card-grid{gap:18px}
+.feature-grid article,.policy-card,.card{border-radius:8px;padding:24px;box-shadow:0 7px 22px rgba(36,27,29,.045);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.feature-grid article:hover,.policy-card:hover,.card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(36,27,29,.075);border-color:#d4c3bd}
+.icon{width:40px;height:40px;border-radius:8px}
+.page-hero{padding:46px 0 38px;background:linear-gradient(135deg,#f7efeb,#fbf8f1)}
+.page-hero h1{font-size:34px;letter-spacing:-.015em}
+.page-hero p{font-size:15.5px}
+.content{max-width:920px}
+.content h2{font-size:25px;margin-top:42px}
+.content h3{font-size:18px}
+.academic-table{border-radius:8px;overflow:hidden}
+.academic-table th{font-size:13px;letter-spacing:.02em}
+input,textarea,select{border-radius:6px;transition:border-color .18s ease,box-shadow .18s ease}
+input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(139,38,53,.08)}
+footer{padding:38px 0 28px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+footer .rls-footer-inner{padding-top:30px!important}
+footer .rls-footer-main{padding-bottom:4px}
+footer .rls-footer-official-logos{opacity:.94}
+#rls-back-to-top{width:42px!important;height:42px!important;right:24px!important;bottom:24px!important;border:1px solid rgba(255,255,255,.25)!important;box-shadow:0 8px 22px rgba(36,27,29,.22)!important;font-size:21px!important}
+@media(max-width:900px){
+ .container{padding-left:22px;padding-right:22px}
+ .hero{padding:44px 0 40px}
+ .hero-grid{gap:30px}
+ .hero h1{font-size:38px}
+ .page-hero h1{font-size:30px}
+}
+@media(max-width:560px){
+ .container{padding-left:18px;padding-right:18px}
+ .rls-site-banner img{max-height:96px!important}
+ .hero{padding:38px 0 34px}
+ .hero h1{font-size:31px}
+ .hero .lead{font-size:15.5px}
+ .section{padding:44px 0}
+ .section-head h2{font-size:23px}
+ .page-hero{padding:36px 0 30px}
+ .page-hero h1{font-size:25px}
+}
