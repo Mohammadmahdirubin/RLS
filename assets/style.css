@@ -570,3 +570,77 @@ footer .rls-footer-official-logos{opacity:.94}
   .issue-card h3{font-size:18px}
   .issue-card .btn{width:100%;text-align:center}
 }
+
+
+/* ===== Author guidelines / submission resources ===== */
+.rls-dl-list{
+  max-width:900px!important;
+  display:grid;
+  gap:12px;
+}
+.rls-dl-row{
+  position:relative;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:22px!important;
+  padding:17px 20px!important;
+  margin:0!important;
+  background:var(--white)!important;
+  border:1px solid var(--line)!important;
+  border-inline-start:4px solid var(--accent3)!important;
+  border-radius:9px!important;
+  box-shadow:0 7px 20px rgba(36,27,29,.045)!important;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.rls-dl-row:hover{
+  transform:translateY(-2px);
+  box-shadow:0 11px 26px rgba(36,27,29,.075)!important;
+  border-color:#d5c4bd!important;
+}
+.rls-dl-row .rls-dl-title{
+  flex:1;
+  min-width:0;
+  font-size:14px!important;
+  font-weight:800!important;
+  color:var(--accent2)!important;
+}
+.rls-dl-row .rls-dl-title .ico{
+  width:32px;
+  height:32px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:7px;
+  background:var(--soft);
+  font-size:16px!important;
+}
+.rls-dl-btn{
+  background:var(--accent)!important;
+  padding:9px 15px!important;
+  border-radius:6px!important;
+  font-size:12px!important;
+  box-shadow:0 6px 15px rgba(139,38,53,.14)!important;
+}
+.rls-dl-btn:hover{background:var(--accent2)!important}
+.rls-dl-note{
+  max-width:900px!important;
+  margin:30px auto 0!important;
+  padding:22px 24px;
+  background:var(--alt);
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:#514447!important;
+  font-size:13.5px!important;
+  line-height:2!important;
+}
+.rls-dl-note p{margin:0 0 12px!important}
+.rls-dl-note p:last-child{margin-bottom:0!important}
+.rls-dl-note strong{color:var(--accent2)}
+.rls-dl-note a{font-weight:800;color:var(--accent)}
+@media(max-width:560px){
+  .rls-dl-row{align-items:stretch!important;padding:15px 16px!important}
+  .rls-dl-row .rls-dl-title{font-size:13.5px!important}
+  .rls-dl-btn{width:100%;justify-content:center}
+  .rls-dl-note{padding:18px 16px!important;font-size:13px!important}
+}
