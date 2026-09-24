@@ -184,6 +184,19 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
       });
     });
   }
+  if(!document.getElementById('rls-back-to-top')){
+    const topButton=document.createElement('button');
+    topButton.id='rls-back-to-top';
+    topButton.type='button';
+    topButton.setAttribute('aria-label',lang==='fa'?'بازگشت به بالای صفحه':lang==='en'?'Back to top':'Наверх');
+    topButton.innerHTML='↑';
+    topButton.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+    document.body.appendChild(topButton);
+    const updateTopButton=()=>topButton.classList.toggle('is-visible',window.scrollY>450);
+    window.addEventListener('scroll',updateTopButton,{passive:true});
+    updateTopButton();
+  }
+
 };
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
