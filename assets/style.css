@@ -835,3 +835,33 @@ footer .rls-footer-official-logos{opacity:.94}
   .content>.table-wrap .academic-table{font-size:12.5px}
   .content>.table-wrap .academic-table th{width:40%}
 }
+
+
+/* ===== Performance charts ===== */
+.metrics-chart{
+  max-width:980px;
+  margin:22px auto 30px;
+  padding:22px 24px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-top:3px solid var(--accent3);
+  border-radius:9px;
+  box-shadow:0 8px 22px rgba(36,27,29,.045);
+}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:15px;margin-bottom:20px}
+.chart-head strong{color:var(--accent2);font-size:15px}
+.chart-head span{color:var(--muted);font-size:12px}
+.chart-bars{display:grid;gap:15px}
+.chart-row{display:grid;grid-template-columns:180px 1fr 38px;gap:12px;align-items:center;font-size:13px}
+.chart-row>span:first-child{color:#55494b}
+.chart-row strong{color:var(--accent2);text-align:end}
+.chart-track{height:14px;background:#eee5e0;border-radius:99px;overflow:hidden}
+.chart-track>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:99px}
+.timing-grid{margin-top:20px!important}
+@media(max-width:700px){
+ .metrics-chart{padding:18px 16px}
+ .chart-head{display:block}
+ .chart-head span{display:block;margin-top:4px}
+ .chart-row{grid-template-columns:1fr 42px}
+ .chart-row .chart-track{grid-column:1/-1;grid-row:2}
+}
