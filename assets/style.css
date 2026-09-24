@@ -233,3 +233,8 @@ footer .rls-footer-official-logos{opacity:.94}
  .site-header .nav-submenu a{padding:8px 2px!important;font-size:13px!important}
  .site-header .main-nav>a:last-child{justify-content:center!important;margin:8px 0 2px!important;padding:10px 14px!important}
 }
+
+/* Keep the Persian journal title on one line on desktop */
+@media (min-width:901px){
+  .hero h1{font-size:40px!important;white-space:nowrap;letter-spacing:-.03em;}
+}
