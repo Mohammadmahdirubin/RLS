@@ -49,14 +49,17 @@
 <p class="stat-note">Acceptance rate and average times will be reported only after sufficient data accumulate and the formal peer-review process is fully operational, to avoid misleading statistics.</p>
 
 <h2>3. Article performance chart</h2>
-<div class="metrics-chart">
-  <div class="chart-head"><strong>Article status</strong><span>Current recorded data</span></div>
-  <div class="chart-bars">
-    <div class="chart-row"><span>Submissions received</span><div class="chart-track"><span style="width:100%"></span></div><strong>1</strong></div>
-    <div class="chart-row"><span>Accepted</span><div class="chart-track"><span style="width:100%"></span></div><strong>1</strong></div>
-    <div class="chart-row"><span>Rejected</span><div class="chart-track"><span style="width:0%"></span></div><strong>0</strong></div>
-  </div>
-</div>
+<div class="real-bar-chart" aria-label="Article status column chart">
+<div class="real-chart-title"><strong>Article status</strong><span>Based on currently recorded data</span></div>
+<svg viewBox="0 0 720 320" role="img" aria-labelledby="en-chart-title en-chart-desc">
+<title id="en-chart-title">Article status</title><desc id="en-chart-desc">One submission received, one accepted article and zero rejected articles.</desc>
+<line x1="90" y1="30" x2="90" y2="260" class="chart-axis"/><line x1="90" y1="260" x2="680" y2="260" class="chart-axis"/>
+<line x1="90" y1="145" x2="680" y2="145" class="chart-gridline"/><line x1="90" y1="30" x2="680" y2="30" class="chart-gridline"/>
+<text x="70" y="265" class="chart-label" text-anchor="end">0</text><text x="70" y="150" class="chart-label" text-anchor="end">0.5</text><text x="70" y="35" class="chart-label" text-anchor="end">1</text>
+<rect x="150" y="30" width="100" height="230" rx="6" class="chart-bar"/><rect x="330" y="30" width="100" height="230" rx="6" class="chart-bar"/><rect x="510" y="260" width="100" height="0" rx="6" class="chart-bar"/>
+<text x="200" y="285" class="chart-label" text-anchor="middle">Received</text><text x="380" y="285" class="chart-label" text-anchor="middle">Accepted</text><text x="560" y="285" class="chart-label" text-anchor="middle">Rejected</text>
+<text x="200" y="20" class="chart-value" text-anchor="middle">1</text><text x="380" y="20" class="chart-value" text-anchor="middle">1</text><text x="560" y="250" class="chart-value" text-anchor="middle">0</text>
+</svg></div>
 
 <h2>4. Review and processing times</h2>
 <div class="metric-grid timing-grid">
