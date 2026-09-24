@@ -174,3 +174,48 @@ footer .rls-footer-official-logos{opacity:.94}
  .page-hero{padding:36px 0 30px}
  .page-hero h1{font-size:25px}
 }
+
+/* Editorial board: clean academic profile system */
+.board-intro{max-width:820px;margin:0 auto 26px!important}
+.board-section-title{margin:44px 0 22px!important;color:var(--accent2);font-size:24px}
+.board-profile{
+  display:grid!important;
+  grid-template-columns:180px minmax(0,1fr)!important;
+  gap:30px!important;
+  align-items:start!important;
+  background:var(--white)!important;
+  border:1px solid var(--line)!important;
+  border-top:3px solid var(--accent3)!important;
+  border-radius:10px!important;
+  padding:26px!important;
+  margin:0 0 22px!important;
+  box-shadow:0 10px 28px rgba(36,27,29,.055)!important;
+}
+.board-profile>div:nth-child(2){background:transparent!important;padding:0!important;border-radius:0!important}
+.board-photo{width:180px!important;height:215px!important;border-radius:7px;border:1px solid var(--line);background:#f4eee9}
+.board-profile h3{font-size:22px;margin:0 0 7px!important;color:var(--accent2)}
+.board-role{color:var(--accent)!important;font-size:14px;font-weight:800!important;margin-bottom:12px!important}
+.board-meta{font-size:14.5px;line-height:1.9;color:#5d5053}
+.profile-fields{gap:9px!important;margin-top:18px!important}
+.profile-fields div{padding:11px 13px!important;background:#faf7f4!important;border:1px solid var(--line)!important;border-radius:6px}
+.profile-fields strong{color:var(--accent2)}
+.board-links{gap:7px!important;margin-top:16px!important}
+.board-links a{border:1px solid var(--accent)!important;padding:6px 11px!important;background:transparent!important;color:var(--accent)!important;border-radius:5px!important;box-shadow:none!important}
+.board-links a:hover{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important}
+.page-cert-verify{
+  width:min(680px,100%)!important;
+  margin:0 auto 30px!important;
+  padding:16px 18px!important;
+  background:var(--white)!important;
+  border:1px solid var(--line)!important;
+  border-right:3px solid var(--accent3)!important;
+  border-radius:8px!important;
+  box-shadow:0 7px 20px rgba(36,27,29,.04)!important;
+}
+.university-logo-box{width:108px!important;height:108px!important;margin:12px auto 0!important;border-radius:7px!important}
+@media(max-width:700px){
+ .board-profile{grid-template-columns:1fr!important;padding:20px!important}
+ .board-photo{width:150px!important;height:180px!important}
+ .board-profile>div:first-child{display:flex;flex-direction:column;align-items:center}
+ .profile-fields{grid-template-columns:1fr!important}
+}
