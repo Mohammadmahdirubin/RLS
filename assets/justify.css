@@ -1,0 +1,13 @@
+/* Homepage and body text justify */
+.hero .lead,
+.section .content p,
+.content > p,
+.feature-grid p,
+.policy-card p,
+.notice {
+  text-align: justify !important;
+  text-justify: inter-word;
+}
+html.rls-mobile-mode .hero .lead {
+  text-align: justify !important;
+}
