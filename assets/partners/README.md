@@ -1,9 +1,18 @@
-# University of Granada logo asset
+# University of Granada / Cuadernos de Rusística Española partner assets
 
-This directory contains the visual asset reference used by the international academic collaboration box on the RLS homepage.
+This directory holds visual assets for the international academic collaboration box on the RLS homepage.
 
-Source: Universidad de Granada, official corporate visual identity download page.
-Official asset: https://secretariageneral.ugr.es/sites/webugr/secretariageneral/public/inline-files/UGR-MARCA-01-color.png
-Official identity guidance: https://canal.ugr.es/blog/identidad-visual-corporativa-de-la-ugr/descarga-logo-ugr/
+## Logo source
 
-The homepage uses the official UGR image as a remote source rather than redistributing a copied binary file.
+Official University of Granada corporate visual identity:
+- Download page: https://secretariageneral.ugr.es/informacion/servicios/identidad-visual/descarga
+- Official asset (UGR-MARCA-01-color.png): https://secretariageneral.ugr.es/sites/webugr/secretariageneral/public/inline-files/UGR-MARCA-01-color.png
+- Identity guidance: https://canal.ugr.es/blog/identidad-visual-corporativa-de-la-ugr/descarga-logo-ugr/
+
+## Current implementation (2026-09-25)
+
+The homepage (fa / en / ru) loads the official UGR PNG **directly** from the University of Granada server via `<img src="https://secretariageneral.ugr.es/.../UGR-MARCA-01-color.png">`.
+
+This avoids SVG external-image loading issues (CORS / cross-origin restrictions) and ensures the logo always displays when the official source is reachable.
+
+The local `ugr-logo.svg` is kept as a fallback reference wrapper.
