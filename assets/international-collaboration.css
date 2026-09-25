@@ -13,21 +13,24 @@
   box-shadow:0 8px 24px rgba(36,27,29,.06);
 }
 .rls-collab-logo{
-  flex:0 0 74px;
-  width:74px;
-  height:74px;
+  flex:0 0 auto;
+  width:180px;
+  max-width:42%;
+  height:auto;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#fff;
+  background:#0a1628;
   border:1px solid var(--line);
   border-radius:8px;
   overflow:hidden;
+  padding:6px 8px;
 }
 .rls-collab-logo img{
   display:block;
-  width:62px;
-  height:62px;
+  width:100%;
+  height:auto;
+  max-height:52px;
   object-fit:contain;
 }
 .rls-collab-body{flex:1;min-width:0}
@@ -68,9 +71,9 @@
   text-align:center;
 }
 @media(max-width:700px){
-  .rls-collab-box{align-items:flex-start;padding:16px;gap:13px}
-  .rls-collab-logo{flex-basis:58px;width:58px;height:58px}
-  .rls-collab-logo img{width:48px;height:48px}
+  .rls-collab-box{flex-wrap:wrap;align-items:flex-start;padding:16px;gap:13px}
+  .rls-collab-logo{width:100%;max-width:100%;flex-basis:100%;padding:8px 10px}
+  .rls-collab-logo img{max-height:44px}
   .rls-collab-title{font-size:14.5px}
   .rls-collab-text{font-size:12.5px}
   .rls-collab-side{display:none}
