@@ -1,0 +1,77 @@
+/* ===== International academic collaboration box ===== */
+.rls-collab-box{
+  max-width:980px;
+  margin:22px auto 30px;
+  padding:18px 22px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:linear-gradient(135deg,rgba(255,253,249,.98),rgba(247,241,236,.98));
+  border:1px solid var(--line);
+  border-inline-start:4px solid var(--accent);
+  border-radius:10px;
+  box-shadow:0 8px 24px rgba(36,27,29,.06);
+}
+.rls-collab-logo{
+  flex:0 0 74px;
+  width:74px;
+  height:74px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+}
+.rls-collab-logo img{
+  display:block;
+  width:62px;
+  height:62px;
+  object-fit:contain;
+}
+.rls-collab-body{flex:1;min-width:0}
+.rls-collab-kicker{
+  margin:0 0 4px;
+  color:var(--accent);
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.rls-collab-title{
+  margin:0 0 6px;
+  color:var(--accent2);
+  font-size:16px;
+  line-height:1.6;
+  font-weight:850;
+}
+.rls-collab-text{
+  margin:0;
+  color:#55494b;
+  font-size:13px;
+  line-height:1.9;
+}
+.rls-collab-link{
+  color:var(--accent);
+  font-weight:800;
+  text-decoration:none;
+}
+.rls-collab-link:hover{text-decoration:underline}
+.rls-collab-side{
+  flex:0 0 auto;
+  padding-inline-start:16px;
+  border-inline-start:1px solid var(--line);
+  color:var(--muted);
+  font-size:11.5px;
+  line-height:1.8;
+  text-align:center;
+}
+@media(max-width:700px){
+  .rls-collab-box{align-items:flex-start;padding:16px;gap:13px}
+  .rls-collab-logo{flex-basis:58px;width:58px;height:58px}
+  .rls-collab-logo img{width:48px;height:48px}
+  .rls-collab-title{font-size:14.5px}
+  .rls-collab-text{font-size:12.5px}
+  .rls-collab-side{display:none}
+}
