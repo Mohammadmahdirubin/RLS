@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1106" height="208" viewBox="0 0 1106 208" role="img" aria-labelledby="title">
-<title>Cuadernos de Rusística Española — Universidad de Granada</title>
-<image width="1106" height="208" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABRydW50AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABiAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhQAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAYDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAGfAP/EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAQUCf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Bf//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Bf//EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEABj8Cf//EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAT8hf//Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1106 208" width="1106" height="208" role="img" aria-labelledby="t">
+  <title id="t">Cuadernos de Rusística Española | Universidad de Granada</title>
+  <rect width="1106" height="208" fill="#0a1628"/>
+  <text x="40" y="70" font-family="Georgia, Times, serif" font-size="48" font-weight="bold" fill="#ffffff">cuadernos</text>
+  <text x="40" y="120" font-family="Georgia, Times, serif" font-size="42" fill="#8eb4d4">de rusística</text>
+  <text x="40" y="165" font-family="Georgia, Times, serif" font-size="42" fill="#ffffff">española</text>
+  <line x1="420" y1="40" x2="420" y2="168" stroke="#ffffff" stroke-width="2"/>
+  <circle cx="520" cy="104" r="55" fill="none" stroke="#ffffff" stroke-width="2"/>
+  <text x="520" y="100" text-anchor="middle" font-family="serif" font-size="14" fill="#ffffff">UNIVERSITAS</text>
+  <text x="520" y="118" text-anchor="middle" font-family="serif" font-size="12" fill="#ffffff">GRANATENSIS</text>
+  <text x="600" y="95" font-family="Georgia, Times, serif" font-size="36" fill="#ffffff">UNIVERSIDAD</text>
+  <text x="600" y="140" font-family="Georgia, Times, serif" font-size="36" fill="#ffffff">DE GRANADA</text>
 </svg>
