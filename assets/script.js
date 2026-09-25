@@ -100,6 +100,7 @@ const initRLS=()=>{
         <div class="rls-footer-col"><strong>${footerJournalName}</strong><p>${lang==='ru'?'Научный журнал, выходящий два раза в год':lang==='en'?'Biannual journal':'نشریه علمی دو فصلنامه'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
+        <div class="rls-footer-col rls-footer-cc"><a class="rls-cc-badge" href="${root}copyright.html" title="Creative Commons Attribution 4.0 International"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0" width="88" height="31" loading="lazy" decoding="async"></a><p><a href="${root}copyright.html">${lang==='ru'?'Лицензия CC BY 4.0':lang==='en'?'CC BY 4.0 License':'مجوز CC BY 4.0'}</a></p></div>
       </div>
       <div class="rls-footer-official-logos">
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div><span>${ministryLabel}</span></div>
@@ -141,7 +142,7 @@ html,body{background:#faf7ec!important}
 .nav-submenu a.active{color:var(--accent)}.nav-submenu a.active:after{display:none!important}
 footer .rls-footer-inner,footer .rls-footer-inner *{direction:ltr!important;text-align:left!important;box-sizing:border-box}
 footer .rls-footer-inner{width:100%;max-width:1120px;margin:0 auto;padding:24px 20px 20px}
-footer .rls-footer-main{display:grid;grid-template-columns:1.15fr 1.15fr 1.3fr;gap:24px;align-items:start}
+footer .rls-footer-main{display:grid;grid-template-columns:1.1fr 1.1fr 1.2fr auto;gap:24px;align-items:start}footer .rls-footer-cc{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;text-align:right!important}footer .rls-footer-cc *{text-align:right!important}footer .rls-cc-badge{display:inline-block;line-height:0;margin-bottom:6px}footer .rls-cc-badge img{display:block;border:0;height:31px;width:auto}
 footer .rls-footer-col{min-width:0}
 footer .rls-footer-col strong{display:block;margin-bottom:8px}
 footer .rls-footer-col p{margin:5px 0;line-height:1.65}
@@ -154,7 +155,7 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
 @media(min-width:901px){.rls-site-banner img{max-height:90px!important;width:100%!important;object-fit:contain!important}.header-inner{min-height:56px!important}.main-nav>a,.nav-group>summary{padding-top:14px!important;padding-bottom:14px!important}.main-nav a.active:after{bottom:9px!important}.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}.site-header .main-nav{gap:10px!important;font-size:12.5px!important}}
 @media(max-width:900px){.site-header .header-inner{min-height:62px}.site-header .main-nav{display:none!important}.site-header .header-language-switcher{order:2}.site-header .menu-btn{order:3}.nav-group{width:100%}.nav-group>summary{padding:9px 0;font-size:14px;white-space:normal}.nav-submenu{position:static;min-width:0;border:0;border-inline-start:3px solid var(--accent3);box-shadow:none;margin:0 0 6px;padding:3px 10px}.nav-submenu a{padding:8px 0!important}.nav-open .main-nav{display:flex!important;position:absolute;top:62px;left:0;right:0;width:100%;max-width:none;background:#faf7ec;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:10px 24px;box-shadow:0 12px 25px rgba(91,23,35,.1);max-height:calc(100vh - 62px);overflow-y:auto}}
 @media(min-width:901px){.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}}
-@media(max-width:760px){footer .rls-footer-main{grid-template-columns:1fr 1fr}footer .rls-footer-official-logos{gap:12px;flex-wrap:wrap}}
+@media(max-width:760px){footer .rls-footer-main{grid-template-columns:1fr 1fr}footer .rls-footer-cc{align-items:flex-start}footer .rls-footer-cc *{text-align:left!important}footer .rls-footer-official-logos{gap:12px;flex-wrap:wrap}}
 @media(max-width:560px){.site-header .header-inner{min-height:56px}.site-header .header-language-switcher{flex-basis:76px;width:76px;max-width:76px;height:34px;font-size:11px}.nav-open .main-nav{top:56px;max-height:calc(100vh - 56px);padding:10px 18px}footer .rls-footer-inner{padding:20px 14px 18px}footer .rls-footer-main{grid-template-columns:1fr;gap:12px}footer .rls-email-line,footer .rls-email-line a{white-space:normal}footer .rls-footer-official-logos{gap:10px;margin-top:16px;padding-top:14px;flex-wrap:wrap}footer .rls-footer-official-logo{min-width:0}footer .rls-footer-logo-box{width:92px;height:66px}footer .rls-footer-logo-box img{max-width:82px;max-height:54px}}
 @media(orientation:landscape) and (max-width:900px){.site-header .header-inner{min-height:52px}.site-header .rls-site-banner img{height:78px!important;max-height:78px!important}.nav-open .main-nav{top:52px!important;max-height:calc(100vh - 52px)!important}}
 `;
@@ -184,19 +185,7 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
       });
     });
   }
-  if(!document.getElementById('rls-back-to-top')){
-    const topButton=document.createElement('button');
-    topButton.id='rls-back-to-top';
-    topButton.type='button';
-    topButton.setAttribute('aria-label',lang==='fa'?'بازگشت به بالای صفحه':lang==='en'?'Back to top':'Наверх');
-    topButton.innerHTML='↑';
-    topButton.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-    document.body.appendChild(topButton);
-    const updateTopButton=()=>topButton.classList.toggle('is-visible',window.scrollY>450);
-    window.addEventListener('scroll',updateTopButton,{passive:true});
-    updateTopButton();
-  }
-
 };
 
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);else initRLS();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);
+else initRLS();
