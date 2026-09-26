@@ -127,8 +127,8 @@ window.renderRLSArticleList = function (containerId, lang) {
       '<p class="authors"><strong dir="ltr">' + a.author + '</strong> · ' + affiliation + '</p>' +
       '<div class="meta-grid">' +
       '<div><span>' + receivedLabel + '</span><strong>' + a.received + '</strong></div>' +
-      '<div><span>' + onlineLabel + '</span><strong>' + a.online + '</strong></div>' +
       '<div><span>' + acceptedLabel + '</span><strong>' + acceptedText + '</strong></div>' +
+      '<div><span>' + onlineLabel + '</span><strong>' + a.online + '</strong></div>' +
       '<div><span>' + (lang === "fa" ? "شماره" : lang === "ru" ? "Выпуск" : "Issue") + '</span><strong>' + issueLabel + '</strong></div>' +
       '<div><span>DOI</span><strong>' + (a.doi || (lang === "fa" ? "تعیین نشده" : lang === "ru" ? "Не присвоен" : "Not assigned")) + '</strong></div>' +
       '</div>' +
