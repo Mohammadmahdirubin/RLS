@@ -1,0 +1,76 @@
+name: Patch logo and LTR
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/patch-logo-ltr2.yml'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          import re
+
+          # CSS
+          css = Path('assets/style.css')
+          t = css.read_text(encoding='utf-8')
+          if 'h2[dir="ltr"]' not in t:
+              t += '''
+/* English headings on RTL pages */
+.content h2[dir="ltr"]{direction:ltr!important;text-align:left!important;}
+.content p[dir="ltr"],.content [dir="ltr"]{direction:ltr!important;text-align:left!important;text-align-last:left!important;}
+'''
+              css.write_text(t, encoding='utf-8')
+              print('css')
+
+          # Articles
+          for f in Path('.').rglob('article*.html'):
+              x = f.read_text(encoding='utf-8')
+              y = x.replace('<h2>English Abstract</h2>', '<h2 dir="ltr">English Abstract</h2>')
+              y = y.replace('<h2>Abstract</h2>', '<h2 dir="ltr">Abstract</h2>')
+              y = y.replace('<h2>Keywords</h2>', '<h2 dir="ltr">Keywords</h2>')
+              if y != x:
+                  f.write_text(y, encoding='utf-8')
+                  print('art', f)
+
+          # Logo under Nabati -> SVG (always works as text file)
+          for path, src in [
+              ('editorial-board.html', 'guilan-logo.svg'),
+              ('en/editorial-board.html', '../guilan-logo.svg'),
+              ('ru/editorial-board.html', '../guilan-logo.svg'),
+          ]:
+              x = Path(path).read_text(encoding='utf-8')
+              y = x
+              y = y.replace('src="guilan-logo.png"', 'src="%s"' % src)
+              y = y.replace('src="../guilan-logo.png"', 'src="%s"' % src)
+              # if still text-only link
+              if 'guilan-logo' not in y and 'دانشگاه گیلان</a>' in y:
+                  y = y.replace('>دانشگاه گیلان</a>', '><img src="%s" alt="لوگوی دانشگاه گیلان" style="max-width:100%%;max-height:100px;object-fit:contain;"></a>' % src, 1)
+              if 'guilan-logo' not in y and 'University of Guilan</a>' in y:
+                  y = y.replace('>University of Guilan</a>', '><img src="%s" alt="University of Guilan" style="max-width:100%%;max-height:100px;object-fit:contain;"></a>' % src, 1)
+              if 'guilan-logo' not in y and 'Университет Гилян</a>' in y:
+                  y = y.replace('>Университет Гилян</a>', '><img src="%s" alt="Guilan" style="max-width:100%%;max-height:100px;object-fit:contain;"></a>' % src, 1)
+              # also ensure university-logo-box has img
+              y2, n = re.subn(
+                  r'(title="[^"]*(?:گیلان|Guilan|Гилян)[^"]*"><a href="https://guilan\.ac\.ir/"[^>]*>)(?:(?!</a>).)*(</a>)',
+                  r'\1<img src="%s" alt="University of Guilan" style="max-width:100%%;max-height:100px;object-fit:contain;">\2' % src,
+                  y, count=1)
+              if n:
+                  y = y2
+              Path(path).write_text(y, encoding='utf-8')
+              print(path, 'logo', src in Path(path).read_text(encoding='utf-8'))
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && echo none && exit 0
+          git commit -m "Show Guilan logo under Nabati; LTR English Abstract/Keywords titles"
+          git push
