@@ -24,8 +24,8 @@ window.RLS_ARTICLES = [
       en: "Faculty of Languages and Foreign Literature, University of Tehran, Iran",
       ru: "Факультет языков и зарубежной литературы, Тегеранский университет, Иран"
     },
-    received: "2026/08/17",
-    accepted: "2026/07/01",
+    received: "2026/07/01",
+    accepted: "2026/08/17",
     online: "2026/09/17",
     pdf: "articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf",
     keywords: {
