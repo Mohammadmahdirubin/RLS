@@ -1,0 +1,73 @@
+name: Fix board and LTR
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-board-ltr.yml'
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore and patch
+        run: |
+          set -e
+          git show aec559ccc84a53860964d65e8cf279a9df349730:editorial-board.html > editorial-board.html
+          sed -i 's|title="دانشگاه گیلان"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener">دانشگاه گیلان</a>|title="Guilan University"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="guilan-logo.svg" alt="University of Guilan"></a>|' editorial-board.html || true
+          grep -q 'assets/script.js' editorial-board.html || sed -i 's|</body>|<script src="assets/script.js"></script>\n</body>|' editorial-board.html
+          # restore style.css from previous good commit if we broke it
+          git show HEAD~2:assets/style.css > assets/style.css 2>/dev/null || git show b14b9b696f83633b26a7033d9aa4c2caa1f40f96:assets/style.css > assets/style.css 2>/dev/null || true
+          if ! grep -q 'Force left-align for English Abstract' assets/style.css; then
+            cat >> assets/style.css << 'CSSEOF'
+
+/* Force left-align for English Abstract / Keywords headings on RTL article pages */
+.content h2[dir="ltr"],
+.content h3[dir="ltr"],
+.article-layout .content h2[dir="ltr"],
+.article-layout .content h3[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+.content p[dir="ltr"],
+.content div[dir="ltr"],
+.article-layout .content p[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+CSSEOF
+          fi
+          # also try to restore style from a known good blob via git
+          git cat-file -e b14b9b696f83633b26a7033d9aa4c2caa1f40f96 2>/dev/null && git show b14b9b696f83633b26a7033d9aa4c2caa1f40f96:assets/style.css > /tmp/style_good.css && mv /tmp/style_good.css assets/style.css && cat >> assets/style.css << 'CSSEOF2'
+
+/* Force left-align for English Abstract / Keywords headings on RTL article pages */
+.content h2[dir="ltr"],
+.content h3[dir="ltr"],
+.article-layout .content h2[dir="ltr"],
+.article-layout .content h3[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+.content p[dir="ltr"],
+.content div[dir="ltr"],
+.article-layout .content p[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+CSSEOF2
+          wc -c editorial-board.html assets/style.css
+          grep -c Nabati editorial-board.html || grep -c نباتی editorial-board.html || true
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add editorial-board.html assets/style.css
+          git commit -m "Restore editorial board (Nabati+Guilan logo) and LTR English Abstract CSS" || exit 0
+          git push
