@@ -1,0 +1,28 @@
+name: Fetch Guilan logo PNG
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fetch-guilan-logo.yml'
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download logo and update board
+        run: |
+          set -e
+          curl -fsSL -o guilan-logo.png "https://litter.catbox.moe/9zmteb.png"
+          file guilan-logo.png
+          wc -c guilan-logo.png
+          python3 -c "from pathlib import Path; h=Path('editorial-board.html').read_text(encoding='utf-8'); h2=h.replace('guilan-logo.svg','guilan-logo.png'); Path('editorial-board.html').write_text(h2,encoding='utf-8'); print('updated' if h!=h2 else 'already png or missing')"
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add guilan-logo.png editorial-board.html
+          git status
+          git commit -m "Add official Guilan university logo PNG under Dr. Shahram Nabati" || exit 0
+          git push
