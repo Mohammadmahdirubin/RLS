@@ -198,3 +198,36 @@ window.addEventListener('resize',()=>{
   if(mobile)document.documentElement.classList.add('rls-mobile-mode');
   else document.documentElement.classList.remove('rls-mobile-mode');
 });
+
+
+/* ===== Back to top ===== */
+(function(){
+  function initBackToTop(){
+    if(document.getElementById('rls-back-to-top')) return;
+    var btn=document.createElement('button');
+    btn.id='rls-back-to-top';
+    btn.type='button';
+    btn.setAttribute('aria-label','Back to top');
+    btn.setAttribute('title','Back to top');
+    btn.innerHTML='↑';
+    document.body.appendChild(btn);
+    btn.addEventListener('click',function(){
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    function toggle(){
+      btn.classList.toggle('is-visible',(window.scrollY||window.pageYOffset)>420);
+    }
+    window.addEventListener('scroll',toggle,{passive:true});
+    toggle();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initBackToTop);
+  else initBackToTop();
+})();
+
+
+/* Back-to-top button */
+#rls-back-to-top{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border:1px solid rgba(139,38,53,.22);border-radius:50%;background:var(--accent,#8b2635);color:#fff;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s ease,visibility .2s ease,transform .2s ease,background .2s ease;z-index:9998;box-shadow:0 8px 20px rgba(36,27,29,.18)}
+#rls-back-to-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
+#rls-back-to-top:hover{background:var(--accent2,#5b1723)}
+#rls-back-to-top:focus-visible{outline:3px solid rgba(139,38,53,.28);outline-offset:3px}
+@media(max-width:560px){#rls-back-to-top{right:14px;bottom:14px;width:40px;height:40px;font-size:21px}}
