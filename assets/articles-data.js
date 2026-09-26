@@ -56,9 +56,9 @@ window.RLS_ARTICLES = [
     orcid: "0009-0005-0185-7860",
     language: "en",
     affiliation: {
-      fa: "پژوهشگر زبان روسی",
-      en: "Researcher in Russian Linguistics",
-      ru: "Исследователь русского языка"
+      fa: "کارشناسی ارشد آموزش زبان انگلیسی (TEFL)، دانشگاه آزاد اسلامی واحد غرب",
+      en: "M.A. in TEFL, Islamic Azad University, West Branch",
+      ru: "Магистр TEFL, Исламский университет Азад, западный филиал"
     },
     received: "2026/07/02",
     accepted: "2026/09/10",
