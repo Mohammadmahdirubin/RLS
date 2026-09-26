@@ -1,0 +1,79 @@
+name: Restore editorial board and LTR CSS
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/restore-board.yml'
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore board from good commit and embed logo
+        run: |
+          git show aec559ccc84a53860964d65e8cf279a9df349730:editorial-board.html > editorial-board.html
+          python3 << 'PY'
+          import pathlib
+          html = pathlib.Path("editorial-board.html").read_text(encoding="utf-8")
+          old = '<div class="university-logo-box" title="دانشگاه گیلان"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener">دانشگاه گیلان</a></div>'
+          new = '<div class="university-logo-box" title="لوگوی دانشگاه گیلان"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="guilan-logo.svg" alt="لوگوی دانشگاه گیلان"></a></div>'
+          if old in html:
+              html = html.replace(old, new, 1)
+              print("logo patched to svg")
+          else:
+              print("old pattern not found, trying alternate")
+              if "guilan-logo" not in html and "نباتی" in html:
+                  html = html.replace(
+                      'title="دانشگاه گیلان"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener">دانشگاه گیلان</a>',
+                      'title="لوگوی دانشگاه گیلان"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="guilan-logo.svg" alt="لوگوی دانشگاه گیلان"></a>',
+                      1
+                  )
+                  print("alt patch")
+          if "assets/script.js" not in html:
+              html = html.replace("</body>", '<script src="assets/script.js"></script>\n</body>')
+          pathlib.Path("editorial-board.html").write_text(html, encoding="utf-8")
+          print("board size", len(html))
+          PY
+      - name: Append LTR CSS for English Abstract headings
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          css = Path("assets/style.css").read_text(encoding="utf-8")
+          rules = """
+
+/* Force left-align for English Abstract / Keywords headings on RTL article pages */
+.content h2[dir="ltr"],
+.content h3[dir="ltr"],
+.article-layout .content h2[dir="ltr"],
+.article-layout .content h3[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+.content p[dir="ltr"],
+.content div[dir="ltr"],
+.article-layout .content p[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+"""
+          if "Force left-align for English Abstract" not in css:
+              Path("assets/style.css").write_text(css.rstrip() + "\n" + rules, encoding="utf-8")
+              print("CSS updated")
+          else:
+              print("CSS already has rules")
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add editorial-board.html assets/style.css
+          git status
+          git diff --stat || true
+          git commit -m "Restore editorial board (Nabati + Guilan logo) and force LTR English Abstract headings" || echo "nothing to commit"
+          git push
