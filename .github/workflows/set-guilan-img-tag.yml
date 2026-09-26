@@ -1,0 +1,53 @@
+name: Set Guilan logo img tags
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/set-guilan-img-tag.yml'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace text logo boxes with img tags
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          import re
+
+          def fix(path, title, alt, src):
+              t = Path(path).read_text(encoding='utf-8')
+              # Replace university-logo-box that mentions Guilan/گیلان/Гилян
+              pat = r'(<div class="university-logo-box" title="[^"]*(?:گیلان|Guilan|Гилян)[^"]*"><a href="https://guilan\.ac\.ir/"[^>]*>)(?:(?!</a>).)*(</a></div>)'
+              new = r'\1<img src="%s" alt="%s">\2' % (src, alt)
+              t2, n = re.subn(pat, new, t, count=1)
+              if n:
+                  Path(path).write_text(t2, encoding='utf-8')
+                  print(path, 'updated')
+              else:
+                  print(path, 'no match')
+                  # fallback simple replaces
+                  for old, neu in [
+                    ('>دانشگاه گیلان</a></div>', '><img src="guilan-logo.png" alt="لوگوی دانشگاه گیلان"></a></div>'),
+                    ('>University of Guilan</a></div>', '><img src="../guilan-logo.png" alt="University of Guilan logo"></a></div>'),
+                    ('>Университет Гилян</a></div>', '><img src="../guilan-logo.png" alt="Логотип Университета Гилян"></a></div>'),
+                  ]:
+                      if old in t:
+                          Path(path).write_text(t.replace(old, neu, 1), encoding='utf-8')
+                          print(path, 'fallback ok')
+                          return
+
+          fix('editorial-board.html', 'دانشگاه گیلان', 'لوگوی دانشگاه گیلان', 'guilan-logo.png')
+          fix('en/editorial-board.html', 'University of Guilan', 'University of Guilan logo', '../guilan-logo.png')
+          fix('ru/editorial-board.html', 'Университет Гилян', 'Логотип Университета Гилян', '../guilan-logo.png')
+          PY
+      - name: Commit HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add editorial-board.html en/editorial-board.html ru/editorial-board.html
+          git diff --staged --quiet && echo No HTML changes && exit 0
+          git commit -m "Show Guilan logo image under Dr. Shahram Nabati"
+          git push
