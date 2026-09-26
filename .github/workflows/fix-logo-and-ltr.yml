@@ -1,0 +1,108 @@
+name: Fix Guilan logo and LTR abstracts
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-logo-and-ltr.yml'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply fixes
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          import base64, re, urllib.request
+
+          # 1) CSS LTR rules
+          css_path = Path('assets/style.css')
+          css = css_path.read_text(encoding='utf-8')
+          extra = '''
+/* English abstract/keywords on RTL pages: force left alignment */
+.content h2[dir="ltr"],
+.content .en-block h2,
+.content h2.en-heading {
+  direction: ltr !important;
+  text-align: left !important;
+}
+.content [dir="ltr"],
+.content .en-block,
+.content .en-block p,
+.content p[dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  text-align-last: left !important;
+}
+'''
+          if 'h2[dir="ltr"]' not in css:
+              css_path.write_text(css + extra, encoding='utf-8')
+              print('css ok')
+          else:
+              print('css already')
+
+          # 2) English Abstract headings dir=ltr
+          for f in Path('.').rglob('article*.html'):
+              t = f.read_text(encoding='utf-8')
+              t2 = t.replace('<h2>English Abstract</h2>', '<h2 dir="ltr">English Abstract</h2>')
+              t2 = t2.replace('<h2>Abstract</h2>', '<h2 dir="ltr">Abstract</h2>')
+              t2 = t2.replace('<h2>Keywords</h2>', '<h2 dir="ltr">Keywords</h2>')
+              if t2 != t:
+                  f.write_text(t2, encoding='utf-8')
+                  print('article', f)
+
+          # 3) Guilan logo: try fetch from attachment mirror OR decode if file present
+          # Use official-looking logo from university site if available
+          logo_bytes = None
+          for url in [
+              'https://guilan.ac.ir/images/logo.png',
+              'https://www.guilan.ac.ir/images/logo.png',
+          ]:
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                  with urllib.request.urlopen(req, timeout=15) as r:
+                      data = r.read()
+                      if data[:4] == b'\x89PNG' or data[:2] == b'\xff\xd8':
+                          logo_bytes = data
+                          print('fetched', url, len(data))
+                          break
+              except Exception as e:
+                  print('fetch fail', url, e)
+
+          if logo_bytes:
+              Path('guilan-logo.png').write_bytes(logo_bytes)
+              uri = 'data:image/png;base64,' + base64.b64encode(logo_bytes).decode()
+              # Prefer file path for FA, relative for en/ru
+              for path, src in [
+                  ('editorial-board.html', 'guilan-logo.png'),
+                  ('en/editorial-board.html', '../guilan-logo.png'),
+                  ('ru/editorial-board.html', '../guilan-logo.png'),
+              ]:
+                  t = Path(path).read_text(encoding='utf-8')
+                  t2 = re.sub(
+                      r'(university-logo-box"[^>]*>\s*<a href="https://guilan\.ac\.ir/"[^>]*>)(?:(?!</a>).)*(</a>)',
+                      r'\1<img src="%s" alt="University of Guilan" style="max-width:100%%;max-height:110px;object-fit:contain;">\2' % src,
+                      t, count=1)
+                  if t2 == t:
+                      t2 = t.replace('src="guilan-logo.png"', 'src="%s"' % src)
+                      t2 = t2.replace('src="../guilan-logo.png"', 'src="%s"' % src)
+                      # also replace text-only link content
+                      t2 = t2.replace('>دانشگاه گیلان</a>', '><img src="%s" alt="لوگوی دانشگاه گیلان" style="max-width:100%%;max-height:110px;object-fit:contain;"></a>' % src)
+                      t2 = t2.replace('>University of Guilan</a>', '><img src="%s" alt="University of Guilan logo" style="max-width:100%%;max-height:110px;object-fit:contain;"></a>' % src)
+                      t2 = t2.replace('>Университет Гилян</a>', '><img src="%s" alt="Guilan" style="max-width:100%%;max-height:110px;object-fit:contain;"></a>' % src)
+                  Path(path).write_text(t2, encoding='utf-8')
+                  print(path, 'logo linked')
+          else:
+              print('NO LOGO FETCHED - will use existing img tags')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status
+          git diff --staged --quiet && echo No changes && exit 0
+          git commit -m "Fix: Guilan logo under Nabati; LTR English abstract/keywords titles"
+          git push
