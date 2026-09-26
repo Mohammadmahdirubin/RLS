@@ -50,8 +50,8 @@ window.RLS_ARTICLES = [
       en: "The Role of Context in Understanding Russian Verbal Aspect",
       ru: "Роль контекста в понимании глагольного вида в русском языке"
     },
-    author: "Mohammad Norouzi",
-    authorGiven: "Mohammad",
+    author: "Mohammadali Norouzi",
+    authorGiven: "Mohammadali",
     authorFamily: "Norouzi",
     orcid: "0009-0005-0185-7860",
     language: "en",
