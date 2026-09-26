@@ -1,0 +1,38 @@
+name: Upload Guilan PNG logo
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/upload-guilan-png.yml'
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode PNG and update board
+        run: |
+          python3 << 'PY'
+          import base64, pathlib
+          b64 = """PLACEHOLDER_B64"""
+          pathlib.Path("guilan-logo.png").write_bytes(base64.b64decode(b64))
+          print("png size", pathlib.Path("guilan-logo.png").stat().st_size)
+          html = pathlib.Path("editorial-board.html").read_text(encoding="utf-8")
+          html2 = html.replace("guilan-logo.svg", "guilan-logo.png")
+          if html2 != html:
+              pathlib.Path("editorial-board.html").write_text(html2, encoding="utf-8")
+              print("board updated to png")
+          else:
+              print("no svg ref or already png")
+              if "guilan-logo.png" in html:
+                  print("already using png")
+          PY
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add guilan-logo.png editorial-board.html
+          git status
+          git commit -m "Add official Guilan university logo PNG under Dr. Shahram Nabati" || exit 0
+          git push
