@@ -26,6 +26,13 @@ window.RLS_ARTICLES = [
     },
     received: "2026/08/17",
     online: "2026/09/17",
+    accepted: "",
+    pdf: "articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf",
+    keywords: {
+      fa: "هوش مصنوعی؛ زبان روسی به‌عنوان زبان خارجی؛ یادگیری چندوجهی؛ خودمختاری یادگیرنده؛ سواد انتقادی هوش مصنوعی؛ شایستگی ارتباطی میان‌فرهنگی",
+      en: "Artificial Intelligence; Russian as a Foreign Language; Multimodal Learning; Learner Autonomy; Critical AI Literacy; Intercultural Communicative Competence",
+      ru: "Искусственный интеллект; русский язык как иностранный; мультимодальное обучение; автономия обучающегося; критическая ИИ-грамотность; межкультурная коммуникативная компетентность"
+    },
     doi: "",
     license: "",
     abstract: {
@@ -63,6 +70,13 @@ window.RLS_ARTICLES = [
     received: "2026/07/02",
     accepted: "2026/09/10",
     online: "2026/09/26",
+    accepted: "2026/09/10",
+    pdf: "articles/1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf",
+    keywords: {
+      fa: "وجه فعلی در زبان روسی؛ وجه ناقص؛ وجه کامل؛ بافت؛ معنای وجهی؛ زبان روسی به‌عنوان زبان خارجی",
+      en: "Russian verbal aspect; Imperfective aspect; Perfective aspect; Context; Aspectual meaning; Russian as a Foreign Language",
+      ru: "Русский глагольный вид; несовершенный вид; совершенный вид; контекст; видовое значение; русский язык как иностранный"
+    },
     doi: "",
     license: "",
     abstract: {
@@ -95,6 +109,10 @@ window.renderRLSArticleList = function (containerId, lang) {
     var type = a.type[lang] || a.type.en;
     var affiliation = a.affiliation[lang] || a.affiliation.en;
     var abstractText = a.abstract[lang] || a.abstract.en;
+    var keywordsText = a.keywords ? (a.keywords[lang] || a.keywords.en) : "";
+    var acceptedLabel = lang === "fa" ? "پذیرش" : lang === "ru" ? "Принято" : "Accepted";
+    var acceptedText = a.accepted || (lang === "fa" ? "ثبت نشده" : lang === "ru" ? "Не зарегистрировано" : "Not separately recorded");
+    var pdfLabel = lang === "fa" ? "دانلود PDF" : lang === "ru" ? "Скачать PDF" : "Download PDF";
     var articleNumberLabel = lang === "fa" ? "مقاله" : lang === "ru" ? "Статья" : "Article";
     var articleNumber = a.number != null ? a.number : "";
     var receivedLabel = lang === "fa" ? "دریافت" : lang === "ru" ? "Получено" : "Received";
@@ -110,11 +128,13 @@ window.renderRLSArticleList = function (containerId, lang) {
       '<div class="meta-grid">' +
       '<div><span>' + receivedLabel + '</span><strong>' + a.received + '</strong></div>' +
       '<div><span>' + onlineLabel + '</span><strong>' + a.online + '</strong></div>' +
+      '<div><span>' + acceptedLabel + '</span><strong>' + acceptedText + '</strong></div>' +
       '<div><span>' + (lang === "fa" ? "شماره" : lang === "ru" ? "Выпуск" : "Issue") + '</span><strong>' + issueLabel + '</strong></div>' +
       '<div><span>DOI</span><strong>' + (a.doi || (lang === "fa" ? "تعیین نشده" : lang === "ru" ? "Не присвоен" : "Not assigned")) + '</strong></div>' +
       '</div>' +
       '<p>' + abstractText + '</p>' +
-      '<div class="article-actions"><span class="status">' + doiText + '</span> <a class="button secondary" href="' + a.href + '">' + viewLabel + '</a></div>' +
+      (keywordsText ? '<p class="stat-note"><strong>' + (lang === "fa" ? "کلیدواژه‌ها" : lang === "ru" ? "Ключевые слова" : "Keywords") + ':</strong> ' + keywordsText + '</p>' : '') +
+      '<div class="article-actions"><span class="status">' + doiText + '</span> <a class="button secondary" href="' + a.href + '">' + viewLabel + '</a> <a class="button primary" href="' + a.pdf + '" target="_blank" rel="noopener">' + pdfLabel + '</a></div>' +
       '</article>';
   }).join('');
 };
