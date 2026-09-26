@@ -1,0 +1,54 @@
+name: fix-board-v2
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-board-v2.yml'
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: restore
+        run: |
+          set -eux
+          git show aec559ccc84a53860964d65e8cf279a9df349730:editorial-board.html > editorial-board.html
+          python3 -c "
+          from pathlib import Path
+          h = Path('editorial-board.html').read_text(encoding='utf-8')
+          h = h.replace(
+            'title=\"\u062f\u0627\u0646\u0634\u06af\u0627\u0647 \u06af\u06cc\u0644\u0627\u0646\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">\u062f\u0627\u0646\u0634\u06af\u0627\u0647 \u06af\u06cc\u0644\u0627\u0646</a>',
+            'title=\"University of Guilan\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\"><img src=\"guilan-logo.svg\" alt=\"University of Guilan\"></a>'
+          )
+          if 'assets/script.js' not in h:
+              h = h.replace('</body>', '<script src=\"assets/script.js\"></script>\\n</body>')
+          Path('editorial-board.html').write_text(h, encoding='utf-8')
+          print('board ok', len(h))
+          "
+          git show b14b9b696f83633b26a7033d9aa4c2caa1f40f96 -- assets/style.css 2>/dev/null | sed '1,/^$/d' > /tmp/s.css || true
+          if [ ! -s /tmp/s.css ]; then git show aec559ccc84a53860964d65e8cf279a9df349730:assets/style.css > /tmp/s.css || true; fi
+          if [ -s /tmp/s.css ]; then cp /tmp/s.css assets/style.css; fi
+          python3 -c "
+          from pathlib import Path
+          p = Path('assets/style.css')
+          css = p.read_text(encoding='utf-8') if p.exists() else ''
+          rule = '''\n/* Force left-align for English Abstract / Keywords headings on RTL article pages */\n.content h2[dir=\"ltr\"],\n.content h3[dir=\"ltr\"],\n.article-layout .content h2[dir=\"ltr\"],\n.article-layout .content h3[dir=\"ltr\"] {\n  direction: ltr !important;\n  text-align: left !important;\n  unicode-bidi: isolate;\n}\n.content p[dir=\"ltr\"],\n.content div[dir=\"ltr\"],\n.article-layout .content p[dir=\"ltr\"] {\n  direction: ltr !important;\n  text-align: left !important;\n  unicode-bidi: isolate;\n}\n'''
+          if 'Force left-align for English Abstract' not in css:
+              p.write_text(css.rstrip() + rule, encoding='utf-8')
+              print('css patched')
+          else:
+              print('css already ok')
+          print('css size', p.stat().st_size)
+          "
+      - name: push
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add editorial-board.html assets/style.css
+          git status
+          git commit -m 'Restore editorial board Nabati Guilan logo and LTR English headings' || exit 0
+          git push
