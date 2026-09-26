@@ -6,8 +6,27 @@ const initRLS=()=>{
   const root=inEn||inRu?'../':'';
   const file=(path.split('/').pop()||'index.html').toLowerCase();
   const asset=name=>root+encodeURI(name);
-  const header=document.querySelector('.site-header');
-  const nav=document.querySelector('.main-nav');
+  let header=document.querySelector('.site-header');
+  let nav=document.querySelector('.main-nav');
+  if(!header){
+    header=document.createElement('header');
+    header.className='site-header';
+    header.innerHTML='<div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>RLS</small></span></a><button class="menu-btn" aria-label="Menu">☰</button><nav class="main-nav"></nav></div>';
+    document.body.insertBefore(header, document.body.firstChild);
+    nav=header.querySelector('.main-nav');
+  } else if(!nav){
+    const inner=header.querySelector('.header-inner')||header;
+    nav=document.createElement('nav');
+    nav.className='main-nav';
+    if(!header.querySelector('.menu-btn')){
+      const btn=document.createElement('button');
+      btn.className='menu-btn';
+      btn.setAttribute('aria-label','Menu');
+      btn.textContent='☰';
+      inner.appendChild(btn);
+    }
+    inner.appendChild(nav);
+  }
   const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const mobile=isMobileUA && Math.min(window.innerWidth||9999, screen.width||9999)<=900;
   if(mobile)document.documentElement.classList.add('rls-mobile-mode');
@@ -128,7 +147,9 @@ const initRLS=()=>{
   if(!document.getElementById('rls-runtime-style')){
     const style=document.createElement('style');
     style.id='rls-runtime-style';
-    style.textContent=`
+    style.textContent=`.site-header{position:sticky!important;top:0!important;z-index:10000!important;background:rgba(250,247,236,.98)!important;}
+.site-header .main-nav{display:flex!important;}
+
 :root{--paper:#faf7ec!important}
 html,body{background:#faf7ec!important}
 .site-header{background:#faf7ec!important;box-shadow:none!important}
