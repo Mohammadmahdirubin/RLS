@@ -1,0 +1,92 @@
+name: Nav sticky and Nabati board member
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/nav-and-nabati.yml'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch script.js and editorial boards
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+
+          # --- script.js: ensure header + sticky ---
+          p = Path('assets/script.js')
+          t = p.read_text(encoding='utf-8')
+          old = """  const header=document.querySelector('.site-header');
+            const nav=document.querySelector('.main-nav');"""
+          # tolerate spacing
+          import re
+          if "createElement('header')" not in t and 'createElement("header")' not in t:
+            t2, n = re.subn(
+              r"const header=document\.querySelector\('\.site-header'\);\s*const nav=document\.querySelector\('\.main-nav'\);",
+              """let header=document.querySelector('.site-header');
+            let nav=document.querySelector('.main-nav');
+            if(!header){
+              header=document.createElement('header');
+              header.className='site-header';
+              header.innerHTML='<div class=\"container header-inner\"><a class=\"brand\" href=\"index.html\"><span class=\"brand-mark\">RLS</span><span><strong>Russian Language Studies</strong><small>RLS</small></span></a><button class=\"menu-btn\" aria-label=\"Menu\">☰</button><nav class=\"main-nav\"></nav></div>';
+              document.body.insertBefore(header, document.body.firstChild);
+              nav=header.querySelector('.main-nav');
+            } else if(!nav){
+              const inner=header.querySelector('.header-inner')||header;
+              nav=document.createElement('nav');
+              nav.className='main-nav';
+              if(!header.querySelector('.menu-btn')){
+                const btn=document.createElement('button');
+                btn.className='menu-btn';
+                btn.setAttribute('aria-label','Menu');
+                btn.textContent='☰';
+                inner.appendChild(btn);
+              }
+              inner.appendChild(nav);
+            }""",
+              t, count=1
+            )
+            t = t2 if n else t
+            print('header patch', n)
+          sticky = ".site-header{position:sticky!important;top:0!important;z-index:10000!important;background:rgba(250,247,236,.98)!important;}\n.site-header .main-nav{display:flex!important;}\n"
+          if 'position:sticky!important;top:0' not in t:
+            if "style.id='rls-runtime-style';" in t:
+              # insert after first backtick following runtime style
+              i = t.find("style.id='rls-runtime-style';")
+              j = t.find('`', i)
+              if j > 0:
+                t = t[:j+1] + sticky + t[j+1:]
+                print('sticky inserted')
+          p.write_text(t, encoding='utf-8')
+
+          fa = '''<article class=\"board-profile\"><div class=\"photo-logo-wrap\"><div class=\"board-photo\">محل درج عکس رسمی عضو</div><div class=\"university-logo-box\" title=\"دانشگاه گیلان\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">دانشگاه گیلان</a></div></div><div><h3>دکتر شهرام نباتی</h3><div class=\"board-role\">عضو هیئت تحریریه</div><p class=\"board-meta\">دانشیار زبان روسی، دانشگاه گیلان.</p><div class=\"profile-fields\"><div><strong>مرتبه علمی</strong>دانشیار</div><div><strong>وابستگی سازمانی</strong>دانشگاه گیلان · ایران</div><div><strong>حوزه تخصصی</strong><br>زبان روسی · آموزش زبان روسی</div><div><strong>سوابق علمی منتخب</strong>۱۲ مقاله نشریه · ۱۴ مقاله کنفرانسی · ۴ کتاب</div></div><div class=\"board-links\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">دانشگاه گیلان</a></div></div></article>\n'''
+          en = '''<article class=\"board-profile\"><div class=\"photo-logo-wrap\"><div class=\"board-photo\">Official photo placeholder</div><div class=\"university-logo-box\" title=\"University of Guilan\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">University of Guilan</a></div></div><div><h3>Dr. Shahram Nabati</h3><div class=\"board-role\">Editorial Board Member</div><p class=\"board-meta\">Associate Professor of Russian Language, University of Guilan, Iran.</p><div class=\"profile-fields\"><div><strong>Academic Rank</strong>Associate Professor</div><div><strong>Affiliation</strong>University of Guilan · Iran</div><div><strong>Specialization</strong><br>Russian Language · Russian Language Teaching</div><div><strong>Selected Academic Profile</strong>12 journal articles · 14 conference papers · 4 books</div></div><div class=\"board-links\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">University of Guilan</a></div></div></article>\n'''
+          ru = '''<article class=\"board-profile\"><div class=\"photo-logo-wrap\"><div class=\"board-photo\">Место для официальной фотографии</div><div class=\"university-logo-box\" title=\"Университет Гилян\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">Университет Гилян</a></div></div><div><h3>доктор Шахрам Набати</h3><div class=\"board-role\">Член редколлегии</div><p class=\"board-meta\">Доцент русского языка, Университет Гилян, Иран.</p><div class=\"profile-fields\"><div><strong>Учёное звание</strong>Доцент</div><div><strong>Организационная принадлежность</strong>Университет Гилян · Иран</div><div><strong>Специализация</strong><br>Русский язык · Преподавание русского языка</div><div><strong>Избранные научные достижения</strong>12 журнальных статей · 14 докладов на конференциях · 4 книги</div></div><div class=\"board-links\"><a href=\"https://guilan.ac.ir/\" target=\"_blank\" rel=\"noopener\">Университет Гилян</a></div></div></article>\n'''
+
+          def ins(path, marker, card, needle):
+            tp = Path(path)
+            tx = tp.read_text(encoding='utf-8')
+            if needle in tx:
+              print(path, 'already')
+              return
+            if marker not in tx:
+              print(path, 'no marker')
+              return
+            tp.write_text(tx.replace(marker, card + marker, 1), encoding='utf-8')
+            print(path, 'ok')
+
+          ins('editorial-board.html', '<h2 class="board-section-title">هیئت تحریریه بین‌المللی</h2>', fa, 'شهرام نباتی')
+          ins('en/editorial-board.html', '<h2 class="board-section-title">International Editorial Board</h2>', en, 'Shahram Nabati')
+          ins('ru/editorial-board.html', '<h2 class="board-section-title">Международная редколлегия</h2>', ru, 'Шахрам Набати')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && echo No changes && exit 0
+          git commit -m "Sticky top nav on all pages; add Dr. Shahram Nabati to editorial board"
+          git push
