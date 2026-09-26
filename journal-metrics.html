@@ -33,46 +33,16 @@
 <p class="stat-note">شاخص‌های شمارشی بر اساس ۴ مقاله دریافتی ثبت‌شده در سامانه محاسبه شده‌اند؛ ۲ مقاله پذیرفته و منتشر شده‌اند و ۱ مقاله هنوز در مرحله بررسی/تعیین‌تکلیف قرار دارد. برای زمان‌های بررسی و داوری، تا زمان ثبت داده‌های واقعی، مقدار «—» نمایش داده می‌شود.</p>
 
 <h2>۳. روند عملکرد مقالات</h2>
-<div class="stat-chart" aria-label="نمودار خطی روند مقالات">
-<div class="real-chart-title"><strong>نمودار روند وضعیت مقالات</strong><span>بر اساس ۳ مقاله دریافتی</span></div>
-<svg viewBox="0 0 720 320" role="img" aria-labelledby="fa-line-title fa-line-desc" style="width:100%;height:auto">
-<title id="fa-line-title">روند وضعیت مقالات</title>
-<desc id="fa-line-desc">تعداد مقالات در مراحل دریافت، پذیرش و رد: ۴، ۲ و ۱ مقاله.</desc>
-<line x1="80" y1="30" x2="80" y2="255" class="chart-axis"/><line x1="80" y1="255" x2="670" y2="255" class="chart-axis"/>
-<line x1="80" y1="142.5" x2="670" y2="142.5" class="chart-gridline"/><line x1="80" y1="30" x2="670" y2="30" class="chart-gridline"/>
-<text x="60" y="260" class="chart-label" text-anchor="end">۰</text><text x="60" y="147" class="chart-label" text-anchor="end">۱</text><text x="60" y="35" class="chart-label" text-anchor="end">۲</text>
-<path d="M140 30 C210 30 290 60 360 60 C430 60 510 255 580 255" fill="none" class="chart-line"/>
-<circle cx="140" cy="30" r="6" class="chart-point"/><circle cx="360" cy="60" r="6" class="chart-point"/><circle cx="580" cy="255" r="6" class="chart-point"/>
-<text x="140" y="280" class="chart-label" text-anchor="middle">دریافت‌شده (۴)</text><text x="360" y="280" class="chart-label" text-anchor="middle">پذیرفته‌شده (۲)</text><text x="580" y="280" class="chart-label" text-anchor="middle">ردشده (۰)</text>
+<div class="stat-chart" aria-label="نمودار روند وضعیت مقالات">
+<div class="real-chart-title"><strong>نمودار روند وضعیت مقالات</strong><span>محور عمودی: تعداد مقالات · محور افقی: وضعیت مقاله</span></div>
+<svg viewBox="0 0 720 360" role="img" aria-label="تعداد مقالات بر اساس وضعیت" style="width:100%;height:auto">
+<line x1="90" y1="35" x2="90" y2="285" class="chart-axis"/><line x1="90" y1="285" x2="665" y2="285" class="chart-axis"/>
+<line x1="90" y1="222.5" x2="665" y2="222.5" class="chart-gridline"/><line x1="90" y1="160" x2="665" y2="160" class="chart-gridline"/><line x1="90" y1="97.5" x2="665" y2="97.5" class="chart-gridline"/><line x1="90" y1="35" x2="665" y2="35" class="chart-gridline"/>
+<text x="70" y="290" class="chart-label" text-anchor="end">۰</text><text x="70" y="227" class="chart-label" text-anchor="end">۱</text><text x="70" y="165" class="chart-label" text-anchor="end">۲</text><text x="70" y="102" class="chart-label" text-anchor="end">۳</text><text x="70" y="40" class="chart-label" text-anchor="end">۴</text>
+<text x="22" y="160" class="chart-label" text-anchor="middle" transform="rotate(-90 22 160)">تعداد مقالات</text>
+<path d="M180 35 C260 35 300 160 390 160 C480 160 520 222.5 600 222.5" fill="none" class="chart-line"/>
+<circle cx="180" cy="35" r="7" class="chart-point"/><circle cx="390" cy="160" r="7" class="chart-point"/><circle cx="600" cy="222.5" r="7" class="chart-point"/>
+<text x="180" y="315" class="chart-label" text-anchor="middle">دریافت‌شده (۴)</text><text x="390" y="315" class="chart-label" text-anchor="middle">پذیرفته‌شده (۲)</text><text x="600" y="315" class="chart-label" text-anchor="middle">ردشده (۱)</text>
 </svg>
-<p class="stat-note">در حال حاضر ۴ مقاله دریافت شده است؛ ۲ مقاله پذیرفته و منتشر شده، ۱ مقاله رد شده و ۱ مقاله هنوز در حال بررسی/تعیین‌تکلیف است.</p>
+<p class="stat-note">محور عمودی تعداد مقالات را نشان می‌دهد و محور افقی وضعیت مقالات را. وضعیت فعلی: ۴ دریافتی، ۲ پذیرفته‌شده، ۱ ردشده و ۱ مقاله در حال بررسی.</p>
 </div>
-
-<h2>۴. زمان‌بندی داوری و بررسی</h2>
-<div class="metric-grid timing-grid">
-  <div class="metric-card"><span class="num">۵ روز</span><span class="label">میانگین بررسی اولیه</span></div>
-  <div class="metric-card"><span class="num">۲ هفته</span><span class="label">میانگین زمان داوری</span></div>
-  <div class="metric-card"><span class="num">—</span><span class="label">میانگین زمان تا تصمیم نهایی</span></div>
-</div>
-<p class="stat-note">میانگین بررسی اولیه ۵ روز و میانگین زمان داوری ۲ هفته است. میانگین زمان تا تصمیم نهایی در صورت ثبت داده کافی به‌روزرسانی خواهد شد.</p>
-
-<h2>۵. روند انتشار مقالات</h2>
-<div class="stat-chart" aria-label="نمودار منحنی روند تجمعی مقالات">
-<div class="real-chart-title"><strong>روند تجمعی مقالات ثبت‌شده</strong><span>بر اساس تاریخ‌های ثبت‌شده</span></div>
-<svg viewBox="0 0 720 320" role="img" aria-labelledby="fa-cumulative-title fa-cumulative-desc" style="width:100%;height:auto">
-<title id="fa-cumulative-title">روند تجمعی مقالات ثبت‌شده</title>
-<desc id="fa-cumulative-desc">نمودار تجمعی بر پایه ۲ مقاله‌ای است که تاریخ دریافت آن‌ها در داده‌های عمومی مقالات ثبت شده است؛ یک مقاله دریافتی دیگر هنوز تاریخ دریافت عمومی ندارد.</desc>
-<line x1="80" y1="30" x2="80" y2="255" class="chart-axis"/><line x1="80" y1="255" x2="670" y2="255" class="chart-axis"/>
-<line x1="80" y1="142.5" x2="670" y2="142.5" class="chart-gridline"/><line x1="80" y1="30" x2="670" y2="30" class="chart-gridline"/>
-<text x="60" y="260" class="chart-label" text-anchor="end">۰</text><text x="60" y="147" class="chart-label" text-anchor="end">۱</text><text x="60" y="35" class="chart-label" text-anchor="end">۲</text>
-<path d="M140 142.5 C220 142.5 280 30 360 30 C440 30 500 30 580 30" fill="none" class="chart-line"/>
-<circle cx="140" cy="142.5" r="6" class="chart-point"/><circle cx="360" cy="30" r="6" class="chart-point"/><circle cx="580" cy="30" r="6" class="chart-point"/>
-<text x="140" y="280" class="chart-label" text-anchor="middle">تیر ۱۴۰۵ · ۱</text><text x="360" y="280" class="chart-label" text-anchor="middle">مرداد ۱۴۰۵ · ۲</text><text x="580" y="280" class="chart-label" text-anchor="middle">شهریور ۱۴۰۵ · ۲</text>
-</svg>
-<p class="stat-note">این نمودار فقط بر اساس تاریخ‌های واقعی دریافت ثبت‌شده برای مقالات دارای داده عمومی ساخته شده است و با ثبت تاریخ مقاله سوم، به‌روزرسانی خواهد شد.</p>
-</div>
-
-<h2>۶. اصل شفافیت آماری</h2>
-<p>هیچ رقم، نرخ پذیرش، زمان داوری یا شاخص استنادی بدون پشتوانه داده واقعی در سایت درج نمی‌شود.</p>
-
-</div></section></main><footer></footer><script src="assets/articles-data.js?v=20260926-3"></script><script>document.addEventListener('DOMContentLoaded',function(){var articles=window.RLS_ARTICLES||[];var n=articles.filter(function(a){return a&&a.status==='published';}).length;document.querySelectorAll('[data-rls-article-count]').forEach(function(el){el.textContent=new Intl.NumberFormat('fa-IR').format(n);});var bar=document.getElementById('article-bar');if(bar)bar.style.width=Math.min(Math.max(n*20,8),100)+'%';});</script><script src="assets/script.js?v=20260926-3"></script></body></html>
