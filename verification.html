@@ -353,7 +353,8 @@ function verify(){
 
     '<a href="' +
     r.doc +
-    '?v=20260922' +
+    '?v=20260927-' +
+    encodeURIComponent(code) +
     '" target="_blank" rel="noopener">' +
 
     'مشاهده نامه ثبت‌شده' +
@@ -392,6 +393,11 @@ const params =
 
 const q =
   params.get("code");
+
+// Cache-bust verification result when a certificate code is supplied.
+if(q){
+  document.title = "استعلام گواهینامه | " + q;
+}
 
 const member =
   params.get("member");
