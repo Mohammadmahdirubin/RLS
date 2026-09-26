@@ -34,6 +34,42 @@ window.RLS_ARTICLES = [
       ru: "В статье предлагается концептуальная модель мультимодального обучения русскому языку с поддержкой искусственного интеллекта с акцентом на автономию учащегося, критическую ИИ-грамотность, мультимодальный дизайн заданий и межкультурную коммуникативную компетентность."
     },
     href: "article-ai-supported-multimodal-russian-language-learning.html"
+  },
+  {
+    id: "role-of-context-russian-verbal-aspect",
+    number: 2,
+    status: "published",
+    issue: "1/1",
+    type: {
+      fa: "مقاله پژوهشی",
+      en: "Research Article",
+      ru: "Научная статья"
+    },
+    title: {
+      fa: "نقش بافت در درک وجه فعلی در زبان روسی",
+      en: "The Role of Context in Understanding Russian Verbal Aspect",
+      ru: "Роль контекста в понимании глагольного вида в русском языке"
+    },
+    author: "Mohammadmahdi Rubin",
+    authorGiven: "Mohammadmahdi",
+    authorFamily: "Rubin",
+    orcid: "0009-0004-8475-2804",
+    language: "en",
+    affiliation: {
+      fa: "دانشکده زبان‌ها و ادبیات خارجی، دانشگاه تهران، ایران",
+      en: "Faculty of Languages and Foreign Literature, University of Tehran, Iran",
+      ru: "Факультет языков и зарубежной литературы, Тегеранский университет, Иран"
+    },
+    received: "2026/09/01",
+    online: "2026/09/26",
+    doi: "",
+    license: "",
+    abstract: {
+      fa: "این مقاله نقش بافت زبانی و موقعیتی را در درک وجه فعلی (کامل/ناقص) در زبان روسی بررسی می‌کند و نشان می‌دهد که تفسیر وجه فعلی تنها به صرف فعل وابسته نیست، بلکه از تعامل معنایی با بافت جمله، گفتمان و موقعیت ارتباطی شکل می‌گیرد.",
+      en: "This article examines the role of linguistic and situational context in understanding Russian verbal aspect (perfective/imperfective). It argues that aspectual interpretation is not determined by verb morphology alone, but emerges from the semantic interaction of the verb with sentence, discourse, and communicative context.",
+      ru: "В статье рассматривается роль языкового и ситуативного контекста в понимании глагольного вида (совершенного/несовершенного) в русском языке. Утверждается, что видовая интерпретация определяется не только морфологией глагола, но и семантическим взаимодействием глагола с предложением, дискурсом и коммуникативной ситуацией."
+    },
+    href: "article-role-of-context-russian-verbal-aspect.html"
   }
 ];
 
