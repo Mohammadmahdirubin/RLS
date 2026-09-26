@@ -1,0 +1,12 @@
+/* Force left alignment for English blocks on RTL article pages */
+.content h2[dir="ltr"],
+.content h2.en-heading {
+  direction: ltr !important;
+  text-align: left !important;
+}
+.content p[dir="ltr"],
+.content [dir="ltr"] {
+  direction: ltr !important;
+  text-align: left !important;
+  text-align-last: left !important;
+}
