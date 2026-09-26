@@ -1,0 +1,52 @@
+name: Set Nabati profile photo
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/set-nabati-photo.yml'
+jobs:
+  set:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Insert photo for Dr. Shahram Nabati
+        run: |
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path('editorial-board.html')
+          h = p.read_text(encoding='utf-8')
+          old = '<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo">محل درج عکس رسمی عضو</div><div class="university-logo-box" title="University of Guilan"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="guilan-logo.png" alt="University of Guilan"></a></div></div><div><h3>دکتر شهرام نباتی</h3>'
+          new = '<article class="board-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="shahram-nabati.jpg" alt="دکتر شهرام نباتی"></div><div class="university-logo-box" title="University of Guilan"><a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="guilan-logo.png" alt="University of Guilan"></a></div></div><div><h3>دکتر شهرام نباتی</h3>'
+          if old in h:
+              h = h.replace(old, new, 1)
+              p.write_text(h, encoding='utf-8')
+              print('photo inserted')
+          elif 'shahram-nabati.jpg' in h:
+              print('already has photo')
+          else:
+              # fallback: only replace the placeholder right before Nabati heading context
+              marker = '<h3>دکتر شهرام نباتی</h3>'
+              idx = h.find(marker)
+              if idx == -1:
+                  raise SystemExit('Nabati section not found')
+              # find last board-photo placeholder before this heading
+              chunk = h[:idx]
+              ph = '<div class="board-photo">محل درج عکس رسمی عضو</div>'
+              last = chunk.rfind(ph)
+              if last == -1:
+                  raise SystemExit('placeholder not found near Nabati')
+              h = h[:last] + '<div class="board-photo"><img src="shahram-nabati.jpg" alt="دکتر شهرام نباتی"></div>' + h[last+len(ph):]
+              p.write_text(h, encoding='utf-8')
+              print('photo inserted via fallback')
+          print('count', h.count('shahram-nabati.jpg'))
+          PY
+      - name: Commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add editorial-board.html
+          git commit -m "Add profile photo for Dr. Shahram Nabati on editorial board" || exit 0
+          git pull --rebase origin main || true
+          git push
