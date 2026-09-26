@@ -71,35 +71,20 @@ const initRLS=()=>{
 
   const langUrls=lang==='fa'?{fa:'index.html',en:'en/index.html',ru:'ru/index.html'}:lang==='en'?{fa:'../index.html',en:'index.html',ru:'../ru/index.html'}:{fa:'../index.html',en:'../en/index.html',ru:'index.html'};
   if(header){
-    header.querySelectorAll('.rls-site-banner').forEach(el=>el.remove());
     const inner=header.querySelector('.header-inner');
     if(inner){
-      inner.querySelectorAll('.brand').forEach(el=>el.remove());
+      let brand=inner.querySelector('.brand');
+      if(!brand){ brand=document.createElement('a'); brand.className='brand'; inner.insertBefore(brand,inner.firstChild); }
+      brand.href=langUrls[lang];
+      brand.innerHTML=lang==='fa'?'<span class="brand-mark">RLS</span><span><strong dir="ltr">Russian Language Studies</strong><small>دوفصلنامه مطالعات زبان روسی</small></span>':lang==='en'?'<span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>Russian Language Studies · Biannual journal</small></span>':'<span class="brand-mark">RLS</span><span><strong>Исследования по русскому языку</strong><small>Russian Language Studies · Два выпуска в год</small></span>';
       inner.querySelectorAll('.main-nav .language-switcher').forEach(el=>el.remove());
       let switcher=inner.querySelector('.header-language-switcher');
-      if(!switcher){
-        switcher=document.createElement('select');
-        switcher.className='language-switcher header-language-switcher';
-        inner.appendChild(switcher);
-      }
+      if(!switcher){ switcher=document.createElement('select'); switcher.className='language-switcher header-language-switcher'; inner.insertBefore(switcher,inner.querySelector('.menu-btn')||nav||null); }
       switcher.setAttribute('aria-label',lang==='fa'?'انتخاب زبان':lang==='en'?'Language':'Язык');
-      switcher.innerHTML=`<option value="${langUrls.fa}">فارسی</option><option value="${langUrls.en}">English</option><option value="${langUrls.ru}">Русский</option>`;
+      switcher.innerHTML='<option value="'+langUrls.fa+'">فارسی</option><option value="'+langUrls.en+'">English</option><option value="'+langUrls.ru+'">Русский</option>';
       switcher.value=langUrls[lang];
       switcher.onchange=()=>{location.href=switcher.value;};
     }
-    const banner=document.createElement('div');
-    banner.className='rls-site-banner';
-    const bannerLink=document.createElement('a');
-    bannerLink.href=langUrls[lang];
-    bannerLink.setAttribute('aria-label',lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies':'دوفصلنامه مطالعات زبان روسی');
-    const image=document.createElement('img');
-    image.src=asset('Banner.png');
-    image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
-    image.loading='eager';
-    image.decoding='async';
-    bannerLink.appendChild(image);
-    banner.appendChild(bannerLink);
-    header.insertBefore(banner,header.firstChild);
   }
 
   const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования по русскому языку';
@@ -127,7 +112,7 @@ const initRLS=()=>{
         <div class="rls-footer-col"><strong>${footerJournalName}</strong><p>${lang==='ru'?'Научный журнал, выходящий два раза в год':lang==='en'?'Biannual journal':'نشریه علمی دو فصلنامه'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
-        <div class="rls-footer-col rls-footer-cc"><a class="rls-cc-badge" href="${root}copyright.html" title="Creative Commons Attribution 4.0 International"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0" width="88" height="31" loading="lazy" decoding="async"></a><p><a href="${root}copyright.html">${lang==='ru'?'Лицензия CC BY 4.0':lang==='en'?'CC BY 4.0 License':'مجوز CC BY 4.0'}</a></p></div>
+        <div class="rls-footer-col rls-footer-cc" style="display:${file==='index.html'?'flex':'none'}"><a class="rls-cc-badge" href="${root}copyright.html" title="Creative Commons Attribution 4.0 International"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0" width="88" height="31" loading="lazy" decoding="async"></a><p><a href="${root}copyright.html">${lang==='ru'?'Лицензия CC BY 4.0':lang==='en'?'CC BY 4.0 License':'مجوز CC BY 4.0'}</a></p></div>
       </div>
       <div class="rls-footer-official-logos">
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div><span>${ministryLabel}</span></div>
