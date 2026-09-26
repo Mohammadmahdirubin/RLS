@@ -1,0 +1,50 @@
+name: Quick fix logo LTR
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/quick-fix.yml'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: sed fixes
+        run: |
+          set -e
+          # Logo paths
+          sed -i 's|src="guilan-logo.png"|src="guilan-logo.svg"|g' editorial-board.html || true
+          sed -i 's|src="guilan-logo.png"|src="../guilan-logo.svg"|g' en/editorial-board.html ru/editorial-board.html || true
+          sed -i 's|src="../guilan-logo.png"|src="../guilan-logo.svg"|g' en/editorial-board.html ru/editorial-board.html || true
+          # English headings LTR
+          find . -name 'article*.html' -print0 | xargs -0 sed -i \
+            -e 's|<h2>English Abstract</h2>|<h2 dir="ltr">English Abstract</h2>|g' \
+            -e 's|<h2>Abstract</h2>|<h2 dir="ltr">Abstract</h2>|g' \
+            -e 's|<h2>Keywords</h2>|<h2 dir="ltr">Keywords</h2>|g'
+          # Runtime CSS for LTR headings
+          if ! grep -q 'h2\[dir="ltr"\]' assets/script.js; then
+            python3 -c "
+from pathlib import Path
+p=Path('assets/script.js')
+t=p.read_text(encoding='utf-8')
+ltr='''\\n.content h2[dir=\\\"ltr\\\"]{direction:ltr!important;text-align:left!important;}\\n.content p[dir=\\\"ltr\\\"],.content [dir=\\\"ltr\\\"]{direction:ltr!important;text-align:left!important;text-align-last:left!important;}\\n'''
+if \\\"style.textContent=\\\" in t:
+  t=t.replace('style.textContent=\\`', 'style.textContent=\\`'+ltr, 1)
+  p.write_text(t, encoding='utf-8')
+  print('script ok')
+else:
+  print('no inject point')
+"
+          fi
+          grep -n 'guilan-logo' editorial-board.html | head -2
+          grep -n 'English Abstract' article-ai-supported-multimodal-russian-language-learning.html | head -2
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && echo none && exit 0
+          git commit -m "Fix Guilan logo path to SVG; LTR English Abstract/Keywords titles"
+          git push
