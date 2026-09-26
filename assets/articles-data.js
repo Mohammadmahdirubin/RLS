@@ -50,24 +50,25 @@ window.RLS_ARTICLES = [
       en: "The Role of Context in Understanding Russian Verbal Aspect",
       ru: "Роль контекста в понимании глагольного вида в русском языке"
     },
-    author: "Mohammadmahdi Rubin",
-    authorGiven: "Mohammadmahdi",
-    authorFamily: "Rubin",
-    orcid: "0009-0004-8475-2804",
+    author: "Mohammad Norouzi",
+    authorGiven: "Mohammad",
+    authorFamily: "Norouzi",
+    orcid: "0009-0005-0185-7860",
     language: "en",
     affiliation: {
-      fa: "دانشکده زبان‌ها و ادبیات خارجی، دانشگاه تهران، ایران",
-      en: "Faculty of Languages and Foreign Literature, University of Tehran, Iran",
-      ru: "Факультет языков и зарубежной литературы, Тегеранский университет, Иран"
+      fa: "پژوهشگر زبان روسی",
+      en: "Researcher in Russian Linguistics",
+      ru: "Исследователь русского языка"
     },
-    received: "2026/09/01",
+    received: "2026/07/02",
+    accepted: "2026/09/10",
     online: "2026/09/26",
     doi: "",
     license: "",
     abstract: {
-      fa: "این مقاله نقش بافت زبانی و موقعیتی را در درک وجه فعلی (کامل/ناقص) در زبان روسی بررسی می‌کند و نشان می‌دهد که تفسیر وجه فعلی تنها به صرف فعل وابسته نیست، بلکه از تعامل معنایی با بافت جمله، گفتمان و موقعیت ارتباطی شکل می‌گیرد.",
-      en: "This article examines the role of linguistic and situational context in understanding Russian verbal aspect (perfective/imperfective). It argues that aspectual interpretation is not determined by verb morphology alone, but emerges from the semantic interaction of the verb with sentence, discourse, and communicative context.",
-      ru: "В статье рассматривается роль языкового и ситуативного контекста в понимании глагольного вида (совершенного/несовершенного) в русском языке. Утверждается, что видовая интерпретация определяется не только морфологией глагола, но и семантическим взаимодействием глагола с предложением, дискурсом и коммуникативной ситуацией."
+      fa: "وجه فعلی در زبان روسی مقوله‌ای دستوری مرکزی است که میان صورت‌های ناقص و کامل تمایز می‌گذارد و نقش مهمی در تفسیر رویدادها دارد. این مقاله با تحلیل کیفی-توصیفی جفت‌های فعلی ناقص/کامل منتخب (писать/написать، читать/прочитать، делать/сделать و смотреть/посмотреть) نقش بافت را در درک وجه فعلی بررسی می‌کند و نشان می‌دهد که معنای وجهی را نمی‌توان صرفاً با تقابل «ناتمام/تمام‌شده» توضیح داد؛ بلکه وجه نحوهٔ بازنمایی رویداد از سوی گوینده را بیان می‌کند و بافت به شنونده در شناسایی آن بازنمایی کمک می‌کند.",
+      en: "Russian verbal aspect is a central grammatical category that distinguishes between imperfective and perfective forms and contributes substantially to the interpretation of events. Although aspectual pairs are often introduced through simplified contrasts such as ongoing versus completed action, the interpretation of an aspectual form is strongly conditioned by context. This article examines the role of context in understanding Russian verbal aspect through a qualitative descriptive analysis of selected imperfective/perfective verb pairs. Particular attention is given to the interaction of aspect with temporal reference, event boundaries, repetition, habituality, resultative interpretation, and communicative perspective. The analysis focuses on the pairs писать/написать, читать/прочитать, делать/сделать, and смотреть/посмотреть. Drawing on general theories of aspect and studies of Slavic and Russian aspect, the article argues that aspectual meaning cannot be adequately understood by treating imperfective and perfective forms as simple equivalents of unfinished and finished actions. Instead, aspect expresses how a speaker chooses to construe and present an event, while contextual information helps the hearer identify that construal. The discussion has implications for learners of Russian as a foreign language, particularly those who rely on one-to-one translations or isolated aspectual pairs. A context-sensitive approach can provide a more accurate account of aspectual choice and can support more effective learning and interpretation of Russian verbs.",
+      ru: "Глагольный вид в русском языке — центральная грамматическая категория, различающая формы несовершенного и совершенного вида и существенно влияющая на интерпретацию событий. Хотя видовые пары нередко вводятся через упрощённые противопоставления вроде процесс / завершённость, интерпретация видовой формы сильно обусловлена контекстом. В статье на материале пар писать/написать, читать/прочитать, делать/сделать и смотреть/посмотреть рассматривается роль контекста в понимании русского глагольного вида. Утверждается, что видовое значение нельзя адекватно объяснить как простые эквиваленты незаконченного и законченного действия: вид выражает способ представления события говорящим, а контекст помогает слушающему опознать это представление."
     },
     href: "article-role-of-context-russian-verbal-aspect.html"
   }
