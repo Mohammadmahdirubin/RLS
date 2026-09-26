@@ -15,7 +15,7 @@ jobs:
         run: |
           python3 << 'PY'
           import base64, pathlib
-          b64 = """PLACEHOLDER_B64"""
+          b64 = """iVBORw0KGgoAAAANSUhEUgAAALUAAABACAYAAABcV3JLAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIGF+0889CIASqQE+HgW+P3AEBAsCsOC0bCPYgCQrYwCLywAA7sACq4CAMAgCS3UZaXUar3ROdwYAFoE7U5Vz7A1Ux1uRQJg0rI/AjrNDQOd/CB9o5X/9j2L/q/0/0/0/0/PLACEHOLDER_REST"""
           pathlib.Path("guilan-logo.png").write_bytes(base64.b64decode(b64))
           print("png size", pathlib.Path("guilan-logo.png").stat().st_size)
           html = pathlib.Path("editorial-board.html").read_text(encoding="utf-8")
@@ -25,8 +25,6 @@ jobs:
               print("board updated to png")
           else:
               print("no svg ref or already png")
-              if "guilan-logo.png" in html:
-                  print("already using png")
           PY
       - name: Commit
         run: |
