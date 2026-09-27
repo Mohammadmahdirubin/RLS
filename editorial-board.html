@@ -13,6 +13,58 @@
 
 
 
+<style>
+/* Dedicated layout for the five rebuilt international cards */
+.intl-fixed-card{
+  display:grid !important;
+  grid-template-columns:170px minmax(0,1fr) !important;
+  gap:24px !important;
+  align-items:start !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  padding:24px !important;
+  margin:0 0 20px !important;
+  background:#cfeecf !important;
+  border:1px solid #8fc98f !important;
+}
+.intl-fixed-card > .photo-logo-wrap{
+  width:170px !important;
+  min-width:170px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+}
+.intl-fixed-card .board-photo{
+  width:170px !important;
+  height:200px !important;
+  flex:0 0 auto !important;
+  box-sizing:border-box !important;
+}
+.intl-fixed-card .university-logo-box{
+  width:120px !important;
+  height:120px !important;
+  flex:0 0 auto !important;
+  box-sizing:border-box !important;
+}
+.intl-fixed-card > div:nth-child(2){
+  min-width:0 !important;
+  width:auto !important;
+  box-sizing:border-box !important;
+  background:#cfeecf !important;
+  padding:4px 8px 12px !important;
+}
+.intl-fixed-card h3{font-size:1.25rem !important;line-height:1.5 !important;}
+.intl-fixed-card .board-role{font-size:1rem !important;line-height:1.8 !important;}
+.intl-fixed-card .board-meta{font-size:1rem !important;line-height:1.9 !important;}
+.intl-fixed-card .profile-fields{font-size:1rem !important;line-height:1.8 !important;}
+.intl-fixed-card .profile-fields strong{font-size:1rem !important;}
+.intl-fixed-card .board-links a{font-size:.95rem !important;}
+@media(max-width:700px){
+  .intl-fixed-card{grid-template-columns:1fr !important;}
+  .intl-fixed-card > .photo-logo-wrap{width:100% !important;min-width:0 !important;}
+  .intl-fixed-card .board-photo{width:150px !important;height:175px !important;}
+}
+</style>
 </head>
 <body>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong dir="ltr">Russian Language Studies</strong><small>دوفصلنامه مطالعات زبان روسی</small></span></a><button class="menu-btn" aria-label="باز کردن منو">☰</button><nav class="main-nav"></nav></div></header>
@@ -34,8 +86,8 @@
 <h2 class="board-section-title">هیئت تحریریه بین‌المللی</h2>
 
 
-<article class="board-profile international-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="Раиса Жамсаранова.jpg" alt="رائیسا گاندیبالاونا ژامساراناوا"></div><div class="university-logo-box" title="دانشگاه دولتی زابایکالسکی"><a href="https://zabgu.ru/" target="_blank" rel="noopener"><img src="زابایکال - لوگو.png" alt="لوگوی دانشگاه دولتی زابایکالسکی"></a></div></div><div><h3>رائیسا گاندیبالاونا ژامساراناوا</h3><div class="board-role">عضو هیئت تحریریه بین‌المللی</div><p class="board-meta">دکترای علوم فیلولوژی، استاد گروه زبان چینی، دانشگاه دولتی زابایکالسکی، چیتا، روسیه.</p><div class="profile-fields"><div><strong>مدرک علمی</strong>دکترای علوم فیلولوژی</div><div><strong>دانشگاه</strong>دانشگاه دولتی زابایکالسکی · روسیه</div><div><strong>حوزه تخصصی</strong>زبان‌شناسی، زبان و فرهنگ، نام‌شناسی و مطالعات زبانی اقوام سیبری</div><div><strong>ایمیل</strong><a href="mailto:rebeca_zab@mail.ru">rebeca_zab@mail.ru</a></div><div><strong>ORCID</strong><a href="https://orcid.org/0000-0002-1275-6396" target="_blank" rel="noopener">0000-0002-1275-6396</a></div></div><div class="board-links"><a href="mailto:rebeca_zab@mail.ru">ایمیل</a><a href="https://orcid.org/0000-0002-1275-6396" target="_blank" rel="noopener">ORCID</a></div></div></div></article>
-<article class="board-profile international-profile">
+<article class="board-profile international-profile intl-fixed-card"><div class="photo-logo-wrap"><div class="board-photo"><img src="Раиса Жамсаранова.jpg" alt="رائیسا گاندیبالاونا ژامساراناوا"></div><div class="university-logo-box" title="دانشگاه دولتی زابایکالسکی"><a href="https://zabgu.ru/" target="_blank" rel="noopener"><img src="زابایکال - لوگو.png" alt="لوگوی دانشگاه دولتی زابایکالسکی"></a></div></div><div><h3>رائیسا گاندیبالاونا ژامساراناوا</h3><div class="board-role">عضو هیئت تحریریه بین‌المللی</div><p class="board-meta">دکترای علوم فیلولوژی، استاد گروه زبان چینی، دانشگاه دولتی زابایکالسکی، چیتا، روسیه.</p><div class="profile-fields"><div><strong>مدرک علمی</strong>دکترای علوم فیلولوژی</div><div><strong>دانشگاه</strong>دانشگاه دولتی زابایکالسکی · روسیه</div><div><strong>حوزه تخصصی</strong>زبان‌شناسی، زبان و فرهنگ، نام‌شناسی و مطالعات زبانی اقوام سیبری</div><div><strong>ایمیل</strong><a href="mailto:rebeca_zab@mail.ru">rebeca_zab@mail.ru</a></div><div><strong>ORCID</strong><a href="https://orcid.org/0000-0002-1275-6396" target="_blank" rel="noopener">0000-0002-1275-6396</a></div></div><div class="board-links"><a href="mailto:rebeca_zab@mail.ru">ایمیل</a><a href="https://orcid.org/0000-0002-1275-6396" target="_blank" rel="noopener">ORCID</a></div></div></div></article>
+<article class="board-profile international-profile intl-fixed-card">
 <div class="photo-logo-wrap">
 <div class="board-photo"><img src="سالاپووا.jpg" alt="اولگا الکساندرونا سالاپووا"></div>
 <div class="university-logo-box" title="دانشگاه دولتی جنوب اورال"><a href="https://www.susu.ru/" target="_blank" rel="noopener"><img src="لوگو اورال - سالاپووا.png" alt="لوگوی دانشگاه دولتی جنوب اورال"></a></div>
@@ -46,7 +98,7 @@
 </article>
 
 
-<article class="board-profile international-profile">
+<article class="board-profile international-profile intl-fixed-card">
 <div class="photo-logo-wrap">
 <div class="board-photo"><img src="rafael-guzman-tirado.jpg" alt="پروفسور رافائل گوسمان تیرادو"></div>
 <div class="board-photo" style="margin-top:8px"><img src="rafael-guzman-tirado_2.jpg" alt="پروفسور رافائل گوسمان تیرادو - عکس دوم"></div>
@@ -56,8 +108,8 @@
 <h3>پروفسور رافائل گوسمان تیرادو</h3><div class="board-role">عضو هیئت تحریریه بین‌المللی</div><p class="board-meta">استاد تمام (Catedrático de Universidad) گروه فیلولوژی یونانی و اسلاوی، دانشکده فلسفه و ادبیات، دانشگاه گرانادا (اسپانیا). بنیان‌گذار و مدیر علمی نشریه تخصصی <em>Cuadernos de Rusística Española</em> و یکی از چهره‌های برجسته روس‌شناسی در جهان اسپانیایی‌زبان.</p><div class="profile-fields"><div><strong>عنوان علمی</strong>استاد تمام (Catedrático)</div><div><strong>وابستگی سازمانی</strong>دانشگاه گرانادا (Universidad de Granada) · اسپانیا</div><div><strong>حوزه تخصصی</strong>فیلولوژی اسلاوی · روس‌شناسی · زبان و ادبیات روسی · آموزش زبان روسی به‌عنوان زبان خارجی · ترجمه ادبیات روسی</div><div><strong>ایمیل</strong><a href="mailto:rguzman@ugr.es">rguzman@ugr.es</a></div><div><strong>ORCID</strong><a href="https://orcid.org/0000-0002-4615-6436" target="_blank" rel="noopener">0000-0002-4615-6436</a></div><div><strong>Scopus</strong>57192396442</div><div style="grid-column:1/-1"><strong>سوابق علمی منتخب</strong><ul class="membership-list"><li>بنیان‌گذار و مدیر نشریه <em>Cuadernos de Rusística Española</em> (از ۲۰۰۴ تاکنون)</li><li>بنیان‌گذار گروه پژوهشی «Eslavística, Caucasología y Tipología Lingüística»</li><li>عضو سابق هیئت رئیسه MAPRYAL</li><li>دکتری فیلولوژی روسی از دانشگاه لومونوسف مسکو</li><li>دکتری علوم فیلولوژیک از دانشگاه دولتی کاباردینو-بالکاریا</li></ul></div></div><div class="board-links"><a href="https://www.ugr.es/personal/rafael-guzman-tirado" target="_blank" rel="noopener">پروفایل رسمی UGR</a><a href="https://orcid.org/0000-0002-4615-6436" target="_blank" rel="noopener">ORCID</a><a href="mailto:rguzman@ugr.es">ایمیل</a></div>
 </div>
 </article>
-<article class="board-profile international-profile"><div class="photo-logo-wrap"><div class="board-photo"><img src="urtegeshev_s.jpg" alt="دکتر نیکلای سرگئی‌یویچ اورتگشِف"></div><div class="university-logo-box" title="لوگوی دانشگاه فیلولوژی شاخه سیبری آکادمی علوم روسیه"><a href="https://www.philology.nsc.ru/" target="_blank" rel="noopener"><img src="logo_pic.gif" alt="لوگوی مؤسسه فیلولوژی شاخه سیبری آکادمی علوم روسیه"></a></div></div><div><h3>دکتر نیکلای سرگئی‌یویچ اورتگشِف</h3><div class="board-role">عضو هیئت تحریریه بین‌المللی</div><p class="board-meta">دکترای علوم فیلولوژی، پژوهشگر ارشد مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه (نووسیبیرسک، روسیه).</p><div class="profile-fields"><div><strong>عنوان علمی</strong>دکترای علوم فیلولوژی</div><div><strong>وابستگی سازمانی</strong>مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه · روسیه</div><div><strong>حوزه تخصصی</strong>آواشناسی و واج‌شناسی · زبان‌شناسی تطبیقی و گونه‌شناختی · زبان‌های اقوام سیبری · دستور زبان · واژه‌شناسی · گویش‌شناسی · جامعه‌شناسی زبان</div><div><strong>ایمیل</strong><a href="mailto:urtegeshev@mail.ru">urtegeshev@mail.ru</a></div><div><strong>ORCID</strong><a href="https://orcid.org/0000-0001-8616-4652" target="_blank" rel="noopener">0000-0001-8616-4652</a></div><div><strong>Scopus Author ID</strong>56610290000</div><div><strong>ResearcherID</strong>K-5458-2017</div><div><strong>РИНЦ</strong>SPIN 5482-2119 · AuthorID 115064</div><div style="grid-column:1/-1"><strong>سوابق علمی منتخب</strong>بیش از ۲۴۰ اثر علمی، از جمله ۱۵ تک‌نگاری؛ عضو کمیته روسی ترک‌شناسی. در سال ۲۰۲۱ از رساله دکتری خود با موضوع نظام آوایی-واجی زبان شُری در بستر ترکی زبان‌های جنوب سیبری دفاع کرد.</div></div><div class="board-links"><a href="https://www.philology.nsc.ru/departments/lefi/people/urtegeshev.php" target="_blank" rel="noopener">پروفایل رسمی</a><a href="https://orcid.org/0000-0001-8616-4652" target="_blank" rel="noopener">ORCID</a><a href="https://scholar.google.ru/citations?user=2F4wY8cAAAAJ" target="_blank" rel="noopener">Google Scholar</a><a href="mailto:urtegeshev@mail.ru">ایمیل</a></div></div></article>
-<article class="board-profile international-profile">
+<article class="board-profile international-profile intl-fixed-card"><div class="photo-logo-wrap"><div class="board-photo"><img src="urtegeshev_s.jpg" alt="دکتر نیکلای سرگئی‌یویچ اورتگشِف"></div><div class="university-logo-box" title="لوگوی دانشگاه فیلولوژی شاخه سیبری آکادمی علوم روسیه"><a href="https://www.philology.nsc.ru/" target="_blank" rel="noopener"><img src="logo_pic.gif" alt="لوگوی مؤسسه فیلولوژی شاخه سیبری آکادمی علوم روسیه"></a></div></div><div><h3>دکتر نیکلای سرگئی‌یویچ اورتگشِف</h3><div class="board-role">عضو هیئت تحریریه بین‌المللی</div><p class="board-meta">دکترای علوم فیلولوژی، پژوهشگر ارشد مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه (نووسیبیرسک، روسیه).</p><div class="profile-fields"><div><strong>عنوان علمی</strong>دکترای علوم فیلولوژی</div><div><strong>وابستگی سازمانی</strong>مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه · روسیه</div><div><strong>حوزه تخصصی</strong>آواشناسی و واج‌شناسی · زبان‌شناسی تطبیقی و گونه‌شناختی · زبان‌های اقوام سیبری · دستور زبان · واژه‌شناسی · گویش‌شناسی · جامعه‌شناسی زبان</div><div><strong>ایمیل</strong><a href="mailto:urtegeshev@mail.ru">urtegeshev@mail.ru</a></div><div><strong>ORCID</strong><a href="https://orcid.org/0000-0001-8616-4652" target="_blank" rel="noopener">0000-0001-8616-4652</a></div><div><strong>Scopus Author ID</strong>56610290000</div><div><strong>ResearcherID</strong>K-5458-2017</div><div><strong>РИНЦ</strong>SPIN 5482-2119 · AuthorID 115064</div><div style="grid-column:1/-1"><strong>سوابق علمی منتخب</strong>بیش از ۲۴۰ اثر علمی، از جمله ۱۵ تک‌نگاری؛ عضو کمیته روسی ترک‌شناسی. در سال ۲۰۲۱ از رساله دکتری خود با موضوع نظام آوایی-واجی زبان شُری در بستر ترکی زبان‌های جنوب سیبری دفاع کرد.</div></div><div class="board-links"><a href="https://www.philology.nsc.ru/departments/lefi/people/urtegeshev.php" target="_blank" rel="noopener">پروفایل رسمی</a><a href="https://orcid.org/0000-0001-8616-4652" target="_blank" rel="noopener">ORCID</a><a href="https://scholar.google.ru/citations?user=2F4wY8cAAAAJ" target="_blank" rel="noopener">Google Scholar</a><a href="mailto:urtegeshev@mail.ru">ایمیل</a></div></div></article>
+<article class="board-profile international-profile intl-fixed-card">
 <div class="photo-logo-wrap">
 <div class="board-photo"><img src="%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9%20%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%20%D0%9D%D0%B5%D0%B9%D1%87%D0%B5%D0%B2.jpg" alt="پروفسور نیکولای نیچف"></div>
 <div class="university-logo-box" title="لوگوی دانشگاه پلوودیف"><a href="https://rusfil.uni-plovdiv.bg/?page_id=237" target="_blank" rel="noopener"><img src="neychev-logo.png" alt="لوگوی دانشگاه پلوودیف"></a></div>
