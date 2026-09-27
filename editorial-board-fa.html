@@ -14,8 +14,49 @@
 
 
 
-</head>
-<body>
+<style>
+/* صفحه مستقل هیئت تحریریه نشریه — طراحی مستقل از صفحه قدیمی */
+.editorial-board-new main{background:linear-gradient(180deg,#f8fbff 0%,#ffffff 34%);}
+.editorial-board-new .page-hero{border-bottom:1px solid #dbe5ef;padding-bottom:28px;}
+.editorial-board-new .page-hero h1{letter-spacing:-.3px;}
+.editorial-board-new .board-intro{max-width:980px;margin:0 auto 30px;line-height:2;text-align:center;}
+.editorial-board-new .board-section-title{display:flex;align-items:center;gap:12px;margin:34px 0 18px;}
+.editorial-board-new .board-section-title:after{content:"";height:1px;background:#dbe5ef;flex:1;}
+.editorial-board-new .board-profile,
+.editorial-board-new .international-profile{
+ display:grid;grid-template-columns:140px minmax(0,1fr);gap:22px;align-items:start;
+ background:#fff !important;border:1px solid #d9e2ec !important;
+ border-radius:14px;padding:20px;margin:0 0 18px;
+ box-shadow:0 5px 18px rgba(30,60,90,.07);
+ box-sizing:border-box;
+ transition:transform .18s ease,box-shadow .18s ease;
+}
+.editorial-board-new .board-profile:hover,
+.editorial-board-new .international-profile:hover{transform:translateY(-2px);box-shadow:0 9px 24px rgba(30,60,90,.11);}
+.editorial-board-new .photo-logo-wrap{width:140px;}
+.editorial-board-new .board-photo{width:140px;height:170px;border:0;border-radius:10px;background:#eef3f7;overflow:hidden;}
+.editorial-board-new .board-photo img{object-fit:cover;}
+.editorial-board-new .university-logo-box{width:88px;height:88px;margin:12px auto 0;border-radius:10px;}
+.editorial-board-new .board-profile>div:nth-child(2),
+.editorial-board-new .international-profile>div:nth-child(2){background:transparent !important;padding:0;min-width:0;}
+.editorial-board-new .board-profile h3{font-size:1.25rem;margin:0 0 8px;}
+.editorial-board-new .board-role{color:#285b8f;font-weight:700;line-height:1.8;margin-bottom:8px;}
+.editorial-board-new .board-meta{line-height:2;}
+.editorial-board-new .profile-fields{gap:8px;margin-top:14px;}
+.editorial-board-new .profile-fields div{padding:9px 11px;background:#f7f9fb;border:1px solid #e1e7ee;border-radius:8px;line-height:1.8;}
+.editorial-board-new .board-links{margin-top:12px;}
+.editorial-board-new .board-links a{border:0;background:#285b8f;color:#fff;border-radius:7px;box-shadow:none;padding:6px 11px;}
+.editorial-board-new .board-links a:hover{background:#1d466e;}
+.editorial-board-new .membership-list{line-height:2;}
+@media(max-width:760px){
+ .editorial-board-new .board-profile,
+ .editorial-board-new .international-profile{grid-template-columns:1fr;padding:17px;}
+ .editorial-board-new .photo-logo-wrap{width:100%;}
+ .editorial-board-new .board-photo{width:130px;height:155px;margin:0 auto;}
+ .editorial-board-new .profile-fields{grid-template-columns:1fr;}
+}
+</style></head>
+<body class="editorial-board-new">
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong dir="ltr">Russian Language Studies</strong><small>دوفصلنامه مطالعات زبان روسی</small></span></a><button class="menu-btn" aria-label="باز کردن منو">☰</button><nav class="main-nav"></nav></div></header>
 <main>
 <section class="page-hero"><div class="container"><div class="eyebrow">ساختار علمی و تحریریه</div><h1>هیئت تحریریه نشریه</h1><p>معرفی علمی و شفاف اعضای مسئول سیاست‌گذاری، ارزیابی و هدایت محتوای نشریه.</p></div></section>
