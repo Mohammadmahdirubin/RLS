@@ -94,6 +94,27 @@ h1{
   display:block
 }
 
+
+.verify-section{
+  margin-top:16px;
+  padding:16px 18px;
+  border:1px solid #d7e3db;
+  border-radius:10px;
+  background:#fff;
+  line-height:2;
+}
+.verify-section h3{
+  margin:0 0 8px;
+  color:var(--g);
+  font-size:16px;
+}
+.verify-en,.verify-ru{
+  text-align:left;
+}
+.verify-fa{
+  text-align:right;
+}
+
 .verified{
   color:var(--g);
   font-weight:800;
@@ -400,18 +421,31 @@ function verify(){
 
   result.innerHTML =
     '<div class="verified">✓ نامه در سامانه ثبت شده است / Документ зарегистрирован / Document verified</div>' +
-    '<div><span class="label">نام:</span> ' + r.name + '</div>' +
-    '<div dir="ltr" lang="ru"><span class="label">Имя:</span> ' + russianName + '</div>' +
-    '<div dir="ltr" lang="en"><span class="label">Name:</span> ' + r.en + '</div>' +
-    '<div><span class="label">سمت:</span> ' + r.role + '</div>' +
-    '<div dir="ltr" lang="ru"><span class="label">Должность:</span> ' + r.ruRole + '</div>' +
-    '<div dir="ltr" lang="en"><span class="label">Position:</span> ' + r.enRole + '</div>' +
-    '<div><span class="label">کد استعلام:</span> <span dir="ltr">' + code + '</span></div>' +
+
+    '<div class="verify-section verify-fa" dir="rtl" lang="fa">' +
+      '<h3>اطلاعات فارسی</h3>' +
+      '<div><span class="label">نام:</span> ' + r.name + '</div>' +
+      '<div><span class="label">سمت:</span> ' + r.role + '</div>' +
+      '<div><span class="label">کد استعلام:</span> <span dir="ltr">' + code + '</span></div>' +
+    '</div>' +
+
+    '<div class="verify-section verify-en" dir="ltr" lang="en">' +
+      '<h3>English</h3>' +
+      '<div><span class="label">Name:</span> ' + r.en + '</div>' +
+      '<div><span class="label">Position:</span> ' + r.enRole + '</div>' +
+    '</div>' +
+
+    '<div class="verify-section verify-ru" dir="ltr" lang="ru">' +
+      '<h3>Русский</h3>' +
+      '<div><span class="label">Имя:</span> ' + russianName + '</div>' +
+      '<div><span class="label">Должность:</span> ' + r.ruRole + '</div>' +
+    '</div>' +
+
     (r.doc ? (
       '<div class="doc">' +
       '<div><span class="label">نامه همکاری:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">مشاهده نامه ثبت‌شده</a></div>' +
-      '<div dir="ltr" lang="ru"><span class="label">Письмо о сотрудничестве:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">Просмотреть зарегистрированное письмо</a></div>' +
       '<div dir="ltr" lang="en"><span class="label">Collaboration Letter:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">View registered letter</a></div>' +
+      '<div dir="ltr" lang="ru"><span class="label">Письмо о сотрудничестве:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">Просмотреть зарегистрированное письмо</a></div>' +
       '</div>'
     ) : '');
 
