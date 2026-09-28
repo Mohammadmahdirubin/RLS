@@ -297,6 +297,12 @@ const records = {
     role:"عضو هیئت تحریریه بین‌المللی",
     en:"Olga Aleksandrovna Solopova",
     doc:"assets/verification/letters/olga-solopova.pdf"
+  },
+
+  "RLS-7F4C92A81B6E35D9": {
+    name:"رائیسا گاندیبالاونا ژامساراناوا",
+    role:"عضو هیئت تحریریه بین‌المللی",
+    en:"Raisa Gandibalovna Zhamsaranova"
   }
 
 };
@@ -362,20 +368,18 @@ function verify(){
     '</span>' +
     '</div>' +
 
+    r.doc ?
     '<div class="doc">' +
     '<span class="label">نامه همکاری:</span> ' +
-
     '<a href="' +
     r.doc +
     '?v=20260927-' +
     encodeURIComponent(code) +
     '" target="_blank" rel="noopener">' +
-
     'مشاهده نامه ثبت‌شده' +
-
     '</a>' +
-
-    '</div>';
+    '</div>' :
+    '';
 
   result.classList.add("show");
 }
