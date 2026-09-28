@@ -373,65 +373,21 @@ function verify(){
   const russianName = r.ru || r.en;
 
   result.innerHTML =
-
     '<div class="verified">✓ نامه در سامانه ثبت شده است / Документ зарегистрирован / Document verified</div>' +
-
-    '<div>' +
-    '<span class="label">نام:</span> ' +
-    r.name +
-    '</div>' +
-
-    '<div dir="ltr">' +
-    '<span class="label">Имя:</span> ' +
-    russianName +
-    '</div>' +
-
-    '<div dir="ltr">' +
-    '<span class="label">Name:</span> ' +
-    r.en +
-    '</div>' +
-
-    '<div>' +
-    '<span class="label">سمت:</span> ' +
-    r.role +
-    '</div>' +
-
-    '<div dir="ltr">' +
-    '<span class="label">Должность:</span> ' +
-    r.role +
-    '</div>' +
-
-    '<div dir="ltr">' +
-    '<span class="label">Position:</span> ' +
-    r.role +
-    '</div>' +
-
-    '<div>' +
-    '<span class="label">کد استعلام:</span> ' +
-    '<span dir="ltr">' +
-    code +
-    '</span>' +
-    '</div>' +
-
-    r.doc ?
-    '<div class="doc">' +
-    '<div><span class="label">نامه همکاری:</span> <a href="' +
-    r.doc +
-    '?v=20260928-' +
-    encodeURIComponent(code) +
-    '" target="_blank" rel="noopener">مشاهده نامه ثبت‌شده</a></div>' +
-    '<div dir="ltr" lang="ru"><span class="label">Письмо о сотрудничестве:</span> <a href="' +
-    r.doc +
-    '?v=20260928-' +
-    encodeURIComponent(code) +
-    '" target="_blank" rel="noopener">Просмотреть зарегистрированное письмо</a></div>' +
-    '<div dir="ltr" lang="en"><span class="label">Collaboration Letter:</span> <a href="' +
-    r.doc +
-    '?v=20260928-' +
-    encodeURIComponent(code) +
-    '" target="_blank" rel="noopener">View registered letter</a></div>' +
-    '</div>' :
-    '';
+    '<div><span class="label">نام:</span> ' + r.name + '</div>' +
+    '<div dir="ltr" lang="ru"><span class="label">Имя:</span> ' + russianName + '</div>' +
+    '<div dir="ltr" lang="en"><span class="label">Name:</span> ' + r.en + '</div>' +
+    '<div><span class="label">سمت:</span> ' + r.role + '</div>' +
+    '<div dir="ltr" lang="ru"><span class="label">Должность:</span> ' + r.role + '</div>' +
+    '<div dir="ltr" lang="en"><span class="label">Position:</span> ' + r.role + '</div>' +
+    '<div><span class="label">کد استعلام:</span> <span dir="ltr">' + code + '</span></div>' +
+    (r.doc ? (
+      '<div class="doc">' +
+      '<div><span class="label">نامه همکاری:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">مشاهده نامه ثبت‌شده</a></div>' +
+      '<div dir="ltr" lang="ru"><span class="label">Письмо о сотрудничестве:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">Просмотреть зарегистрированное письмо</a></div>' +
+      '<div dir="ltr" lang="en"><span class="label">Collaboration Letter:</span> <a href="' + r.doc + '?v=20260928-' + encodeURIComponent(code) + '" target="_blank" rel="noopener">View registered letter</a></div>' +
+      '</div>'
+    ) : '');
 
   result.classList.add("show");
 }
