@@ -9,7 +9,7 @@
 
 <link rel="stylesheet" href="assets/style.css">
 
-<title>استعلام اعضای هیئت تحریریه | مطالعات زبان روسی</title>
+<title>سامانه استعلام | مطالعات زبان روسی | Verification System</title>
 
 <style>
 :root{
@@ -50,7 +50,7 @@ h1{
   font-size:28px
 }
 
-.intro{
+.lang-block{\n  margin-top:18px;\n  padding:18px 20px;\n  background:#f8faf9;\n  border:1px solid #e1e9e4;\n  border-radius:10px;\n  line-height:1.9\n}\n\n.lang-block h2{\n  margin:0 0 8px;\n  color:var(--g);\n  font-size:20px\n}\n\n.lang-block p{\n  margin:0;\n  color:#536158\n}\n\n.intro{
   line-height:2;
   color:#536158
 }
@@ -167,32 +167,46 @@ h1{
 <div class="wrap">
 <div class="panel">
 
-<h1>سامانه استعلام اعضای هیئت تحریریه</h1>
-
+<h1>سامانه استعلام اصالت نامه‌ها و عضویت</h1>
 <p class="intro">
 این صفحه برای استعلام اصالت نامه‌های همکاری و عضویت در هیئت تحریریه نشریه «مطالعات زبان روسی» ایجاد شده است.
 برای مشاهده نتیجه، کد استعلام درج‌شده در نامه را وارد کنید.
 </p>
 
+<div class="lang-block" lang="ru" dir="ltr">
+  <h2>Система проверки подлинности</h2>
+  <p>Эта страница предназначена для проверки подлинности писем о сотрудничестве и членстве в редакционной коллегии журнала «Исследования по русскому языку». Введите код проверки, указанный в письме, чтобы получить результат.</p>
+</div>
+
+<div class="lang-block" lang="en" dir="ltr">
+  <h2>Verification System</h2>
+  <p>This page is provided to verify the authenticity of collaboration letters and editorial board membership documents of <em>Russian Language Studies</em>. Enter the verification code shown on the document to view the verification result.</p>
+</div>
+
 <div class="search">
 <input
   id="code"
   type="text"
-  placeholder="کد استعلام را وارد کنید"
+  placeholder="کد استعلام را وارد کنید / Введите код / Enter verification code"
   autocomplete="off"
 >
-<button onclick="verify()">استعلام</button>
+<button onclick="verify()">استعلام / Проверить / Verify</button>
 </div>
 
 <div id="error" class="error">
 کد واردشده معتبر نیست یا در سامانه ثبت نشده است.
+<br><span lang="ru" dir="ltr">Введённый код недействителен или не зарегистрирован в системе.</span>
+<br><span lang="en" dir="ltr">The entered code is invalid or is not registered in the system.</span>
 </div>
 
 <div id="result" class="result"></div>
 
 <div class="note">
-این صفحه در منوی عمومی سایت قرار نگرفته و برای استعلام مستقیم از طریق کد درج‌شده در نامه طراحی شده است.
-برای حفظ حریم اطلاعات، از قرار دادن اطلاعات اضافی اعضا در این صفحه خودداری شده است.
+<strong>فارسی:</strong> این صفحه در منوی عمومی سایت قرار نگرفته و برای استعلام مستقیم از طریق کد درج‌شده در نامه طراحی شده است. برای حفظ حریم اطلاعات، از قرار دادن اطلاعات اضافی اعضا در این صفحه خودداری شده است.
+<br><br>
+<strong lang="ru">Русский:</strong> Эта страница не включена в общее меню сайта и предназначена для прямой проверки по коду, указанному в документе. В целях защиты информации дополнительные сведения о членах редакционной коллегии здесь не публикуются.
+<br><br>
+<strong lang="en">English:</strong> This page is not included in the public site menu and is intended for direct verification using the code shown on the document. To protect personal information, additional member details are not published here.
 </div>
 
 </div>
