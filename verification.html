@@ -190,7 +190,7 @@ h1{
   placeholder="کد استعلام را وارد کنید / Введите код / Enter verification code"
   autocomplete="off"
 >
-<button onclick="verify()">استعلام / Проверить / Verify</button>
+<button id="verifyButton" type="button">استعلام / Проверить / Verify</button>
 </div>
 
 <div id="error" class="error">
@@ -416,6 +416,16 @@ function verify(){
     ) : '');
 
   result.classList.add("show");
+}
+
+
+/* =========================
+   اتصال مطمئن دکمه استعلام
+   ========================= */
+
+const verifyButton = document.getElementById("verifyButton");
+if (verifyButton) {
+  verifyButton.addEventListener("click", verify);
 }
 
 
