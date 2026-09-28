@@ -229,6 +229,7 @@ const records = {
     name:"دکتر جمیله بابازاده",
     role:"عضو هیئت تحریریه",
     en:"Dr. Jamileh Babazadeh",
+    ru:""
     doc:"assets/verification/letters/jamileh-babazadeh.pdf"
   },
 
@@ -236,6 +237,7 @@ const records = {
     name:"دکتر اعظم شیرازی",
     role:"عضو هیئت تحریریه",
     en:"Dr. Azam Shirazi",
+    ru:""
     doc:"assets/verification/letters/azam-shirazi.pdf"
   },
 
@@ -243,6 +245,7 @@ const records = {
     name:"دکتر مجتبی زهرائی",
     role:"عضو هیئت تحریریه",
     en:"Dr. Mojtaba Zahraei",
+    ru:""
     doc:"assets/verification/letters/mojtabazahraei.pdf"
   },
 
@@ -250,6 +253,7 @@ const records = {
     name:"محمدمهدی روبین",
     role:"صاحب‌امتیاز و مدیرمسئول",
     en:"Mohammadmahdi Rubin",
+    ru:""
     doc:"assets/verification/letters/mohammadmahdi-rubin.pdf"
   },
 
@@ -257,6 +261,7 @@ const records = {
     name:"دکتر پروانه راداندیش",
     role:"عضو هیئت تحریریه",
     en:"Dr. Parvaneh Radandish",
+    ru:""
     doc:"assets/verification/letters/parvaneh-radandish.pdf"
   },
 
@@ -268,6 +273,7 @@ const records = {
     name:"محمدعلی نوروزی",
     role:"کارشناس بخش‌های فارسی و انگلیسی نشریه مطالعات زبان روسی",
     en:"Mohammad Ali Norouzi",
+    ru:""
     doc:"assets/verification/letters/mohammad-ali-norouzi.pdf"
   },
 
@@ -275,6 +281,7 @@ const records = {
     name:"مهرنوش فیروزی",
     role:"کارشناس بخش روسی نشریه مطالعات زبان روسی",
     en:"Mehrnoush Firouzi",
+    ru:""
     doc:"assets/verification/letters/mehrnoush-firouzi.pdf"
   },
 
@@ -282,6 +289,7 @@ const records = {
     name:"دکتر کوثر سلیمی عبدالملکی",
     role:"عضو هیئت تحریریه",
     en:"Dr. Kosar Salimi Abdolmaleki",
+    ru:""
     doc:"assets/verification/letters/kosar-salimi.pdf"
   },
 
@@ -289,6 +297,7 @@ const records = {
     name:"هما صدق علیشاه",
     role:"کارشناس صفحه‌آرایی و ترجمه روسی",
     en:"Homa Sedgh Alishah",
+    ru:""
     doc:"assets/verification/letters/homa-sedgh-alishah.pdf"
   },
 
@@ -296,6 +305,7 @@ const records = {
     name:"شهرام نباتی",
     role:"عضو هیئت تحریریه و داور",
     en:"Shahram Nabati",
+    ru:""
     doc:"assets/verification/letters/shahram-nabati.pdf"
   },
 
@@ -303,6 +313,7 @@ const records = {
     name:"دکتر مهناز نوروزی",
     role:"عضو هیئت تحریریه و داور",
     en:"Dr. Mahnaz Norouzi",
+    ru:""
     doc:"assets/verification/letters/mahnaz-norouzi.pdf"
   },
 
@@ -310,6 +321,7 @@ const records = {
     name:"الگا آلکساندراونا سالاپووا",
     role:"عضو هیئت تحریریه بین‌المللی",
     en:"Olga Aleksandrovna Solopova",
+    ru:""
     doc:"assets/verification/letters/olga-solopova.pdf"
   },
 
@@ -317,6 +329,7 @@ const records = {
     name:"رائیسا گاندیبالاونا ژامساراناوا",
     role:"عضو هیئت تحریریه بین‌المللی",
     en:"Raisa Gandibalovna Zhamsaranova",
+    ru:""
     doc:"assets/verification/letters/raisa-zhamsaranova.pdf"
   }
 
@@ -357,22 +370,39 @@ function verify(){
     return;
   }
 
+  const russianName = r.ru || r.en;
+
   result.innerHTML =
 
-    '<div class="verified">✓ نامه در سامانه ثبت شده است</div>' +
+    '<div class="verified">✓ نامه در سامانه ثبت شده است / Документ зарегистрирован / Document verified</div>' +
 
     '<div>' +
     '<span class="label">نام:</span> ' +
     r.name +
     '</div>' +
 
-    '<div>' +
-    '<span class="label">نام انگلیسی:</span> ' +
+    '<div dir="ltr">' +
+    '<span class="label">Имя:</span> ' +
+    russianName +
+    '</div>' +
+
+    '<div dir="ltr">' +
+    '<span class="label">Name:</span> ' +
     r.en +
     '</div>' +
 
     '<div>' +
     '<span class="label">سمت:</span> ' +
+    r.role +
+    '</div>' +
+
+    '<div dir="ltr">' +
+    '<span class="label">Должность:</span> ' +
+    r.role +
+    '</div>' +
+
+    '<div dir="ltr">' +
+    '<span class="label">Position:</span> ' +
     r.role +
     '</div>' +
 
@@ -385,14 +415,21 @@ function verify(){
 
     r.doc ?
     '<div class="doc">' +
-    '<span class="label">نامه همکاری:</span> ' +
-    '<a href="' +
+    '<div><span class="label">نامه همکاری:</span> <a href="' +
     r.doc +
-    '?v=20260927-' +
+    '?v=20260928-' +
     encodeURIComponent(code) +
-    '" target="_blank" rel="noopener">' +
-    'مشاهده نامه ثبت‌شده' +
-    '</a>' +
+    '" target="_blank" rel="noopener">مشاهده نامه ثبت‌شده</a></div>' +
+    '<div dir="ltr" lang="ru"><span class="label">Письмо о сотрудничестве:</span> <a href="' +
+    r.doc +
+    '?v=20260928-' +
+    encodeURIComponent(code) +
+    '" target="_blank" rel="noopener">Просмотреть зарегистрированное письмо</a></div>' +
+    '<div dir="ltr" lang="en"><span class="label">Collaboration Letter:</span> <a href="' +
+    r.doc +
+    '?v=20260928-' +
+    encodeURIComponent(code) +
+    '" target="_blank" rel="noopener">View registered letter</a></div>' +
     '</div>' :
     '';
 
