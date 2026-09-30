@@ -27,6 +27,10 @@ window.RLS_ARTICLES = [
     received: "2026/07/01",
     accepted: "2026/08/17",
     online: "2026/09/17",
+    volume: "1",
+    issueNumber: "1",
+    firstPage: "1",
+    lastPage: "14",
     pdf: "articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf",
     keywords: {
       fa: "هوش مصنوعی؛ زبان روسی به‌عنوان زبان خارجی؛ یادگیری چندوجهی؛ خودمختاری یادگیرنده؛ سواد انتقادی هوش مصنوعی؛ شایستگی ارتباطی میان‌فرهنگی",
@@ -70,6 +74,10 @@ window.RLS_ARTICLES = [
     received: "2026/07/02",
     accepted: "2026/09/10",
     online: "2026/09/26",
+    volume: "1",
+    issueNumber: "1",
+    firstPage: "15",
+    lastPage: "23",
     accepted: "2026/09/10",
     pdf: "articles/1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf",
     keywords: {
