@@ -34,11 +34,27 @@ font-size:13px;
 text-align:center;
 overflow:hidden
 }
+.board-photo{
+position:relative;
+z-index:1;
+overflow:visible
+}
 .board-photo img{
 width:100%;
 height:100%;
 object-fit:cover;
-object-position:center top
+object-position:center top;
+transition:transform .25s ease;
+transform-origin:center center;
+position:relative;
+z-index:1
+}
+.board-photo:hover{
+z-index:20
+}
+.board-photo:hover img{
+transform:scale(3);
+z-index:20
 }
 .board-profile>div:nth-child(2){
 background:#cfeecf !important;
