@@ -22,6 +22,19 @@
 .journal-card>div:not(.card-title){display:block}
 .journal-card strong{display:block;max-width:none;text-align:right;margin-top:2px}
 }
+</style><style id="ru-official-card-redesign">
+.journal-card{overflow:hidden}
+.journal-card>div:not(.card-title){display:grid;grid-template-columns:minmax(135px,44%) minmax(0,56%);gap:12px;align-items:center;min-width:0;white-space:normal}
+.journal-card span,.journal-card strong{min-width:0;max-width:100%;overflow-wrap:normal;word-break:normal;hyphens:auto;line-height:1.45}
+.journal-card span{font-size:12.5px}
+.journal-card strong{font-size:13px;text-align:left}
+@media(max-width:560px){
+.journal-card{padding:15px}
+.journal-card>div:not(.card-title){display:grid!important;grid-template-columns:minmax(115px,43%) minmax(0,57%)!important;gap:9px!important;align-items:start!important;padding:8px 0!important}
+.journal-card span,.journal-card strong{display:block!important;width:auto!important;max-width:100%!important;overflow-wrap:break-word!important;word-break:normal!important;hyphens:auto!important;line-height:1.5!important}
+.journal-card span{font-size:12px!important}
+.journal-card strong{font-size:12.5px!important;text-align:right!important;margin:0!important}
+}
 </style></head>
 <body>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong>Исследования по русскому языку</strong><small>Russian Language Studies</small></span></a><button class="menu-btn" aria-label="Открыть меню">☰</button><nav class="main-nav"></nav></div></header>
