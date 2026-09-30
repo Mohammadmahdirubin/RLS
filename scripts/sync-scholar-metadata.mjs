@@ -12,6 +12,7 @@ const langs = [
 const esc = v => String(v ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const abs = p => /^https?:\/\//i.test(p) ? p : BASE + String(p).replace(/^\//,'');
 const tag = (n,v) => '<meta name="' + n + '" content="' + esc(v) + '">';
+const isoDate = v => String(v ?? '').replace(/\//g,'-');
 
 function insertHead(html, block) {
   const i = html.search(/<\/head>/i);
@@ -47,7 +48,7 @@ function sync(html,a,l){
   const url=urlFor(a,l), as=authors(a);
   html=setMeta(html,'citation_title',a.title?.en||a.title?.[l.key]||a.id);
   html=setAuthors(html,as.map(x=>x.name));
-  html=setMeta(html,'citation_publication_date',a.online);
+  html=setMeta(html,'citation_publication_date',isoDate(a.online));
   html=setMeta(html,'citation_firstpage',a.firstPage);
   html=setMeta(html,'citation_lastpage',a.lastPage);
   html=setMeta(html,'citation_journal_title','Russian Language Studies');
@@ -60,7 +61,7 @@ function sync(html,a,l){
   const ld={
     '@context':'https://schema.org','@type':'ScholarlyArticle','@id':url+'#article',
     headline:a.title?.[l.key]||a.title?.en,description:a.abstract?.[l.key]||a.abstract?.en||'',
-    datePublished:a.online,dateModified:a.online,
+    datePublished:isoDate(a.online),dateModified:isoDate(a.online),
     author:as.map(x=>{const p={'@type':'Person',name:x.name};if(x.orcid)p.sameAs='https://orcid.org/'+x.orcid;return p;}),
     inLanguage:l.key,isPartOf:{'@type':'Periodical',name:l.journal,url:BASE+l.prefix},
     pagination:String(a.firstPage)+'-'+String(a.lastPage),url:url,
@@ -79,7 +80,7 @@ const published=articles.filter(a=>a&&a.status==='published');
 
 for(const a of published){
   for(const req of ['id','href','pdf','online','firstPage','lastPage','volume','issueNumber','title','author'])if(!a[req])throw new Error('Missing '+req+' for '+a.id);
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(a.online))throw new Error('Invalid online date for '+a.id);
+  if(!/^\d{4}[-\/]\d{2}[-\/]\d{2}$/.test(a.online))throw new Error('Invalid online date for '+a.id);
   if(Number(a.lastPage)<Number(a.firstPage))throw new Error('Invalid pagination for '+a.id);
   const pdfPath=a.pdf.replace(/^https?:\/\/[^/]+\//,'').replace(/^\//,'');
   if(!fs.existsSync(pdfPath))throw new Error('Missing PDF: '+pdfPath);
@@ -113,7 +114,7 @@ for(const file of walk('.')){
   if(!c||!c.startsWith(BASE))continue;
   if(c.includes('article-sample.html'))continue;
   const article=published.find(a=>langs.some(l=>urlFor(a,l)===c));
-  entries.push({url:c,lastmod:article?.online,priority:article?(c===urlFor(article,langs[0])?'1.0':'0.8'):'0.6'});
+  entries.push({url:c,lastmod:article?.online ? isoDate(article.online) : undefined,priority:article?(c===urlFor(article,langs[0])?'1.0':'0.8'):'0.6'});
 }
 const unique=[...new Map(entries.map(x=>[x.url,x])).values()].sort((a,b)=>a.url.localeCompare(b.url));
 let sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
