@@ -5,7 +5,7 @@ import { execFileSync } from 'child_process';
 const BASE='https://rlsj.ir/';
 const langs=[['fa',''],['en','en/'],['ru','ru/']];
 const errors=[];
-const ctx={window:{}};vm.createContext(ctx);
+const ctx={window:{},document:{addEventListener(){}}};vm.createContext(ctx);
 vm.runInContext(fs.readFileSync('assets/articles-data.js','utf8'),ctx);
 const articles=ctx.window.RLS_ARTICLES||[];
 function read(p){return fs.existsSync(p)?fs.readFileSync(p,'utf8'):null}
