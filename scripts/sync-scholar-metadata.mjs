@@ -71,7 +71,7 @@ function sync(html,a,l){
   return setCanonical(setJsonLd(html,ld),url);
 }
 
-const ctx={window:{}};vm.createContext(ctx);
+const ctx={window:{},document:{addEventListener(){}}};vm.createContext(ctx);
 vm.runInContext(fs.readFileSync('assets/articles-data.js','utf8'),ctx);
 const articles=ctx.window.RLS_ARTICLES||[];
 if(!Array.isArray(articles))throw new Error('RLS_ARTICLES is invalid');
