@@ -4,5 +4,21 @@
   <id>https://rlsj.ir/</id>
   <link href="https://rlsj.ir/feed.xml" rel="self"/>
   <link href="https://rlsj.ir/"/>
-  <updated>2026-09-26T00:00:00Z</updated>
+  <updated>2026/09/17T00:00:00Z</updated>
+  <entry>
+    <title>The Role of Context in Understanding Russian Verbal Aspect</title>
+    <id>https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html</id>
+    <link href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html"/>
+    <updated>2026/09/26T00:00:00Z</updated>
+    <summary>Russian verbal aspect is a central grammatical category that distinguishes between imperfective and perfective forms and contributes substantially to the interpretation of events. Although aspectual pairs are often introduced through simplified contrasts such as ongoing versus completed action, the interpretation of an aspectual form is strongly conditioned by context. This article examines the role of context in understanding Russian verbal aspect through a qualitative descriptive analysis of selected imperfective/perfective verb pairs. Particular attention is given to the interaction of aspect with temporal reference, event boundaries, repetition, habituality, resultative interpretation, and communicative perspective. The analysis focuses on the pairs писать/написать, читать/прочитать, делать/сделать, and смотреть/посмотреть. Drawing on general theories of aspect and studies of Slavic and Russian aspect, the article argues that aspectual meaning cannot be adequately understood by treating imperfective and perfective forms as simple equivalents of unfinished and finished actions. Instead, aspect expresses how a speaker chooses to construe and present an event, while contextual information helps the hearer identify that construal. The discussion has implications for learners of Russian as a foreign language, particularly those who rely on one-to-one translations or isolated aspectual pairs. A context-sensitive approach can provide a more accurate account of aspectual choice and can support more effective learning and interpretation of Russian verbs.</summary>
+    <author><name>Mohammadali Norouzi</name></author>
+  </entry>
+  <entry>
+    <title>Designing AI-Supported Multimodal Russian Language Learning: A Conceptual Framework for Learner Autonomy, Critical AI Literacy, and Intercultural Competence</title>
+    <id>https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html</id>
+    <link href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html"/>
+    <updated>2026/09/17T00:00:00Z</updated>
+    <summary>This article proposes a conceptual framework for AI-supported multimodal Russian language learning, focusing on learner autonomy, critical AI literacy, multimodal task design and intercultural communicative competence.</summary>
+    <author><name>Mohammadmahdi Rubin</name></author>
+  </entry>
 </feed>
