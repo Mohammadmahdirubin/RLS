@@ -90,7 +90,7 @@ for(const a of published){
   if(raw.slice(0,5)!=='%PDF-')throw new Error('Not a PDF: '+pdfPath);
   let searchable=false;
   try { searchable=!!execFileSync('pdftotext',[pdfPath,'-'],{encoding:'utf8',maxBuffer:20*1024*1024}).trim(); } catch {}
-  if(!searchable) searchable=raw.includes('/ToUnicode') && /\\/Type\\s*\\/Page/.test(raw);
+  if(!searchable) searchable=raw.includes('/ToUnicode') || raw.includes('/Type/Page') || raw.includes('/Type /Page');
   if(!searchable)throw new Error('PDF does not expose searchable text: '+pdfPath);
   for(const l of langs){
     const page=l.prefix+a.href.replace(/^\//,'');
