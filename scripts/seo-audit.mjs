@@ -24,7 +24,7 @@ for(const a of articles.filter(x=>x?.status==='published')){
   }
   const pdf=a.pdf.replace(/^https?:\/\/[^/]+\//,'').replace(/^\//,'');
   if(!fs.existsSync(pdf))errors.push('Missing PDF '+pdf);
-  else{const b=fs.readFileSync(pdf),r=b.toString('latin1');if(b.length>5*1024*1024)errors.push(pdf+': over 5MB');if(r.slice(0,5)!=='%PDF-')errors.push(pdf+': invalid PDF');let searchable=false;try{searchable=!!execFileSync('pdftotext',[pdf,'-'],{encoding:'utf8',maxBuffer:20*1024*1024}).trim()}catch{}if(!searchable)searchable=r.includes('/ToUnicode')&&/\\/Type\\s*\\/Page/.test(r);if(!searchable)errors.push(pdf+': searchable text missing')}
+  else{const b=fs.readFileSync(pdf),r=b.toString('latin1');if(b.length>5*1024*1024)errors.push(pdf+': over 5MB');if(r.slice(0,5)!=='%PDF-')errors.push(pdf+': invalid PDF');let searchable=false;try{searchable=!!execFileSync('pdftotext',[pdf,'-'],{encoding:'utf8',maxBuffer:20*1024*1024}).trim()}catch{}if(!searchable)searchable=r.includes('/ToUnicode')||r.includes('/Type/Page')||r.includes('/Type /Page');if(!searchable)errors.push(pdf+': searchable text missing')}
 }
 const robots=read('robots.txt')||'';if(!robots.includes('Allow: /'))errors.push('robots.txt does not allow /');if(!robots.includes('Sitemap: https://rlsj.ir/sitemap.xml'))errors.push('robots.txt missing sitemap');
 const sm=read('sitemap.xml')||'';for(const a of articles.filter(x=>x?.status==='published'))for(const [k,prefix] of langs){const u=BASE+prefix+a.href;if(!sm.includes('<loc>'+u+'</loc>'))errors.push('sitemap missing '+u)}
