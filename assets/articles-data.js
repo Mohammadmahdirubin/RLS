@@ -31,7 +31,7 @@ window.RLS_ARTICLES = [
     issueNumber: "1",
     firstPage: "24",
     lastPage: "38",
-    pdf: "articles/1/Ali-Zomorodi-RLS-Vol1-Issue1-2026.pdf",
+    pdf: "articles/1/Ali-Zomorodi_RLS_Vol1_Issue1_2026.pdf",
     keywords: {
       fa: "اصطلاحات فنی؛ اصطلاحات نظامی؛ ترجمه روسی به انگلیسی؛ معادل‌یابی؛ انتقال مفهومی؛ اصطلاح‌شناسی",
       en: "Technical terminology; Military terminology; Russian-English translation; Equivalence selection; Conceptual transfer; Terminology",
