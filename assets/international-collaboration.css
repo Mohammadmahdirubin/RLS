@@ -2,15 +2,15 @@
 .rls-collab-box{
   max-width:980px;
   margin:22px auto 30px;
-  padding:18px 22px;
+  padding:20px 22px;
   display:flex;
   align-items:center;
   gap:18px;
-  background:linear-gradient(135deg,rgba(255,253,249,.98),rgba(247,241,236,.98));
-  border:1px solid var(--line);
-  border-inline-start:4px solid var(--accent);
-  border-radius:10px;
-  box-shadow:0 8px 24px rgba(36,27,29,.06);
+  background:linear-gradient(135deg,#e8f4fb 0%,#d7edf8 48%,#c7e4f2 100%);
+  border:1px solid #7bb7d3;
+  border-inline-start:6px solid #087ea4;
+  border-radius:12px;
+  box-shadow:0 10px 28px rgba(8,126,164,.14);
 }
 .rls-collab-logo{
   flex:0 0 auto;
