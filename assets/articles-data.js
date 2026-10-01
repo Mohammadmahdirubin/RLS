@@ -20,9 +20,9 @@ window.RLS_ARTICLES = [
     orcid: "",
     language: "en",
     affiliation: {
-      fa: "پژوهشگر مستقل",
-      en: "Independent Researcher",
-      ru: "Независимый исследователь"
+      fa: "کارشناس ارشد طراحی بدنه هواپیما و هلیکوپتر - دانشگاه ملی هوافضا اوکراین، خارکف",
+      en: "Master’s in Aircraft and Helicopter Airframe Design — National Aerospace University of Ukraine, Kharkiv",
+      ru: "Магистр по проектированию корпусов самолётов и вертолётов — Национальный аэрокосмический университет Украины, Харьков"
     },
     received: "2026/08/21",
     accepted: "2026/09/28",
@@ -68,9 +68,9 @@ window.RLS_ARTICLES = [
     orcid: "0009-0004-8475-2804",
     language: "en",
     affiliation: {
-      fa: "دانشکده زبان‌ها و ادبیات خارجی، دانشگاه تهران، ایران",
-      en: "Faculty of Languages and Foreign Literature, University of Tehran, Iran",
-      ru: "Факультет языков и зарубежной литературы, Тегеранский университет, Иран"
+      fa: "کارشناس ارشد آموزش زبان روسی",
+      en: "Master’s in Russian Language Teaching",
+      ru: "Магистр по преподаванию русского языка"
     },
     received: "2026/07/01",
     accepted: "2026/08/17",
