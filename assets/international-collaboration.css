@@ -14,7 +14,7 @@
 }
 .rls-collab-logo{
   flex:0 0 auto;
-  width:180px;
+  width:205px;
   max-width:42%;
   height:auto;
   display:flex;
@@ -30,7 +30,7 @@
   display:block;
   width:100%;
   height:auto;
-  max-height:52px;
+  max-height:72px;
   object-fit:contain;
 }
 .rls-collab-body{flex:1;min-width:0}
