@@ -11,7 +11,8 @@ window.RLS_ARTICLES = [
     },
     title: {
       fa: "چالشهای ترجمه اصطلاحات فنی و نظامی از زبان روسی به فارسی؛ بررسی راهبردهای معادل‌یابی و انتقال مفهومی",
-      en: "CHALLENGES IN TRANSLATING RUSSIAN TECHNICAL & MILITARY TERMINOLOGY INTO ENGLISH: STRATEGIES FOR EQUIVALENCE SELECTION AND CONCEPTUAL TRANSFER"
+      en: "CHALLENGES IN TRANSLATING RUSSIAN TECHNICAL & MILITARY TERMINOLOGY INTO ENGLISH: STRATEGIES FOR EQUIVALENCE SELECTION AND CONCEPTUAL TRANSFER",
+      ru: "Проблемы перевода русской технической и военной терминологии на английский язык: анализ стратегий выбора эквивалентов и концептуального переноса"
     },
     author: "Ali Zomorodi",
     authorGiven: "Ali",
@@ -32,16 +33,16 @@ window.RLS_ARTICLES = [
     lastPage: "38",
     pdf: "articles/1/Ali-Zomorodi-RLS-Vol1-Issue1-2026.pdf",
     keywords: {
-      fa: "",
-      en: "",
-      ru: ""
+      fa: "اصطلاحات فنی؛ اصطلاحات نظامی؛ ترجمه روسی به انگلیسی؛ معادل‌یابی؛ انتقال مفهومی؛ اصطلاح‌شناسی",
+      en: "Technical terminology; Military terminology; Russian-English translation; Equivalence selection; Conceptual transfer; Terminology",
+      ru: "Техническая терминология; военная терминология; русско-английский перевод; выбор эквивалентов; концептуальный перенос; терминология"
     },
     doi: "",
     license: "",
     abstract: {
-      fa: "",
-      en: "",
-      ru: ""
+      fa: "ترجمه اصطلاحات فنی و نظامی از زبان روسی به انگلیسی حوزه‌ای چالش‌برانگیز در ترجمه تخصصی است، زیرا دو زبان از الگوهای واژگانی، نحوی و مفهومی متفاوتی برای سازمان‌دهی اصطلاحات استفاده می‌کنند و بسیاری از اصطلاحات به‌شدت به بافت تخصصی وابسته‌اند. در چنین متونی، معادل‌گذاری واژه‌به‌واژه لزوماً بازنمایی دقیقی از مفهوم مورد نظر ارائه نمی‌دهد. بنابراین مترجم باید نه‌تنها شکل زبانی اصطلاح، بلکه جایگاه آن را در نظام مفهومی حوزه مربوط نیز در نظر بگیرد. این پژوهش چالش‌های اصلی در انتخاب معادل‌های انگلیسی برای اصطلاحات فنی و نظامی روسی را بررسی و راهبردهای انتقال معانی تخصصی آنها به انگلیسی را تحلیل می‌کند. پژوهش با رویکرد توصیفی-تحلیلی انجام شده و بر اصطلاحات منتخب در حوزه‌های فنی، نظامی و به‌ویژه هوافضا تکیه دارد. تحلیل بر چندمعنایی، تفاوت در گستره معنایی، اصطلاحات چندواژه‌ای، وابستگی به بافت، تفاوت میان نظام‌های مفهومی و نقش دانش تخصصی تمرکز دارد. یافته‌ها نشان می‌دهد که انتخاب موفق معادل اغلب مستلزم عبور از ترجمه تحت‌اللفظی و حرکت به سوی انتقال مفهومی است. استفاده هم‌زمان از فرهنگ‌های تخصصی، منابع متنی، مقایسه بافتی و دانش موضوعی می‌تواند دقت ترجمه را افزایش دهد. بر این اساس، مدلی شش‌مرحله‌ای برای کار اصطلاح‌شناختی روسی-انگلیسی پیشنهاد می‌شود: شناسایی اصطلاح، شناسایی حوزه، تحلیل بافت، شناسایی مفهوم، مقایسه معادل‌ها و ارزیابی نهایی و تثبیت معادل.",
+      en: "Translating technical and military terminology from Russian into English is a challenging area of specialized translation because the two languages organize terminology through different lexical, syntactic, and conceptual patterns, while many terms are strongly dependent on their specialized context. In such texts, a word-for-word equivalent does not necessarily provide an accurate representation of the intended concept. The translator must therefore consider not only the linguistic form of a term but also its position within the conceptual system of the relevant field. This study examines major challenges in selecting English equivalents for Russian technical and military terms and analyzes strategies for transferring their specialized meanings into English. The study follows a descriptive-analytical approach and draws on selected terminology from technical, military, and particularly aerospace domains. The analysis focuses on polysemy, differences in semantic range, multiword terminology, contextual dependence, differences between conceptual systems, and the role of subject-matter knowledge. The findings indicate that successful equivalence selection often requires moving beyond literal translation toward conceptual transfer. The simultaneous use of specialized dictionaries, textual sources, contextual comparison, and subject-matter knowledge can improve translation accuracy. On this basis, a six-stage model is proposed for Russian-English terminology work: term identification, domain identification, contextual analysis, concept identification, comparison of equivalents, and final evaluation and consolidation.",
+      ru: "Перевод технической и военной терминологии с русского языка на английский представляет собой сложную область специализированного перевода, поскольку два языка организуют терминологию посредством различных лексических, синтаксических и концептуальных моделей, а многие термины тесно зависят от специализированного контекста. В таких текстах дословный эквивалент не всегда обеспечивает точное представление требуемого понятия. Поэтому переводчик должен учитывать не только языковую форму термина, но и его место в концептуальной системе соответствующей предметной области. В статье рассматриваются основные трудности выбора английских эквивалентов для русских технических и военных терминов и анализируются стратегии передачи их специальных значений на английский язык. Исследование выполнено в рамках описательно-аналитического подхода и опирается на отобранную терминологию технической, военной и, в особенности, аэрокосмической сфер. Анализ охватывает полисемию, различия в семантическом объёме, многокомпонентные термины, контекстуальную зависимость, различия между концептуальными системами и роль предметных знаний. Результаты показывают, что успешный выбор эквивалента часто требует перехода от дословного перевода к концептуальному переносу. Одновременное использование специализированных словарей, текстовых источников, контекстуального сопоставления и предметных знаний может повысить точность перевода. На этой основе предлагается шестиступенчатая модель работы с русско-английской терминологией: идентификация термина, определение предметной области, контекстуальный анализ, идентификация понятия, сопоставление эквивалентов и итоговая оценка и закрепление выбранного эквивалента."
     },
     href: "article-challenges-russian-technical-military-terminology.html"
   },
@@ -152,7 +153,7 @@ window.RLS_ARTICLE_STATUS = function () {
 window.renderRLSArticleList = function (containerId, lang) {
   var container = document.getElementById(containerId);
   if (!container) return;
-  var articles = window.RLS_ARTICLE_STATUS();
+  var articles = window.RLS_ARTICLE_STATUS().slice().sort(function (a, b) { return (a.number || 0) - (b.number || 0); });
   if (!articles.length) {
     container.innerHTML = '<div class="notice">' +
       (lang === "fa" ? "هنوز مقاله‌ای منتشر نشده است." : lang === "ru" ? "Опубликованных статей пока нет." : "No articles have been published yet.") +
