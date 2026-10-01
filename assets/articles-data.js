@@ -1,5 +1,52 @@
 window.RLS_ARTICLES = [
   {
+    id: "challenges-russian-technical-military-terminology",
+    number: 3,
+    status: "published",
+    issue: "1/1",
+    type: {
+      fa: "مقاله پژوهشی",
+      en: "Research Article",
+      ru: "Научная статья"
+    },
+    title: {
+      fa: "چالشهای ترجمه اصطلاحات فنی و نظامی از زبان روسی به فارسی؛ بررسی راهبردهای معادل‌یابی و انتقال مفهومی",
+      en: "CHALLENGES IN TRANSLATING RUSSIAN TECHNICAL & MILITARY TERMINOLOGY INTO ENGLISH: STRATEGIES FOR EQUIVALENCE SELECTION AND CONCEPTUAL TRANSFER"
+    },
+    author: "Ali Zomorodi",
+    authorGiven: "Ali",
+    authorFamily: "Zomorodi",
+    orcid: "",
+    language: "en",
+    affiliation: {
+      fa: "پژوهشگر مستقل",
+      en: "Independent Researcher",
+      ru: "Независимый исследователь"
+    },
+    received: "2026/08/21",
+    accepted: "2026/09/28",
+    online: "",
+    volume: "1",
+    issueNumber: "1",
+    firstPage: "24",
+    lastPage: "38",
+    pdf: "articles/1/Ali-Zomorodi-RLS-Vol1-Issue1-2026.pdf",
+    keywords: {
+      fa: "",
+      en: "",
+      ru: ""
+    },
+    doi: "",
+    license: "",
+    abstract: {
+      fa: "",
+      en: "",
+      ru: ""
+    },
+    href: "article-challenges-russian-technical-military-terminology.html"
+  },
+
+  {
     id: "ai-supported-multimodal-russian-language-learning",
     number: 1,
     status: "published",
