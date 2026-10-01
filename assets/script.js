@@ -107,7 +107,7 @@ const initRLS=()=>{
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.magiran.com/" target="_blank" rel="noopener noreferrer" title="Magiran"><img src="${asset('magiran.png')}" alt="Magiran" loading="lazy"></a><span>Magiran</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://civilica.com/" target="_blank" rel="noopener noreferrer" title="Civilica"><img src="${asset('sivilica.png')}" alt="Civilica" loading="lazy"></a><span>Civilica</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.researchbib.com/" target="_blank" rel="noopener noreferrer" title="ResearchBib"><img src="${asset('researchbib.svg')}" alt="ResearchBib" loading="lazy"></a><span>ResearchBib</span></div>
-        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://scholar.google.com/citations?user=FWl4kcEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar"><img src="/google%20scholar.jpg" alt="Google Scholar" loading="lazy"></a><span>Google Scholar</span></div>
+        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer" title="Google Scholar"><img src="/google%20scholar.jpg" alt="Google Scholar" loading="lazy"></a><span>Google Scholar</span></div>
       </div>
     </div>`;
   }
