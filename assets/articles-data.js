@@ -26,7 +26,7 @@ window.RLS_ARTICLES = [
     },
     received: "2026/08/21",
     accepted: "2026/09/28",
-    online: "",
+    online: "2026/10/01",
     volume: "1",
     issueNumber: "1",
     firstPage: "24",
