@@ -164,7 +164,6 @@ window.renderRLSArticleList = function (containerId, lang) {
     var title = a.title[lang] || a.title.en;
     var type = a.type[lang] || a.type.en;
     var affiliation = a.affiliation[lang] || a.affiliation.en;
-    var abstractText = a.abstract[lang] || a.abstract.en;
     var keywordsText = a.keywords ? (a.keywords[lang] || a.keywords.en) : "";
     var acceptedLabel = lang === "fa" ? "پذیرش" : lang === "ru" ? "Принято" : "Accepted";
     var acceptedText = a.accepted || (lang === "fa" ? "ثبت نشده" : lang === "ru" ? "Не зарегистрировано" : "Not separately recorded");
@@ -188,7 +187,6 @@ window.renderRLSArticleList = function (containerId, lang) {
       '<div><span>' + (lang === "fa" ? "شماره" : lang === "ru" ? "Выпуск" : "Issue") + '</span><strong>' + issueLabel + '</strong></div>' +
       '<div><span>DOI</span><strong>' + (a.doi || (lang === "fa" ? "تعیین نشده" : lang === "ru" ? "Не присвоен" : "Not assigned")) + '</strong></div>' +
       '</div>' +
-      '<p>' + abstractText + '</p>' +
       (keywordsText ? '<p class="stat-note"><strong>' + (lang === "fa" ? "کلیدواژه‌ها" : lang === "ru" ? "Ключевые слова" : "Keywords") + ':</strong> ' + keywordsText + '</p>' : '') +
       '<div class="article-actions"><span class="status">' + doiText + '</span> <a class="button secondary" href="' + a.href + '">' + viewLabel + '</a> <a class="button primary" href="' + a.pdf + '" target="_blank" rel="noopener">' + pdfLabel + '</a></div>' +
       '</article>';
