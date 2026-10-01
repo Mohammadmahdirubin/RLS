@@ -172,6 +172,7 @@ window.renderRLSArticleList = function (containerId, lang) {
     var articleNumber = a.number != null ? a.number : "";
     var receivedLabel = lang === "fa" ? "دریافت" : lang === "ru" ? "Получено" : "Received";
     var onlineLabel = lang === "fa" ? "انتشار آنلاین" : lang === "ru" ? "Онлайн-публикация" : "Online publication";
+    var languageLabel = lang === "fa" ? "زبان مقاله" : lang === "ru" ? "Язык статьи" : "Article language";
     var issueLabel = lang === "fa" ? "دوره ۱&nbsp;، شماره ۱" : lang === "ru" ? "Том 1, выпуск 1" : "Volume 1, Issue 1";
     var viewLabel = lang === "fa" ? "مشاهده مقاله" : lang === "ru" ? "Открыть статью" : "View article";
     var doiText = a.doi ? "DOI: " + a.doi : lang === "fa" ? "DOI: هنوز اختصاص نیافته" : lang === "ru" ? "DOI: ещё не присвоен" : "DOI: Not yet assigned";
@@ -184,6 +185,7 @@ window.renderRLSArticleList = function (containerId, lang) {
       '<div><span>' + receivedLabel + '</span><strong>' + a.received + '</strong></div>' +
       '<div><span>' + acceptedLabel + '</span><strong>' + acceptedText + '</strong></div>' +
       '<div><span>' + onlineLabel + '</span><strong>' + a.online + '</strong></div>' +
+      '<div><span>' + languageLabel + '</span><strong>' + (a.language === "en" ? "English" : a.language) + '</strong></div>' +
       '<div><span>' + (lang === "fa" ? "شماره" : lang === "ru" ? "Выпуск" : "Issue") + '</span><strong>' + issueLabel + '</strong></div>' +
       '<div><span>DOI</span><strong>' + (a.doi || (lang === "fa" ? "تعیین نشده" : lang === "ru" ? "Не присвоен" : "Not assigned")) + '</strong></div>' +
       '</div>' +
