@@ -12,6 +12,7 @@ PDFs are organized by **issue number** (شماره / series):
 
 - [rubin-2026-ai-supported-multimodal-rfl.pdf](1/rubin-2026-ai-supported-multimodal-rfl.pdf)
 - [Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf](1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf)
+- [Ali-Zomorodi_RLS_Vol1_Issue1_2026.pdf](1/Ali-Zomorodi_RLS_Vol1_Issue1_2026.pdf)
 
 Public URLs:
 
