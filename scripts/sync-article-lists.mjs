@@ -17,7 +17,7 @@ const esc = v => String(v ?? "")
 
 const pageUrl = (lang, a) => {
   const filename = a.href || "article-" + (a.slug || a.id) + ".html";
-  const clean = String(filename).replace(/^(?:fa|en|ru)\\//, "");
+  const clean = String(filename).replace(/^(?:fa|en|ru)\//, "");
   return lang === "fa" ? clean : lang + "/" + clean;
 };
 
