@@ -17,8 +17,11 @@ const esc = v => String(v ?? "")
 
 const pageUrl = (lang, a) => {
   const filename = a.href || "article-" + (a.slug || a.id) + ".html";
-  const clean = String(filename).replace(/^(?:fa|en|ru)\//, "");
-  return lang === "fa" ? clean : lang + "/" + clean;
+  // Links are relative to the current article-list page:
+  // articles.html -> article.html
+  // en/articles.html -> article.html
+  // ru/articles.html -> article.html
+  return String(filename).replace(/^(?:fa|en|ru)\\//, "");
 };
 
 function titlePair(a) {
