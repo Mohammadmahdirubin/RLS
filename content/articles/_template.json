@@ -3,21 +3,16 @@
   "number": 4,
   "status": "published",
   "issue": "1/1",
-  "title": {
-    "fa": "عنوان فارسی",
-    "en": "English Title",
-    "ru": "Русское название"
-  },
+  "sourceLanguage": "en",
+  "title": {"fa": "", "en": "English Title", "ru": ""},
   "author": "Author Name",
   "authorGiven": "Author",
   "authorFamily": "Name",
+  "authorNames": {"fa": "نام نویسنده", "en": "Author Name", "ru": "Имя автора"},
+  "email": "",
   "orcid": "",
   "language": "en",
-  "affiliation": {
-    "fa": "وابستگی فارسی",
-    "en": "English affiliation",
-    "ru": "Русская аффилиация"
-  },
+  "affiliation": {"fa": "", "en": "English affiliation", "ru": ""},
   "received": "2026/10/05",
   "accepted": "2026/10/20",
   "online": "2026/10/25",
@@ -26,15 +21,8 @@
   "firstPage": "39",
   "lastPage": "52",
   "pdf": "articles/1/example.pdf",
-  "keywords": {
-    "fa": "کلیدواژه ۱؛ کلیدواژه ۲",
-    "en": "Keyword 1; Keyword 2",
-    "ru": "Ключевое слово 1; Ключевое слово 2"
-  },
-  "abstract": {
-    "fa": "چکیده فارسی",
-    "en": "English abstract",
-    "ru": "Русская аннотация"
-  },
+  "keywords": {"fa": "", "en": "Keyword 1; Keyword 2", "ru": ""},
+  "abstract": {"fa": "", "en": "English abstract", "ru": ""},
+  "body": {"fa": "", "en": "", "ru": ""},
   "doi": ""
 }
