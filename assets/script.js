@@ -126,6 +126,7 @@ const initRLS=()=>{
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://civilica.com/" target="_blank" rel="noopener noreferrer" title="Civilica"><img src="${asset('sivilica.png')}" alt="Civilica" loading="lazy"></a><span>Civilica</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.researchbib.com/" target="_blank" rel="noopener noreferrer" title="ResearchBib"><img src="${asset('researchbib.svg')}" alt="ResearchBib" loading="lazy"></a><span>ResearchBib</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer" title="Google Scholar"><img src="/google%20scholar.jpg" alt="Google Scholar" loading="lazy"></a><span>Google Scholar</span></div>
+        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box rls-open-access-logo" href="https://sparcopen.org/open-access/" target="_blank" rel="noopener noreferrer" title="Open Access"><img src="${asset('open.png')}" alt="Open Access" loading="lazy"></a><span>Open Access</span></div>
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('academia.jpg')}" alt="Academia" loading="lazy"></div><span>Academia</span></div>
       </div>
     </div>`;
