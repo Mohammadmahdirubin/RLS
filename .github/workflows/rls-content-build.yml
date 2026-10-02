@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "content/**"
-      - "scripts/generate-rls-content.mjs"
+      - "scripts/**"
       - ".github/workflows/rls-content-build.yml"
   workflow_dispatch:
 
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  validate:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,16 +21,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Validate multilingual content
+      - name: Restore generator
+        run: gzip -dc scripts/generate-rls-content.mjs.gz > scripts/generate-rls-content.mjs
+      - name: Translate missing multilingual fields
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_TRANSLATION_MODEL: ${{ vars.OPENAI_TRANSLATION_MODEL }}
+        run: node scripts/translate-rls-content.mjs
+      - name: Generate site content
         run: node scripts/generate-rls-content.mjs
-      - name: Commit generated manifest
+      - name: Validate generated files
+        run: |
+          test -f content/generated-manifest.json
+          node --check scripts/translate-rls-content.mjs
+      - name: Commit generated changes
         run: |
           git config user.name "RLS Content Builder"
           git config user.email "actions@users.noreply.github.com"
-          git add content/generated-manifest.json
+          git add content assets/articles-data.js articles/1/README.md *.html en/*.html ru/*.html
           if git diff --cached --quiet; then
             echo "No generated changes."
           else
-            git commit -m "chore: update multilingual content manifest"
+            git commit -m "chore: build multilingual article content"
             git push
           fi
