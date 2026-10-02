@@ -210,6 +210,162 @@ async function appendToArticleList(path,sha,content,a,lang){
   return {changed:true};
 }
 
+
+function setSmartStatus(message,kind){
+  const el=document.getElementById("extractStatus");
+  if(!el)return;
+  el.textContent=message||"";
+  el.className="smart-status"+(kind?" "+kind:"");
+}
+
+function normalizePdfText(text){
+  return String(text||"")
+    .replace(/\u00a0/g," ")
+    .replace(/[ \t]+/g," ")
+    .replace(/\n{3,}/g,"\n\n")
+    .replace(/\r/g,"")
+    .trim();
+}
+
+function detectLanguage(text){
+  const s=String(text||"");
+  const fa=(s.match(/[\u0600-\u06ff]/g)||[]).length;
+  const ru=(s.match(/[А-Яа-яЁё]/g)||[]).length;
+  const en=(s.match(/[A-Za-z]/g)||[]).length;
+  if(fa>Math.max(ru,en)*1.15)return "fa";
+  if(ru>Math.max(fa,en)*1.15)return "ru";
+  return "en";
+}
+
+function cleanSectionText(text){
+  return String(text||"").replace(/\s+/g," ").replace(/^[\s:–—-]+|[\s:–—-]+$/g,"").trim();
+}
+
+function extractSection(text,labels){
+  const label=labels.join("|");
+  const next="(?:Abstract|Keywords?|Key words|Аннотация|Ключевые слова|چکیده|کلیدواژه‌ها|مقدمه|Introduction|Введение|نتیجه‌گیری|Conclusion|Заключение)";
+  const re=new RegExp("(?:^|\\n)\\s*(?:"+label+")\\s*[:：-]?\\s*([\\s\\S]{30,5000}?)(?=\\n\\s*"+next+"\\s*[:：-]?\\s|$)","i");
+  const m=text.match(re);
+  return m?cleanSectionText(m[1]):"";
+}
+
+function guessTitle(text){
+  const lines=text.split(/\n+/).map(function(x){return x.trim();}).filter(Boolean).slice(0,45);
+  const bad=/^(abstract|keywords?|key words|аннотация|ключевые слова|چکیده|کلیدواژه|introduction|введение|مقدمه|received|accepted|doi|https?:|www\.)/i;
+  const candidates=lines.filter(function(x){return !bad.test(x)&&x.length>=18&&x.length<=240&&!/^[\d\s.,:;()\-–—]+$/.test(x);});
+  candidates.sort(function(a,b){return Math.abs(a.length-95)-Math.abs(b.length-95);});
+  return candidates[0]||"";
+}
+
+function guessAuthors(text){
+  const lines=text.split(/\n+/).map(function(x){return x.trim();}).filter(Boolean).slice(0,55);
+  const out=[];
+  const seen={};
+  lines.forEach(function(line,i){
+    if(/orcid\.org\/\d{4}-\d{4}-\d{4}-\d{3}[0-9X]/i.test(line)||/\b\d{4}-\d{4}-\d{4}-\d{3}[0-9X]\b/i.test(line)){
+      const before=(lines[i-1]||"").trim();
+      if(before&&before.length<180&&!/^(abstract|keywords?|аннотация|чکیده|چکیده)$/i.test(before)&&!seen[before]){
+        out.push({name:before,orcid:(line.match(/\b\d{4}-\d{4}-\d{4}-\d{3}[0-9X]\b/i)||[""])[0]});
+        seen[before]=true;
+      }
+    }
+  });
+  return out;
+}
+
+async function extractPdf(file){
+  if(!window.pdfjsLib) throw new Error("کتابخانه PDF.js بارگذاری نشده است. صفحه را یک‌بار تازه‌سازی کنید.");
+  const buffer=await file.arrayBuffer();
+  const pdf=await window.pdfjsLib.getDocument({data:buffer}).promise;
+  if(pdf.numPages<1) throw new Error("PDF صفحه‌ای ندارد.");
+  const limit=Math.min(pdf.numPages,8);
+  const pages=[];
+  for(let n=1;n<=limit;n++){
+    setSmartStatus("در حال استخراج متن PDF — صفحه "+n+" از "+limit+"...");
+    const page=await pdf.getPage(n);
+    const content=await page.getTextContent();
+    const items=content.items.map(function(x){return x.str||"";});
+    pages.push(items.join(" "));
+  }
+  return {pages:pdf.numPages,text:normalizePdfText(pages.join("\n"))};
+}
+
+function fillFromAI(data){
+  if(!data||typeof data!=="object")throw new Error("پاسخ سرویس AI معتبر نیست.");
+  const set=function(id,value){const el=document.getElementById(id);if(el&&value!=null)el.value=Array.isArray(value)?value.join("، "):String(value);};
+  const title=data.title||{}, abs=data.abstract||{}, key=data.keywords||{};
+  set("titleFa",title.fa||""); set("titleEn",title.en||""); set("titleRu",title.ru||"");
+  set("absFa",abs.fa||""); set("absEn",abs.en||""); set("absRu",abs.ru||"");
+  set("keyFa",key.fa||[]); set("keyEn",key.en||[]); set("keyRu",key.ru||[]);
+  if(data.sourceLanguage)document.getElementById("language").value=data.sourceLanguage;
+  const authors=Array.isArray(data.authors)?data.authors:[];
+  set("authors",authors.map(function(a){
+    return [a.fa||"",a.en||"",a.ru||"",a.affFa||"",a.affEn||"",a.affRu||"",a.orcid||""].join(" | ");
+  }).join("\n"));
+}
+
+async function callAI(endpoint,payload){
+  const response=await fetch(endpoint,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload)
+  });
+  let data={};
+  try{data=await response.json();}catch(e){}
+  if(!response.ok)throw new Error(data.error||("AI HTTP "+response.status));
+  return data.result||data;
+}
+
+async function smartExtract(){
+  const file=document.getElementById("pdf").files[0];
+  if(!file)throw new Error("ابتدا فایل PDF را انتخاب کنید.");
+  if(file.type&&file.type!=="application/pdf")throw new Error("فایل انتخاب‌شده PDF نیست.");
+  const extracted=await extractPdf(file);
+  const sourceLanguage=detectLanguage(extracted.text);
+  const endpoint=(document.getElementById("aiEndpoint").value||"").trim();
+  const local={
+    sourceLanguage:sourceLanguage,
+    pages:extracted.pages,
+    title:guessTitle(extracted.text),
+    abstract:extractSection(extracted.text,["Abstract","چکیده","Аннотация"]),
+    keywords:extractSection(extracted.text,["Keywords","Key words","کلیدواژه‌ها","Ключевые слова"]),
+    authors:guessAuthors(extracted.text)
+  };
+  const preview=document.getElementById("extractPreview");
+  if(preview){
+    preview.hidden=false;
+    preview.textContent="زبان تشخیص‌داده‌شده: "+sourceLanguage+"\nتعداد صفحات: "+extracted.pages+"\n\nعنوان احتمالی:\n"+local.title+"\n\nچکیده/بخش مشابه:\n"+local.abstract+"\n\nکلیدواژه‌ها/بخش مشابه:\n"+local.keywords;
+  }
+  if(!endpoint){
+    setSmartStatus("متن PDF استخراج شد. برای تکمیل خودکار سه‌زبانه، آدرس سرویس AI را ذخیره کنید.", "ok");
+    return local;
+  }
+  setSmartStatus("متن استخراج شد؛ در حال آماده‌سازی عنوان، چکیده، کلیدواژه‌ها و نویسندگان به سه زبان...");
+  const ai=await callAI(endpoint,{sourceLanguage:sourceLanguage,pages:extracted.pages,text:extracted.text.slice(0,120000)});
+  fillFromAI(ai);
+  setSmartStatus("استخراج و آماده‌سازی سه‌زبانه انجام شد. لطفاً همه فیلدها، مخصوصاً نام نویسندگان و ORCID را بررسی کنید.", "ok");
+  return ai;
+}
+
+function initSmartPanel(){
+  const saved=localStorage.getItem("rls_ai_endpoint")||"";
+  const ep=document.getElementById("aiEndpoint");
+  if(ep)ep.value=saved;
+  const save=document.getElementById("saveAi");
+  if(save)save.onclick=function(){
+    const value=(ep.value||"").trim();
+    if(value)localStorage.setItem("rls_ai_endpoint",value);
+    else localStorage.removeItem("rls_ai_endpoint");
+    setSmartStatus(value?"آدرس سرویس AI ذخیره شد.":"آدرس سرویس AI پاک شد.","ok");
+  };
+  const extract=document.getElementById("extractPdf");
+  if(extract)extract.onclick=async function(){
+    extract.disabled=true;
+    try{await smartExtract();}catch(e){setSmartStatus("خطا: "+(e&&e.message?e.message:e),"err");}
+    finally{extract.disabled=false;}
+  };
+}
+
 window.rlsConnect=async function(){
   const input=document.getElementById("token"),status=document.getElementById("status"),form=document.getElementById("form");
   token=input&&input.value?input.value.trim():"";
@@ -311,6 +467,8 @@ async function publishArticle(){
 }
 
 document.addEventListener("DOMContentLoaded",function(){
+  initSmartPanel();
+  if(window.pdfjsLib){window.pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";}
   const button=document.getElementById("connect");
   if(button){button.type="button";button.onclick=window.rlsConnect;}
   const preview=document.getElementById("preview");
