@@ -27,6 +27,8 @@ jobs:
         run: node scripts/validate-rls-content.mjs
       - name: Generate article data
         run: node scripts/generate-article-pages.mjs
+      - name: Update article lists
+        run: node scripts/sync-article-lists.mjs
       - name: Register authors
         run: node scripts/sync-authors.mjs
       - name: Update issue
