@@ -21,7 +21,7 @@ const pageUrl = (lang,a) => lang === "fa"
 
 function titlePair(a, pageLang) {
   const source = a.language || a.sourceLanguage || "en";
-  const main = a.title[pageLang] || a.title[source];
+  const main = pageLang === 'fa' ? a.title[source] : a.title[pageLang];
   let secondaryLang;
   if (pageLang === "fa") secondaryLang = source === "fa" ? "en" : "fa";
   else secondaryLang = "fa";
