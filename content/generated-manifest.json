@@ -1,36 +1,17 @@
 {
-  "generatedAt": "2026-10-02T14:23:53.787Z",
-  "generator": "RLS multilingual content system v1",
+  "generatedAt": "2026-10-02T14:30:07.189Z",
+  "generator": "RLS multilingual content system v2",
   "languages": [
     "fa",
     "en",
     "ru"
   ],
   "articleCount": 1,
-  "generated": [
-    {
-      "articleId": "challenges-russian-technical-military-terminology",
-      "number": 3,
-      "language": "fa",
-      "source": "003.json",
-      "output": "article-challenges-russian-technical-military-terminology.html",
-      "pdf": "articles/1/Ali-Zomorodi_RLS_Vol1_Issue1_2026.pdf"
-    },
-    {
-      "articleId": "challenges-russian-technical-military-terminology",
-      "number": 3,
-      "language": "en",
-      "source": "003.json",
-      "output": "en/article-challenges-russian-technical-military-terminology.html",
-      "pdf": "articles/1/Ali-Zomorodi_RLS_Vol1_Issue1_2026.pdf"
-    },
-    {
-      "articleId": "challenges-russian-technical-military-terminology",
-      "number": 3,
-      "language": "ru",
-      "source": "003.json",
-      "output": "ru/article-challenges-russian-technical-military-terminology.html",
-      "pdf": "articles/1/Ali-Zomorodi_RLS_Vol1_Issue1_2026.pdf"
-    }
-  ]
+  "statistics": {
+    "received": 4,
+    "accepted": 1,
+    "rejected": 2,
+    "pending": 1,
+    "acceptanceRate": 33
+  }
 }
