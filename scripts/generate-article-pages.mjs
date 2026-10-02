@@ -91,9 +91,10 @@ function buildHead(lang, a, template) {
     encoding: { "@type": "MediaObject", contentUrl: "https://rlsj.ir/" + a.pdf, encodingFormat: "application/pdf" }
   };
   const jsonLd = JSON.stringify(ld, null, 2);
-  const css = lang === "fa"
-    ? '<link rel="stylesheet" href="assets/style.css?v=20261002article">\n<link rel="stylesheet" href="assets/article-header-footer.css?v=20261002article">'
-    : '<link rel="stylesheet" href="../assets/style.css?v=20261002article">\n<link rel="stylesheet" href="../assets/article-header-footer.css?v=20261002article">';
+  const assetLines = [...template.matchAll(/<(?:link[^>]+rel="stylesheet"[^>]*|script[^>]+src="[^"]+"[^>]*)>/g)]
+    .map(match => match[0])
+    .filter(line => !line.includes('type="application/ld+json"'))
+    .join("\\n");
 
   return `<head>
 <meta charset="utf-8">
