@@ -19,12 +19,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Translate missing fields
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_TRANSLATION_MODEL: ${{ vars.OPENAI_TRANSLATION_MODEL }}
-        run: node scripts/translate-rls-content.mjs
-      - name: Generate article pages
+      - name: Validate multilingual records
+        run: node scripts/validate-rls-content.mjs
+      - name: Generate article data
         run: node scripts/generate-article-pages.mjs
       - name: Register authors
         run: node scripts/sync-authors.mjs
