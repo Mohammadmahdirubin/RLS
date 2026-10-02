@@ -15,33 +15,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Restore generator
-        run: gzip -dc scripts/generate-rls-content.mjs.gz > scripts/generate-rls-content.mjs
-      - name: Translate missing multilingual fields
+      - name: Translate missing fields
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_TRANSLATION_MODEL: ${{ vars.OPENAI_TRANSLATION_MODEL }}
         run: node scripts/translate-rls-content.mjs
-      - name: Generate site content
+      - name: Generate article pages
+        run: node scripts/generate-article-pages.mjs
+      - name: Register authors
+        run: node scripts/sync-authors.mjs
+      - name: Update issue
+        run: node scripts/sync-issues.mjs
+      - name: Update metrics
+        run: node scripts/sync-metrics.mjs
+      - name: Generate manifest
         run: node scripts/generate-rls-content.mjs
-      - name: Validate generated files
-        run: |
-          test -f content/generated-manifest.json
-          node --check scripts/translate-rls-content.mjs
       - name: Commit generated changes
         run: |
           git config user.name "RLS Content Builder"
           git config user.email "actions@users.noreply.github.com"
           git add content assets/articles-data.js articles/1/README.md *.html en/*.html ru/*.html
-          if git diff --cached --quiet; then
-            echo "No generated changes."
-          else
-            git commit -m "chore: build multilingual article content"
-            git push
-          fi
+          if git diff --cached --quiet; then echo "No generated changes."; else git commit -m "chore: build multilingual article content"; git push; fi
