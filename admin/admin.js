@@ -336,6 +336,20 @@ async function smartExtract(){
     preview.hidden=false;
     preview.textContent="زبان تشخیص‌داده‌شده: "+sourceLanguage+"\nتعداد صفحات: "+extracted.pages+"\n\nعنوان احتمالی:\n"+local.title+"\n\nچکیده/بخش مشابه:\n"+local.abstract+"\n\nکلیدواژه‌ها/بخش مشابه:\n"+local.keywords;
   }
+  document.getElementById("language").value=sourceLanguage;
+  if(sourceLanguage==="fa"){
+    document.getElementById("titleFa").value=local.title;
+    document.getElementById("absFa").value=local.abstract;
+    document.getElementById("keyFa").value=local.keywords;
+  }else if(sourceLanguage==="ru"){
+    document.getElementById("titleRu").value=local.title;
+    document.getElementById("absRu").value=local.abstract;
+    document.getElementById("keyRu").value=local.keywords;
+  }else{
+    document.getElementById("titleEn").value=local.title;
+    document.getElementById("absEn").value=local.abstract;
+    document.getElementById("keyEn").value=local.keywords;
+  }
   if(!endpoint){
     setSmartStatus("متن PDF استخراج شد. برای تکمیل خودکار سه‌زبانه، آدرس سرویس AI را ذخیره کنید.", "ok");
     return local;
