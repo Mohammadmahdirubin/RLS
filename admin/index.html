@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>مدیریت نشریه | RLS</title><link rel="stylesheet" href="admin.css"></head>
+<body><header class="top"><strong>RLS</strong><span>پنل مدیریت نشریه</span><a href="../index.html">بازگشت به سایت</a></header>
+<main>
+<section class="card"><h1>افزودن مقاله جدید</h1><p>این پنل فایل PDF و صفحات سه‌زبانه مقاله را مستقیماً در مخزن RLS ثبت می‌کند.</p><label>GitHub Fine-grained Token<input id="token" type="password" autocomplete="off" placeholder="github_pat_..."></label><button id="connect">اتصال و بررسی دسترسی</button><span id="status"></span></section>
+<form id="form" class="card off"><h2>مشخصات مقاله</h2>
+<div class="g4"><label>دوره<input id="volume" value="1"></label><label>شماره<input id="issue" value="1"></label><label>سال<input id="year" value="1405"></label><label>شماره مقاله<input id="no" type="number" value="4" min="1"></label></div>
+<div class="g3"><label>نوع فارسی<input id="typeFa" value="مقاله پژوهشی"></label><label>Article type<input id="typeEn" value="Research Article"></label><label>Тип статьи<input id="typeRu" value="Научная статья"></label></div>
+<div class="g3"><label>دریافت<input id="received" type="date"></label><label>پذیرش<input id="accepted" type="date"></label><label>انتشار آنلاین<input id="published" type="date"></label></div>
+<label>صفحات<input id="pages" placeholder="39–52"></label>
+<div class="g3"><label>عنوان فارسی<textarea id="titleFa" required></textarea></label><label>English title<textarea id="titleEn" required></textarea></label><label>Название на русском<textarea id="titleRu" required></textarea></label></div>
+<label>نویسندگان — هر نویسنده در یک خط: نام فارسی | English name | نام روسی | وابستگی | ORCID<textarea id="authors" rows="5" required></textarea></label>
+<div class="g3"><label>چکیده فارسی<textarea id="absFa" rows="8" required></textarea></label><label>English abstract<textarea id="absEn" rows="8" required></textarea></label><label>Аннотация<textarea id="absRu" rows="8" required></textarea></label></div>
+<div class="g3"><label>کلیدواژه‌های فارسی<textarea id="keyFa"></textarea></label><label>English keywords<textarea id="keyEn"></textarea></label><label>Ключевые слова<textarea id="keyRu"></textarea></label></div>
+<label class="file">فایل PDF مقاله<input id="pdf" type="file" accept=".pdf,application/pdf" required></label>
+<div class="actions"><button type="button" id="preview">پیش‌نمایش</button><button class="publish" type="submit">انتشار مقاله</button></div><pre id="log"></pre>
+</form><section id="previewBox" class="card" hidden></section></main><script src="admin.js"></script></body></html>
