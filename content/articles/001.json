@@ -1,0 +1,46 @@
+{
+  "id": "ai-supported-multimodal-russian-language-learning",
+  "number": 1,
+  "status": "published",
+  "issue": "1/1",
+  "type": {
+    "fa": "مقاله پژوهشی",
+    "en": "Research Article",
+    "ru": "Научная статья"
+  },
+  "title": {
+    "fa": "یادگیری چندوجهی زبان روسی با پشتیبانی هوش مصنوعی: چارچوبی مفهومی برای خودمختاری یادگیرنده، سواد انتقادی هوش مصنوعی و شایستگی میان‌فرهنگی",
+    "en": "Designing AI-Supported Multimodal Russian Language Learning: A Conceptual Framework for Learner Autonomy, Critical AI Literacy, and Intercultural Competence"
+  },
+  "sourceLanguage": "en",
+  "author": "Mohammadmahdi Rubin",
+  "authorGiven": "Mohammadmahdi",
+  "authorFamily": "Rubin",
+  "orcid": "0009-0004-8475-2804",
+  "language": "en",
+  "affiliation": {
+    "fa": "کارشناس ارشد آموزش زبان روسی — دانشگاه تهران",
+    "en": "Master’s in Russian Language Teaching — University of Tehran",
+    "ru": "Магистр по преподаванию русского языка — Тегеранский университет"
+  },
+  "received": "2026/07/01",
+  "accepted": "2026/08/17",
+  "online": "2026/09/17",
+  "volume": "1",
+  "issueNumber": "1",
+  "firstPage": "1",
+  "lastPage": "14",
+  "pdf": "articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf",
+  "keywords": {
+    "fa": "هوش مصنوعی؛ زبان روسی به‌عنوان زبان خارجی؛ یادگیری چندوجهی؛ خودمختاری یادگیرنده؛ سواد انتقادی هوش مصنوعی؛ شایستگی ارتباطی میان‌فرهنگی",
+    "en": "Artificial Intelligence; Russian as a Foreign Language; Multimodal Learning; Learner Autonomy; Critical AI Literacy; Intercultural Communicative Competence"
+  },
+  "doi": "",
+  "license": "",
+  "abstract": {
+    "fa": "گسترش سریع هوش مصنوعی مولد (GenAI) شرایط آموزش و یادگیری زبان‌های خارجی را تغییر داده است. در آموزش زبان روسی، سامانه‌های مکالمه مبتنی بر هوش مصنوعی، بازخورد خودکار، تولید محتوای تطبیقی و منابع دیجیتال چندوجهی، فرصت‌های تازه‌ای برای تمرین فردی و ارتباط در بافت فراهم می‌کنند. در عین حال، دسترس‌پذیری این فناوری‌ها پرسش‌های آموزشی مهمی درباره خودمختاری یادگیرنده، ارزیابی انتقادی اطلاعات تولیدشده توسط ماشین، بار شناختی، تفسیر فرهنگی و نقش در حال تغییر معلم مطرح می‌کند. این مقاله مفهومی چارچوبی برای یادگیری چندوجهی زبان روسی با پشتیبانی هوش مصنوعی ارائه می‌کند که قابلیت‌های فناوری را به رشد یادگیرنده پیوند می‌دهد، نه اینکه فناوری را به‌خودی‌خود به‌عنوان هدف آموزشی در نظر بگیرد. چارچوب پیشنهادی حول پنج بُعد وابسته به یکدیگر سازمان یافته است: شخصی‌سازی با پشتیبانی هوش مصنوعی، طراحی تکلیف چندوجهی، خودمختاری یادگیرنده، سواد انتقادی هوش مصنوعی و شایستگی ارتباطی میان‌فرهنگی. این چارچوب استدلال می‌کند که هوش مصنوعی زمانی از نظر آموزشی ثمربخش می‌شود که یادگیرندگان در چارچوب توالی‌های آموزشی هدفمند، منابع دیجیتال را به‌طور فعال انتخاب، ارزیابی، سازگار و درباره آن‌ها تأمل کنند. بنابراین، یادگیری چندوجهی نه صرفاً انباشت متن، صدا، تصویر، ویدئو و گفت‌وگو، بلکه استفاده هماهنگ از شیوه‌های مختلف برای ساخت معنا و پشتیبانی از کنش زبانی تلقی می‌شود. مقاله همچنین پیشنهاد می‌کند که سواد انتقادی هوش مصنوعی در آموزش زبان روسی ادغام شود تا یادگیرندگان بتوانند عدم قطعیت را تشخیص دهند، خروجی‌های نامناسب یا سوگیرانه را شناسایی کنند و پاسخ‌های هوش مصنوعی را با منابع معتبر زبانی و فرهنگی مقایسه کنند. چارچوب حاصل، مبنایی مفهومی برای برنامه‌ریزی درسی، میانجی‌گری معلم، طراحی ارزشیابی و پژوهش تجربی آینده در حوزه روسی به‌عنوان زبان خارجی فراهم می‌کند.",
+    "en": "The rapid expansion of generative artificial intelligence (GenAI) is changing the conditions under which foreign languages are taught and learned. In Russian language education, AI-based conversational systems, automated feedback, adaptive content generation, and multimodal digital resources create new possibilities for individualized practice and contextualized communication. At the same time, the availability of these technologies raises pedagogical questions concerning learner autonomy, critical evaluation of machine-generated information, cognitive overload, cultural interpretation, and the changing role of the teacher. This conceptual article develops a framework for AI-supported multimodal Russian language learning that connects technological affordances with learner development rather than treating technology as an educational outcome in itself. The proposed framework is organized around five mutually dependent dimensions: AI-supported personalization, multimodal task design, learner autonomy, critical AI literacy, and intercultural communicative competence. The framework argues that AI becomes educationally productive when learners actively select, evaluate, adapt, and reflect on digital resources within purposeful pedagogical sequences. Multimodal learning is therefore treated not as the simple accumulation of text, audio, image, video, and dialogue, but as the coordinated use of modes to construct meaning and support linguistic action. The article further proposes that critical AI literacy should be integrated into Russian language instruction so that learners can recognize uncertainty, detect inappropriate or biased outputs, and compare AI responses with reliable linguistic and cultural sources. The resulting framework provides a conceptual basis for curriculum planning, teacher mediation, assessment design, and future empirical research in Russian as a foreign language."
+  },
+  "href": "article-ai-supported-multimodal-russian-language-learning.html",
+  "slug": "ai-supported-multimodal-russian-language-learning"
+}
