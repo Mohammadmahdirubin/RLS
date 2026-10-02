@@ -15,9 +15,11 @@ const esc = v => String(v ?? "")
   .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
   .replace(/"/g,"&quot;");
 
-const pageUrl = (lang,a) => lang === "fa"
-  ? a.href
-  : `${lang}/${a.href}`;
+const pageUrl = (lang, a) => {
+  const filename = a.href || "article-" + (a.slug || a.id) + ".html";
+  const clean = String(filename).replace(/^(?:fa|en|ru)\\//, "");
+  return lang === "fa" ? clean : lang + "/" + clean;
+};
 
 function titlePair(a) {
   // The article's own language determines the primary title on every
