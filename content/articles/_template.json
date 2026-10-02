@@ -1,0 +1,40 @@
+{
+  "id": "article-slug",
+  "number": 4,
+  "status": "published",
+  "issue": "1/1",
+  "title": {
+    "fa": "عنوان فارسی",
+    "en": "English Title",
+    "ru": "Русское название"
+  },
+  "author": "Author Name",
+  "authorGiven": "Author",
+  "authorFamily": "Name",
+  "orcid": "",
+  "language": "en",
+  "affiliation": {
+    "fa": "وابستگی فارسی",
+    "en": "English affiliation",
+    "ru": "Русская аффилиация"
+  },
+  "received": "2026/10/05",
+  "accepted": "2026/10/20",
+  "online": "2026/10/25",
+  "volume": "1",
+  "issueNumber": "1",
+  "firstPage": "39",
+  "lastPage": "52",
+  "pdf": "articles/1/example.pdf",
+  "keywords": {
+    "fa": "کلیدواژه ۱؛ کلیدواژه ۲",
+    "en": "Keyword 1; Keyword 2",
+    "ru": "Ключевое слово 1; Ключевое слово 2"
+  },
+  "abstract": {
+    "fa": "چکیده فارسی",
+    "en": "English abstract",
+    "ru": "Русская аннотация"
+  },
+  "doi": ""
+}
