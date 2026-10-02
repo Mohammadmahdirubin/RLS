@@ -68,6 +68,16 @@ const initRLS=()=>{
       switcher.value=langUrls[lang];
       switcher.onchange=()=>{location.href=switcher.value;};
     }
+    // Start the banner request as early as possible without changing its visual output.
+    let bannerPreload=document.head.querySelector('link[data-rls-banner-preload]');
+    if(!bannerPreload){
+      bannerPreload=document.createElement('link');
+      bannerPreload.rel='preload';
+      bannerPreload.as='image';
+      bannerPreload.href=asset('Banner.png');
+      bannerPreload.setAttribute('data-rls-banner-preload','1');
+      document.head.appendChild(bannerPreload);
+    }
     const banner=document.createElement('div');
     banner.className='rls-site-banner';
     const bannerLink=document.createElement('a');
@@ -77,11 +87,19 @@ const initRLS=()=>{
     image.src=asset('Banner.png');
     image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
     image.loading='eager';
+    image.fetchPriority='high';
     image.decoding='async';
     bannerLink.appendChild(image);
     banner.appendChild(bannerLink);
     header.insertBefore(banner,header.firstChild);
   }
+
+  // Keep the current appearance, but let below-the-fold images load on demand.
+  // Explicit loading choices already present in the HTML are preserved.
+  document.querySelectorAll('img:not(.rls-site-banner img)').forEach(img=>{
+    if(!img.getAttribute('loading')) img.setAttribute('loading','lazy');
+    if(!img.getAttribute('decoding')) img.setAttribute('decoding','async');
+  });
 
   const title=lang==='fa'?'دوفصلنامه مطالعات زبان روسی':lang==='en'?'Russian Language Studies':'Исследования по русскому языку';
   const pageNames={'index.html':title,'about.html':labels.about,'editorial-board.html':labels.board,'editorial-board-fa.html':'هیئت تحریریه نشریه','editorial-policy.html':labels.policies,'peer-review.html':labels.review,'publication-ethics.html':labels.ethics,'plagiarism.html':labels.plagiarism,'conflict-of-interest.html':labels.conflict,'copyright.html':labels.copyright,'ai-policy.html':labels.ai,'data-policy.html':labels.data,'complaints.html':labels.complaints,'preservation.html':labels.preservation,'publication-fees.html':labels.fees,'corrections-retractions.html':labels.corrections,'author-guidelines.html':labels.guidelines,'authors.html':labels.authorInfo,'articles.html':labels.articles,'issues.html':labels.issues,'archive.html':labels.archive,'journal-metrics.html':labels.metrics,'submit.html':labels.submit,'submission-success.html':lang==='fa'?'ارسال با موفقیت انجام شد':lang==='en'?'Submission received':'Отправка получена','contact.html':labels.contact,'privacy.html':labels.privacy,'open-access.html':labels.openAccess,'article-sample.html':lang==='fa'?'نمونه مقاله':lang==='en'?'Article Sample':'Образец статьи'};
