@@ -174,28 +174,28 @@ function buildMain(lang, a, templateMain) {
 <a class="button secondary"${lang === "fa" || lang === "en" || lang === "ru" ? ' dir="ltr"' : ""} href="${pdf}" target="_blank" rel="noopener">${l.view}</a>
 </div>`;
   let out = templateMain;
-  out = replaceFirst(out, /(<div class="eyebrow">)[\\s\\S]*?(<\\/div>)/, `$1${heroMeta}$2`, "hero metadata");
-  out = replaceFirst(out, /(<h1(?: [^>]*)?>)[\\s\\S]*?(<\\/h1>)/, `$1${esc(title)}$2`, "hero title");
-  out = replaceFirst(out, /(<section class="page-hero">[\\s\\S]*?<h1(?: [^>]*)?>[\\s\\S]*?<\\/h1>\\s*<p(?: [^>]*)?>)[\\s\\S]*?(<\\/p>)/, `$1${esc(heroSecondary)}$2`, "hero secondary");
-  out = replaceFirst(out, /<div class="article-byline">[\\s\\S]*?<\\/div>/, byline, "byline");
-  out = replaceFirst(out, /<div class="notice" style="margin:18px 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">[\\s\\S]*?<\\/div>/, notice, "PDF notice");
+  out = replaceFirst(out, /(<div class="eyebrow">)[\s\S]*?(<\/div>)/, `$1${heroMeta}$2`, "hero metadata");
+  out = replaceFirst(out, /(<h1(?: [^>]*)?>)[\s\S]*?(<\/h1>)/, `$1${esc(title)}$2`, "hero title");
+  out = replaceFirst(out, /(<section class="page-hero">[\s\S]*?<h1(?: [^>]*)?>[\s\S]*?<\/h1>\\s*<p(?: [^>]*)?>)[\s\S]*?(<\/p>)/, `$1${esc(heroSecondary)}$2`, "hero secondary");
+  out = replaceFirst(out, /<div class="article-byline">[\s\S]*?<\/div>/, byline, "byline");
+  out = replaceFirst(out, /<div class="notice" style="margin:18px 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">[\s\S]*?<\/div>/, notice, "PDF notice");
 
   const abstractLabel = esc(l.abstract);
   const keywordsLabel = esc(l.keywords);
-  const abstractRe = new RegExp(`<h2>${abstractLabel}<\\/h2>[\\s\\S]*?<p>([\\s\\S]*?)<\\/p>`);
+  const abstractRe = new RegExp(`<h2>${abstractLabel}<\/h2>[\s\S]*?<p>([\s\S]*?)<\/p>`);
   out = replaceFirst(out, abstractRe, `<h2>${abstractLabel}</h2>\\n<p>${esc(a.abstract[lang])}</p>`, "abstract");
-  const keywordsRe = new RegExp(`<h2>${keywordsLabel}<\\/h2>[\\s\\S]*?<p>([\\s\\S]*?)<\\/p>`);
+  const keywordsRe = new RegExp(`<h2>${keywordsLabel}<\/h2>[\s\S]*?<p>([\s\S]*?)<\/p>`);
   out = replaceFirst(out, keywordsRe, `<h2>${keywordsLabel}</h2>\\n<p>${esc(a.keywords[lang])}</p>`, "keywords");
 
   if (lang === "fa") {
-    out = replaceFirst(out, /(<h2 dir="ltr">Article Title \(English\)<\\/h2>\\s*<p dir="ltr">)[\\s\\S]*?(<\\/p>)/,
+    out = replaceFirst(out, /(<h2 dir="ltr">Article Title \(English\)<\/h2>\\s*<p dir="ltr">)[\s\S]*?(<\/p>)/,
       `$1${esc(a.title.en || title)}$2`, "Persian English title");
-    out = replaceFirst(out, /(<h2 dir="ltr">English Abstract<\\/h2>\\s*<p dir="ltr">)[\\s\\S]*?(<\\/p>)/,
+    out = replaceFirst(out, /(<h2 dir="ltr">English Abstract<\/h2>\\s*<p dir="ltr">)[\s\S]*?(<\/p>)/,
       `$1${esc(a.abstract.en || a.abstract[lang])}$2`, "Persian English abstract");
   }
 
   const historyHeading = esc(l.history);
-  const historyRe = new RegExp(`<h2>${historyHeading}<\\/h2>[\\s\\S]*?<div class="table-wrap">[\\s\\S]*?<\\/table>\\s*<\\/div>`);
+  const historyRe = new RegExp(`<h2>${historyHeading}<\/h2>[\s\S]*?<div class="table-wrap">[\s\S]*?<\/table>\\s*<\/div>`);
   const historyRows = `<h2>${historyHeading}</h2>
 <div class="table-wrap"><table class="academic-table"${lang === "fa" || lang === "ru" ? ' dir="rtl"' : ""}>
 <tr><th>${lang === "ru" ? "Этап" : lang === "en" ? "Stage" : "مرحله"}</th><th>${lang === "en" ? "Date / status" : lang === "ru" ? "Дата" : "تاریخ"}</th></tr>
@@ -206,17 +206,17 @@ function buildMain(lang, a, templateMain) {
   out = replaceFirst(out, historyRe, historyRows, "publication history");
 
   const citeHeading = esc(l.cite);
-  const citeRe = new RegExp(`<h2>${citeHeading}<\\/h2>\\s*<div class="citation-box">[\\s\\S]*?<\\/div>`);
+  const citeRe = new RegExp(`<h2>${citeHeading}<\/h2>\\s*<div class="citation-box">[\s\S]*?<\/div>`);
   out = replaceFirst(out, citeRe, `<h2>${citeHeading}</h2>\\n<div class="citation-box">${citation}</div>`, "citation");
 
   const filesHeading = esc(l.files);
-  const filesRe = new RegExp(`<h2>${filesHeading}<\\/h2>[\\s\\S]*?(?=<\\/article>)`);
+  const filesRe = new RegExp(`<h2>${filesHeading}<\/h2>[\s\S]*?(?=<\/article>)`);
   const filesBlock = `<h2>${filesHeading}</h2>
 <p><a class="button primary" href="${pdf}" download target="_blank" rel="noopener">${l.download}</a></p>
 `;
   out = replaceFirst(out, filesRe, filesBlock, "article files");
 
-  const sidebarInfo = /<div class="side-card">\\s*<strong>[^<]+<\\/strong>[\\s\\S]*?<\\/div>(?=\\s*<div class="side-card">|\\s*<\\/aside>)/;
+  const sidebarInfo = /<div class="side-card">\\s*<strong>[^<]+<\/strong>[\s\S]*?<\/div>(?=\\s*<div class="side-card">|\\s*<\/aside>)/;
   const infoCard = `<div class="side-card">
 <strong>${l.info}</strong>
 <p>${l.type}<br><b>${esc(a.type[lang])}</b></p>
@@ -232,7 +232,7 @@ function buildMain(lang, a, templateMain) {
 </div>`;
   out = replaceFirst(out, sidebarInfo, infoCard, "sidebar information");
 
-  const authorCard = /<div class="side-card">\\s*<strong>(?:Author|نویسنده|Автор)<\\/strong>[\\s\\S]*?<\\/div>/;
+  const authorCard = /<div class="side-card">\\s*<strong>(?:Author|نویسنده|Автор)<\/strong>[\s\S]*?<\/div>/;
   if (authorCard.test(out)) {
     const card = `<div class="side-card">
 <strong>${l.author}</strong>
