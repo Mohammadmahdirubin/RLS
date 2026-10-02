@@ -205,7 +205,7 @@ async function appendToArticleList(path,sha,content,a,lang){
   const pos=content.indexOf(close,start);
   if(pos<0) throw new Error("محل درج مقاله در "+path+" پیدا نشد.");
   const next=content.slice(0,pos)+listRecord(a,lang)+content.slice(pos);
-  const fixed=next.replace(/<span data-rls-article-count>[^<]*<\\/g>/g,'<span data-rls-article-count>'+String(a.number)+'</span>');
+  const fixed=next.replace(/<span data-rls-article-count>[^<]*<\/span>/g,'<span data-rls-article-count>'+String(a.number)+'</span>');
   await putText(path,fixed,"Add article "+a.number+" to "+lang+" article index",sha);
   return {changed:true};
 }
