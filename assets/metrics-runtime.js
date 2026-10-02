@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var resolved = accepted + rejected;
   var rate = resolved ? Math.round(accepted * 100 / resolved) : 0;
 
+  var lang = document.documentElement.lang || "en";
   var metricValues = { received: received, accepted: accepted, rejected: rejected, pending: extra.pending || 0, rate: rate };
   Object.keys(metricValues).forEach(function (key) {
     document.querySelectorAll("[data-metric=\"" + key + "\"]").forEach(function (el) {
@@ -28,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var s = Number.isInteger(n) ? String(n) : String(n);
     return lang === "fa" ? faDigits(s) : s;
   }
-
-  var lang = document.documentElement.lang || "en";
 
   document.querySelectorAll(".metrics-svg").forEach(function (svg, index) {
     if (index === 0) {
