@@ -48,7 +48,7 @@ function card(a, lang) {
 <div class="article-number"><strong>${l.num} ${a.number}</strong></div>
 <div class="article-type">${esc(type)}</div>
 <h2>${esc(pair.main)}</h2>
-<p class="article-title-translation"${pair.secondaryLang === "fa" ? ' dir="rtl"' : ' dir="ltr"'}>${esc(pair.secondary)}</p>
+<p class="article-title-translation" style="font-size:.9em;line-height:1.8;margin:.25rem 0 1rem;color:var(--muted,#666);"${pair.secondaryLang === "fa" ? ' dir="rtl"' : ' dir="ltr"'}>${esc(pair.secondary)}</p>
 <p class="authors"><strong>${esc(a.author)}</strong> · ${esc(affiliation)}</p>
 <div class="meta-grid"><div><span>${l.received}</span><strong>${esc(a.received)}</strong></div><div><span>${l.online}</span><strong>${esc(a.online)}</strong></div><div><span>${l.issue}</span><strong>${esc(lang === "fa" ? "دوره " : lang === "ru" ? "Том " : "Volume ")}${a.volume}, ${lang === "fa" ? "شماره " : lang === "ru" ? "выпуск " : "Issue "}${a.issueNumber}</strong></div><div><span>${l.pages}</span><strong>${esc(a.firstPage)}–${esc(a.lastPage)}</strong></div></div>
 <p>${esc(abstract)}</p>
