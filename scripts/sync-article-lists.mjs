@@ -19,13 +19,15 @@ const pageUrl = (lang,a) => lang === "fa"
   ? a.href
   : `${lang}/${a.href}`;
 
-function titlePair(a, pageLang) {
+function titlePair(a) {
+  // The article's own language determines the primary title on every
+  // language version of the article list. The interface language does not.
   const source = a.language || a.sourceLanguage || "en";
-  const main = pageLang === 'fa' ? a.title[source] : a.title[pageLang];
-  let secondaryLang;
-  if (pageLang === "fa") secondaryLang = source === "fa" ? "en" : "fa";
-  else secondaryLang = "fa";
-  const secondary = a.title[secondaryLang];
+  const main = a.title[source] || a.title.en || a.title.fa || a.title.ru || "";
+  // Show Persian as the secondary title for non-Persian articles;
+  // for Persian articles, use the English translation.
+  const secondaryLang = source === "fa" ? "en" : "fa";
+  const secondary = a.title[secondaryLang] || a.title.en || a.title.fa || "";
   return { main, secondary, source, secondaryLang };
 }
 
@@ -38,7 +40,7 @@ function labels(lang) {
 }
 
 function card(a, lang) {
-  const l = labels(lang), pair = titlePair(a, lang);
+  const l = labels(lang), pair = titlePair(a);
   const href = pageUrl(lang,a);
   const pdf = (lang === "fa" ? "" : "../") + a.pdf;
   const type = a.type[lang] || a.type[a.language] || "";
