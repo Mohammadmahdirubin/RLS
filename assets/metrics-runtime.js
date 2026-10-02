@@ -49,10 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      svg.querySelectorAll('text[x="70"]').forEach(function (el) {
-        var y = Number(el.getAttribute("y"));
-        var value = (base - Math.max(top, Math.min(base, y - 5))) / height * max;
-        el.textContent = labelValue(value, lang);
+      var axisLabels = Array.from(svg.querySelectorAll('text[x="70"]')).sort(function (a, b) {
+        return Number(a.getAttribute("y")) - Number(b.getAttribute("y"));
+      });
+      var axisValues = [max, max * 0.75, max * 0.5, max * 0.25, 0];
+      axisLabels.forEach(function (el, i) {
+        el.textContent = labelValue(axisValues[i] || 0, lang);
       });
     }
 
