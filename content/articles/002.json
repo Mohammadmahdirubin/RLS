@@ -1,0 +1,46 @@
+{
+  "id": "role-of-context-russian-verbal-aspect",
+  "number": 2,
+  "status": "published",
+  "issue": "1/1",
+  "type": {
+    "fa": "مقاله پژوهشی",
+    "en": "Research Article",
+    "ru": "Научная статья"
+  },
+  "title": {
+    "fa": "نقش بافت در درک وجه فعلی در زبان روسی",
+    "en": "The Role of Context in Understanding Russian Verbal Aspect"
+  },
+  "sourceLanguage": "en",
+  "author": "Mohammadali Norouzi",
+  "authorGiven": "Mohammadali",
+  "authorFamily": "Norouzi",
+  "orcid": "0009-0005-0185-7860",
+  "language": "en",
+  "affiliation": {
+    "fa": "کارشناسی ارشد آموزش زبان انگلیسی (TEFL)، دانشگاه آزاد اسلامی واحد غرب",
+    "en": "M.A. in Teaching English as a Foreign Language (TEFL), Islamic Azad University, West Tehran Branch",
+    "ru": "Магистр по преподаванию английского языка (TEFL), Исламский университет Азад, филиал Западного Тегерана"
+  },
+  "received": "2026/07/02",
+  "accepted": "2026/09/10",
+  "online": "2026/09/26",
+  "volume": "1",
+  "issueNumber": "1",
+  "firstPage": "15",
+  "lastPage": "23",
+  "pdf": "articles/1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf",
+  "keywords": {
+    "fa": "وجه فعلی در زبان روسی؛ وجه ناقص؛ وجه کامل؛ بافت؛ معنای وجهی؛ زبان روسی به‌عنوان زبان خارجی",
+    "en": "Russian verbal aspect; Imperfective aspect; Perfective aspect; Context; Aspectual meaning; Russian as a Foreign Language"
+  },
+  "doi": "",
+  "license": "",
+  "abstract": {
+    "fa": "وجه فعلی در زبان روسی مقوله‌ای دستوری مرکزی است که میان صورت‌های ناقص و کامل تمایز می‌گذارد و به‌طور قابل‌توجهی در تفسیر رویدادها نقش دارد. اگرچه جفت‌های وجهی اغلب از طریق تقابل‌های ساده‌شده‌ای مانند عمل در حال انجام در برابر عمل کامل‌شده معرفی می‌شوند، تفسیر یک صورت وجهی به‌شدت تحت تأثیر بافت قرار دارد. این مقاله نقش بافت را در درک وجه فعلی روسی از طریق تحلیل کیفی-توصیفی جفت‌های فعلی ناقص/کامل منتخب بررسی می‌کند. توجه ویژه‌ای به تعامل وجه با ارجاع زمانی، مرزهای رویداد، تکرار، عادت‌مندی، تفسیر نتیجه‌ای و چشم‌انداز ارتباطی معطوف شده است. تحلیل بر جفت‌های писать/написать، читать/прочитать، делать/сделать و смотреть/посмотреть تمرکز دارد. مقاله با تکیه بر نظریه‌های عمومی وجه و پژوهش‌های مربوط به وجه در زبان‌های اسلاوی و روسی استدلال می‌کند که معنای وجهی را نمی‌توان با در نظر گرفتن صورت‌های ناقص و کامل به‌عنوان معادل‌های ساده «عمل ناتمام» و «عمل تمام‌شده» به‌درستی درک کرد. در عوض، وجه بیانگر نحوه‌ای است که گوینده رویداد را در ذهن خود صورت‌بندی و ارائه می‌کند، در حالی که اطلاعات بافتی به شنونده کمک می‌کند این صورت‌بندی را تشخیص دهد. این بحث برای زبان‌آموزان روسی به‌عنوان زبان خارجی، به‌ویژه زبان‌آموزانی که به ترجمه‌های یک‌به‌یک یا جفت‌های وجهی منفرد تکیه می‌کنند، اهمیت دارد. رویکرد حساس به بافت می‌تواند تبیین دقیق‌تری از انتخاب وجه ارائه دهد و به یادگیری و تفسیر مؤثرتر افعال روسی کمک کند.",
+    "en": "Russian verbal aspect is a central grammatical category that distinguishes between imperfective and perfective forms and contributes substantially to the interpretation of events. Although aspectual pairs are often introduced through simplified contrasts such as ongoing versus completed action, the interpretation of an aspectual form is strongly conditioned by context. This article examines the role of context in understanding Russian verbal aspect through a qualitative descriptive analysis of selected imperfective/perfective verb pairs. Particular attention is given to the interaction of aspect with temporal reference, event boundaries, repetition, habituality, resultative interpretation, and communicative perspective. The analysis focuses on the pairs писать/написать, читать/прочитать, делать/сделать, and смотреть/посмотреть. Drawing on general theories of aspect and studies of Slavic and Russian aspect, the article argues that aspectual meaning cannot be adequately understood by treating imperfective and perfective forms as simple equivalents of unfinished and finished actions. Instead, aspect expresses how a speaker chooses to construe and present an event, while contextual information helps the hearer identify that construal. The discussion has implications for learners of Russian as a foreign language, particularly those who rely on one-to-one translations or isolated aspectual pairs. A context-sensitive approach can provide a more accurate account of aspectual choice and can support more effective learning and interpretation of Russian verbs."
+  },
+  "href": "article-role-of-context-russian-verbal-aspect.html",
+  "slug": "role-of-context-russian-verbal-aspect"
+}
