@@ -21,7 +21,9 @@ const pageUrl = (lang, a) => {
   // articles.html -> article.html
   // en/articles.html -> article.html
   // ru/articles.html -> article.html
-  return String(filename).replace(/^(?:fa|en|ru)\\//, "");
+  const parts = String(filename).split("/");
+  if (parts.length > 1 && ["fa","en","ru"].includes(parts[0])) parts.shift();
+  return parts.join("/");
 };
 
 function titlePair(a) {
