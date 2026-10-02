@@ -1,46 +1,58 @@
-const OWNER="Mohammadmahdirubin",REPO="RLS",API="https://api.github.com";
+const OWNER="Mohammadmahdirubin";
+const REPO="RLS";
+const API="https://api.github.com";
 let token="";
-const $=id=>document.getElementById(id);
-const esc=x=>String(x||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const slug=s=>String(s).normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^\p{L}\p{N}\s-]/gu,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-").toLowerCase().slice(0,90)||"article";
-const val=id=>$(id).value.trim();
-async function gh(path,opt={}){opt.headers=Object.assign({"Accept":"application/vnd.github+json","Authorization":"Bearer "+token,"X-GitHub-Api-Version":"2026-03-10","Content-Type":"application/json"},opt.headers||{});const r=await fetch(API+path,opt);let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw Error(d.message||("GitHub HTTP "+r.status));return d}
-async function getFile(path){try{return await gh("/repos/"+OWNER+"/"+REPO+"/contents/"+path+"?ref=main")}catch(e){if(e.message==="Not Found")return null;throw e}}
-function b64text(s){return btoa(unescape(encodeURIComponent(s)))}
-function b64bytes(a){let s="",n=0x8000;for(let i=0;i<a.length;i+=n)s+=String.fromCharCode.apply(null,a.subarray(i,i+n));return btoa(s)}
-async function putFile(path,content,binary,msg){const old=await getFile(path);const body={message:msg,content:binary?b64bytes(content):b64text(content),branch:"main"};if(old&&old.sha)body.sha=old.sha;return gh("/repos/"+OWNER+"/"+REPO+"/contents/"+path,{method:"PUT",body:JSON.stringify(body)})}
-function data(){return{v:val("volume"),i:val("issue"),y:val("year"),n:val("no"),typeFa:val("typeFa"),typeEn:val("typeEn"),typeRu:val("typeRu"),received:val("received"),accepted:val("accepted"),published:val("published"),pages:val("pages"),titleFa:val("titleFa"),titleEn:val("titleEn"),titleRu:val("titleRu"),authors:val("authors"),absFa:val("absFa"),absEn:val("absEn"),absRu:val("absRu"),keyFa:val("keyFa"),keyEn:val("keyEn"),keyRu:val("keyRu")}}
-function authors(s){return s.split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>{const p=x.split("|").map(y=>y.trim());return{fa:p[0]||"",en:p[1]||p[0]||"",ru:p[2]||p[1]||p[0]||"",aff:p[3]||"",orcid:p[4]||""}})}
-function page(d,A,L,slug,pdf){const root=L==="fa"?"":"../",T=L==="fa"?d.titleFa:L==="en"?d.titleEn:d.titleRu,AB=L==="fa"?d.absFa:L==="en"?d.absEn:d.absRu,KW=L==="fa"?d.keyFa:L==="en"?d.keyEn:d.keyRu,JN=L==="fa"?"دوفصلنامه مطالعات زبان روسی":L==="en"?"Russian Language Studies":"Исследования по русскому языку",TY=L==="fa"?d.typeFa:L==="en"?d.typeEn:d.typeRu,URL="https://rlsj.ir/"+(L==="fa"?"":L+"/")+slug+".html",PDF="https://rlsj.ir/"+pdf;
-const N=A.map(a=>{const z=L==="fa"?a.fa:L==="en"?a.en:a.ru;return"<div class=\"author-entry\"><strong>"+esc(z)+"</strong>"+(a.aff?"<br><span>"+esc(a.aff)+"</span>":"")+(a.orcid?"<br><strong>ORCID iD:</strong> <a dir=\"ltr\" href=\"https://orcid.org/"+esc(a.orcid)+"\">"+esc(a.orcid)+"</a>":"")+"</div>"}).join("");
-const json={"@context":"https://schema.org","@type":"ScholarlyArticle","headline":T,"datePublished":d.published,"author":A.map(a=>({"@type":"Person","name":a.en||a.fa,...(a.orcid?{sameAs:"https://orcid.org/"+a.orcid}: {})})),"inLanguage":L,"url":URL};
-return "<!doctype html><html lang=\""+L+"\" dir=\""+(L==="fa"?"rtl":"ltr")+""><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>"+esc(T)+" | "+JN+"</title><meta name=\"description\" content=\""+esc(AB.slice(0,250))+"\"><meta name=\"robots\" content=\"index,follow\"><meta name=\"citation_title\" content=\""+esc(T)+"\"><meta name=\"citation_publication_date\" content=\""+esc(d.published)+"\"><meta name=\"citation_journal_title\" content=\"Russian Language Studies\"><meta name=\"citation_volume\" content=\""+esc(d.v)+"\"><meta name=\"citation_issue\" content=\""+esc(d.i)+"\"><meta name=\"citation_language\" content=\""+L+"\"><meta name=\"citation_fulltext_world_readable\" content=\"true\"><meta name=\"citation_pdf_url\" content=\""+PDF+"\"><link rel=\"canonical\" href=\""+URL+"\"><link rel=\"alternate\" hreflang=\"fa\" href=\"https://rlsj.ir/"+slug+".html\"><link rel=\"alternate\" hreflang=\"en\" href=\"https://rlsj.ir/en/"+slug+".html\"><link rel=\"alternate\" hreflang=\"ru\" href=\"https://rlsj.ir/ru/"+slug+".html\"><script type=\"application/ld+json\">"+JSON.stringify(json)+"</script><link rel=\"stylesheet\" href=\""+root+"assets/style.css\"><link rel=\"stylesheet\" href=\""+root+"assets/article-header-footer.css\"></head><body><div class=\"rls-article-journal-bar\"><div class=\"container\"><strong>"+JN+"</strong><span> · "+d.v+"/"+d.i+" · "+d.n+(d.pages?" · "+d.pages:"")+"</span></div></div><header class=\"site-header\"><div class=\"container header-inner\"><a class=\"brand\" href=\""+root+"index.html\"><span class=\"brand-mark\">RLS</span><span><strong dir=\"ltr\">Russian Language Studies</strong><small>"+JN+"</small></span></a><button class=\"menu-btn\">☰</button><nav class=\"main-nav\"></nav></div></header><main><section class=\"page-hero\"><div class=\"container\"><div class=\"eyebrow\">"+d.v+" / "+d.i+" / "+d.n+"</div><h1>"+esc(T)+"</h1></div></section><section class=\"section\"><div class=\"container\"><div class=\"article-layout\"><article class=\"content\"><div class=\"article-byline\">"+N+"</div><div class=\"notice\"><a class=\"button primary\" href=\""+root+pdf+"\" target=\"_blank\">PDF</a></div><h2>"+(L==="fa"?"چکیده":L==="en"?"Abstract":"Аннотация")+"</h2><p>"+esc(AB)+"</p>"+(KW?"<p class=\"stat-note\"><strong>"+(L==="fa"?"کلیدواژه‌ها":L==="en"?"Keywords":"Ключевые слова")+":</strong> "+esc(KW)+"</p>":"")+"<h2>"+(L==="fa"?"اطلاعات انتشار":L==="en"?"Publication Information":"Сведения о публикации")+"</h2><table class=\"academic-table\"><tr><td>"+(L==="fa"?"نوع مقاله":L==="en"?"Article type":"Тип статьи")+"</td><td>"+esc(TY)+"</td></tr><tr><td>"+(L==="fa"?"دریافت":L==="en"?"Received":"Поступление")+"</td><td>"+esc(d.received)+"</td></tr><tr><td>"+(L==="fa"?"پذیرش":L==="en"?"Accepted":"Принятие")+"</td><td>"+esc(d.accepted)+"</td></tr><tr><td>"+(L==="fa"?"انتشار آنلاین":L==="en"?"Online publication":"Онлайн-публикация")+"</td><td>"+esc(d.published)+"</td></tr></table></article><aside class=\"article-sidebar\"><div class=\"side-card\"><strong>"+(L==="fa"?"اطلاعات مقاله":L==="en"?"Article information":"Информация о статье")+"</strong><p>DOI<br><b>"+(L==="fa"?"در انتظار اختصاص":L==="en"?"Pending":"Не присвоен")+"</b></p><p><a class=\"button primary\" href=\""+root+pdf+"\" target=\"_blank\">PDF</a></p></div></aside></div></div></section></main><footer></footer><script src=\""+root+"assets/script.js?v=20260926menu2\"></script></body></html>"}
-function card(d,A,L,slug,pdf){const T=L==="fa"?d.titleFa:L==="en"?d.titleEn:d.titleRu,N=A.map(a=>L==="fa"?a.fa:L==="en"?a.en:a.ru).join(" · "),R=L==="fa"?"":L+"/";return'<article class="article-record"><div class="article-number"><strong>'+(L==="fa"?"مقاله ":L==="en"?"Article ":"Статья ")+d.n+'</strong></div><div class="article-type">'+esc(L==="fa"?d.typeFa:L==="en"?d.typeEn:d.typeRu)+'</div><h2>'+esc(T)+'</h2><p class="authors"><strong>'+esc(N)+'</strong></p><div class="meta-grid"><div><span>'+esc(L==="fa"?"دریافت":L==="en"?"Received":"Поступление")+'</span><strong>'+esc(d.received)+'</strong></div><div><span>'+esc(L==="fa"?"انتشار آنلاین":L==="en"?"Online publication":"Онлайн-публикация")+'</span><strong>'+esc(d.published)+'</strong></div><div><span>'+esc(L==="fa"?"شماره":L==="en"?"Issue":"Выпуск")+'</span><strong>'+d.v+"/"+d.i+'</strong></div></div><div class="article-actions"><a class="button secondary" href="'+R+slug+'.html">'+(L==="fa"?"باز کردن مقاله":L==="en"?"Open article":"Открыть статью")+'</a><a class="button primary" href="'+(L==="fa"?"":"../")+pdf+'" target="_blank">'+(L==="fa"?"دانلود PDF":L==="en"?"Download PDF":"Скачать PDF")+'</a></div></article>'}
-async function updateList(path,c,count){const f=await getFile(path);if(!f)throw Error("فهرست پیدا نشد: "+path);let h=decodeURIComponent(escape(atob(f.content.replace(/\n/g,""))));h=h.replace(/<span data-rls-article-count>[^<]*<\/span>/g,String(count));if(!h.includes('<div id="rls-article-list">'))throw Error("نشانگر فهرست در "+path+" پیدا نشد.");h=h.replace('<div id="rls-article-list">','<div id="rls-article-list">'+c);await putFile(path,h,false,"RLS: add article to "+path)}
-window.rlsConnect=async function(){
- const status=document.getElementById("status"),input=document.getElementById("token"),form=document.getElementById("form");
- const t=input.value.trim();
- if(!t){status.textContent="ابتدا GitHub Token را وارد کنید.";status.className="err";return;}
- status.textContent="در حال بررسی اتصال...";status.className="";
- try{token=t;const u=await gh("/user"),r=await gh("/repos/"+OWNER+"/"+REPO);if(r.permissions&&!r.permissions.push)throw Error("این حساب دسترسی نوشتن به RLS ندارد.");form.classList.remove("off");status.textContent="متصل شد: "+u.login;status.className="ok";}
- catch(e){status.textContent="خطا: "+e.message;status.className="err";}
-};
-function bindAdmin(){
-  const connect=$("connect"),status=$("status");
-  if(!connect)return;
-  connect.type="button";
-  connect.addEventListener("click",async function(){
-    token=$("token").value.trim();
-    if(!token){status.textContent="ابتدا GitHub Token را وارد کنید.";status.className="err";return}
-    status.textContent="در حال بررسی اتصال...";status.className="";
-    try{
-      const u=await gh("/user"),r=await gh("/repos/"+OWNER+"/"+REPO);
-      if(r.permissions&&!r.permissions.push)throw Error("این حساب دسترسی نوشتن به RLS ندارد.");
-      $("form").classList.remove("off");status.textContent="متصل شد: "+u.login;status.className="ok";
-    }catch(e){status.textContent="خطا: "+e.message;status.className="err"}
+
+async function github(path){
+  const response=await fetch(API+path,{
+    headers:{
+      "Accept":"application/vnd.github+json",
+      "Authorization":"Bearer "+token,
+      "X-GitHub-Api-Version":"2022-11-28"
+    }
   });
+  let data={};
+  try{ data=await response.json(); }catch(e){}
+  if(!response.ok) throw new Error(data.message || ("GitHub HTTP "+response.status));
+  return data;
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bindAdmin);else bindAdmin();
-document.addEventListener("DOMContentLoaded",()=>{$("preview").onclick=()=>{const d=data(),a=authors(d.authors);$("previewBox").hidden=false;$("previewBox").innerHTML="<h2>پیش‌نمایش</h2><div class=\"preview\"><b>"+esc(d.titleFa)+"</b><br><b dir=\"ltr\">"+esc(d.titleEn)+"</b><br><b>"+esc(d.titleRu)+"</b><hr>"+esc(a.map(x=>x.fa).join("، "))+"</div>"};
-$("form").onsubmit=async e=>{e.preventDefault();const d=data(),A=authors(d.authors),f=$("pdf").files[0];if(!f)return alert("PDF را انتخاب کنید.");$("log").className="";$("log").textContent="در حال انتشار...";try{const sl=slug(d.titleEn),pn=sl+"_RLS_Vol"+d.v+"_Issue"+d.i+"_"+d.y+".pdf",pp="articles/"+d.i+"/"+pn;await putFile(pp,new Uint8Array(await f.arrayBuffer()),true,"RLS: add article PDF "+d.n);await putFile(sl+".html",page(d,A,"fa",sl,pp),false,"RLS: add article "+d.n+" FA");await putFile("en/"+sl+".html",page(d,A,"en",sl,pp),false,"RLS: add article "+d.n+" EN");await putFile("ru/"+sl+".html",page(d,A,"ru",sl,pp),false,"RLS: add article "+d.n+" RU");await updateList("articles.html",card(d,A,"fa",sl,pp),d.n);await updateList("en/articles.html",card(d,A,"en",sl,pp),d.n);await updateList("ru/articles.html",card(d,A,"ru",sl,pp),d.n);$("log").className="ok";$("log").textContent="مقاله ثبت شد. GitHub Pages پس از انتشار تغییرات، صفحات را منتشر می‌کند."}catch(e){$("log").className="err";$("log").textContent="خطا: "+e.message}};
+
+window.rlsConnect=async function(){
+  const input=document.getElementById("token");
+  const status=document.getElementById("status");
+  const form=document.getElementById("form");
+  token=(input && input.value ? input.value.trim() : "");
+
+  if(!token){
+    status.textContent="ابتدا GitHub Token را وارد کنید.";
+    status.className="err";
+    return;
+  }
+
+  status.textContent="در حال بررسی اتصال...";
+  status.className="";
+
+  try{
+    const user=await github("/user");
+    const repo=await github("/repos/"+OWNER+"/"+REPO);
+
+    if(repo.permissions && repo.permissions.push !== true){
+      throw new Error("این حساب دسترسی نوشتن به RLS ندارد.");
+    }
+
+    if(form) form.classList.remove("off");
+    status.textContent="متصل شد: "+user.login;
+    status.className="ok";
+  }catch(error){
+    status.textContent="خطا: "+error.message;
+    status.className="err";
+  }
+};
+
+document.addEventListener("DOMContentLoaded",function(){
+  const button=document.getElementById("connect");
+  if(button){
+    button.type="button";
+    button.onclick=window.rlsConnect;
+  }
 });
