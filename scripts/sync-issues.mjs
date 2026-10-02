@@ -1,0 +1,3 @@
+import fs from "node:fs";import path from "node:path";import {fileURLToPath} from "node:url";
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),".."),dir=path.join(root,"content","articles"),pub=fs.readdirSync(dir).filter(f=>f.endsWith(".json")&&!f.startsWith("_")).map(f=>JSON.parse(fs.readFileSync(path.join(dir,f),"utf8"))).filter(a=>a.status==="published");
+for(const [file,l] of [["issues.html","fa"],["en/issues.html","en"],["ru/issues.html","ru"]]){const p=path.join(root,file);let h=fs.readFileSync(p,"utf8"),n=pub.filter(a=>a.issue==="1/1").length,w=l==="fa"?"مقاله":l==="ru"?"статьи":"articles";h=h.replace(/<strong>(?:[0-9۰-۹]+) (?:مقاله|articles|статьи)<\/strong>/,'<strong>'+n+" "+w+"</strong>");fs.writeFileSync(p,h)}
