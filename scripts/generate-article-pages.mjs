@@ -94,7 +94,7 @@ function buildHead(lang, a, template) {
   const assetLines = [...template.matchAll(/<(?:link[^>]+rel="stylesheet"[^>]*|script[^>]+src="[^"]+"[^>]*)>/g)]
     .map(match => match[0])
     .filter(line => !line.includes('type="application/ld+json"'))
-    .join("\\n");
+    .join("\n");
 
   return `<head>
 <meta charset="utf-8">
