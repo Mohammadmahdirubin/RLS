@@ -49,6 +49,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://rlsj.ir/editorial-board.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://rlsj.ir/en/article-ai-supported-multimodal-russian-language-learning.html</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
@@ -73,6 +78,11 @@
   </url>
   <url>
     <loc>https://rlsj.ir/en/authors.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/en/editorial-board.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -116,6 +126,11 @@
   </url>
   <url>
     <loc>https://rlsj.ir/ru/authors.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/ru/editorial-board.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
