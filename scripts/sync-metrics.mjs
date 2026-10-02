@@ -33,7 +33,7 @@ function run(file, l) {
     l === "fa" ? "۲ هفته" : "2 weeks"
   ];
   let i = 0;
-  sec = sec.replace(/<span class="num">[^<]*<\/span>/g, () => {
+  sec = sec.replace(/<span class="num">[^<]*<\/span>/g, function(original) {
     const value = values[i++];
     return value === undefined ? arguments[0] : '<span class="num">' + value + '</span>';
   });
