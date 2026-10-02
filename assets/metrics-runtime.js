@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
   var resolved = accepted + rejected;
   var rate = resolved ? Math.round(accepted * 100 / resolved) : 0;
 
+  var metricValues = { received: received, accepted: accepted, rejected: rejected, pending: extra.pending || 0, rate: rate };
+  Object.keys(metricValues).forEach(function (key) {
+    document.querySelectorAll("[data-metric=\"" + key + "\"]").forEach(function (el) {
+      var value = metricValues[key];
+      el.textContent = key === "rate" ? (lang === "fa" ? faDigits(value) + "٪" : value + "%") : labelValue(value, lang);
+    });
+  });
+
   function faDigits(value) {
     return String(value).replace(/\d/g, function (d) {
       return "۰۱۲۳۴۵۶۷۸۹"[Number(d)];
