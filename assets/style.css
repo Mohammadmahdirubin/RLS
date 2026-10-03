@@ -922,3 +922,23 @@ footer .rls-footer-official-logos{opacity:.94}
   .profile-fields{grid-template-columns:1fr}
   .profile-fields>div{text-align:center}
 }
+
+/* Manuscript submission form */
+.submission-form{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+.submission-form h2{margin:28px 0 12px;color:var(--accent2);font-size:1.2rem}
+.submission-form h2:first-child{margin-top:0}
+.submission-form .field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.submission-form .field-group{margin-bottom:15px}
+.submission-form .field-group.full{grid-column:1/-1}
+.submission-form label{display:block;font-weight:800;margin-bottom:6px;color:var(--accent2)}
+.submission-form .field-help,.submission-form .form-note{font-size:.9rem;color:var(--muted);line-height:1.8;margin:5px 0 14px}
+.submission-form .required{color:var(--accent);font-weight:900}
+.submission-form .check-list{display:grid;gap:10px;margin:10px 0 18px}
+.submission-form .check-item{display:flex;gap:10px;align-items:flex-start;font-weight:600;color:var(--ink);line-height:1.8}
+.submission-form .check-item input{width:auto;max-width:none;margin-top:5px;flex:0 0 auto}
+.submission-form .file-box{padding:15px;border:1px dashed #cdbdb8;border-radius:9px;background:var(--soft);margin-bottom:14px}
+.submission-form .file-box label{margin-bottom:5px}
+.submission-form .privacy-note{font-size:.88rem;color:var(--muted);line-height:1.9;margin:18px 0}
+.submission-form .honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.submission-form .submit-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
+@media(max-width:760px){.submission-form{padding:18px}.submission-form .field-grid{grid-template-columns:1fr}}
