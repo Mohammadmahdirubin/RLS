@@ -112,7 +112,7 @@ function buildHead(lang, a, template) {
 <meta name="citation_journal_title" content="Russian Language Studies">
 <meta name="citation_volume" content="${a.volume}">
 <meta name="citation_issue" content="${a.issueNumber}">
-<meta name="citation_language" content="${lang}">
+<meta name="citation_language" content="${a.language || a.sourceLanguage || lang}">
 <meta name="citation_fulltext_world_readable" content="true">
 <meta name="citation_pdf_url" content="https://rlsj.ir/${a.pdf}">
 <link rel="canonical" href="${u}">
