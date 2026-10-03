@@ -108,10 +108,11 @@ window.RLS_ARTICLES = [
       "ru": "Научная статья"
     },
     "title": {
-      "fa": "چالشهای ترجمه اصطلاحات فنی و نظامی از زبان روسی به فارسی؛ بررسی راهبردهای معادل‌یابی و انتقال مفهومی",
+      "fa": "چالش‌های ترجمه اصطلاحات فنی و نظامی از زبان روسی به انگلیسی: بررسی راهبردهای معادل‌یابی و انتقال مفهومی",
       "en": "CHALLENGES IN TRANSLATING RUSSIAN TECHNICAL & MILITARY TERMINOLOGY INTO ENGLISH: STRATEGIES FOR EQUIVALENCE SELECTION AND CONCEPTUAL TRANSFER",
       "ru": "Проблемы перевода русской технической и военной терминологии на английский язык: анализ стратегий выбора эквивалентов и концептуального переноса"
     },
+    "sourceLanguage": "en",
     "author": "Ali Zomorodi",
     "authorGiven": "Ali",
     "authorFamily": "Zomorodi",
