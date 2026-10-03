@@ -1,38 +1,52 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ارسال مقاله | دوفصلنامه مطالعات زبان روسی</title>
-<meta name="description" content="فرم ساده ارسال مقاله به دوفصلنامه مطالعات زبان روسی.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ارسال مقاله | دوفصلنامه مطالعات زبان روسی</title><meta name="description" content="فرم رسمی ارسال مقاله به دوفصلنامه مطالعات زبان روسی.">
 <link rel="canonical" href="https://rlsj.ir/submit.html">
-<link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html">
-<link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html">
-<link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html">
-<link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/style.css?v=20260917">
+<link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html"><link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html"><link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html"><link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/style.css?v=20261004">
 </head>
 <body>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong dir="ltr">Russian Language Studies</strong><small>دوفصلنامه مطالعات زبان روسی</small></span></a><button class="menu-btn" aria-label="باز کردن منو">☰</button><nav class="main-nav"><a href="index.html">صفحه اصلی</a><a href="about.html">درباره نشریه</a><a href="editorial-board.html">هیئت تحریریه</a><a href="editorial-policy.html">سیاست‌ها</a><a href="peer-review.html">داوری</a><a href="publication-ethics.html">اخلاق نشر</a><a href="plagiarism.html">سرقت علمی</a><a href="author-guidelines.html">راهنمای نویسندگان</a><a href="articles.html">مقالات</a><a href="issues.html">شماره‌ها</a><a href="authors.html">نویسندگان</a><a class="nav-submit active" href="submit.html">ارسال مقاله</a></nav></div></header>
 <main>
-<section class="page-hero"><div class="container"><p class="eyebrow">Submission</p><h1>ارسال مقاله</h1><p dir="ltr">Russian Language Studies</p></div></section>
+<section class="page-hero"><div class="container"><p class="eyebrow">ارسال مقاله</p><h1>ارسال مقاله</h1><p dir="ltr">Russian Language Studies</p></div></section>
 <section class="container section">
-<div class="notice success"><strong>ارسال مقاله</strong><br>لطفاً متن پیام خود را بنویسید و حداکثر ۴ فایل را ضمیمه کنید.</div>
-<div class="notice"><strong>پیش از ارسال:</strong> <a href="author-guidelines.html">راهنمای نویسندگان</a> را مطالعه کنید.</div>
-<div class="form-box"><form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
-<label>متن پیام <span class="required">*</span><textarea name="message" rows="12" required placeholder="عنوان مقاله، نام نویسندگان و هر توضیحی که لازم می‌دانید را در این بخش بنویسید."></textarea></label>
-<h2>ضمیمه‌ها</h2>
-<p>حداکثر ۴ فایل. فایل اصلی مقاله و سایر فایل‌های مرتبط را می‌توانید ضمیمه کنید.</p>
-<label>فایل ۱ <span class="required">*</span><input type="file" name="attachment_1" accept=".doc,.docx,.pdf" required></label>
-<label>فایل ۲ <input type="file" name="attachment_2" accept=".doc,.docx,.pdf"></label>
-<label>فایل ۳ <input type="file" name="attachment_3" accept=".doc,.docx,.pdf"></label>
-<label>فایل ۴ <input type="file" name="attachment_4" accept=".doc,.docx,.pdf"></label>
-<input type="hidden" name="_subject" value="ارسال مقاله جدید - مطالعات زبان روسی">
+<div class="notice success"><strong>ارسال رسمی مقاله</strong><br>برای بررسی اولیه، فرم زیر را کامل کنید. فایل اصلی مقاله باید بدون نام و مشخصات نویسندگان باشد.</div>
+<div class="notice"><strong>پیش از ارسال،</strong> <a href="author-guidelines.html">راهنمای نویسندگان</a> را با دقت مطالعه کنید.</div>
+<div class="form-note">فرم اطلاعات کتابشناختی و نویسندگان را جدا از فایل بی‌نام مقاله دریافت می‌کند تا اطلاعات لازم برای بررسی اولیه کامل باشد.</div>
+<div class="submission-form">
+<form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
+<div class="field-grid">
+<div class="field-group"><label for="article_language">زبان مقاله <span class="required">*</span></label><select id="article_language" name="article_language" required><option value="fa">فارسی</option><option value="en">English</option><option value="ru">Русский</option></select></div>
+<div class="field-group"><label for="article_type">نوع مقاله</label><input id="article_type" name="article_type" value="مقاله پژوهشی اصیل" readonly></div>
+<div class="field-group full"><label for="manuscript_title">عنوان کامل مقاله <span class="required">*</span></label><input id="manuscript_title" name="manuscript_title" type="text" required maxlength="500"></div>
+<div class="field-group"><label for="name">نام کامل نویسنده مسئول <span class="required">*</span></label><input id="name" name="name" type="text" required autocomplete="name"></div>
+<div class="field-group"><label for="email">ایمیل نویسنده مسئول <span class="required">*</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
+<div class="field-group"><label for="affiliation">وابستگی سازمانی نویسنده مسئول <span class="required">*</span></label><input id="affiliation" name="affiliation" type="text" required></div>
+<div class="field-group"><label for="orcid">ORCID نویسنده مسئول (اختیاری)</label><input id="orcid" name="orcid" type="url" placeholder="https://orcid.org/..." autocomplete="url"></div>
+<div class="field-group full"><label for="authors">نام کامل همه نویسندگان و وابستگی سازمانی آنان <span class="required">*</span></label><textarea id="authors" name="authors" rows="5" required placeholder="برای هر نویسنده نام کامل و وابستگی سازمانی را بنویسید."></textarea></div>
+</div>
+<h2>اطلاعات پژوهش و اظهارات</h2>
+<div class="field-group"><label for="conflict_of_interest">بیانیه تعارض منافع <span class="required">*</span></label><textarea id="conflict_of_interest" name="conflict_of_interest" rows="3" required placeholder="مثلاً: نویسندگان تعارض منافع ندارند. در صورت وجود، جزئیات را بنویسید."></textarea></div>
+<div class="field-grid">
+<div class="field-group"><label for="funding">حمایت مالی (اختیاری)</label><textarea id="funding" name="funding" rows="3" placeholder="نام نهاد حمایت‌کننده و شماره گرنت، در صورت وجود."></textarea></div>
+<div class="field-group"><label for="ethics_statement">بیانیه اخلاق/مجوزهای لازم (در صورت کاربرد)</label><textarea id="ethics_statement" name="ethics_statement" rows="3" placeholder="در صورت استفاده از داده انسانی، مصاحبه، داده حساس یا مجوز خاص، توضیح دهید."></textarea></div>
+<div class="field-group full"><label for="data_availability">بیانیه دسترسی به داده‌ها (اختیاری)</label><textarea id="data_availability" name="data_availability" rows="3" placeholder="در صورت وجود، محل دسترسی یا وضعیت داده‌ها را ذکر کنید."></textarea></div>
+</div>
+<div class="check-list"><label class="check-item"><input type="checkbox" name="declaration_1" value="confirmed" required><span>این مقاله پژوهشی اصیل است و قبلاً منتشر نشده است.</span></label><label class="check-item"><input type="checkbox" name="declaration_2" value="confirmed" required><span>این مقاله هم‌زمان برای نشریه دیگری ارسال یا در حال داوری نیست.</span></label><label class="check-item"><input type="checkbox" name="declaration_3" value="confirmed" required><span>فایل اصلی مقاله بدون نام، وابستگی، ORCID و سایر مشخصات شناسایی‌کننده نویسندگان تهیه شده است.</span></label><label class="check-item"><input type="checkbox" name="declaration_4" value="confirmed" required><span>نویسندگان مسئولیت اصالت اثر، رعایت حقوق مؤلفان و اخذ مجوزهای لازم را می‌پذیرند.</span></label></div>
+<h2>فایل‌های ارسال</h2>
+<p class="field-help">حداکثر ۴ فایل؛ هر فایل حداکثر ۲۵MB و مجموع درخواست حداکثر ۱۰۰MB طبق محدودیت‌های Formspree. فرمت‌های مجاز: DOC، DOCX، PDF.</p>
+<div class="file-box"><label for="manuscript_file">فایل اصلی مقاله (نسخه بی‌نام) <span class="required">*</span></label><p class="field-help">الزامی؛ ترجیحاً DOCX. فایل باید برای داوری دوسوکور آماده شده باشد.</p><input id="manuscript_file" name="manuscript_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required></div>
+<div class="file-box"><label for="author_information_file">صفحه مشخصات نویسندگان <span class="required">*</span></label><p class="field-help">الزامی؛ شامل عنوان، نام نویسندگان، وابستگی‌ها و اطلاعات نویسنده مسئول.</p><input id="author_information_file" name="author_information_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required></div>
+<div class="file-box"><label for="supplementary_file">فایل تکمیلی (اختیاری)</label><p class="field-help">جداول، داده‌ها، شکل‌ها یا فایل‌های تکمیلی در صورت نیاز.</p><input id="supplementary_file" name="supplementary_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"></div>
+<div class="file-box"><label for="other_file">سایر فایل‌های مرتبط (اختیاری)</label><p class="field-help">در صورت نیاز، مجوزها یا مدارک مرتبط را اضافه کنید.</p><input id="other_file" name="other_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"></div>
+<p class="privacy-note">با ارسال فرم، تأیید می‌کنید اطلاعات ارائه‌شده برای دریافت و بررسی اولیه مقاله توسط دفتر نشریه پردازش شود.</p>
+<div class="honeypot" aria-hidden="true"><label>Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+<input type="hidden" name="subject" value="ارسال مقاله جدید - دوفصلنامه مطالعات زبان روسی">
 <input type="hidden" name="_next" value="https://rlsj.ir/submission-success.html">
-<button class="btn primary" type="submit">ارسال مقاله</button>
+<div class="submit-row"><button class="btn primary" type="submit">ارسال مقاله</button></div>
 </form></div></section></main>
-<footer class="site-footer"><div class="container"><p><strong dir="ltr">RLS</strong> — دوفصلنامه مطالعات زبان روسی</p><p>صاحب‌امتیاز و مدیرمسئول: محمدمهدی روبین · مجوز 94254 · تاریخ مجوز 1402/05/02</p><p>اطلاعات ISSN، DOI و نمایه‌سازی تنها پس از تأیید و ثبت رسمی در سایت درج خواهد شد.</p></div></footer>
-<script src="assets/script.js?v=20260917"></script>
-</body>
-</html>
+<footer class="site-footer"><div class="container"><p><strong dir="ltr">RLS</strong> — دوفصلنامه مطالعات زبان روسی</p><p>صاحب‌امتیاز و مدیرمسئول: محمدمهدی روبین · مجوز 94254</p><p>اطلاعات ISSN، DOI و نمایه‌سازی تنها پس از تأیید و ثبت رسمی درج خواهد شد.</p></div></footer>
+<script src="assets/script.js?v=20261004"></script>
+</body></html>
