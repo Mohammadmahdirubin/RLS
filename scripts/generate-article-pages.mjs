@@ -83,7 +83,7 @@ function buildHead(lang, a, template) {
       name: a.authorNames?.[lang] || a.author,
       ...(a.orcid ? { sameAs: "https://orcid.org/" + a.orcid } : {})
     }],
-    inLanguage: lang,
+    inLanguage: a.language || a.sourceLanguage || lang,
     isPartOf: { "@type": "Periodical", name: j, url: "https://rlsj.ir/" },
     pagination: a.firstPage + "-" + a.lastPage,
     url: u,
