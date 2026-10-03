@@ -19,7 +19,7 @@
 <form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
 <div class="field-grid">
 <div class="field-group"><label for="article_language">Язык статьи <span class="required">*</span></label><select id="article_language" name="article_language" required><option value="fa">Персидский</option><option value="en">Английский</option><option value="ru">Русский</option></select></div>
-<div class="field-group"><label for="article_type">Тип статьи</label><input id="article_type" name="article_type" value="Оригинальная исследовательская статья" readonly></div>
+<div class="field-group"><label for="article_type">Тип статьи <span class="required">*</span></label><select id="article_type" name="article_type" required><option value="original_research">Оригинальная исследовательская статья</option><option value="review_or_book_review">Обзорная статья / рецензия на книгу</option></select></div>
 <div class="field-group full"><label for="manuscript_title">Полное название рукописи <span class="required">*</span></label><input id="manuscript_title" name="manuscript_title" type="text" required maxlength="500"></div>
 <div class="field-group"><label for="name">Полное имя ответственного автора <span class="required">*</span></label><input id="name" name="name" type="text" required autocomplete="name"></div>
 <div class="field-group"><label for="email">Электронная почта ответственного автора <span class="required">*</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
