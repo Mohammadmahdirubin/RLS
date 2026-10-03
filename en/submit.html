@@ -1,38 +1,52 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Submit a Manuscript | Russian Language Studies</title>
-<meta name="description" content="Simple manuscript submission form for Russian Language Studies.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Submit a Manuscript | Russian Language Studies</title><meta name="description" content="Official manuscript submission form for Russian Language Studies.">
 <link rel="canonical" href="https://rlsj.ir/en/submit.html">
-<link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html">
-<link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html">
-<link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html">
-<link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../assets/style.css?v=20260917">
+<link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html"><link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html"><link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html"><link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/style.css?v=20261004">
 </head>
 <body>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>دوفصلنامه مطالعات زبان روسی</small></span></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="main-nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="editorial-board.html">Editorial Board</a><a href="editorial-policy.html">Policies</a><a href="peer-review.html">Peer Review</a><a href="publication-ethics.html">Publication Ethics</a><a href="plagiarism.html">Research Integrity</a><a href="author-guidelines.html">Author Guidelines</a><a href="articles.html">Articles</a><a href="issues.html">Issues</a><a href="authors.html">Authors</a><a class="nav-submit active" href="submit.html">Submit</a><select class="language-switcher" aria-label="Language" onchange="location.href=this.value"><option value="../submit.html">فارسی</option><option value="submit.html" selected>English</option><option value="../ru/submit.html">Русский</option></select></nav></div></header>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="../index.html"><span class="brand-mark">RLS</span><span><strong dir="ltr">Russian Language Studies</strong><small>Russian Language Studies Journal</small></span></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="main-nav"><a href="index.html">Home</a><a href="about.html">About</a><a href="editorial-board.html">Editorial Board</a><a href="editorial-policy.html">Policies</a><a href="peer-review.html">Peer Review</a><a href="publication-ethics.html">Publication Ethics</a><a href="plagiarism.html">Research Integrity</a><a href="author-guidelines.html">Author Guidelines</a><a href="articles.html">Articles</a><a href="issues.html">Issues</a><a href="authors.html">Authors</a><a class="nav-submit active" href="submit.html">Submit</a><select class="language-switcher" aria-label="Language" onchange="location.href=this.value"><option value="../submit.html">فارسی</option><option value="submit.html" selected>English</option><option value="../ru/submit.html">Русский</option></select></nav></div></header>
 <main>
-<section class="page-hero"><div class="container"><p class="eyebrow">Submission</p><h1>Submit a Manuscript</h1><p>Russian Language Studies</p></div></section>
+<section class="page-hero"><div class="container"><p class="eyebrow">Manuscript Submission</p><h1>Submit a Manuscript</h1><p dir="ltr">Russian Language Studies</p></div></section>
 <section class="container section">
-<div class="notice success"><strong>Manuscript submission</strong><br>Write your message and attach up to 4 files.</div>
-<div class="notice"><strong>Before submitting:</strong> please read the <a href="author-guidelines.html">Author Guidelines</a>.</div>
-<div class="form-box"><form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
-<label>Message <span class="required">*</span><textarea name="message" rows="12" required placeholder="Please write the manuscript title, authors' names and any information you would like to provide."></textarea></label>
-<h2>Attachments</h2>
-<p>Up to 4 files. You may attach the manuscript and other related files.</p>
-<label>File 1 <span class="required">*</span><input type="file" name="attachment_1" accept=".doc,.docx,.pdf" required></label>
-<label>File 2 <input type="file" name="attachment_2" accept=".doc,.docx,.pdf"></label>
-<label>File 3 <input type="file" name="attachment_3" accept=".doc,.docx,.pdf"></label>
-<label>File 4 <input type="file" name="attachment_4" accept=".doc,.docx,.pdf"></label>
-<input type="hidden" name="_subject" value="New manuscript submission - Russian Language Studies">
+<div class="notice success"><strong>Official manuscript submission</strong><br>Complete the form below for initial editorial screening. The main manuscript file must be anonymized.</div>
+<div class="notice"><strong>Before submitting,</strong> <a href="../author-guidelines.html">Author Guidelines</a> carefully before completing the form.</div>
+<div class="form-note">The form collects author and bibliographic information separately from the anonymized manuscript so the initial screening can be completed properly.</div>
+<div class="submission-form">
+<form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
+<div class="field-grid">
+<div class="field-group"><label for="article_language">Article language <span class="required">*</span></label><select id="article_language" name="article_language" required><option value="fa">Persian</option><option value="en">English</option><option value="ru">Russian</option></select></div>
+<div class="field-group"><label for="article_type">Article type</label><input id="article_type" name="article_type" value="Original Research Article" readonly></div>
+<div class="field-group full"><label for="manuscript_title">Full manuscript title <span class="required">*</span></label><input id="manuscript_title" name="manuscript_title" type="text" required maxlength="500"></div>
+<div class="field-group"><label for="name">Corresponding author's full name <span class="required">*</span></label><input id="name" name="name" type="text" required autocomplete="name"></div>
+<div class="field-group"><label for="email">Corresponding author's email <span class="required">*</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
+<div class="field-group"><label for="affiliation">Corresponding author's affiliation <span class="required">*</span></label><input id="affiliation" name="affiliation" type="text" required></div>
+<div class="field-group"><label for="orcid">Corresponding author's ORCID (optional)</label><input id="orcid" name="orcid" type="url" placeholder="https://orcid.org/..." autocomplete="url"></div>
+<div class="field-group full"><label for="authors">Full names and affiliations of all authors <span class="required">*</span></label><textarea id="authors" name="authors" rows="5" required placeholder="Enter each author's full name and institutional affiliation."></textarea></div>
+</div>
+<h2>Research and declarations</h2>
+<div class="field-group"><label for="conflict_of_interest">Conflict of interest statement <span class="required">*</span></label><textarea id="conflict_of_interest" name="conflict_of_interest" rows="3" required placeholder="Example: The authors declare no conflict of interest. Provide details if applicable."></textarea></div>
+<div class="field-grid">
+<div class="field-group"><label for="funding">Funding statement (optional)</label><textarea id="funding" name="funding" rows="3" placeholder="Funding organization and grant number, if applicable."></textarea></div>
+<div class="field-group"><label for="ethics_statement">Ethics / required permissions statement (if applicable)</label><textarea id="ethics_statement" name="ethics_statement" rows="3" placeholder="If the study involves human participants, interviews, sensitive data, or a specific permission, provide details."></textarea></div>
+<div class="field-group full"><label for="data_availability">Data availability statement (optional)</label><textarea id="data_availability" name="data_availability" rows="3" placeholder="State where the data are available or explain any access restrictions, if applicable."></textarea></div>
+</div>
+<div class="check-list"><label class="check-item"><input type="checkbox" name="declaration_1" value="confirmed" required><span>This is an original research article and has not been published previously.</span></label><label class="check-item"><input type="checkbox" name="declaration_2" value="confirmed" required><span>This manuscript is not under consideration by another journal and is not being submitted simultaneously elsewhere.</span></label><label class="check-item"><input type="checkbox" name="declaration_3" value="confirmed" required><span>The main manuscript file has been anonymized and contains no author names, affiliations, ORCID IDs, or other identifying information.</span></label><label class="check-item"><input type="checkbox" name="declaration_4" value="confirmed" required><span>The authors accept responsibility for originality, copyright compliance, and any required permissions or ethical approvals.</span></label></div>
+<h2>Submission files</h2>
+<p class="field-help">Up to 4 files; each file up to 25 MB and the total request up to 100 MB under Formspree's current limits. Accepted formats: DOC, DOCX, PDF.</p>
+<div class="file-box"><label for="manuscript_file">Main manuscript (anonymized) <span class="required">*</span></label><p class="field-help">Required; DOCX is preferred. The file must be prepared for double-blind review.</p><input id="manuscript_file" name="manuscript_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required></div>
+<div class="file-box"><label for="author_information_file">Author information page <span class="required">*</span></label><p class="field-help">Required; include title, author names, affiliations, and corresponding-author details.</p><input id="author_information_file" name="author_information_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required></div>
+<div class="file-box"><label for="supplementary_file">Supplementary file (optional)</label><p class="field-help">Use for tables, datasets, figures, or other supplementary material when needed.</p><input id="supplementary_file" name="supplementary_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"></div>
+<div class="file-box"><label for="other_file">Other related file (optional)</label><p class="field-help">Use for permissions or other relevant documents when applicable.</p><input id="other_file" name="other_file" type="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"></div>
+<p class="privacy-note">By submitting this form, you confirm that the information provided may be processed by the journal office for receiving and initially screening the manuscript.</p>
+<div class="honeypot" aria-hidden="true"><label>Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+<input type="hidden" name="subject" value="New manuscript submission - Russian Language Studies">
 <input type="hidden" name="_next" value="https://rlsj.ir/en/submission-success.html">
-<button class="btn primary" type="submit">Submit Manuscript</button>
+<div class="submit-row"><button class="btn primary" type="submit">Submit Manuscript</button></div>
 </form></div></section></main>
-<footer class="site-footer"><div class="container"><p><strong>RLS</strong> — Russian Language Studies</p><p>Publisher & Managing Editor: Mohammadmahdi Rubin · Ministry license 94254 · License date 1402/05/02</p><p>ISSN, DOI and indexing information will be added only after official registration or confirmation.</p></div></footer>
-<script src="../assets/script.js?v=20260917"></script>
-</body>
-</html>
+<footer class="site-footer"><div class="container"><p><strong dir="ltr">RLS</strong> — Russian Language Studies</p><p>Publisher & Managing Editor: Mohammadmahdi Rubin · Ministry license 94254</p><p>ISSN, DOI and indexing information will be added only after official registration or confirmation.</p></div></footer>
+<script src="../assets/script.js?v=20261004"></script>
+</body></html>
