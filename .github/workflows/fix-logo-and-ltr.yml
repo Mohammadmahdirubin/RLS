@@ -1,9 +1,6 @@
 name: Fix Guilan logo and LTR abstracts
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/fix-logo-and-ltr.yml'
 jobs:
   apply:
     runs-on: ubuntu-latest
