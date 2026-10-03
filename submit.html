@@ -19,7 +19,7 @@
 <form action="https://formspree.io/f/moeqgplo" method="POST" enctype="multipart/form-data">
 <div class="field-grid">
 <div class="field-group"><label for="article_language">زبان مقاله <span class="required">*</span></label><select id="article_language" name="article_language" required><option value="fa">فارسی</option><option value="en">English</option><option value="ru">Русский</option></select></div>
-<div class="field-group"><label for="article_type">نوع مقاله</label><input id="article_type" name="article_type" value="مقاله پژوهشی اصیل" readonly></div>
+<div class="field-group"><label for="article_type">نوع مقاله <span class="required">*</span></label><select id="article_type" name="article_type" required><option value="original_research">مقاله پژوهشی اصیل</option><option value="review_or_book_review">مقاله مروری / مرور کتاب</option></select></div>
 <div class="field-group full"><label for="manuscript_title">عنوان کامل مقاله <span class="required">*</span></label><input id="manuscript_title" name="manuscript_title" type="text" required maxlength="500"></div>
 <div class="field-group"><label for="name">نام کامل نویسنده مسئول <span class="required">*</span></label><input id="name" name="name" type="text" required autocomplete="name"></div>
 <div class="field-group"><label for="email">ایمیل نویسنده مسئول <span class="required">*</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
