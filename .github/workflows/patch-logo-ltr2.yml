@@ -1,9 +1,6 @@
 name: Patch logo and LTR
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/patch-logo-ltr2.yml'
 jobs:
   apply:
     runs-on: ubuntu-latest
