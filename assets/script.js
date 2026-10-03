@@ -121,7 +121,7 @@ const initRLS=()=>{
       </div>
       <div class="rls-footer-official-logos">
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('وزارت فرهنگ و ارشاد اسلامی.webp')}" alt="${ministryLabel}" loading="lazy"></div><span>${ministryLabel}</span></div>
-        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.e-rasaneh.ir/" target="_blank" rel="noopener noreferrer"><img src="${asset('سامانه جامع مطبوعات کشور.jpg')}" alt="${mediaLabel}" loading="lazy"></a><span>${mediaLabel}</span></div>
+        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.e-rasaneh.ir/Certificate/94254" target="_blank" rel="noopener noreferrer"><img src="${asset('سامانه جامع مطبوعات کشور.jpg')}" alt="${mediaLabel}" loading="lazy"></a><span>${mediaLabel}</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.magiran.com/" target="_blank" rel="noopener noreferrer" title="Magiran"><img src="${asset('magiran.png')}" alt="Magiran" loading="lazy"></a><span>Magiran</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://civilica.com/" target="_blank" rel="noopener noreferrer" title="Civilica"><img src="${asset('sivilica.png')}" alt="Civilica" loading="lazy"></a><span>Civilica</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.researchbib.com/" target="_blank" rel="noopener noreferrer" title="ResearchBib"><img src="${asset('researchbib.svg')}" alt="ResearchBib" loading="lazy"></a><span>ResearchBib</span></div>
