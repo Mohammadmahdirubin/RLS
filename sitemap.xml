@@ -102,6 +102,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://rlsj.ir/en/submission-success.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://rlsj.ir/en/submit.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
