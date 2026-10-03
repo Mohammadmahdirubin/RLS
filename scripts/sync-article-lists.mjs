@@ -26,15 +26,11 @@ const pageUrl = (lang, a) => {
   return parts.join("/");
 };
 
-function titlePair(a) {
-  // The article's own language determines the primary title on every
-  // language version of the article list. The interface language does not.
+function titlePair(a, lang) {
   const source = a.language || a.sourceLanguage || "en";
-  const main = a.title[source] || a.title.en || a.title.fa || a.title.ru || "";
-  // Show Persian as the secondary title for non-Persian articles;
-  // for Persian articles, use the English translation.
-  const secondaryLang = source === "fa" ? "en" : "fa";
-  const secondary = a.title[secondaryLang] || a.title.en || a.title.fa || "";
+  const main = a.title[lang] || a.title[source] || a.title.en || a.title.fa || a.title.ru || "";
+  const secondaryLang = lang === source ? null : source;
+  const secondary = secondaryLang ? (a.title[secondaryLang] || a.title.en || a.title.fa || a.title.ru || "") : "";
   return { main, secondary, source, secondaryLang };
 }
 
@@ -47,7 +43,7 @@ function labels(lang) {
 }
 
 function card(a, lang) {
-  const l = labels(lang), pair = titlePair(a);
+  const l = labels(lang), pair = titlePair(a, lang);
   const href = pageUrl(lang,a);
   const pdf = (lang === "fa" ? "" : "../") + a.pdf;
   const type = a.type[lang] || a.type[a.language] || "";
@@ -57,7 +53,7 @@ function card(a, lang) {
 <div class="article-number"><strong>${l.num} ${a.number}</strong></div>
 <div class="article-type">${esc(type)}</div>
 <h2>${esc(pair.main)}</h2>
-<p class="article-title-translation" style="font-size:.9em;line-height:1.8;margin:.25rem 0 1rem;color:var(--muted,#666);"${pair.secondaryLang === "fa" ? ' dir="rtl"' : ' dir="ltr"'}>${esc(pair.secondary)}</p>
+' + pair.secondary + '
 <p class="authors"><strong>${esc(a.author)}</strong> · ${esc(affiliation)}</p>
 <div class="meta-grid"><div><span>${l.received}</span><strong>${esc(a.received)}</strong></div><div><span>${l.online}</span><strong>${esc(a.online)}</strong></div><div><span>${l.issue}</span><strong>${esc(lang === "fa" ? "دوره " : lang === "ru" ? "Том " : "Volume ")}${a.volume}, ${lang === "fa" ? "شماره " : lang === "ru" ? "выпуск " : "Issue "}${a.issueNumber}</strong></div><div><span>${l.pages}</span><strong>${esc(a.firstPage)}–${esc(a.lastPage)}</strong></div></div>
 <p>${esc(abstract)}</p>
