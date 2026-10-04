@@ -47,7 +47,9 @@ function authors(a){return Array.isArray(a.authors)&&a.authors.length?a.authors:
 
 function sync(html,a,l){
   const url=urlFor(a,l), as=authors(a);
-  html=setMeta(html,'citation_title',a.title?.[l.key]||a.title?.en||a.id);
+  const sourceLanguage=a.language||a.sourceLanguage||'en';
+  const citationPdfUrl=BASE+l.prefix+path.basename(a.pdf);
+  html=setMeta(html,'citation_title',a.title?.[sourceLanguage]||a.title?.en||a.id);
   html=setAuthors(html,as.map(x=>x.name));
   html=setMeta(html,'citation_publication_date',isoDate(a.online));
   html=setMeta(html,'citation_firstpage',a.firstPage);
@@ -56,7 +58,8 @@ function sync(html,a,l){
   html=setMeta(html,'citation_volume',a.volume);
   html=setMeta(html,'citation_issue',a.issueNumber);
   html=setMeta(html,'citation_fulltext_world_readable','true');
-  html=setMeta(html,'citation_pdf_url',abs(a.pdf));
+  html=setMeta(html,'citation_language',sourceLanguage);
+  html=setMeta(html,'citation_pdf_url',citationPdfUrl);
   html=setMeta(html,'robots','index,follow');
   if(a.issn) html=setMeta(html,'citation_issn',a.issn);
   const ld={
@@ -64,10 +67,10 @@ function sync(html,a,l){
     headline:a.title?.[l.key]||a.title?.en,description:a.abstract?.[l.key]||a.abstract?.en||'',
     datePublished:isoDate(a.online),dateModified:isoDate(a.online),
     author:as.map(x=>{const p={'@type':'Person',name:x.name};if(x.orcid)p.sameAs='https://orcid.org/'+x.orcid;return p;}),
-    inLanguage:l.key,isPartOf:{'@type':'Periodical',name:l.journal,url:BASE+l.prefix},
+    inLanguage:sourceLanguage,isPartOf:{'@type':'Periodical',name:l.journal,url:BASE+l.prefix},
     pagination:String(a.firstPage)+'-'+String(a.lastPage),url:url,
     mainEntityOfPage:{'@type':'WebPage','@id':url},
-    encoding:{'@type':'MediaObject',contentUrl:abs(a.pdf),encodingFormat:'application/pdf'}
+    encoding:{'@type':'MediaObject',contentUrl:citationPdfUrl,encodingFormat:'application/pdf'}
   };
   if(a.doi) ld.identifier='https://doi.org/'+a.doi.replace(/^https?:\/\/doi\.org\//,'');
   return setCanonical(setJsonLd(html,ld),url);
