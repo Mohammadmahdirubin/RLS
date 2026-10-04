@@ -33,7 +33,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url><loc>https://rlsj.ir/indexing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url>
     <loc>https://rlsj.ir/author-guidelines.html</loc>
     <changefreq>weekly</changefreq>
@@ -72,7 +71,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url><loc>https://rlsj.ir/en/indexing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url>
     <loc>https://rlsj.ir/en/articles.html</loc>
     <changefreq>weekly</changefreq>
@@ -133,7 +131,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url><loc>https://rlsj.ir/ru/indexing.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url>
     <loc>https://rlsj.ir/ru/about.html</loc>
     <changefreq>weekly</changefreq>
