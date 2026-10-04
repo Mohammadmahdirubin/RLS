@@ -69,7 +69,8 @@ fs.writeFileSync(
 function buildHead(lang, a, template) {
   const r = rel(lang), u = url(lang, a), t = a.title[lang], j = journalName(lang);
   const description = String(a.abstract[lang] || "").slice(0, 250);
-  const citationTitle = a.title.en || t;
+  const sourceLanguage = a.language || a.sourceLanguage || "en";
+  const citationTitle = a.title[sourceLanguage] || a.title.en || t;
   const ld = {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
