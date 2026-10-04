@@ -52,9 +52,6 @@
     articles.filter(function(a){return a&&a.status==='published';}).forEach(function(a){
       var link=document.querySelector('a[href="article-'+a.id+'.html"]');
       if(!link)return;
-      link.setAttribute('data-goatcounter-click',pathFor(a));
-      link.setAttribute('data-goatcounter-title','کلیک روی مشاهده مقاله: '+(a.title||a.id));
-      link.setAttribute('data-goatcounter-no-session','1');
       link.addEventListener('click',function(){
         if(window.goatcounter&&typeof window.goatcounter.count==='function'){
           window.goatcounter.count({
