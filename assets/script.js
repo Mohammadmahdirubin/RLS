@@ -1,4 +1,24 @@
+const RLS_GOATCOUNTER_ENDPOINT='https://rlsj.goatcounter.com/count';
+const RLS_GOATCOUNTER_SCRIPT='https://gc.zgo.at/count.js';
 const initRLS=()=>{
+  // GoatCounter: count article visits under one shared path across FA/EN/RU versions.
+  if(!window.goatcounter){
+    window.goatcounter={
+      path:function(p){
+        var m=String(p||'').match(/^\/(?:en\/|ru\/)?article-([^/]+)\.html$/);
+        return m ? '/articles/' + m[1] : p;
+      }
+    };
+  }
+  if(!document.querySelector('script[data-rls-goatcounter]')){
+    var gc=document.createElement('script');
+    gc.setAttribute('data-goatcounter',RLS_GOATCOUNTER_ENDPOINT);
+    gc.setAttribute('data-rls-goatcounter','1');
+    gc.async=true;
+    gc.src=RLS_GOATCOUNTER_SCRIPT;
+    document.head.appendChild(gc);
+  }
+
   const path=location.pathname;
   const inEn=path.includes('/en/');
   const inRu=path.includes('/ru/');
