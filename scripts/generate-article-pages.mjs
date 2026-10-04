@@ -71,6 +71,7 @@ function buildHead(lang, a, template) {
   const description = String(a.abstract[lang] || "").slice(0, 250);
   const sourceLanguage = a.language || a.sourceLanguage || "en";
   const citationTitle = a.title[sourceLanguage] || a.title.en || t;
+  const citationPdfUrl = `https://rlsj.ir/${lang === "fa" ? "" : lang + "/"}${path.basename(a.pdf)}`;
   const ld = {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
@@ -115,7 +116,7 @@ function buildHead(lang, a, template) {
 <meta name="citation_issue" content="${a.issueNumber}">
 <meta name="citation_language" content="${a.language || a.sourceLanguage || lang}">
 <meta name="citation_fulltext_world_readable" content="true">
-<meta name="citation_pdf_url" content="https://rlsj.ir/${a.pdf}">
+<meta name="citation_pdf_url" content="${citationPdfUrl}">
 <link rel="canonical" href="${u}">
 <link rel="alternate" hreflang="fa" href="${url("fa", a)}">
 <link rel="alternate" hreflang="en" href="${url("en", a)}">
