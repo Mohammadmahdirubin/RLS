@@ -34,7 +34,7 @@
 (function(){
   var endpoint='https://rlsj.goatcounter.com/counter/';
   var articles=window.RLS_ARTICLES||[];
-  function pathFor(a){return '/articles/'+(a.slug||a.id);}
+  function pathFor(a){return 'article-click-'+(a.slug||a.id);}
   function loadCounter(a){
     var el=document.querySelector('[data-rls-view-count="'+a.id+'"]');
     if(!el)return;
@@ -43,14 +43,32 @@
       .then(function(r){if(!r.ok)throw new Error('counter '+r.status);return r.json();})
       .then(function(data){
         var count=data && data.count!=null ? String(data.count) : '0';
-        // GoatCounter returns a pre-formatted count string (for example "1,234").
-        // Do not pass it through Number(), because "1,234" becomes NaN in JavaScript.
         el.querySelector('.count').textContent=count.replace(/,/g,'٬');
-        el.setAttribute('title','تعداد بازدید ثبت‌شده در GoatCounter');
+        el.setAttribute('title','تعداد کلیک‌های ثبت‌شده در GoatCounter');
       })
       .catch(function(){el.querySelector('.count').textContent='—';});
   }
+  function bindClicks(){
+    articles.filter(function(a){return a&&a.status==='published';}).forEach(function(a){
+      var link=document.querySelector('a[href="article-'+a.id+'.html"]');
+      if(!link)return;
+      link.setAttribute('data-goatcounter-click',pathFor(a));
+      link.setAttribute('data-goatcounter-title','کلیک روی مشاهده مقاله: '+(a.title||a.id));
+      link.setAttribute('data-goatcounter-no-session','1');
+      link.addEventListener('click',function(){
+        if(window.goatcounter&&typeof window.goatcounter.count==='function'){
+          window.goatcounter.count({
+            path:pathFor(a),
+            title:'کلیک روی مشاهده مقاله: '+(a.title||a.id),
+            event:true,
+            no_session:true
+          });
+        }
+      });
+    });
+  }
   document.addEventListener('DOMContentLoaded',function(){
+    bindClicks();
     articles.filter(function(a){return a&&a.status==='published';}).forEach(loadCounter);
   });
 })();
