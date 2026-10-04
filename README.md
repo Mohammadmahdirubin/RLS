@@ -62,3 +62,16 @@ When DOI, ISSN, or other identifiers are not officially assigned, they should no
 ## Development principle
 
 Prefer a single authoritative data source for article metadata and generate/synchronize localized views from it. Avoid hard-coded article counts, duplicated article metadata, and self-modifying workflows wherever possible.
+
+
+## ثابت‌های نگهداری سایت (از 2026-10-05)
+
+### صفحات مقالات
+- هر مقاله جدید باید در هر سه زبان فارسی، انگلیسی و روسی همان ساختار شمارنده فعلی را داشته باشد.
+- شمارنده در پایین بخش اطلاعات/نویسنده مقاله و داخل ستون کناری مقاله قرار می‌گیرد.
+- شمارنده کلیک «مشاهده مقاله» باید با GoatCounter و شناسه مشترک مقاله در هر سه زبان ثبت شود تا بازدیدهای سه نسخه زبانی یک مقاله قابل تجمیع باشد.
+- متن شمارنده در هر زبان مطابق زبان همان صفحه باشد و ساختار و ظاهر فعلی آن بدون تغییر باقی بماند.
+
+### هیئت تحریریه
+- صفحات هیئت تحریریه فارسی، انگلیسی و روسی دارای ساختار، ترتیب، چیدمان کارت‌ها، اطلاعات پروفایل و ظاهر فعلی هستند و نباید در مقالات/به‌روزرسانی‌های بعدی تغییر داده شوند.
+- برای افزودن عضو جدید فقط اطلاعات همان عضو به الگوی فعلی اضافه شود و ساختار یا ظاهر اعضای موجود تغییر نکند.
