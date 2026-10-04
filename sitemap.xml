@@ -87,6 +87,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://rlsj.ir/en/indexing.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://rlsj.ir/en/issues.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -108,6 +113,11 @@
   </url>
   <url>
     <loc>https://rlsj.ir/en/submit.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/indexing.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -156,6 +166,11 @@
   </url>
   <url>
     <loc>https://rlsj.ir/ru/editorial-board.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/ru/indexing.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
