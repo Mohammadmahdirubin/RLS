@@ -32,7 +32,8 @@ const initRLS=()=>{
       group(labels.policies,[['editorial-policy.html',labels.policies],['peer-review.html',labels.review],['publication-ethics.html',labels.ethics],['plagiarism.html',labels.plagiarism],['conflict-of-interest.html',labels.conflict],['copyright.html',labels.copyright],['ai-policy.html',labels.ai],['data-policy.html',labels.data],['complaints.html',labels.complaints],['preservation.html',labels.preservation],['repository-policy.html',labels.repository],['persistent-identifiers.html',labels.identifiers],['publication-fees.html',labels.fees],['corrections-retractions.html',labels.corrections]]),
       group(labels.publication,[['articles.html',labels.articles],['issues.html',labels.issues],['archive.html',labels.archive]]),
       group(labels.authors,[['author-guidelines.html',labels.guidelines],['authors.html',labels.authorInfo]]),
-      link('indexing.html',labels.indexing),link('journal-metrics.html',labels.metrics),link('contact.html',labels.contact),link('privacy.html',labels.privacy),link('open-access.html',labels.openAccess),link('submit.html',labels.submit)
+      group(labels.metrics,[['indexing.html',labels.indexing],['journal-metrics.html',labels.metrics]]),
+      link('contact.html',labels.contact),link('privacy.html',labels.privacy),link('open-access.html',labels.openAccess),link('submit.html',labels.submit)
     ].join('');
     const closeNavGroups=()=>{
       nav.querySelectorAll('details.nav-group[open]').forEach(d=>d.removeAttribute('open'));
