@@ -42,8 +42,10 @@
     fetch(url,{credentials:'omit'})
       .then(function(r){if(!r.ok)throw new Error('counter '+r.status);return r.json();})
       .then(function(data){
-        var count=Number(data.count||0);
-        el.querySelector('.count').textContent=new Intl.NumberFormat('fa-IR').format(count);
+        var count=data && data.count!=null ? String(data.count) : '0';
+        // GoatCounter returns a pre-formatted count string (for example "1,234").
+        // Do not pass it through Number(), because "1,234" becomes NaN in JavaScript.
+        el.querySelector('.count').textContent=count.replace(/,/g,'٬');
         el.setAttribute('title','تعداد بازدید ثبت‌شده در GoatCounter');
       })
       .catch(function(){el.querySelector('.count').textContent='—';});
