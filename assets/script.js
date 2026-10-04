@@ -129,6 +129,7 @@ const initRLS=()=>{
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer" title="Google Scholar"><img src="/google%20scholar.jpg" alt="Google Scholar" loading="lazy"></a><span>Google Scholar</span></div>
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box rls-open-access-logo" href="https://sparcopen.org/open-access/" target="_blank" rel="noopener noreferrer" title="Open Access"><img src="${asset('open.png')}" alt="Open Access" loading="lazy"></a><span>Open Access</span></div>
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('academia.jpg')}" alt="Academia" loading="lazy"></div><span>Academia</span></div>
+        <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('علوم انسانی.jpg')}" alt="علوم انسانی" loading="lazy"></div><span>${lang==='fa'?'علوم انسانی':lang==='en'?'Humanities':'Гуманитарные науки'}</span></div>
       </div>
     </div>`;
   }
