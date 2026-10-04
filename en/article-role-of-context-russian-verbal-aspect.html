@@ -79,9 +79,9 @@
 .article-title-row{display:flex;align-items:flex-start;gap:14px;direction:ltr}.article-title-row h1{flex:1;min-width:0;margin-top:0;font-size:26px;line-height:1.45}.article-peer-review-mark{flex:0 0 68px;order:1;display:flex;flex-direction:column;align-items:center;gap:3px;margin:0;direction:ltr}.article-peer-review-mark img{display:block;width:68px;height:auto;max-height:68px;object-fit:contain;background:transparent}.article-peer-review-mark span{font-size:10.5px;font-weight:700;color:#b00020;line-height:1.35;direction:rtl;text-align:center;white-space:normal}.article-title-row h1{order:2}body:lang(en) .article-peer-review-mark,body:lang(ru) .article-peer-review-mark{order:2}body:lang(en) .article-title-row h1,body:lang(ru) .article-title-row h1{order:1;text-align:left;direction:ltr}@media(max-width:700px){.article-title-row{gap:8px}.article-peer-review-mark{flex-basis:58px}.article-peer-review-mark img{width:58px;max-height:58px}.article-peer-review-mark span{font-size:9.5px}.article-title-row h1{font-size:22px;line-height:1.4}}
 </style>
 <style>
-.article-page-click-counter{margin-top:14px;padding:12px 14px;border:1px solid var(--line,#ddd);border-radius:10px;background:#fffdf6;text-align:center}
-.article-page-click-counter .counter-label{display:block;font-size:.88rem;color:var(--muted,#666);margin-bottom:5px}
-.article-page-click-counter .counter-value{font-weight:700;font-size:1.1rem;direction:ltr;unicode-bidi:embed}
+.article-sidebar .article-page-click-counter{box-sizing:border-box;width:100%;margin:14px 0 0;padding:16px;border:1px solid var(--line,#ddd);border-radius:12px;background:var(--card,#fff);text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.article-sidebar .article-page-click-counter .counter-label{display:block;margin:0 0 8px;font-size:.9rem;color:var(--muted,#666)}
+.article-sidebar .article-page-click-counter .counter-value{display:block;font-weight:700;font-size:1.15rem;line-height:1.4;direction:ltr;unicode-bidi:embed}
 </style><meta name="citation_author" content="Mohammadali Norouzi">
 </head>
 <body>
@@ -139,27 +139,19 @@
 <p>M.A. in TEFL, Islamic Azad University, West Branch</p>
 <p>ORCID<br><a href="https://orcid.org/0009-0005-0185-7860" target="_blank" rel="noopener noreferrer">0009-0005-0185-7860</a></p>
 </div>
-</aside>
+<div class="article-page-click-counter" data-rls-click-counter="role-of-context-russian-verbal-aspect"><span class="counter-label">View clicks:</span><span class="counter-value">0</span></div></aside>
 </div></div></section>
 </main>
 <footer></footer>
 <script src="../assets/script.js?v=20260926name"></script>
 <script>
 (function(){
-  var id='role-of-context-russian-verbal-aspect';
-  var el=document.querySelector('[data-rls-click-counter="'+id+'"]');
+  var id='role-of-context-russian-verbal-aspect',el=document.querySelector('[data-rls-click-counter="'+id+'"]');
   if(!el)return;
   fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
-    .then(function(r){if(!r.ok)throw new Error('counter '+r.status);return r.json();})
-    .then(function(data){
-      var raw=data&&data.count!=null?String(data.count):'0';
-      el.querySelector('.counter-value').textContent=raw.replace(/,/g,'٬');
-      el.setAttribute('title','Number of “View Article” clicks');
-    })
-    .catch(function(){
-      // Keep a visible zero instead of hiding the counter when GoatCounter is unavailable.
-      el.querySelector('.counter-value').textContent='0';
-    });
+    .then(function(r){if(!r.ok)throw new Error();return r.json()})
+    .then(function(d){var n=d&&d.count!=null?String(d.count):'0';el.querySelector('.counter-value').textContent=n.replace(/,/g,'٬');el.title='Number of “View Article” clicks'})
+    .catch(function(){el.querySelector('.counter-value').textContent='0'});
 })();
 </script></body>
 </html>
