@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>استعلام گواهی | RLS</title>
+<style>
+body{font-family:Tahoma,Arial,sans-serif;margin:0;background:#f6f7f9;color:#222}
+.wrap{max-width:720px;margin:70px auto;padding:20px}.card{background:#fff;border:1px solid #ddd;border-radius:16px;padding:28px;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+h1{text-align:center;margin-top:0}.status{padding:14px;border-radius:10px;background:#eef8ef;color:#185c20;margin:20px 0}.row{padding:10px 0;border-bottom:1px solid #eee}.label{font-weight:700;display:inline-block;min-width:170px}
+.error{background:#fff0f0;color:#8a1c1c}.back{text-align:center;margin-top:22px}.back a{color:#2457a6;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<h1>استعلام اصالت گواهی</h1>
+<div id="result"></div>
+<div class="back"><a href="index.html">بازگشت به سایت نشریه</a></div>
+</div></div>
+<script>
+(function(){
+  var records={
+    "RLS-2026-SB-8P6Q3":{
+      name:"ثمین بابازاده",
+      nameEn:"Samin Babazadeh",
+      role:"عضو هیئت تحریریه",
+      code:"RLS-2026-SB-8P6Q3",
+      filename:"samin-babazadeh.pdf",
+      status:"معتبر"
+    }
+  };
+  var code=new URLSearchParams(location.search).get("code")||"";
+  var r=records[code];
+  var el=document.getElementById("result");
+  if(!r){el.innerHTML='<div class="status error"><strong>گواهی یافت نشد.</strong><br>کد استعلام واردشده در سامانه ثبت نشده است.</div>';return;}
+  el.innerHTML='<div class="status"><strong>✓ گواهی معتبر است.</strong><br>اطلاعات این گواهی در سامانه نشریه ثبت شده است.</div>'+
+    '<div class="row"><span class="label">نام:</span>'+r.name+'</div>'+
+    '<div class="row"><span class="label">نام انگلیسی:</span>'+r.nameEn+'</div>'+
+    '<div class="row"><span class="label">سمت:</span>'+r.role+'</div>'+
+    '<div class="row"><span class="label">کد استعلام:</span>'+r.code+'</div>'+
+    '<div class="row"><span class="label">نام فایل:</span>'+r.filename+'</div>';
+})();
+</script>
+</body>
+</html>
