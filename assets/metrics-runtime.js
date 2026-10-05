@@ -32,36 +32,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelectorAll(".metrics-svg").forEach(function (svg, index) {
     if (index === 0) {
-      var max = Math.max(6, received);
-      var base = 300;
-      var top = 40;
+      var max = Math.max(9, received);
+      var base = 245;
+      var top = 35;
       var height = base - top;
       var vals = [received, accepted, rejected];
-      var lineSelectors = [".chart-line", ".chart-line-alt", ".chart-line-green"];
-      var pointSelectors = [".chart-point", ".chart-point-alt", ".chart-point-green"];
+      var barSelectors = [".bar-blue", ".bar-green", ".bar-red"];
 
       vals.forEach(function (value, i) {
         var y = base - (value / max) * height;
-        var line = svg.querySelector(lineSelectors[i]);
-        var point = svg.querySelector(pointSelectors[i]);
-        if (line) {
-          line.setAttribute("y1", y);
-          line.setAttribute("y2", base);
-        }
-        if (point) point.setAttribute("cy", y);
-
-        var area = svg.querySelector(".chart-area");
-        if (i === 0 && area) {
-          area.setAttribute("d", "M395 " + y + " L395 " + base + " L395 " + y);
+        var bar = svg.querySelector(barSelectors[i]);
+        if (bar) {
+          bar.setAttribute("y1", y);
+          bar.setAttribute("y2", base);
         }
       });
 
       var axisLabels = Array.from(svg.querySelectorAll('text[x="70"]')).sort(function (a, b) {
         return Number(a.getAttribute("y")) - Number(b.getAttribute("y"));
       });
-      var axisValues = [max, max * 0.75, max * 0.5, max * 0.25, 0];
+      var axisValues = [max, max * 2 / 3, max / 3, 0];
       axisLabels.forEach(function (el, i) {
-        el.textContent = labelValue(axisValues[i] || 0, lang);
+        if (i < axisValues.length) el.textContent = labelValue(axisValues[i], lang);
       });
     }
 
