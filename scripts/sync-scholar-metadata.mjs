@@ -48,7 +48,7 @@ function authors(a){return Array.isArray(a.authors)&&a.authors.length?a.authors:
 function sync(html,a,l){
   const url=urlFor(a,l), as=authors(a);
   const sourceLanguage=a.language||a.sourceLanguage||'en';
-  const citationPdfUrl=abs(a.pdf);
+  const citationPdfUrl=abs(l.prefix + path.basename(a.pdf));
   html=setMeta(html,'citation_title',a.title?.[sourceLanguage]||a.title?.en||a.id);
   html=setAuthors(html,as.map(x=>x.name));
   html=setMeta(html,'citation_publication_date',isoDate(a.online));
