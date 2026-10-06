@@ -108,6 +108,27 @@ for(const a of published){
   }
 }
 
+function pageKeywords(file,l){
+  const f=file.toLowerCase();
+  const fa = ['مطالعات زبان روسی','زبان روسی','آموزش زبان روسی','مقالات روسی','پژوهش زبان روسی','زبان‌شناسی روسی','ادبیات روسیه','فرهنگ روسیه','ترجمه روسی','نشریه علمی زبان روسی','دوفصلنامه مطالعات زبان روسی'];
+  const en = ['Russian Language Studies','Russian language','Russian language education','Russian language articles','Russian linguistics','Russian literature','Russian culture','Russian translation','academic journal Russian language','Russian language research','Russian as a foreign language'];
+  const ru = ['исследования по русскому языку','русский язык','обучение русскому языку','статьи о русском языке','русская лингвистика','русская литература','русская культура','перевод с русского языка','научный журнал русского языка','исследования русского языка','русский язык как иностранный'];
+  const base=l.key==='fa'?fa:l.key==='ru'?ru:en;
+  if(/article|articles|issue|issues/.test(f)) return [...base,...(l.key==='fa'?['مقاله پژوهشی','مقالات علمی','شماره نخست نشریه']:l.key==='ru'?['научные статьи','исследовательские статьи','выпуск журнала']:['research articles','scholarly articles','journal issue'])].join(', ');
+  if(/editorial|author|authors|review|ethics|policy|guideline|about|contact|submit|copyright|privacy|verification|metrics/.test(f))
+    return [...base,...(l.key==='fa'?['نشریه دانشگاهی','پژوهش‌های علمی','داوری علمی']:l.key==='ru'?['академический журнал','научные исследования','рецензирование статей']:['academic journal','scholarly research','peer review'])].join(', ');
+  return base.join(', ');
+}
+function setKeywords(html,file,l){
+  return setMeta(html,'keywords',pageKeywords(file,l));
+}
+function setPageDescription(html,file,l){
+  const re=/<meta\\s+name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i;
+  if(re.test(html)) return html;
+  const d=l.key==='fa'?'دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.':l.key==='ru'?'Научный журнал «Исследования по русскому языку»: статьи и исследования по русскому языку, обучению, лингвистике, литературе, культуре и переводу.':'Russian Language Studies: scholarly articles and research on the Russian language, language education, linguistics, literature, culture and translation.';
+  return setMeta(html,'description',d);
+}
+
 function walk(dir){
   const out=[];
   for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
@@ -120,7 +141,12 @@ function walk(dir){
 }
 const entries=[];
 for(const file of walk('.')){
-  const h=fs.readFileSync(file,'utf8');
+  let h=fs.readFileSync(file,'utf8');
+  const rel=file.replaceAll('\\\\','/');
+  const l=rel.startsWith('en/')?langs[1]:rel.startsWith('ru/')?langs[2]:langs[0];
+  h=setKeywords(h,rel,l);
+  h=setPageDescription(h,rel,l);
+  if(h!==fs.readFileSync(file,'utf8')) fs.writeFileSync(file,h);
   const robots=h.match(/<meta\s+name=["']robots["'][^>]*>/i)?.[0]||'';
   if(/noindex/i.test(robots))continue;
   const c=h.match(/<link\s+rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1];
