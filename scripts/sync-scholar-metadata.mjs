@@ -60,13 +60,19 @@ function sync(html,a,l){
   html=setMeta(html,'citation_fulltext_world_readable','true');
   html=setMeta(html,'citation_language',sourceLanguage);
   html=setMeta(html,'citation_pdf_url',citationPdfUrl);
+  html=setMeta(html,'citation_online_date',isoDate(a.online));
+  html=setMeta(html,'citation_abstract',a.abstract?.[sourceLanguage]||a.abstract?.en||'');
+  html=setMeta(html,'citation_keywords',a.keywords?.[sourceLanguage]||a.keywords?.en||'');
   html=setMeta(html,'robots','index,follow');
   if(a.issn) html=setMeta(html,'citation_issn',a.issn);
   const ld={
     '@context':'https://schema.org','@type':'ScholarlyArticle','@id':url+'#article',
     headline:a.title?.[l.key]||a.title?.en,description:a.abstract?.[l.key]||a.abstract?.en||'',
     datePublished:isoDate(a.online),dateModified:isoDate(a.online),
-    author:as.map(x=>{const p={'@type':'Person',name:x.name};if(x.orcid)p.sameAs='https://orcid.org/'+x.orcid;return p;}),
+    author:as.map(x=>{const p={'@type':'Person',name:x.name};if(x.orcid)p.sameAs='https://orcid.org/'+x.orcid;if(x.affiliation)p.affiliation={'@type':'Organization',name:x.affiliation?.[l.key]||x.affiliation?.en||x.affiliation};return p;}),
+    keywords:a.keywords?.[sourceLanguage]||a.keywords?.en||'',
+    isAccessibleForFree:true,
+    publisher:{'@type':'Organization',name:'Russian Language Studies'},
     inLanguage:sourceLanguage,isPartOf:{'@type':'Periodical',name:l.journal,url:BASE+l.prefix},
     pagination:String(a.firstPage)+'-'+String(a.lastPage),url:url,
     mainEntityOfPage:{'@type':'WebPage','@id':url},
