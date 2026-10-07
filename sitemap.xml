@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rlsj.ir/</loc>
     <changefreq>weekly</changefreq>
@@ -9,347 +9,177 @@
     <loc>https://rlsj.ir/about.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/about.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/about.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/about.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/about.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ai-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/ai-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/archive.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/archive.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/archive.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/archive.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/archive.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/article-challenges-russian-technical-military-terminology.html</loc>
     <lastmod>2026-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-challenges-russian-technical-military-terminology.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html</loc>
     <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/articles.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/articles.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/articles.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/articles.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/articles.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/author-guidelines.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/author-guidelines.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/authors.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/authors.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/authors.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/authors.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/authors.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/complaints.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/complaints.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/conflict-of-interest.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/conflict-of-interest.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/contact.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/contact.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/contact.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/contact.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/contact.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/copyright.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/copyright.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/corrections-retractions.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/corrections-retractions.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/data-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/data-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/editorial-board.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/editorial-board.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/editorial-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/editorial-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/about.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/about.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/about.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/about.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/about.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/ai-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/ai-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/archive.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/archive.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/archive.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/archive.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/archive.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/article-ai-supported-multimodal-russian-language-learning.html</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/article-challenges-russian-technical-military-terminology.html</loc>
     <lastmod>2026-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-challenges-russian-technical-military-terminology.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/article-role-of-context-russian-verbal-aspect.html</loc>
     <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/articles.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/articles.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/articles.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/articles.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/articles.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/author-guidelines.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/author-guidelines.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/authors.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/authors.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/authors.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/authors.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/authors.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/complaints.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/complaints.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/conflict-of-interest.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/conflict-of-interest.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/contact.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/contact.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/contact.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/contact.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/contact.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/copyright.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/copyright.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/corrections-retractions.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/corrections-retractions.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/data-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/data-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/editorial-board.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/editorial-board.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/editorial-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/editorial-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/index.html</loc>
@@ -360,434 +190,219 @@
     <loc>https://rlsj.ir/en/indexing.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/indexing.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/issues.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/issues.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/issues.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/issues.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/issues.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/journal-metrics.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/journal-metrics.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/open-access.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/open-access.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/peer-review.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/peer-review.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/persistent-identifiers.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/persistent-identifiers.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/plagiarism.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/plagiarism.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/preservation.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/preservation.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/privacy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/privacy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/publication-ethics.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/publication-ethics.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/publication-fees.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/publication-fees.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/repository-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/repository-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/submission-success.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submission-success.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/en/submit.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/indexing.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/indexing.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/issues.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/issues.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/issues.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/issues.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/issues.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/journal-metrics.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/journal-metrics.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/open-access.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/open-access.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/peer-review.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/peer-review.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/persistent-identifiers.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/persistent-identifiers.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/plagiarism.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/plagiarism.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/preservation.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/preservation.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/privacy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/privacy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/publication-ethics.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/publication-ethics.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/publication-fees.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/publication-fees.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/repository-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/repository-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/about.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/about.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/about.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/about.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/about.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/ai-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/ai-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/ai-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/archive.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/archive.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/archive.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/archive.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/archive.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/article-ai-supported-multimodal-russian-language-learning.html</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-ai-supported-multimodal-russian-language-learning.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/article-challenges-russian-technical-military-terminology.html</loc>
     <lastmod>2026-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-challenges-russian-technical-military-terminology.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-challenges-russian-technical-military-terminology.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/article-role-of-context-russian-verbal-aspect.html</loc>
     <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-role-of-context-russian-verbal-aspect.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/articles.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/articles.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/articles.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/articles.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/articles.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/author-guidelines.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/author-guidelines.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/author-guidelines.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/authors.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/authors.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/authors.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/authors.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/authors.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/complaints.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/complaints.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/complaints.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/conflict-of-interest.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/conflict-of-interest.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/conflict-of-interest.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/contact.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/contact.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/contact.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/contact.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/contact.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/copyright.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/copyright.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/copyright.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/corrections-retractions.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/corrections-retractions.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/corrections-retractions.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/data-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/data-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/data-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/editorial-board.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/editorial-board.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/editorial-board.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/editorial-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/editorial-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/editorial-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/index.html</loc>
@@ -798,160 +413,80 @@
     <loc>https://rlsj.ir/ru/indexing.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/indexing.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/indexing.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/issues.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/issues.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/issues.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/issues.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/issues.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/journal-metrics.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/journal-metrics.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/journal-metrics.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/open-access.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/open-access.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/open-access.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/peer-review.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/peer-review.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/peer-review.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/persistent-identifiers.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/persistent-identifiers.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/persistent-identifiers.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/plagiarism.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/plagiarism.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/plagiarism.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/preservation.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/preservation.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/preservation.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/privacy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/privacy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/privacy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/publication-ethics.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/publication-ethics.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/publication-ethics.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/publication-fees.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/publication-fees.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/publication-fees.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/repository-policy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/repository-policy.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/repository-policy.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/submission-success.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submission-success.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/ru/submit.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/submission-success.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submission-success.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submission-success.html" />
   </url>
   <url>
     <loc>https://rlsj.ir/submit.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/submit.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/submit.html" />
-    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/submit.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/submit.html" />
   </url>
 </urlset>
