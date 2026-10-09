@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var articles = (window.RLS_ARTICLES || []).filter(function (x) {
     return x && x.status === "published";
   });
-  var extra = window.RLS_LEGACY_STATS || { rejected: 2, pending: 2 };
+  var extra = window.RLS_LEGACY_STATS || { rejected: 2, pending: 3 };
   var received = articles.length + (extra.rejected || 0) + (extra.pending || 0);
   var accepted = articles.length;
   var rejected = extra.rejected || 0;
