@@ -137,11 +137,31 @@
 <footer></footer><script src="assets/script.js?v=20260926iss1"></script>
 <script>
 (function(){
-  var id='challenges-russian-technical-military-terminology',el=document.querySelector('[data-rls-click-counter="'+id+'"]');
+  var el=document.querySelector('[data-rls-click-counter]');
   if(!el)return;
-  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('/article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
-    .then(function(r){if(!r.ok)throw new Error();return r.json()})
-    .then(function(d){var n=d&&d.count!=null?String(d.count):'—';el.querySelector('.counter-value').textContent=n.replace(/,/g,'٬');el.title='تعداد کلیک‌های «مشاهده مقاله»'})
-    .catch(function(){el.querySelector('.counter-value').textContent='—'});
+  var id=el.getAttribute('data-rls-click-counter');
+  if(!id)return;
+  var value=el.querySelector('.counter-value');
+  if(value)value.textContent='…';
+  fetch('https://weathered-night-116b.sheraginrub.workers.dev/api/view',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({article:id}),
+    credentials:'omit',
+    cache:'no-store'
+  })
+  .then(function(r){
+    if(!r.ok)throw new Error('Counter request failed: '+r.status);
+    return r.json();
+  })
+  .then(function(data){
+    if(!value)return;
+    var n=data&&Number.isFinite(Number(data.views))?String(data.views):'0';
+    value.textContent=n.replace(/\B(?=(\d{3})+(?!\d))/g,',').replace(/,/g,'٬');
+    el.setAttribute('title','تعداد بازدیدهای مقاله');
+  })
+  .catch(function(){
+    if(value)value.textContent='—';
+  });
 })();
 </script></body></html>
