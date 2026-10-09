@@ -53,6 +53,23 @@ export default {
       return json({ error: "database_binding_missing" }, 500, origin);
     }
 
+    if (url.pathname === "/api/view" && request.method === "GET") {
+      const slug = url.searchParams.get("article");
+      if (!validSlug(slug)) return json({ error: "invalid_article" }, 400, origin);
+
+      await env.RLS_COUNTER_DB.prepare(
+        "INSERT INTO article_views (slug, views) VALUES (?1, 1) " +
+        "ON CONFLICT(slug) DO UPDATE SET views = views + 1"
+      ).bind(slug).run();
+
+      const row = await env.RLS_COUNTER_DB
+        .prepare("SELECT views FROM article_views WHERE slug = ?1")
+        .bind(slug)
+        .first();
+
+      return json({ article: slug, views: Number(row?.views || 0) }, 200, origin);
+    }
+
     if (url.pathname === "/api/count" && request.method === "GET") {
       const slug = url.searchParams.get("article");
       if (!validSlug(slug)) return json({ error: "invalid_article" }, 400, origin);
