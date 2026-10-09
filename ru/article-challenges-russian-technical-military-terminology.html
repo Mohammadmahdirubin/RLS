@@ -122,7 +122,7 @@
   var id='challenges-russian-technical-military-terminology';
   var el=document.querySelector('[data-rls-click-counter="'+id+'"]');
   if(!el)return;
-  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
+  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('/article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
     .then(function(r){if(!r.ok)throw new Error('counter '+r.status);return r.json();})
     .then(function(data){
       var raw=data&&data.count!=null?String(data.count):'0';
