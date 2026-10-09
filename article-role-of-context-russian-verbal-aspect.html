@@ -175,7 +175,7 @@
   if(value)value.textContent='…';
   fetch('https://weathered-night-116b.sheraginrub.workers.dev/api/view',{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
+    headers:{'Content-Type':'text/plain;charset=UTF-8'},
     body:JSON.stringify({article:id}),
     credentials:'omit',
     cache:'no-store'
