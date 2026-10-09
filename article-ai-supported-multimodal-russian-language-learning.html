@@ -90,13 +90,13 @@
   var id='ai-supported-multimodal-russian-language-learning';
   var el=document.querySelector('[data-rls-click-counter="'+id+'"]');
   if(!el)return;
-  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
+  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('/article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
     .then(function(r){if(!r.ok)throw new Error('counter '+r.status);return r.json();})
     .then(function(data){
       var raw=data&&data.count!=null?String(data.count):'0';
       el.querySelector('.counter-value').textContent=raw.replace(/,/g,'٬');
       el.setAttribute('title','تعداد کلیک‌های «مشاهده مقاله»');
     })
-    .catch(function(){el.querySelector('.counter-value').textContent='0';});
+    .catch(function(){el.querySelector('.counter-value').textContent='—';});
 })();
 </script></body></html>
