@@ -142,6 +142,32 @@ function walk(dir){
   }
   return out;
 }
+
+function walkPdfs(dir){
+  const out=[];
+  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
+    if(['.git','node_modules'].includes(ent.name))continue;
+    const p=path.join(dir,ent.name);
+    if(ent.isDirectory())out.push(...walkPdfs(p));
+    else if(ent.isFile()&&ent.name.toLowerCase().endsWith('.pdf'))out.push(p);
+  }
+  return out;
+}
+// Repair article pages that predate the central article registry too.
+const pdfFiles=walkPdfs('.');
+for(const file of walk('.')){
+  const h=fs.readFileSync(file,'utf8');
+  const m=h.match(/<meta\s+name=["']citation_pdf_url["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+  if(!m)continue;
+  let fileName;
+  try{fileName=path.basename(new URL(m[1]).pathname);}catch{throw new Error('Invalid citation_pdf_url in '+file);}
+  const localPdf=path.join(path.dirname(file),fileName);
+  if(fs.existsSync(localPdf))continue;
+  const source=pdfFiles.find(p=>path.basename(p)===fileName);
+  if(!source)throw new Error('Missing source PDF for '+file+': '+fileName);
+  fs.copyFileSync(source,localPdf);
+}
+
 const entries=[];
 for(const file of walk('.')){
   let h=fs.readFileSync(file,'utf8');
