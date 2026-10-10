@@ -156,9 +156,10 @@ function citationTable(a, lang, pageUrl, pdfUrl) {
     : lang === "ru"
       ? {head:["Ресурс","Прямая ссылка"],pdf:"Полный текст статьи (PDF)",getPdf:"Скачать PDF",page:"Постоянная ссылка для цитирования",open:"Открыть страницу статьи"}
       : {head:["Resource","Direct link"],pdf:"Full-text article (PDF)",getPdf:"Download PDF",page:"Article permalink for citation",open:"Open article page"};
+  const normalizedPdf = String(pdfUrl || "").replace(/^\.\.\//, "").replace(/^\.\//, "").replace(/^\/+/, "");
   const directPdf = String(pdfUrl || "").startsWith("http")
     ? pdfUrl
-    : "https://rlsj.ir/" + String(pdfUrl || "").replace(/^\\.{1,2}\\//, "").replace(/^\\/+/, "");
+    : "https://rlsj.ir/" + normalizedPdf;
   return '<div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>' + labels.head[0] + '</th><th>' + labels.head[1] + '</th></tr></thead><tbody><tr><th scope="row">' + labels.pdf + '</th><td><a href="' + directPdf + '" target="_blank" rel="noopener noreferrer">' + labels.getPdf + ' ↗</a></td></tr><tr><th scope="row">' + labels.page + '</th><td><a href="' + pageUrl + '">' + labels.open + ' ↗</a></td></tr></tbody></table></div>';
 }
 
