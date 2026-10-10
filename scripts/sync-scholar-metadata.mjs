@@ -48,7 +48,8 @@ function authors(a){return Array.isArray(a.authors)&&a.authors.length?a.authors:
 function sync(html,a,l){
   const url=urlFor(a,l), as=authors(a);
   const sourceLanguage=a.language||a.sourceLanguage||'en';
-  const citationPdfUrl=abs(a.pdf);
+  // Keep the Scholar PDF in the same directory as each language's abstract page.
+  const citationPdfUrl = BASE + l.prefix + path.basename(a.pdf);
   html=setMeta(html,'citation_title',a.title?.[sourceLanguage]||a.title?.en||a.id);
   html=setAuthors(html,as.map(x=>x.name));
   html=setMeta(html,'citation_publication_date',isoDate(a.online));
@@ -104,6 +105,8 @@ for(const a of published){
   for(const l of langs){
     const page=l.prefix+a.href.replace(/^\//,'');
     if(!fs.existsSync(page))throw new Error('Missing article page: '+page);
+    const localPdfPath = path.join(l.prefix, path.basename(pdfPath));
+    if(path.resolve(localPdfPath)!==path.resolve(pdfPath)) fs.copyFileSync(pdfPath, localPdfPath);
     fs.writeFileSync(page,sync(fs.readFileSync(page,'utf8'),a,l));
   }
 }
