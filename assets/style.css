@@ -942,3 +942,15 @@ footer .rls-footer-official-logos{opacity:.94}
 .submission-form .honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .submission-form .submit-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
 @media(max-width:760px){.submission-form{padding:18px}.submission-form .field-grid{grid-template-columns:1fr}}
+
+
+/* Structured citation styles */
+.citation-table-wrap{margin:14px 0 24px;max-width:100%;overflow-x:auto;}
+.citation-table{width:100%;min-width:650px;table-layout:fixed;}
+.citation-table th:first-child{width:155px;}
+.citation-table th:last-child,.citation-table td:last-child{width:105px;text-align:center;}
+.citation-table .citation-text{margin:0;padding:0;background:transparent;border:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;font:inherit;line-height:1.65;color:var(--text);text-align:left;direction:ltr;}
+.citation-table .citation-copy{white-space:nowrap;padding:7px 10px;font-size:12px;min-height:32px;}
+.citation-table tbody th{vertical-align:top;text-align:left;white-space:normal;}
+.citation-table td{vertical-align:top;}
+@media(max-width:560px){.citation-table{min-width:600px;}.citation-table th:first-child{width:125px;}.citation-table th:last-child,.citation-table td:last-child{width:90px;}}
