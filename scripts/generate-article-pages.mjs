@@ -149,12 +149,34 @@ function replaceFirst(text, pattern, replacement, label) {
   return out;
 }
 
+
+function citationTable(a, lang, pageUrl) {
+  const year = String(a.online).slice(0, 4);
+  const author = String(a.authorFamily || a.author) + (a.authorGiven ? ", " + a.authorGiven : "");
+  const title = a.title.en || a.title[lang];
+  const journal = "Russian Language Studies";
+  const pages = String(a.firstPage) + "–" + String(a.lastPage);
+  const apa = author + " (" + year + "). " + title + ". " + journal + ", " + a.volume + "(" + a.issueNumber + "), " + pages + ". " + pageUrl;
+  const mla = author + '. "' + title + '." ' + journal + ", vol. " + a.volume + ", no. " + a.issueNumber + ", " + year + ", pp. " + pages + ". " + pageUrl;
+  const chicago = author + ". " + year + '. "' + title + '." ' + journal + " " + a.volume + " (" + a.issueNumber + "): " + pages + ". " + pageUrl;
+  const harvard = author + " (" + year + ") ‘" + title + "’, " + journal + ", " + a.volume + "(" + a.issueNumber + "), pp. " + pages + ". Available at: " + pageUrl + ".";
+  const bib = "@article{" + String(a.id || "rls-article").replace(/[^a-z0-9_-]/gi, "") + ",\n  author = {" + author + "},\n  title = {" + title + "},\n  journal = {" + journal + "},\n  year = {" + year + "},\n  volume = {" + a.volume + "},\n  number = {" + a.issueNumber + "},\n  pages = {" + a.firstPage + "--" + a.lastPage + "},\n  url = {" + pageUrl + "}\n}";
+  const styles = [["APA 7", apa], ["MLA 9", mla], ["Chicago (Author–Date)", chicago], ["Harvard", harvard], ["BibTeX", bib]];
+  const copyLabel = lang === "fa" ? "کپی" : lang === "ru" ? "Копировать" : "Copy";
+  const headings = lang === "fa" ? ["سبک استناد", "متن استناد", "عملیات"] : lang === "ru" ? ["Стиль цитирования", "Текст цитаты", "Действие"] : ["Citation style", "Citation text", "Action"];
+  const id = "citation-" + String(a.id || "article").replace(/[^a-z0-9_-]/gi, "") + "-" + lang;
+  const rows = styles.map(function (item, i) {
+    return '<tr><th scope="row">' + item[0] + '</th><td><pre class="citation-text" id="' + id + '-' + i + '">' + esc(item[1]) + '</pre></td><td><button class="button secondary citation-copy" type="button" data-citation-copy="' + id + '-' + i + '">' + copyLabel + '</button></td></tr>';
+  }).join("");
+  return '<div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>' + headings[0] + '</th><th>' + headings[1] + '</th><th>' + headings[2] + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
 function buildMain(lang, a, templateMain) {
   const r = rel(lang), l = labels[lang];
   const title = a.title[lang], name = a.authorNames?.[lang] || a.author;
   const pdf = r + a.pdf;
   const year = String(a.online).slice(0, 4);
-  const citation = `${esc(a.authorFamily || a.author)}, ${esc(a.authorGiven || "")} (${year}). “${esc(a.title.en || title)}.” <em>Russian Language Studies</em>, ${a.volume}(${a.issueNumber}), ${a.firstPage}–${a.lastPage}. <a href="${url(lang,a)}">${url(lang,a)}</a>. DOI: ${esc(a.doi || "Pending")}.`;
+  const citation = citationTable(a, lang, url(lang, a));
   const heroMeta = lang === "fa"
     ? `دوره ${a.volume} · شماره ${a.issueNumber} · مقاله ${a.number} · صص ${a.firstPage}–${a.lastPage}`
     : lang === "ru"
@@ -209,7 +231,7 @@ function buildMain(lang, a, templateMain) {
 
   const citeHeading = esc(l.cite);
   const citeRe = new RegExp(`<h2>${citeHeading}<\/h2>\\s*<div class="citation-box">[\s\S]*?<\/div>`);
-  out = replaceFirst(out, citeRe, `<h2>${citeHeading}</h2>\\n<div class="citation-box">${citation}</div>`, "citation");
+  out = replaceFirst(out, citeRe, `<h2>${citeHeading}</h2>\\n${citation}`, "citation");
 
   const filesHeading = esc(l.files);
   const filesRe = new RegExp(`<h2>${filesHeading}<\/h2>[\s\S]*?(?=<\/article>)`);
