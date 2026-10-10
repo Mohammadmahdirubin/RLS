@@ -156,7 +156,7 @@ function citationTable(a, lang, pageUrl) {
   const title = a.title.en || a.title[lang];
   const journal = "Russian Language Studies";
   const pages = String(a.firstPage) + "–" + String(a.lastPage);
-  const apa = author + " (" + year + "). " + title + ". " + journal + ", " + a.volume + "(" + a.issueNumber + "), " + pages + ". " + pageUrl;
+  const apa = author + ". (" + year + "). " + title + ". " + journal + ", " + a.volume + "(" + a.issueNumber + "), " + pages + ". " + pageUrl;
   const mla = author + '. "' + title + '." ' + journal + ", vol. " + a.volume + ", no. " + a.issueNumber + ", " + year + ", pp. " + pages + ". " + pageUrl;
   const chicago = author + ". " + year + '. "' + title + '." ' + journal + " " + a.volume + " (" + a.issueNumber + "): " + pages + ". " + pageUrl;
   const harvard = author + " (" + year + ") ‘" + title + "’, " + journal + ", " + a.volume + "(" + a.issueNumber + "), pp. " + pages + ". Available at: " + pageUrl + ".";
