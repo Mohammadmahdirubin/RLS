@@ -19,7 +19,10 @@ for(const a of articles.filter(x=>x?.status==='published')){
     for(const n of ['citation_title','citation_author','citation_publication_date','citation_firstpage','citation_lastpage','citation_journal_title','citation_volume','citation_issue','citation_fulltext_world_readable','citation_pdf_url','robots'])if(!meta(h,n))errors.push(p+': missing '+n);
     if(meta(h,'robots')!=='index,follow')errors.push(p+': robots must be index,follow');
     if(canon(h)!==u)errors.push(p+': canonical mismatch');
-    const expectedPdf=BASE+(a.pdf.startsWith('/')?a.pdf.slice(1):a.pdf);
+    const pdfName=a.pdf.split('/').pop();
+    const localPdfPath=prefix+pdfName;
+    if(!fs.existsSync(localPdfPath))errors.push('Missing co-located PDF '+localPdfPath);
+    const expectedPdf=BASE+localPdfPath;
     if(meta(h,'citation_pdf_url')!==expectedPdf)errors.push(p+': citation_pdf_url mismatch; expected '+expectedPdf);
     const j=ld(h);if(!j||j['@type']!=='ScholarlyArticle')errors.push(p+': missing ScholarlyArticle JSON-LD');
     if(j?.url!==u)errors.push(p+': JSON-LD URL mismatch');
