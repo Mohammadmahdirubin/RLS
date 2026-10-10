@@ -168,7 +168,9 @@ function citationTable(a, lang, pageUrl) {
   const rows = styles.map(function (item, i) {
     return '<tr><th scope="row">' + item[0] + '</th><td><pre class="citation-text" id="' + id + '-' + i + '">' + esc(item[1]) + '</pre></td><td><button class="button secondary citation-copy" type="button" data-citation-copy="' + id + '-' + i + '">' + copyLabel + '</button></td></tr>';
   }).join("");
-  return '<div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>' + headings[0] + '</th><th>' + headings[1] + '</th><th>' + headings[2] + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+  const copiedLabel = lang === "fa" ? "کپی شد" : lang === "ru" ? "Скопировано" : "Copied";
+  const copyScript = '<script id="citation-copy-handler">(function(){document.addEventListener("click",function(e){var b=e.target.closest("[data-citation-copy]");if(!b)return;var el=document.getElementById(b.getAttribute("data-citation-copy"));if(!el)return;var t=el.textContent,l=b.textContent;function done(){b.textContent=' + JSON.stringify(copiedLabel) + ';setTimeout(function(){b.textContent=l},1600)}function fb(v){var x=document.createElement("textarea");x.value=v;x.style.position="fixed";x.style.opacity="0";document.body.appendChild(x);x.select();try{document.execCommand("copy");done()}catch(z){}x.remove()}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done).catch(function(){fb(t)});else fb(t)})})();</script>';
+  return '<div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>' + headings[0] + '</th><th>' + headings[1] + '</th><th>' + headings[2] + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>' + copyScript;
 }
 
 function buildMain(lang, a, templateMain) {
