@@ -145,54 +145,5 @@ window.RLS_ARTICLES = [
     "href": "article-challenges-russian-technical-military-terminology.html",
     "slug": "challenges-russian-technical-military-terminology",
     "sourceLanguage": "en"
-  },
-  {
-    "id": "fate-family-human-values-don-stories",
-    "number": 4,
-    "status": "published",
-    "issue": "1/1",
-    "type": {
-      "fa": "مقاله پژوهشی",
-      "en": "Research Article",
-      "ru": "Научная статья"
-    },
-    "title": {
-      "fa": "سرنوشت خانواده و ارزش‌های انسانی در «داستان‌های دُن» میخائیل شولوخوف",
-      "en": "The Fate of the Family and Human Values in Mikhail Sholokhov’s Don Stories",
-      "ru": "Судьба семьи и общечеловеческие ценности в «Донских рассказах» Михаила Шолохова"
-    },
-    "sourceLanguage": "fa",
-    "author": "Parvaneh Radandish; Mohsen Beigi",
-    "authorGiven": "Parvaneh",
-    "authorFamily": "Radandish; Mohsen Beigi",
-    "orcid": "0000-0002-8152-2059; 0009-0002-0296-7170",
-    "language": "fa",
-    "affiliation": {
-      "fa": "پروانه راداندیش: استادیار زبان روسی، گروه زبان و ادبیات روسی، دانشگاه تهران، تهران، ایران؛ محسن بیگی: دکتری زبان روسی، دانشگاه تهران، تهران، ایران",
-      "en": "Parvaneh Radandish: Assistant Professor of Russian, Department of Russian Language and Literature, University of Tehran, Tehran, Iran; Mohsen Beigi: PhD in Russian, University of Tehran, Tehran, Iran",
-      "ru": "Парване Радандиш: доцент русского языка, кафедра русского языка и литературы Тегеранского университета, Тегеран, Иран; Мохсен Бейги: докторская степень по русскому языку, Тегеранский университет, Тегеран, Иран"
-    },
-    "received": "2026/09/22",
-    "accepted": "2026/10/09",
-    "online": "2026/10/09",
-    "volume": "1",
-    "issueNumber": "1",
-    "firstPage": "39",
-    "lastPage": "58",
-    "pdf": "articles/1/Radandish-Beigi-2026-The-Fate-of-the-Family-and-Human-Values-in-Mikhail-Sholokhovs-Don-Stories.pdf",
-    "keywords": {
-      "fa": "شولوخوف؛ داستان‌های دُن؛ جنگ داخلی؛ خانواده؛ قزاق‌های دُن‌نشین؛ ارزش‌های انسانی؛ رئالیسم",
-      "en": "Sholokhov; Don Stories; Civil War; Family; Don Cossacks; Human Values; Realism",
-      "ru": "Шолохов; Донские рассказы; Гражданская война; семья; донские казаки; общечеловеческие ценности; реализм"
-    },
-    "doi": "",
-    "license": "",
-    "abstract": {
-      "fa": "میخائیل شولوخوف (۱۹۰۵-۱۹۸۴)، نویسندۀ بزرگ روس و برندۀ جایزۀ نوبل ادبی، در مجموعۀ «داستان‌های دُن» (۱۹۲۶) تصویری واقع‌گرا و تکان‌دهنده از فروپاشی خانواده‌های قزاق دُن‌نشین در جنگ داخلی ۱۹۱۷-۱۹۲۲ ارائه می‌دهد. مسئلۀ اصلی مقاله حاضر آن است که چگونه تحولات انقلابی و جنگ داخلی، ساختار پدرسالارانۀ خانواده‌های قزاق را دچار گسست می‌کند و اعضای یک خانواده را به جبهه‌های متقابل «سرخ» و «سفید» می‌کشاند. روش پژوهش، توصیفی-تحلیلی است و بر تحلیل محتوای داستان‌ها با تکیه بر بافت تاریخی-اجتماعی استوار است. یافته‌ها نشان می‌دهد که شولوخوف در دو دسته از داستان‌ها، دو سرنوشت متقابل را به تصویر می‌کشد: داستان‌هایی که در آنها احساسات والای بشری (ایثار، گذشت، عشق به همنوع) در اوج بحران شکوفا می‌شود و داستان‌هایی که در آنها نفرت، کینه و تعصب به پسرکشی، پدرکشی و برادرکشی می‌انجامد. نتیجه آنکه خانواده در «داستان‌های دُن» نه تنها واحد اجتماعی، بلکه بازتابی از سرنوشت ملت روسیه در بحران تاریخی است. شولوخوف با توصیف جزئی و خاص، به توصیف عام و کلی می‌رسد و با روایت سرنوشت فردی، سرنوشت ملی را بازمی‌نمایاند.",
-      "en": "Mikhail Sholokhov (1905–1984), the great Russian writer and Nobel Prize laureate in Literature, presents a realistic and deeply moving portrayal of the disintegration of Don Cossack families during the Russian Civil War of 1917–1922 in his collection Don Stories (1926). The main question addressed in the present article is how the revolutionary upheavals and the Civil War disrupted the patriarchal structure of Cossack families and drew members of the same family onto opposing Red and White fronts. The study employs a descriptive-analytical method based on content analysis of the stories within their historical and social context. The findings indicate that Sholokhov depicts two contrasting destinies in two groups of stories: stories in which lofty human emotions—self-sacrifice, forgiveness, and love for one’s fellow human beings—flourish at the height of crisis, and stories in which hatred, resentment, and fanaticism lead to the killing of sons, fathers, and brothers. The study concludes that the family in Don Stories is not merely a social unit but also a reflection of the fate of the Russian people amid a historical crisis. Through detailed and particularized depiction, Sholokhov moves toward a broader and more universal representation; by narrating individual destinies, he reflects the destiny of the nation as a whole.",
-      "ru": "Статья посвящена изображению распада семей донских казаков в период Гражданской войны в сборнике Михаила Шолохова «Донские рассказы» (1926). На основе описательно-аналитического метода рассматривается, как революционные потрясения и война разрушают патриархальную структуру семьи и разделяют её членов между красными и белыми. Анализ выявляет два противоположных исхода: проявление самопожертвования, прощения и любви к ближнему, с одной стороны, и ненависть, озлобленность и фанатизм, приводящие к убийству сыновей, отцов и братьев, — с другой. Семья предстает не только социальной единицей, но и отражением судьбы русского народа в период исторического кризиса."
-    },
-    "href": "article-fate-family-human-values-don-stories.html",
-    "slug": "fate-family-human-values-don-stories"
   }
 ];
