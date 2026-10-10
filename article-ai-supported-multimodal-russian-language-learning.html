@@ -81,32 +81,22 @@
 <h2>چکیده</h2><p>گسترش سریع هوش مصنوعی مولد (GenAI) شرایط آموزش و یادگیری زبان‌های خارجی را تغییر داده است. در آموزش زبان روسی، سامانه‌های مکالمه مبتنی بر هوش مصنوعی، بازخورد خودکار، تولید محتوای تطبیقی و منابع دیجیتال چندوجهی، فرصت‌های تازه‌ای برای تمرین فردی و ارتباط در بافت فراهم می‌کنند. در عین حال، دسترس‌پذیری این فناوری‌ها پرسش‌های آموزشی مهمی درباره خودمختاری یادگیرنده، ارزیابی انتقادی اطلاعات تولیدشده توسط ماشین، بار شناختی، تفسیر فرهنگی و نقش در حال تغییر معلم مطرح می‌کند.</p>
 <h2>کلیدواژه‌ها</h2><p>هوش مصنوعی؛ زبان روسی به‌عنوان زبان خارجی؛ یادگیری چندوجهی؛ خودمختاری یادگیرنده؛ سواد انتقادی هوش مصنوعی؛ شایستگی ارتباطی میان‌فرهنگی</p>
 <h2>تاریخچه انتشار</h2><div class="table-wrap"><table class="academic-table" dir="rtl"><tr><th>مرحله</th><th>تاریخ / وضعیت</th></tr><tr><td>دریافت</td><td>۱ ژوئیه ۲۰۲۶</td></tr><tr><td>پذیرش</td><td>۱۷ اوت ۲۰۲۶</td></tr><tr><td>انتشار آنلاین</td><td>۱۷ سپتامبر ۲۰۲۶</td></tr></table></div>
-<h2>پیوندهای مستقیم مقاله</h2><div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>منبع</th><th>پیوند مستقیم</th></tr></thead><tbody><tr><th scope="row">متن کامل مقاله (PDF)</th><td><a href="https://rlsj.ir/articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf" target="_blank" rel="noopener noreferrer">دانلود مستقیم PDF ↗</a></td></tr><tr><th scope="row">صفحه مقاله برای استناد</th><td><a href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html">باز کردن صفحه مقاله ↗</a></td></tr></tbody></table></div><script>
+<h2>پیوندهای مستقیم مقاله</h2><div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>منبع</th><th>پیوند مستقیم</th></tr></thead><tbody><tr><th scope="row">متن کامل مقاله (PDF)</th><td><a href="https://rlsj.ir/articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf" target="_blank" rel="noopener noreferrer">دانلود مستقیم PDF ↗</a></td></tr><tr><th scope="row">صفحه مقاله برای استناد</th><td><a href="https://rlsj.ir/article-ai-supported-multimodal-russian-language-learning.html">باز کردن صفحه مقاله ↗</a></td></tr></tbody></table></div>
+</article><aside class="article-sidebar"><div class="side-card"><strong>اطلاعات مقاله</strong><p>نوع مقاله<br><b>مقاله پژوهشی</b></p><p>زبان<br><b>انگلیسی</b></p><p>دوره / شماره<br><b>۱ / ۱</b></p><p>صفحات<br><b>۱–۱۴</b></p><p>DOI<br><b>در انتظار اختصاص</b></p><p><a class="button primary" dir="ltr" href="articles/1/rubin-2026-ai-supported-multimodal-rfl.pdf" target="_blank" rel="noopener">مشاهده PDF</a></p></div><div class="article-page-click-counter" data-rls-click-counter="ai-supported-multimodal-russian-language-learning">
+<span class="counter-label">تعداد مشاهده مقاله</span><span class="counter-value">0</span>
+</div></aside></div></div></section></main>
+<footer></footer><script src="assets/script.js?v=20260926ltr2"></script><script>
 (function(){
-  var el=document.querySelector('[data-rls-click-counter]');
+  var id='ai-supported-multimodal-russian-language-learning';
+  var el=document.querySelector('[data-rls-click-counter="'+id+'"]');
   if(!el)return;
-  var id=el.getAttribute('data-rls-click-counter');
-  if(!id)return;
-  var value=el.querySelector('.counter-value');
-  if(value)value.textContent='…';
-  var path='/articles/'+id;
-  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent(path)+'.json',{
-    method:'GET',
-    credentials:'omit',
-    cache:'no-store'
-  })
-  .then(function(r){
-    if(!r.ok)throw new Error('GoatCounter count unavailable: '+r.status);
-    return r.json();
-  })
-  .then(function(data){
-    if(!value)return;
-    var n=data&&data.count!=null?String(data.count):'0';
-    value.textContent=n;
-    el.setAttribute('title','تعداد بازدیدهای مقاله');
-  })
-  .catch(function(){
-    if(value)value.textContent='—';
-  });
+  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
+    .then(function(r){if(!r.ok)throw new Error('counter '+r.status);return r.json();})
+    .then(function(data){
+      var raw=data&&data.count!=null?String(data.count):'0';
+      el.querySelector('.counter-value').textContent=raw.replace(/,/g,'٬');
+      el.setAttribute('title','تعداد کلیک‌های «مشاهده مقاله»');
+    })
+    .catch(function(){el.querySelector('.counter-value').textContent='0';});
 })();
 </script></body></html>
