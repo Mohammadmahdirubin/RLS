@@ -141,33 +141,39 @@
 <p dir="ltr">Russian verbal aspect; Imperfective aspect; Perfective aspect; Context; Aspectual meaning; Russian as a Foreign Language</p>
 <h2>تاریخچه انتشار</h2><div class="table-wrap"><table class="academic-table"><tr><th>مرحله</th><th>تاریخ</th></tr><tr><td>دریافت</td><td>۲ ژوئیه ۲۰۲۶</td></tr><tr><td>پذیرش</td><td>۱۰ سپتامبر ۲۰۲۶</td></tr><tr><td>انتشار آنلاین</td><td>۲۶ سپتامبر ۲۰۲۶</td></tr></table></div><h2>پیوندهای مستقیم مقاله</h2>
 <div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>منبع</th><th>پیوند مستقیم</th></tr></thead><tbody><tr><th scope="row">متن کامل مقاله (PDF)</th><td><a href="https://rlsj.ir/articles/1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf" target="_blank" rel="noopener noreferrer">دانلود مستقیم PDF ↗</a></td></tr><tr><th scope="row">صفحه مقاله برای استناد</th><td><a href="https://rlsj.ir/article-role-of-context-russian-verbal-aspect.html">باز کردن صفحه مقاله ↗</a></td></tr></tbody></table></div>
+</article>
+<aside class="article-sidebar">
+<div class="side-card">
+<strong>اطلاعات مقاله</strong>
+<p>نوع مقاله<br><b>مقاله پژوهشی</b></p>
+<p>زبان<br><b>انگلیسی</b></p>
+<p>دوره / شماره<br><b>۱ / ۱</b></p>
+<p>صفحات<br><b>۱۵–۲۳</b></p>
+<p>دریافت<br><b>۲ ژوئیه ۲۰۲۶</b></p>
+<p>پذیرش<br><b>۱۰ سپتامبر ۲۰۲۶</b></p>
+<p>انتشار آنلاین<br><b>۲۶ سپتامبر ۲۰۲۶</b></p>
+<p>DOI<br><b>در انتظار اختصاص</b></p>
+<p><a class="button primary" dir="ltr" href="articles/1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf" target="_blank" rel="noopener">مشاهده PDF</a></p>
+<p><a class="button secondary" dir="ltr" href="articles/1/Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf" download="Norouzi-2026-The-Role-of-Context-in-Understanding-Russian-Verbal-Aspect.pdf">دانلود PDF</a></p>
+</div>
+<div class="side-card">
+<strong>نویسنده</strong>
+<p><b>محمد علی نوروزی</b></p>
+<p dir="ltr"><b>Mohammadali Norouzi</b></p>
+</div>
+<div class="article-page-click-counter" data-rls-click-counter="role-of-context-russian-verbal-aspect"><span class="counter-label">تعداد مشاهده مقاله</span><span class="counter-value">0</span></div></aside>
+</div></div></section>
+</main>
+<footer></footer>
+<script src="assets/script.js?v=20260926iss1"></script>
 <script>
 (function(){
-  var el=document.querySelector('[data-rls-click-counter]');
+  var id='role-of-context-russian-verbal-aspect',el=document.querySelector('[data-rls-click-counter="'+id+'"]');
   if(!el)return;
-  var id=el.getAttribute('data-rls-click-counter');
-  if(!id)return;
-  var value=el.querySelector('.counter-value');
-  if(value)value.textContent='…';
-  var path='/articles/'+id;
-  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent(path)+'.json',{
-    method:'GET',
-    credentials:'omit',
-    cache:'no-store'
-  })
-  .then(function(r){
-    if(!r.ok)throw new Error('GoatCounter count unavailable: '+r.status);
-    return r.json();
-  })
-  .then(function(data){
-    if(!value)return;
-    var n=data&&data.count!=null?String(data.count):'0';
-    value.textContent=n;
-    el.setAttribute('title','تعداد بازدیدهای مقاله');
-  })
-  .catch(function(){
-    if(value)value.textContent='—';
-  });
+  fetch('https://rlsj.goatcounter.com/counter/'+encodeURIComponent('article-click-'+id)+'.json',{credentials:'omit',cache:'no-store'})
+    .then(function(r){if(!r.ok)throw new Error();return r.json()})
+    .then(function(d){var n=d&&d.count!=null?String(d.count):'0';el.querySelector('.counter-value').textContent=n.replace(/,/g,'٬');el.title='تعداد کلیک‌های «مشاهده مقاله»'})
+    .catch(function(){el.querySelector('.counter-value').textContent='0'});
 })();
 </script></body>
 </html>
