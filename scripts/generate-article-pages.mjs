@@ -32,7 +32,7 @@ const langName = lang =>
 const labels = {
   fa: {
     abstract: "چکیده", keywords: "کلیدواژه‌ها", history: "تاریخچه انتشار",
-    cite: "نحوه استناد", files: "فایل‌های مقاله", full: "دانلود متن کامل:",
+    cite: "پیوندهای مستقیم مقاله", files: "فایل‌های مقاله", full: "دانلود متن کامل:",
     download: "دانلود PDF", view: "مشاهده PDF", type: "نوع مقاله",
     language: "زبان", volume: "دوره / شماره", pages: "صفحات",
     received: "دریافت", accepted: "پذیرش", online: "انتشار آنلاین",
@@ -40,7 +40,7 @@ const labels = {
   },
   en: {
     abstract: "Abstract", keywords: "Keywords", history: "Publication history",
-    cite: "How to cite", files: "Article files", full: "Full text:",
+    cite: "Article links", files: "Article files", full: "Full text:",
     download: "Download PDF", view: "View PDF", type: "Article type",
     language: "Language", volume: "Volume / Issue", pages: "Pages",
     received: "Received", accepted: "Accepted", online: "Published online",
@@ -48,7 +48,7 @@ const labels = {
   },
   ru: {
     abstract: "Аннотация", keywords: "Ключевые слова", history: "История публикации",
-    cite: "Как цитировать", files: "Файлы статьи", full: "Полный текст:",
+    cite: "Ссылки на статью", files: "Файлы статьи", full: "Полный текст:",
     download: "Скачать PDF", view: "Открыть PDF", type: "Тип статьи",
     language: "Язык", volume: "Том / Выпуск", pages: "Страницы",
     received: "Получено", accepted: "Принято", online: "Опубликовано онлайн",
@@ -222,7 +222,7 @@ function buildMain(lang, a, templateMain) {
   out = replaceFirst(out, historyRe, historyRows, "publication history");
 
   const citeHeading = esc(l.cite);
-  const citeRe = new RegExp(`<h2>${citeHeading}<\/h2>\\s*<div class="citation-box">[\s\S]*?<\/div>`);
+  const citeRe = /<h2>[^<]*<\/h2>\s*(?:<div class="citation-box">[\s\S]*?<\/div>|<div class="table-wrap citation-table-wrap">[\s\S]*?<\/div>)/;
   out = replaceFirst(out, citeRe, `<h2>${citeHeading}</h2>\\n${citation}`, "citation");
 
   const filesHeading = esc(l.files);
