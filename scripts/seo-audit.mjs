@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import vm from 'vm';
 import { execFileSync } from 'child_process';
 
@@ -31,6 +32,29 @@ for(const a of articles.filter(x=>x?.status==='published')){
   if(!fs.existsSync(pdf))errors.push('Missing PDF '+pdf);
   else{const b=fs.readFileSync(pdf),r=b.toString('latin1');if(b.length>5*1024*1024)errors.push(pdf+': over 5MB');if(r.slice(0,5)!=='%PDF-')errors.push(pdf+': invalid PDF');let searchable=false;try{searchable=!!execFileSync('pdftotext',[pdf,'-'],{encoding:'utf8',maxBuffer:20*1024*1024}).trim()}catch{}if(!searchable)searchable=r.includes('/ToUnicode')||r.includes('/Type/Page')||r.includes('/Type /Page');if(!searchable)errors.push(pdf+': searchable text missing')}
 }
+
+function walkHtml(dir){
+  const out=[];
+  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
+    if(['.git','node_modules'].includes(ent.name))continue;
+    const p=path.join(dir,ent.name);
+    if(ent.isDirectory())out.push(...walkHtml(p));
+    else if(ent.isFile()&&ent.name.toLowerCase().endsWith('.html'))out.push(p);
+  }
+  return out;
+}
+for(const file of walkHtml('.')){
+  const h=read(file);
+  const pdfUrl=meta(h,'citation_pdf_url');
+  if(!meta(h,'citation_title')||!pdfUrl)continue;
+  let fileName;
+  try{fileName=path.basename(new URL(pdfUrl).pathname);}catch{errors.push(file+': invalid citation_pdf_url');continue;}
+  const localPdf=path.join(path.dirname(file),fileName);
+  if(!fs.existsSync(localPdf))errors.push(file+': missing co-located Scholar PDF '+localPdf);
+  const expected=BASE+localPdf.split(path.sep).join('/');
+  if(pdfUrl!==expected)errors.push(file+': citation_pdf_url must point to co-located PDF '+expected);
+}
+
 const robots=read('robots.txt')||'';if(!robots.includes('Allow: /'))errors.push('robots.txt does not allow /');if(!robots.includes('Sitemap: https://rlsj.ir/sitemap.xml'))errors.push('robots.txt missing sitemap');
 const sm=read('sitemap.xml')||'';for(const a of articles.filter(x=>x?.status==='published'))for(const [k,prefix] of langs){const u=BASE+prefix+a.href;if(!sm.includes('<loc>'+u+'</loc>'))errors.push('sitemap missing '+u)}
 if(!fs.existsSync('feed.xml'))errors.push('feed.xml missing');
