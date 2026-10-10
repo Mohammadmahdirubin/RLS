@@ -150,27 +150,16 @@ function replaceFirst(text, pattern, replacement, label) {
 }
 
 
-function citationTable(a, lang, pageUrl) {
-  const year = String(a.online).slice(0, 4);
-  const author = String(a.authorFamily || a.author) + (a.authorGiven ? ", " + a.authorGiven : "");
-  const title = a.title.en || a.title[lang];
-  const journal = "Russian Language Studies";
-  const pages = String(a.firstPage) + "–" + String(a.lastPage);
-  const apa = author + ". (" + year + "). " + title + ". " + journal + ", " + a.volume + "(" + a.issueNumber + "), " + pages + ". " + pageUrl;
-  const mla = author + '. "' + title + '." ' + journal + ", vol. " + a.volume + ", no. " + a.issueNumber + ", " + year + ", pp. " + pages + ". " + pageUrl;
-  const chicago = author + ". " + year + '. "' + title + '." ' + journal + " " + a.volume + " (" + a.issueNumber + "): " + pages + ". " + pageUrl;
-  const harvard = author + " (" + year + ") ‘" + title + "’, " + journal + ", " + a.volume + "(" + a.issueNumber + "), pp. " + pages + ". Available at: " + pageUrl + ".";
-  const bib = "@article{" + String(a.id || "rls-article").replace(/[^a-z0-9_-]/gi, "") + ",\n  author = {" + author + "},\n  title = {" + title + "},\n  journal = {" + journal + "},\n  year = {" + year + "},\n  volume = {" + a.volume + "},\n  number = {" + a.issueNumber + "},\n  pages = {" + a.firstPage + "--" + a.lastPage + "},\n  url = {" + pageUrl + "}\n}";
-  const styles = [["APA 7", apa], ["MLA 9", mla], ["Chicago (Author–Date)", chicago], ["Harvard", harvard], ["BibTeX", bib]];
-  const copyLabel = lang === "fa" ? "کپی" : lang === "ru" ? "Копировать" : "Copy";
-  const headings = lang === "fa" ? ["سبک استناد", "متن استناد", "عملیات"] : lang === "ru" ? ["Стиль цитирования", "Текст цитаты", "Действие"] : ["Citation style", "Citation text", "Action"];
-  const id = "citation-" + String(a.id || "article").replace(/[^a-z0-9_-]/gi, "") + "-" + lang;
-  const rows = styles.map(function (item, i) {
-    return '<tr><th scope="row">' + item[0] + '</th><td><pre class="citation-text" id="' + id + '-' + i + '">' + esc(item[1]) + '</pre></td><td><button class="button secondary citation-copy" type="button" data-citation-copy="' + id + '-' + i + '">' + copyLabel + '</button></td></tr>';
-  }).join("");
-  const copiedLabel = lang === "fa" ? "کپی شد" : lang === "ru" ? "Скопировано" : "Copied";
-  const copyScript = '<script id="citation-copy-handler">(function(){document.addEventListener("click",function(e){var b=e.target.closest("[data-citation-copy]");if(!b)return;var el=document.getElementById(b.getAttribute("data-citation-copy"));if(!el)return;var t=el.textContent,l=b.textContent;function done(){b.textContent=' + JSON.stringify(copiedLabel) + ';setTimeout(function(){b.textContent=l},1600)}function fb(v){var x=document.createElement("textarea");x.value=v;x.style.position="fixed";x.style.opacity="0";document.body.appendChild(x);x.select();try{document.execCommand("copy");done()}catch(z){}x.remove()}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done).catch(function(){fb(t)});else fb(t)})})();</script>';
-  return '<div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>' + headings[0] + '</th><th>' + headings[1] + '</th><th>' + headings[2] + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>' + copyScript;
+function citationTable(a, lang, pageUrl, pdfUrl) {
+  const labels = lang === "fa"
+    ? {head:["منبع","پیوند مستقیم"],pdf:"متن کامل مقاله (PDF)",getPdf:"دانلود مستقیم PDF",page:"صفحه مقاله برای استناد",open:"باز کردن صفحه مقاله"}
+    : lang === "ru"
+      ? {head:["Ресурс","Прямая ссылка"],pdf:"Полный текст статьи (PDF)",getPdf:"Скачать PDF",page:"Постоянная ссылка для цитирования",open:"Открыть страницу статьи"}
+      : {head:["Resource","Direct link"],pdf:"Full-text article (PDF)",getPdf:"Download PDF",page:"Article permalink for citation",open:"Open article page"};
+  const directPdf = String(pdfUrl || "").startsWith("http")
+    ? pdfUrl
+    : "https://rlsj.ir/" + String(pdfUrl || "").replace(/^\\.{1,2}\\//, "").replace(/^\\/+/, "");
+  return '<div class="table-wrap citation-table-wrap"><table class="academic-table citation-table" dir="ltr"><thead><tr><th>' + labels.head[0] + '</th><th>' + labels.head[1] + '</th></tr></thead><tbody><tr><th scope="row">' + labels.pdf + '</th><td><a href="' + directPdf + '" target="_blank" rel="noopener noreferrer">' + labels.getPdf + ' ↗</a></td></tr><tr><th scope="row">' + labels.page + '</th><td><a href="' + pageUrl + '">' + labels.open + ' ↗</a></td></tr></tbody></table></div>';
 }
 
 function buildMain(lang, a, templateMain) {
@@ -178,7 +167,7 @@ function buildMain(lang, a, templateMain) {
   const title = a.title[lang], name = a.authorNames?.[lang] || a.author;
   const pdf = r + a.pdf;
   const year = String(a.online).slice(0, 4);
-  const citation = citationTable(a, lang, url(lang, a));
+  const citation = citationTable(a, lang, url(lang, a), pdf);
   const heroMeta = lang === "fa"
     ? `دوره ${a.volume} · شماره ${a.issueNumber} · مقاله ${a.number} · صص ${a.firstPage}–${a.lastPage}`
     : lang === "ru"
