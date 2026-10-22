@@ -48,7 +48,7 @@ function card(a, lang) {
   const pdf = (lang === "fa" ? "" : "../") + a.pdf;
   const type = a.type[lang] || a.type[a.language] || "";
   const affiliation = a.affiliation[lang] || a.affiliation[a.language] || "";
-  const keywords = String(a.keywords?.[lang] || a.keywords?.[a.language] || a.keywords?.en || "").split(/[;；،,]+/).map(x => x.trim()).filter(Boolean);
+  const keywords = String(a.keywords?.[lang] || a.keywords?.[a.language] || a.keywords?.en || "").split(/[;；؛،,]+/).map(x => x.trim()).filter(Boolean);
   const keywordLinks = keywords.map(keyword => `<a href="https://www.google.com/search?q=${encodeURIComponent('site:rlsj.ir "' + keyword + '"' )}" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:.2rem .25rem;padding:.2rem .55rem;border:1px solid var(--border,#d7dce3);border-radius:999px;text-decoration:none;font-size:.9em">${esc(keyword)}</a>`).join(" ");
   return `<article class="article-record">
 <div class="article-number"><strong>${l.num} ${a.number}</strong></div>
