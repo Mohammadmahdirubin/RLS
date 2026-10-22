@@ -72,6 +72,17 @@ function buildHead(lang, a, template) {
   const sourceLanguage = a.language || a.sourceLanguage || "en";
   const citationTitle = a.title[sourceLanguage] || a.title.en || t;
   const citationPdfUrl = `https://rlsj.ir/${lang === "fa" ? "" : lang + "/"}${path.basename(a.pdf)}`;
+  const authorRecords = Array.isArray(a.authors) && a.authors.length
+    ? a.authors.map(x => ({
+        name: typeof x.name === "object" ? (x.name[lang] || x.name.en || x.name.fa || x.name.ru || "") : String(x.name || ""),
+        orcid: x.orcid || "",
+        affiliation: x.affiliation || ""
+      })).filter(x => x.name)
+    : String(a.author || "").split(/\s*;\s*/).filter(Boolean).map((name, i, names) => ({
+        name: name.trim(),
+        orcid: names.length === 1 ? a.orcid || "" : String(a.orcid || "").split(/\s*;\s*/)[i] || "",
+        affiliation: a.affiliation || ""
+      }));
   const ld = {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
@@ -80,11 +91,15 @@ function buildHead(lang, a, template) {
     description: a.abstract[lang],
     datePublished: String(a.online).replace(/\//g, "-"),
     dateModified: String(a.online).replace(/\//g, "-"),
-    author: [{
+    author: authorRecords.map(record => ({
       "@type": "Person",
-      name: a.authorNames?.[lang] || a.author,
-      ...(a.orcid ? { sameAs: "https://orcid.org/" + a.orcid } : {})
-    }],
+      name: record.name,
+      ...(record.orcid && !record.orcid.includes(";") ? { sameAs: "https://orcid.org/" + record.orcid } : {}),
+      ...(record.affiliation && typeof record.affiliation === "object" && (record.affiliation[lang] || record.affiliation.en || record.affiliation.fa || record.affiliation.ru)
+        ? { affiliation: { "@type": "Organization", name: record.affiliation[lang] || record.affiliation.en || record.affiliation.fa || record.affiliation.ru } }
+        : typeof record.affiliation === "string" && record.affiliation.trim()
+          ? { affiliation: { "@type": "Organization", name: record.affiliation } } : {})
+    })),
     inLanguage: a.language || a.sourceLanguage || lang,
     isPartOf: { "@type": "Periodical", name: j, url: "https://rlsj.ir/" },
     pagination: a.firstPage + "-" + a.lastPage,
@@ -107,7 +122,7 @@ function buildHead(lang, a, template) {
 <meta name="keywords" content="${esc(a.keywords[lang])}">
 <meta name="robots" content="index,follow">
 <meta name="citation_title" content="${esc(citationTitle)}">
-<meta name="citation_author" content="${esc(a.author)}">
+${authorRecords.map(record => `<meta name="citation_author" content="${esc(record.name)}">`).join("\n")}
 <meta name="citation_publication_date" content="${String(a.online).replace(/\//g, "-")}">
 <meta name="citation_firstpage" content="${a.firstPage}">
 <meta name="citation_lastpage" content="${a.lastPage}">

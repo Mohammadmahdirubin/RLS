@@ -61,10 +61,21 @@ function setJsonLd(html,obj) {
   return re.test(html) ? html.replace(re,t) : insertHead(html,t);
 }
 function urlFor(a,l){return BASE+l.prefix+a.href.replace(/^\//,'');}
-function authors(a){return Array.isArray(a.authors)&&a.authors.length?a.authors:[{name:a.author,orcid:a.orcid}];}
+function authors(a,l){
+  if(Array.isArray(a.authors)&&a.authors.length){
+    return a.authors.map(x=>({
+      name: typeof x.name === 'object' ? (x.name?.[l.key]||x.name?.en||x.name?.fa||x.name?.ru||'') : String(x.name||''),
+      orcid: x.orcid || '',
+      affiliation: x.affiliation || ''
+    })).filter(x=>x.name.trim());
+  }
+  const names=String(a.author||'').split(/\s*;\s*/).map(x=>x.trim()).filter(Boolean);
+  const orcids=String(a.orcid||'').split(/\s*;\s*/).map(x=>x.trim());
+  return names.map((name,i)=>({name,orcid:names.length===1?(orcids[0]||''):(orcids[i]||''),affiliation:a.affiliation||''}));
+}
 
 function sync(html,a,l){
-  const url=urlFor(a,l), as=authors(a);
+  const url=urlFor(a,l), as=authors(a,l);
   const sourceLanguage=a.language||a.sourceLanguage||'en';
   // Keep the Scholar PDF in the same directory as each language's abstract page.
   const citationPdfUrl = BASE + l.prefix + path.basename(a.pdf);
@@ -100,7 +111,13 @@ function sync(html,a,l){
     '@context':'https://schema.org','@type':'ScholarlyArticle','@id':url+'#article',
     headline:a.title?.[l.key]||a.title?.en,description:a.abstract?.[l.key]||a.abstract?.en||'',
     datePublished:isoDate(a.online),dateModified:isoDate(a.online),
-    author:as.map(x=>{const p={'@type':'Person',name:x.name};if(x.orcid)p.sameAs='https://orcid.org/'+x.orcid;if(x.affiliation)p.affiliation={'@type':'Organization',name:x.affiliation?.[l.key]||x.affiliation?.en||x.affiliation};return p;}),
+    author:as.map(x=>{
+      const p={'@type':'Person',name:x.name};
+      if(x.orcid&&!String(x.orcid).includes(';'))p.sameAs='https://orcid.org/'+x.orcid;
+      const aff=typeof x.affiliation==='object'?(x.affiliation?.[l.key]||x.affiliation?.en||x.affiliation?.fa||x.affiliation?.ru||''):String(x.affiliation||'');
+      if(aff.trim())p.affiliation={'@type':'Organization',name:aff};
+      return p;
+    }),
     keywords:a.keywords?.[sourceLanguage]||a.keywords?.en||'',
     isAccessibleForFree:true,
     publisher:{'@type':'Organization',name:'Russian Language Studies'},
@@ -177,6 +194,8 @@ function legacyArticleDescription(html,l){
 
 function walk(dir){
   const out=[];
+  const normalizedDir=dir.replace(/\\/g,"/");
+  if(/(^|\/)(en\/en|ru\/ru)(\/|$)/.test(normalizedDir))return out;
   for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
     if(['.git','node_modules'].includes(ent.name))continue;
     const p=path.join(dir,ent.name);
@@ -188,6 +207,8 @@ function walk(dir){
 
 function walkPdfs(dir){
   const out=[];
+  const normalizedDir=dir.replace(/\\/g,"/");
+  if(/(^|\/)(en\/en|ru\/ru)(\/|$)/.test(normalizedDir))return out;
   for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
     if(['.git','node_modules'].includes(ent.name))continue;
     const p=path.join(dir,ent.name);
