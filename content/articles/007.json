@@ -1,0 +1,51 @@
+{
+  "id": "article-7-placeholder",
+  "number": 7,
+  "status": "placeholder",
+  "issue": "",
+  "volume": "",
+  "issueNumber": "",
+  "type": {
+    "fa": "",
+    "en": "",
+    "ru": ""
+  },
+  "title": {
+    "fa": "",
+    "en": "",
+    "ru": ""
+  },
+  "sourceLanguage": "",
+  "language": "",
+  "author": "",
+  "authorNames": {
+    "fa": "",
+    "en": "",
+    "ru": ""
+  },
+  "affiliation": {
+    "fa": "",
+    "en": "",
+    "ru": ""
+  },
+  "received": "",
+  "accepted": "",
+  "online": "",
+  "firstPage": "",
+  "lastPage": "",
+  "pdf": "",
+  "keywords": {
+    "fa": "",
+    "en": "",
+    "ru": ""
+  },
+  "doi": "",
+  "license": "",
+  "abstract": {
+    "fa": "",
+    "en": "",
+    "ru": ""
+  },
+  "href": "",
+  "slug": "article-7-placeholder"
+}
