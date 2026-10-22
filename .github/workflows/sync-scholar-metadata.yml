@@ -16,6 +16,7 @@ on:
       - 'sitemap.xml'
       - 'feed.xml'
       - '.github/workflows/rls-seo.yml'
+      - '.github/workflows/sync-scholar-metadata.yml'
   workflow_dispatch:
 permissions:
   contents: write
