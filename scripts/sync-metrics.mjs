@@ -50,9 +50,9 @@ function run(file, l) {
       l === "fa" ? "۲ هفته" : "2 weeks"
     ];
     let i = 0;
-    sec = sec.replace(/<span class="num">[^<]*(<\/span>)/g, function(original) {
+    sec = sec.replace(/<span class="num"([^>]*)>[^<]*(<\/span>)/g, function(original, attrs) {
       const value = values[i++];
-      return value === undefined ? original : '<span class="num">' + value + '</span>';
+      return value === undefined ? original : '<span class="num"' + attrs + '>' + value + '</span>';
     });
     const notes = l === "fa"
       ? "از مجموع " + formatNumber(received,l) + " مقاله دریافتی، " + formatNumber(accepted,l) + " مقاله پذیرفته شده، " + formatNumber(pending,l) + " مقاله در حال بررسی / تعیین‌تکلیف و " + formatNumber(rejected,l) + " مقاله رد شده است."
