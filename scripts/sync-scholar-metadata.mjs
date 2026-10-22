@@ -37,6 +37,24 @@ function setCanonical(html,url) {
   const t='<link rel="canonical" href="'+url+'">';
   return re.test(html) ? html.replace(re,t) : insertHead(html,t);
 }
+function setProperty(html,property,value) {
+  const re = new RegExp('<meta\\s+property=["\\']' + property + '["\\'][^>]*>','i');
+  const t = '<meta property="' + property + '" content="' + esc(value) + '">';
+  return re.test(html) ? html.replace(re,t) : insertHead(html,t);
+}
+function shortText(value,max=170) {
+  const s=String(value||'').replace(/\\s+/g,' ').trim();
+  if(s.length<=max)return s;
+  let out=s.slice(0,max-1),i=out.lastIndexOf(' ');
+  if(i>max*0.6)out=out.slice(0,i);
+  return out.replace(/[,:;—-]+$/,'').trim()+'…';
+}
+function setAlternates(html,a) {
+  const links=langs.map(l=>'<link rel="alternate" hreflang="'+l.key+'" href="'+urlFor(a,l)+'">');
+  links.push('<link rel="alternate" hreflang="x-default" href="'+urlFor(a,langs[0])+'">');
+  html=html.replace(/<link\\s+rel=["']alternate["'][^>]*hreflang=["'][^"']+["'][^>]*>\\s*/gi,'');
+  return insertHead(html,links.join('\\n'));
+}
 function setJsonLd(html,obj) {
   const re=/<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/i;
   const t='<script type="application/ld+json">\n'+JSON.stringify(obj,null,2)+'\n</script>';
@@ -64,6 +82,18 @@ function sync(html,a,l){
   html=setMeta(html,'citation_online_date',isoDate(a.online));
   html=setMeta(html,'citation_abstract',a.abstract?.[sourceLanguage]||a.abstract?.en||'');
   html=setMeta(html,'citation_keywords',a.keywords?.[sourceLanguage]||a.keywords?.en||'');
+  const localAbstract=a.abstract?.[l.key]||a.abstract?.[sourceLanguage]||a.abstract?.en||'';
+  const description=shortText(localAbstract,170);
+  const localTitle=a.title?.[l.key]||a.title?.en||a.id;
+  html=setMeta(html,'description',description);
+  html=setMeta(html,'twitter:card','summary');
+  html=setMeta(html,'twitter:title',localTitle);
+  html=setMeta(html,'twitter:description',description);
+  html=setProperty(html,'og:title',localTitle);
+  html=setProperty(html,'og:description',description);
+  html=setProperty(html,'og:url',url);
+  html=setProperty(html,'og:type','article');
+  html=setProperty(html,'og:site_name',l.journal);
   html=setMeta(html,'robots','index,follow');
   if(a.issn) html=setMeta(html,'citation_issn',a.issn);
   const ld={
@@ -80,7 +110,7 @@ function sync(html,a,l){
     encoding:{'@type':'MediaObject',contentUrl:citationPdfUrl,encodingFormat:'application/pdf'}
   };
   if(a.doi) ld.identifier='https://doi.org/'+a.doi.replace(/^https?:\/\/doi\.org\//,'');
-  return setCanonical(setJsonLd(html,ld),url);
+  return setAlternates(setCanonical(setJsonLd(html,ld),url),a);
 }
 
 const ctx={window:{},document:{addEventListener(){}}};vm.createContext(ctx);
@@ -126,7 +156,7 @@ function setKeywords(html,file,l){
   return setMeta(html,'keywords',pageKeywords(file,l));
 }
 function setPageDescription(html,file,l){
-  const re=/<meta\\s+name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i;
+  const re=/<meta\s+name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i;
   if(re.test(html)) return html;
   const d=l.key==='fa'?'دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.':l.key==='ru'?'Научный журнал «Исследования по русскому языку»: статьи и исследования по русскому языку, обучению, лингвистике, литературе, культуре и переводу.':'Russian Language Studies: scholarly articles and research on the Russian language, language education, linguistics, literature, culture and translation.';
   return setMeta(html,'description',d);
@@ -185,11 +215,16 @@ for(const file of walk('.')){
   entries.push({url:c,lastmod:article?.online ? isoDate(article.online) : undefined,priority:article?(c===urlFor(article,langs[0])?'1.0':'0.8'):'0.6'});
 }
 const unique=[...new Map(entries.map(x=>[x.url,x])).values()].sort((a,b)=>a.url.localeCompare(b.url));
-let sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+let sitemap='<?xml version="1.0" encoding="UTF-8"?>\\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\\n';
 for(const e of unique){
-  sitemap+='  <url>\n    <loc>'+e.url+'</loc>\n';
-  if(e.lastmod)sitemap+='    <lastmod>'+e.lastmod+'</lastmod>\n';
-  sitemap+='    <changefreq>'+(e.lastmod?'monthly':'weekly')+'</changefreq>\n    <priority>'+e.priority+'</priority>\n  </url>\n';
+  sitemap+='  <url>\\n    <loc>'+e.url+'</loc>\\n';
+  const article=published.find(a=>langs.some(l=>urlFor(a,l)===e.url));
+  if(article){
+    for(const alt of langs)sitemap+='    <xhtml:link rel="alternate" hreflang="'+alt.key+'" href="'+urlFor(article,alt)+'" />\\n';
+    sitemap+='    <xhtml:link rel="alternate" hreflang="x-default" href="'+urlFor(article,langs[0])+'" />\\n';
+  }
+  if(e.lastmod)sitemap+='    <lastmod>'+e.lastmod+'</lastmod>\\n';
+  sitemap+='    <changefreq>'+(e.lastmod?'monthly':'weekly')+'</changefreq>\\n    <priority>'+e.priority+'</priority>\\n  </url>\\n';
 }
 fs.writeFileSync('sitemap.xml',sitemap+'</urlset>\n');
 

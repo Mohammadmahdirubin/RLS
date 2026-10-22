@@ -26,17 +26,13 @@
   addMeta('name', 'citation_volume', '1');
   addMeta('name', 'citation_issue', '1');
   addMeta('name', 'citation_inbook_title', 'Russian Language Studies');
-
-  // Article pages already contain their authoritative ScholarlyArticle JSON-LD.
-  // Avoid adding duplicate schema or assigning the editor's ORCID to other authors.
+  // Article pages already contain authoritative ScholarlyArticle JSON-LD from the registry.
   var labels = lang === 'fa' ? ['صفحه اصلی', 'مقالات', 'مقاله'] : lang === 'ru' ? ['Главная', 'Статьи', 'Статья'] : ['Home', 'Articles', 'Article'];
   var bases = lang === 'fa' ? ['https://rlsj.ir/', 'https://rlsj.ir/articles.html'] : lang === 'ru' ? ['https://rlsj.ir/ru/', 'https://rlsj.ir/ru/articles.html'] : ['https://rlsj.ir/en/', 'https://rlsj.ir/en/articles.html'];
-  var breadcrumb = {
-    '@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
-      {'@type':'ListItem','position':1,'name':labels[0],'item':bases[0]},
-      {'@type':'ListItem','position':2,'name':labels[1],'item':bases[1]},
-      {'@type':'ListItem','position':3,'name':labels[2],'item':canonicalUrl}
-    ]
-  };
+  var breadcrumb = {'@context':'https://schema.org','@type':'BreadcrumbList','itemListElement':[
+    {'@type':'ListItem','position':1,'name':labels[0],'item':bases[0]},
+    {'@type':'ListItem','position':2,'name':labels[1],'item':bases[1]},
+    {'@type':'ListItem','position':3,'name':labels[2],'item':canonicalUrl}
+  ]};
   var b = document.createElement('script'); b.type='application/ld+json'; b.textContent=JSON.stringify(breadcrumb); document.head.appendChild(b);
 })();
