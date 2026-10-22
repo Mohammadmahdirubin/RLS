@@ -78,7 +78,7 @@ function sync(html,a,l){
   const url=urlFor(a,l), as=authors(a,l);
   const sourceLanguage=a.language||a.sourceLanguage||'en';
   // Keep the Scholar PDF in the same directory as each language's abstract page.
-  const citationPdfUrl = BASE + l.prefix + path.basename(a.pdf);
+  const citationPdfUrl = abs(a.pdf);
   html=setMeta(html,'citation_title',a.title?.[sourceLanguage]||a.title?.en||a.id);
   html=setAuthors(html,as.map(x=>x.name));
   html=setMeta(html,'citation_publication_date',isoDate(a.online));
@@ -152,8 +152,6 @@ for(const a of published){
   for(const l of langs){
     const page=l.prefix+a.href.replace(/^\//,'');
     if(!fs.existsSync(page))throw new Error('Missing article page: '+page);
-    const localPdfPath = path.join(l.prefix, path.basename(pdfPath));
-    if(path.resolve(localPdfPath)!==path.resolve(pdfPath)) fs.copyFileSync(pdfPath, localPdfPath);
     fs.writeFileSync(page,sync(fs.readFileSync(page,'utf8'),a,l));
   }
 }
@@ -205,34 +203,7 @@ function walk(dir){
   return out;
 }
 
-function walkPdfs(dir){
-  const out=[];
-  const normalizedDir=dir.replace(/\\/g,"/");
-  if(/(^|\/)(en\/en|ru\/ru)(\/|$)/.test(normalizedDir))return out;
-  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
-    if(['.git','node_modules'].includes(ent.name))continue;
-    const p=path.join(dir,ent.name);
-    if(ent.isDirectory())out.push(...walkPdfs(p));
-    else if(ent.isFile()&&ent.name.toLowerCase().endsWith('.pdf'))out.push(p);
-  }
-  return out;
-}
-// Repair legacy article pages while excluding nested language-alias redirects from indexing and sitemap generation.
-const pdfFiles=walkPdfs('.');
-for(const file of walk('.')){
-  const h=fs.readFileSync(file,'utf8');
-  const m=h.match(/<meta\s+name=["']citation_pdf_url["'][^>]*content=["']([^"']+)["'][^>]*>/i);
-  if(!m)continue;
-  let fileName;
-  try{fileName=path.basename(new URL(m[1]).pathname);}catch{throw new Error('Invalid citation_pdf_url in '+file);}
-  const localPdf=path.join(path.dirname(file),fileName);
-  if(fs.existsSync(localPdf))continue;
-  const source=pdfFiles.find(p=>path.basename(p)===fileName);
-  if(!source)throw new Error('Missing source PDF for '+file+': '+fileName);
-  fs.copyFileSync(source,localPdf);
-}
-
-const entries=[];
+const entries=[];const entries=[];
 for(const file of walk('.')){
   let h=fs.readFileSync(file,'utf8');
   const rel=file.replaceAll('\\\\','/');
@@ -258,12 +229,6 @@ for(const file of walk('.')){
     h=setProperty(h,'og:locale',l.key==='fa'?'fa_IR':l.key==='ru'?'ru_RU':'en_US');
     h=setCanonical(h,canonicalUrl);
     if(langs.every(x=>fs.existsSync(path.join(x.prefix,basename))))h=setAlternates(h,{href:basename});
-    const pm=h.match(/<meta\\s+name=["']citation_pdf_url["'][^>]*content=["']([^"']+)["'][^>]*>/i);
-    if(pm){
-      let fn='';try{fn=path.basename(new URL(pm[1]).pathname)}catch{}
-      const local=path.join(l.prefix,fn);
-      if(fn&&fs.existsSync(local))h=setMeta(h,'citation_pdf_url',BASE+l.prefix+fn);
-    }
   }
   if(h!==fs.readFileSync(file,'utf8')) fs.writeFileSync(file,h);
   const robots=h.match(/<meta\s+name=["']robots["'][^>]*>/i)?.[0]||'';

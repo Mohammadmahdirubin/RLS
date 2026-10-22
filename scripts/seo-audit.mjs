@@ -20,10 +20,9 @@ for(const a of articles.filter(x=>x?.status==='published')){
     for(const n of ['citation_title','citation_author','citation_publication_date','citation_firstpage','citation_lastpage','citation_journal_title','citation_volume','citation_issue','citation_fulltext_world_readable','citation_pdf_url','robots'])if(!meta(h,n))errors.push(p+': missing '+n);
     if(meta(h,'robots')!=='index,follow')errors.push(p+': robots must be index,follow');
     if(canon(h)!==u)errors.push(p+': canonical mismatch');
-    const pdfName=a.pdf.split('/').pop();
-    const localPdfPath=prefix+pdfName;
-    if(!fs.existsSync(localPdfPath))errors.push('Missing co-located PDF '+localPdfPath);
-    const expectedPdf=BASE+localPdfPath;
+    const expectedPdf=/^https?:\/\//i.test(a.pdf)?a.pdf:BASE+String(a.pdf).replace(/^\/+/, '');
+    const pdfPath=expectedPdf.replace(BASE,'').split(/[?#]/)[0];
+    if(!fs.existsSync(pdfPath))errors.push('Missing registered PDF '+pdfPath);
     if(meta(h,'citation_pdf_url')!==expectedPdf)errors.push(p+': citation_pdf_url mismatch; expected '+expectedPdf);
     const j=ld(h);if(!j||j['@type']!=='ScholarlyArticle')errors.push(p+': missing ScholarlyArticle JSON-LD');
     if(j?.url!==u)errors.push(p+': JSON-LD URL mismatch');
@@ -47,12 +46,13 @@ for(const file of walkHtml('.')){
   const h=read(file);
   const pdfUrl=meta(h,'citation_pdf_url');
   if(!meta(h,'citation_title')||!pdfUrl)continue;
-  let fileName;
-  try{fileName=path.basename(new URL(pdfUrl).pathname);}catch{errors.push(file+': invalid citation_pdf_url');continue;}
-  const localPdf=path.join(path.dirname(file),fileName);
-  if(!fs.existsSync(localPdf))errors.push(file+': missing co-located Scholar PDF '+localPdf);
-  const expected=BASE+localPdf.split(path.sep).join('/');
-  if(pdfUrl!==expected)errors.push(file+': citation_pdf_url must point to co-located PDF '+expected);
+  let pdfPath;
+  try {
+    const parsed=new URL(pdfUrl);
+    if(parsed.origin!==new URL(BASE).origin){errors.push(file+': Scholar PDF must use the journal domain');continue;}
+    pdfPath=decodeURIComponent(parsed.pathname).replace(/^\/+/, '');
+  } catch {errors.push(file+': invalid citation_pdf_url');continue;}
+  if(!fs.existsSync(pdfPath))errors.push(file+': missing referenced PDF '+pdfPath);
 }
 
 const robots=read('robots.txt')||'';if(!robots.includes('Allow: /'))errors.push('robots.txt does not allow /');if(!robots.includes('Sitemap: https://rlsj.ir/sitemap.xml'))errors.push('robots.txt missing sitemap');
