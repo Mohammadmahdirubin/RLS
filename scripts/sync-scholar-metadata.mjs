@@ -38,12 +38,12 @@ function setCanonical(html,url) {
   return re.test(html) ? html.replace(re,t) : insertHead(html,t);
 }
 function setProperty(html,property,value) {
-  const re = new RegExp('<meta\\s+property=["\\']' + property + '["\\'][^>]*>','i');
+  const re = new RegExp('<meta\\s+property="' + property + '"[^>]*>','i');
   const t = '<meta property="' + property + '" content="' + esc(value) + '">';
   return re.test(html) ? html.replace(re,t) : insertHead(html,t);
 }
 function shortText(value,max=170) {
-  const s=String(value||'').replace(/\\s+/g,' ').trim();
+  const s=String(value||'').replace(/\s+/g,' ').trim();
   if(s.length<=max)return s;
   let out=s.slice(0,max-1),i=out.lastIndexOf(' ');
   if(i>max*0.6)out=out.slice(0,i);
@@ -52,8 +52,8 @@ function shortText(value,max=170) {
 function setAlternates(html,a) {
   const links=langs.map(l=>'<link rel="alternate" hreflang="'+l.key+'" href="'+urlFor(a,l)+'">');
   links.push('<link rel="alternate" hreflang="x-default" href="'+urlFor(a,langs[0])+'">');
-  html=html.replace(/<link\\s+rel=["']alternate["'][^>]*hreflang=["'][^"']+["'][^>]*>\\s*/gi,'');
-  return insertHead(html,links.join('\\n'));
+  html=html.replace(/<link\s+rel=["']alternate["'][^>]*hreflang=["'][^"']+["'][^>]*>\s*/gi,'');
+  return insertHead(html,links.join('\n'));
 }
 function setJsonLd(html,obj) {
   const re=/<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/i;
@@ -215,16 +215,16 @@ for(const file of walk('.')){
   entries.push({url:c,lastmod:article?.online ? isoDate(article.online) : undefined,priority:article?(c===urlFor(article,langs[0])?'1.0':'0.8'):'0.6'});
 }
 const unique=[...new Map(entries.map(x=>[x.url,x])).values()].sort((a,b)=>a.url.localeCompare(b.url));
-let sitemap='<?xml version="1.0" encoding="UTF-8"?>\\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\\n';
+let sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 for(const e of unique){
-  sitemap+='  <url>\\n    <loc>'+e.url+'</loc>\\n';
+  sitemap+='  <url>\n    <loc>'+e.url+'</loc>\n';
   const article=published.find(a=>langs.some(l=>urlFor(a,l)===e.url));
   if(article){
-    for(const alt of langs)sitemap+='    <xhtml:link rel="alternate" hreflang="'+alt.key+'" href="'+urlFor(article,alt)+'" />\\n';
-    sitemap+='    <xhtml:link rel="alternate" hreflang="x-default" href="'+urlFor(article,langs[0])+'" />\\n';
+    for(const alt of langs)sitemap+='    <xhtml:link rel="alternate" hreflang="'+alt.key+'" href="'+urlFor(article,alt)+'" />\n';
+    sitemap+='    <xhtml:link rel="alternate" hreflang="x-default" href="'+urlFor(article,langs[0])+'" />\n';
   }
-  if(e.lastmod)sitemap+='    <lastmod>'+e.lastmod+'</lastmod>\\n';
-  sitemap+='    <changefreq>'+(e.lastmod?'monthly':'weekly')+'</changefreq>\\n    <priority>'+e.priority+'</priority>\\n  </url>\\n';
+  if(e.lastmod)sitemap+='    <lastmod>'+e.lastmod+'</lastmod>\n';
+  sitemap+='    <changefreq>'+(e.lastmod?'monthly':'weekly')+'</changefreq>\n    <priority>'+e.priority+'</priority>\n  </url>\n';
 }
 fs.writeFileSync('sitemap.xml',sitemap+'</urlset>\n');
 
