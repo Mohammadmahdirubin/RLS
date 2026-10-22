@@ -27,8 +27,8 @@ function run(file, l) {
   let h = fs.readFileSync(p, "utf8");
   const articleCount = formatNumber(pub.length, l);
   const status = l === "fa" ? "منتشر شده" : l === "ru" ? "Опубликован" : "Published";
-  h = h.replace(/(<span class="num" data-rls-article-count>)[^<]*(<\\/span>)/g, "$1" + articleCount + "$2");
-  h = h.replace(/(<span class="status-badge">)[^<]*(<\\/span>)/i, "$1" + status + "$2");
+  h = h.replace(/(<span class="num" data-rls-article-count>)[^<]*(<\/span>)/g, "$1" + articleCount + "$2");
+  h = h.replace(/(<span class="status-badge">)[^<]*(<\/span>)/i, "$1" + status + "$2");
 
   const startHeading = l === "fa" ? "<h2>۲. شاخص‌های عملکردی</h2>" :
     l === "ru" ? "<h2>2. Показатели работы со статьями</h2>" :
@@ -50,7 +50,7 @@ function run(file, l) {
       l === "fa" ? "۲ هفته" : "2 weeks"
     ];
     let i = 0;
-    sec = sec.replace(/<span class="num">[^<]*(<\\/span>)/g, function(original) {
+    sec = sec.replace(/<span class="num">[^<]*(<\/span>)/g, function(original) {
       const value = values[i++];
       return value === undefined ? original : '<span class="num">' + value + '</span>';
     });
@@ -59,7 +59,7 @@ function run(file, l) {
       : l === "ru"
       ? "Из " + received + " полученных статей " + accepted + " приняты, " + pending + " находятся на рассмотрении / ожидают решения и " + rejected + " отклонены."
       : "Of " + received + " manuscripts received, " + accepted + " have been accepted, " + pending + " are under review / awaiting a decision, and " + rejected + " have been rejected.";
-    sec = sec.replace(/<p class="stat-note">[\\s\\S]*?<\\/p>/i, '<p class="stat-note">' + notes + '</p>');
+    sec = sec.replace(/<p class="stat-note">[\s\S]*?<\/p>/i, '<p class="stat-note">' + notes + '</p>');
     h = h.slice(0, s) + sec + h.slice(e);
   }
   fs.writeFileSync(p, h);
