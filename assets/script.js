@@ -202,7 +202,7 @@ const initRLS=()=>{
       bannerPreload=document.createElement('link');
       bannerPreload.rel='preload';
       bannerPreload.as='image';
-      bannerPreload.href=asset('Banner.png');
+      bannerPreload.href=asset('Russian Language Studies Journal Banner.png');
       bannerPreload.setAttribute('data-rls-banner-preload','1');
       document.head.appendChild(bannerPreload);
     }
@@ -212,13 +212,19 @@ const initRLS=()=>{
     bannerLink.href=langUrls[lang];
     bannerLink.setAttribute('aria-label',lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies':'دوفصلنامه مطالعات زبان روسی');
     const image=document.createElement('img');
-    image.src=asset('Banner.png');
+    image.src=asset('Russian Language Studies Journal Banner.png');
     image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
     image.loading='eager';
     image.fetchPriority='high';
     image.decoding='async';
     bannerLink.appendChild(image);
     banner.appendChild(bannerLink);
+    const submitButton=document.createElement('a');
+    submitButton.className='rls-banner-submit';
+    submitButton.href=root+'submit.html';
+    submitButton.textContent=labels.submit;
+    submitButton.setAttribute('aria-label',labels.submit);
+    banner.appendChild(submitButton);
     header.insertBefore(banner,header.firstChild);
   }
 
