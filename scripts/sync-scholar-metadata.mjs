@@ -203,7 +203,7 @@ function walk(dir){
   return out;
 }
 
-const entries=[];const entries=[];
+const entries=[];
 for(const file of walk('.')){
   let h=fs.readFileSync(file,'utf8');
   const rel=file.replaceAll('\\\\','/');
