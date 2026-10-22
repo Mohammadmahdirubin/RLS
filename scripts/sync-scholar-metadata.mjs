@@ -161,6 +161,19 @@ function setPageDescription(html,file,l){
   const d=l.key==='fa'?'دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.':l.key==='ru'?'Научный журнал «Исследования по русскому языку»: статьи и исследования по русскому языку, обучению, лингвистике, литературе, культуре и переводу.':'Russian Language Studies: scholarly articles and research on the Russian language, language education, linguistics, literature, culture and translation.';
   return setMeta(html,'description',d);
 }
+function legacyArticleDescription(html,l){
+  const head=html.match(/<head[\s\S]*?<\/head>/i)?.[0]||'';
+  const og=head.match(/<meta\s+property=["']og:description["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1]||'';
+  const generic=/article record|abstract and metadata|research article by|научная статья\s+[А-ЯЁа-яё]+\s+о|карточка статьи|научный журнал.*статьи и исследования|scholarly articles and research|مقاله پژوهشی\s+.{1,50}\s+درباره|مقالات علمی و پژوهش‌های تخصصی/i;
+  const langMatch=l.key==='fa'?/[\u0600-\u06FF]/.test(og):l.key==='ru'?/[А-Яа-яЁё]/.test(og):/[A-Za-z]/.test(og);
+  if(og&&!generic.test(og)&&langMatch)return shortText(og,170);
+  const body=html.slice(html.search(/<\/head>/i)+7);
+  const re=l.key==='fa'?/<h[23][^>]*>[^<]*(?:چکیده|چکیده فارسی)[^<]*<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/i:l.key==='ru'?/<h[23][^>]*>\s*(?:Аннотация|Резюме)[^<]*<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/i:/<h[23][^>]*>\s*Abstract(?:\s*\(English\))?\s*<\/h[23]>\s*<p[^>]*>([\s\S]*?)<\/p>/i;
+  const m=body.match(re);
+  if(m&&m[1])return shortText(m[1].replace(/<[^>]*>/g,' '),170);
+  const title=head.match(/<meta\s+property=["']og:title["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1]||body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]||'';
+  return shortText(title+(l.key==='fa'?'؛ مقاله منتشرشده در دوفصلنامه مطالعات زبان روسی.':l.key==='ru'?' — научная статья журнала «Исследования по русскому языку».':' — research article in Russian Language Studies.'),170);
+}
 
 function walk(dir){
   const out=[];
@@ -205,6 +218,30 @@ for(const file of walk('.')){
   const l=rel.startsWith('en/')?langs[1]:rel.startsWith('ru/')?langs[2]:langs[0];
   h=setKeywords(h,rel,l);
   h=setPageDescription(h,rel,l);
+  const basename=path.basename(rel);
+  if(/^article-.*\.html$/i.test(basename)){
+    const canonicalUrl=BASE+rel;
+    const localTitle=h.match(/<meta\s+property=["']og:title["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1]||h.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]||basename;
+    const description=legacyArticleDescription(h,l);
+    h=setMeta(h,'description',description);
+    h=setMeta(h,'twitter:card','summary');
+    h=setMeta(h,'twitter:title',localTitle);
+    h=setMeta(h,'twitter:description',description);
+    h=setProperty(h,'og:title',localTitle);
+    h=setProperty(h,'og:description',description);
+    h=setProperty(h,'og:url',canonicalUrl);
+    h=setProperty(h,'og:type','article');
+    h=setProperty(h,'og:site_name',l.journal);
+    h=setProperty(h,'og:locale',l.key==='fa'?'fa_IR':l.key==='ru'?'ru_RU':'en_US');
+    h=setCanonical(h,canonicalUrl);
+    if(langs.every(x=>fs.existsSync(path.join(x.prefix,basename))))h=setAlternates(h,{href:basename});
+    const pm=h.match(/<meta\s+name=["']citation_pdf_url["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+    if(pm){
+      let fn='';try{fn=path.basename(new URL(pm[1]).pathname)}catch{}
+      const local=path.join(l.prefix,fn);
+      if(fn&&fs.existsSync(local))h=setMeta(h,'citation_pdf_url',BASE+l.prefix+fn);
+    }
+  }
   if(h!==fs.readFileSync(file,'utf8')) fs.writeFileSync(file,h);
   const robots=h.match(/<meta\s+name=["']robots["'][^>]*>/i)?.[0]||'';
   if(/noindex/i.test(robots))continue;
@@ -218,10 +255,12 @@ const unique=[...new Map(entries.map(x=>[x.url,x])).values()].sort((a,b)=>a.url.
 let sitemap='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
 for(const e of unique){
   sitemap+='  <url>\n    <loc>'+e.url+'</loc>\n';
-  const article=published.find(a=>langs.some(l=>urlFor(a,l)===e.url));
-  if(article){
-    for(const alt of langs)sitemap+='    <xhtml:link rel="alternate" hreflang="'+alt.key+'" href="'+urlFor(article,alt)+'" />\n';
-    sitemap+='    <xhtml:link rel="alternate" hreflang="x-default" href="'+urlFor(article,langs[0])+'" />\n';
+  let articleName='';
+  try{articleName=path.basename(new URL(e.url).pathname)}catch{}
+  const hasAllLanguages=/^article-.*\.html$/i.test(articleName)&&langs.every(l=>fs.existsSync(path.join(l.prefix,articleName)));
+  if(hasAllLanguages){
+    for(const alt of langs)sitemap+='    <xhtml:link rel="alternate" hreflang="'+alt.key+'" href="'+BASE+alt.prefix+articleName+'" />\n';
+    sitemap+='    <xhtml:link rel="alternate" hreflang="x-default" href="'+BASE+articleName+'" />\n';
   }
   if(e.lastmod)sitemap+='    <lastmod>'+e.lastmod+'</lastmod>\n';
   sitemap+='    <changefreq>'+(e.lastmod?'monthly':'weekly')+'</changefreq>\n    <priority>'+e.priority+'</priority>\n  </url>\n';
