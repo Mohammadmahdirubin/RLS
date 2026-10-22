@@ -1004,3 +1004,40 @@ html[lang="ru"] .container {
   text-decoration: none !important;
 }
 
+
+
+/* ===== Full-width journal banner; preserve navigation layout ===== */
+/* The banner spans the same viewport width as the footer, without a fixed-height crop. */
+.site-header{width:100%;max-width:none;overflow:visible}
+.rls-site-banner{display:block;width:100%;max-width:none;margin:0;padding:0;line-height:0;overflow:hidden}
+.rls-site-banner>a{display:block;width:100%;max-width:none;line-height:0}
+.rls-site-banner img{
+  display:block;
+  width:100%;
+  max-width:none;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center;
+  margin:0;
+}
+/* Keep the navigation in its existing row and let labels wrap rather than collide. */
+.site-header .header-inner{min-width:0}
+.site-header .main-nav{min-width:0;flex-wrap:wrap}
+.site-header .main-nav>a,.site-header .main-nav>details>summary{max-width:100%}
+@media(min-width:901px){
+  .rls-site-banner img{height:auto!important;max-height:none!important;object-fit:contain!important}
+  .site-header .header-inner{min-height:56px}
+  .site-header .main-nav{flex-wrap:nowrap;gap:clamp(5px,.7vw,10px);font-size:clamp(11px,.9vw,12.5px)}
+}
+@media(max-width:900px){
+  .rls-site-banner img{height:auto!important;max-height:none!important;object-fit:contain!important}
+  .site-header .header-inner{min-height:56px!important;gap:8px}
+  .site-header .nav-open .main-nav{box-sizing:border-box;width:100%;max-width:100%;overflow-x:hidden}
+  .site-header .main-nav>a,.site-header .nav-submenu a,.site-header .nav-group>summary{overflow-wrap:anywhere;word-break:normal}
+}
+@media(max-width:560px){
+  .rls-site-banner img{height:auto!important;max-height:none!important;width:100%!important;object-fit:contain!important}
+  .site-header .header-inner{min-height:54px!important}
+  .site-header .nav-open .main-nav{padding-inline:18px!important}
+}
