@@ -4,7 +4,13 @@ on:
   push:
     paths:
       - "content/**"
-      - "scripts/**"
+      - "scripts/validate-rls-content.mjs"
+      - "scripts/generate-article-pages.mjs"
+      - "scripts/sync-article-lists.mjs"
+      - "scripts/sync-authors.mjs"
+      - "scripts/sync-issues.mjs"
+      - "scripts/sync-metrics.mjs"
+      - "scripts/generate-rls-content.mjs"
       - ".github/workflows/rls-content-build.yml"
   workflow_dispatch:
 
