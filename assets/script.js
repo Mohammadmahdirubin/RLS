@@ -219,12 +219,6 @@ const initRLS=()=>{
     image.decoding='async';
     bannerLink.appendChild(image);
     banner.appendChild(bannerLink);
-    const submitButton=document.createElement('a');
-    submitButton.className='rls-banner-submit';
-    submitButton.href=root+'submit.html';
-    submitButton.textContent=labels.submit;
-    submitButton.setAttribute('aria-label',labels.submit);
-    banner.appendChild(submitButton);
     header.insertBefore(banner,header.firstChild);
   }
 
