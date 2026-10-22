@@ -145,5 +145,190 @@ window.RLS_ARTICLES = [
     "href": "article-challenges-russian-technical-military-terminology.html",
     "slug": "challenges-russian-technical-military-terminology",
     "sourceLanguage": "en"
+  },
+  {
+    "id": "fate-family-human-values-don-stories",
+    "number": 4,
+    "status": "published",
+    "issue": "1/1",
+    "type": {
+      "fa": "مقاله پژوهشی",
+      "en": "Research Article",
+      "ru": "Научная статья"
+    },
+    "title": {
+      "fa": "سرنوشت خانواده و ارزش‌های انسانی در «داستان‌های دُن» میخائیل شولوخوف",
+      "en": "The Fate of the Family and Human Values in Mikhail Sholokhov’s Don Stories",
+      "ru": "Судьба семьи и общечеловеческие ценности в «Донских рассказах» Михаила Шолохова"
+    },
+    "sourceLanguage": "fa",
+    "author": "Parvaneh Radandish; Mohsen Beigi",
+    "authorGiven": "Parvaneh; Mohsen",
+    "authorFamily": "Radandish; Beigi",
+    "orcid": "0000-0002-8152-2059; 0009-0002-0296-7170",
+    "language": "fa",
+    "affiliation": {
+      "fa": "وابستگی سازمانی در اطلاعات ثبت‌شدهٔ مقاله مشخص نشده است.",
+      "en": "Institutional affiliation was not specified in the registered article metadata.",
+      "ru": "Организационная принадлежность не указана в зарегистрированных метаданных статьи."
+    },
+    "received": "2026/09/22",
+    "accepted": "2026/10/03",
+    "online": "2026/10/04",
+    "volume": "1",
+    "issueNumber": "1",
+    "firstPage": "39",
+    "lastPage": "58",
+    "pdf": "Radandish-Beigi-2026-The-Fate-of-the-Family-and-Human-Values-in-Mikhail-Sholokhovs-Don-Stories.pdf",
+    "keywords": {
+      "fa": "شولوخوف؛ داستان‌های دُن؛ جنگ داخلی؛ خانواده؛ قزاق‌های دُن‌نشین؛ ارزش‌های انسانی؛ رئالیسم",
+      "en": "Mikhail Sholokhov; Don Stories; Russian Civil War; Family; Human Values; Realism",
+      "ru": "Михаил Шолохов; Донские рассказы; Гражданская война; Семья; Общечеловеческие ценности; Реализм"
+    },
+    "doi": "",
+    "license": "",
+    "abstract": {
+      "fa": "مقاله حاضر به بررسی سرنوشت خانواده و بازتاب ارزش‌های انسانی در «داستان‌های دُن» میخائیل شولوخوف در بستر جنگ داخلی روسیه می‌پردازد. این پژوهش با روش توصیفی ـ تحلیلی، روابط خانوادگی و تعارض‌های اخلاقی شخصیت‌ها را در شرایطی بررسی می‌کند که شکاف‌های سیاسی و نظامی، اعضای یک خانواده و حتی نزدیک‌ترین خویشاوندان را در دو سوی تقابل قرار می‌دهد. تحلیل روایت‌ها نشان می‌دهد که جنگ تنها ساختار خانواده و پیوندهای اجتماعی را از هم نمی‌گسلد، بلکه موقعیت‌هایی پیچیده برای انتخاب اخلاقی نیز پدید می‌آورد؛ در این موقعیت‌ها، شفقت، فداکاری، گذشت و محبت به همنوع در کنار کینه، تعصب، خشونت و میل به انتقام قرار می‌گیرند. از این منظر، خانواده در داستان‌های شولوخوف واحدی صرفاً خصوصی نیست، بلکه به عرصه‌ای برای بازنمایی بحران جامعه و سرنوشت مردم دُن تبدیل می‌شود. مقاله نشان می‌دهد که رئالیسم شولوخوف از طریق نمایش پیامدهای انسانی جنگ، پیچیدگی تجربه تاریخی را آشکار می‌سازد و خواننده را با تضاد میان وفاداری‌های جمعی و مسئولیت اخلاقی فرد روبه‌رو می‌کند. در مجموع، «داستان‌های دُن» تصویری چندوجهی از آسیب‌های جنگ بر زندگی خانوادگی و از پایداری یا فروپاشی ارزش‌های انسانی در شرایط افراطی ارائه می‌دهد.",
+      "en": "This article examines the fate of the family and the representation of human values in Mikhail Sholokhov’s Don Stories against the historical background of the Russian Civil War. Using a descriptive-analytical approach, it considers family relationships and the moral conflicts experienced by characters when political and military divisions place members of the same family—and even close relatives—on opposing sides. The analysis suggests that war not only disrupts family structures and social bonds but also creates difficult situations that test individual moral choices. Compassion, sacrifice, forgiveness, and love for others coexist with resentment, fanaticism, violence, and the desire for revenge. From this perspective, the family in Sholokhov’s stories is more than a private social unit: it becomes a narrative space in which the wider crisis of society and the fate of the Don people are represented. Through the consequences of conflict for ordinary human relationships, Sholokhov’s realism exposes the complexity of historical experience and highlights the tension between collective loyalties and personal moral responsibility. The article therefore reads the Don Stories as a multifaceted portrayal of the damage war inflicts on family life and of the endurance—or collapse—of human values under extreme circumstances.",
+      "ru": "В статье рассматриваются судьба семьи и отражение общечеловеческих ценностей в «Донских рассказах» Михаила Шолохова на историческом фоне Гражданской войны в России. На основе описательно-аналитического подхода исследуются семейные отношения и нравственные конфликты героев в ситуации, когда политическое и военное противостояние разделяет членов одной семьи и даже близких родственников по разные стороны конфликта. Анализ показывает, что война не только разрушает семейные связи и привычный социальный уклад, но и создаёт сложные ситуации нравственного выбора. Сострадание, самопожертвование, прощение и любовь к ближнему соседствуют с неприязнью, фанатизмом, насилием и стремлением к мести. В этом контексте семья в рассказах Шолохова выступает не просто частной социальной единицей, а художественным пространством, в котором раскрываются кризис общества и историческая судьба донского казачества. Изображая последствия конфликта для повседневных человеческих отношений, реализм Шолохова передаёт сложность исторического опыта и подчёркивает противоречие между коллективной преданностью и личной нравственной ответственностью. Таким образом, «Донские рассказы» предстают как многогранное изображение разрушительного воздействия войны на семейную жизнь и испытания общечеловеческих ценностей в экстремальных обстоятельствах."
+    },
+    "href": "article-fate-family-human-values-don-stories.html",
+    "slug": "fate-family-human-values-don-stories"
+  },
+  {
+    "id": "mythological-significance-water-russian-literature",
+    "number": 5,
+    "status": "published",
+    "issue": "1/1",
+    "volume": "1",
+    "issueNumber": "1",
+    "type": {
+      "fa": "پژوهشی",
+      "en": "Research Article",
+      "ru": "Научная статья"
+    },
+    "title": {
+      "fa": "بازتاب اسطوره‌شناختی آب در ادبیات روسی: از باورهای اسلاوی درباره رودخانه و دریا تا بازآفرینی ادبی",
+      "en": "The Mythological Significance of Water in Russian Literature: From Slavic Beliefs to Literary Reinterpretation",
+      "ru": "Мифологическое отражение воды в русской литературе: от славянских представлений о реке и море к литературному переосмыслению"
+    },
+    "sourceLanguage": "fa",
+    "author": "Samin Babazadeh",
+    "authorGiven": "Samin",
+    "authorFamily": "Babazadeh",
+    "orcid": "0009-0002-1639-1387",
+    "email": "sm.babazade@gmail.com",
+    "language": "fa",
+    "received": "2026/10/02",
+    "accepted": "2026/10/16",
+    "online": "2026/10/16",
+    "firstPage": "59",
+    "lastPage": "72",
+    "pdf": "articles/1/Babazadeh-2026-Mythological-Significance-of-Water-in-Russian-Literature.pdf",
+    "affiliation": {
+      "fa": "کارشناسی ارشد مطالعات منطقه (آسیای مرکزی و قفقاز)، دانشگاه تهران، تهران، ایران",
+      "en": "MA in Regional Studies (Central Asia and the Caucasus), University of Tehran, Tehran, Iran",
+      "ru": "Магистр регионоведения (Центральная Азия и Кавказ), Тегеранский университет, Тегеран, Иран"
+    },
+    "keywords": {
+      "fa": "اسطوره‌شناسی اسلاوی؛ اسطوره؛ ادبیات روسی؛ رودخانه؛ دریا؛ فولکلور؛ بازآفرینی اسطوره",
+      "en": "Slavic Mythology; Myth; Russian Literature; River; Sea; Folklore; Myth Reinterpretation",
+      "ru": "Славянская мифология; миф; русская литература; река; море; фольклор; переосмысление мифа"
+    },
+    "doi": "",
+    "license": "",
+    "abstract": {
+      "fa": "آب، این منشأ حیات، در جهان اسطوره و افسانه‌های فرهنگ‌های مختلف جهان، تنها یک عنصر زندگی‌بخش نیست، بلکه با مفاهیمی مانند آفرینش، دگرگونی، شفابخشی و مرز میان جهان انسانی و فراطبیعی آمیخته است. در طول سالیان، انسان برای شناخت و درک پدیده‌های هستی از روش‌های مختلفی بهره می‌گرفت و یکی از آن‌ها اسطوره است. اسطوره از نخستین تبیین‌های شناختی بشر اولیه برای درک پدیده‌های هستی و کشف ابعاد ناشناخته طبیعت به شمار می‌رود. این مفاهیم، متأثر از ویژگی‌های جغرافیایی، سیاسی، اقتصادی و مذهبی، بازتاب‌دهنده جنبه‌های بنیادی فرهنگ هر ملتی هستند. آن‌ها به گونه‌های مختلف در باورهای عامیانه، روایت‌های فولکلوریک و ادبیات ملت‌ها بازتاب یافته و زمینه‌هایی را برای بازنویسی و بازآفرینی ادبی فراهم کرده‌اند. پژوهش حاضر با هدف بررسی چگونگی بازتاب و دگرگونی بن‌مایه‌های اسطوره‌شناختی آب در ادبیات روسی، رابطه میان سنت‌های اسلاوی و بازنمایی ادبی آب را مطالعه می‌کند. روش پژوهش توصیفی ـ تحلیلی و مبتنی بر خوانش تطبیقی منابع اسطوره‌شناختی و فولکلوریک با سه اثر منتخب ادبیات روسی، شامل «روسالکا» اثر الکساندر پوشکین، «شب ماه مه، یا دختر غرق‌شده» اثر نیکلای گوگول و «تامان» از رمان «قهرمان عصر ما» اثر میخائیل لرمانتف است. این پژوهش نشان می‌دهد که آب در این آثار، متناسب با فضای روایی و نگاه نویسندگان، با مفاهیمی چون مرگ، دگرگونی، ارتباط میان جهان زندگان و مردگان و ناشناختگی پیوند می‌یابد و از عناصر اسطوره‌ای و فولکلوریک، معناهای ادبی تازه‌ای شکل می‌گیرد.",
+      "en": "Water, the source of life, is not merely a life-giving element in the myths and legends of cultures around the world; it is also associated with concepts such as creation, transformation, healing, and the boundary between the human and supernatural worlds. Throughout history, humans have employed various approaches to understand the phenomena of existence, and mythology has been one of them. Mythology is among the earliest forms of human explanation used to interpret the world and explore the unknown dimensions of nature. Influenced by geographical, political, economic, and religious characteristics, these concepts reflect fundamental aspects of each culture. They have been expressed in various forms through folk beliefs, folkloric narratives, and literature, providing a basis for literary reinterpretation and recreation. This study examines how mythological motifs associated with water are reflected and transformed in Russian literature, exploring the relationship between Slavic traditions and the literary representation of water. It adopts a descriptive-analytical approach based on a comparative reading of mythological and folkloric sources alongside three selected works of Russian literature: Alexander Pushkin’s Rusalka, Nikolai Gogol’s May Night, or the Drowned Maiden, and Taman, a novella from Mikhail Lermontov’s A Hero of Our Time. The study demonstrates that, depending on the narrative context and each author’s perspective, water in these works is associated with concepts such as death, transformation, the relationship between the living and the dead, and the unknown. Through these literary representations, mythological and folkloric elements acquire new meanings.",
+      "ru": "Вода как источник жизни в мифах и легендах разных культур мира выступает не только животворящей стихией, но и связана с такими понятиями, как сотворение мира, преображение, исцеление и граница между человеческим и сверхъестественным мирами. На протяжении истории человечество использовало различные способы осмысления явлений бытия, одним из которых стала мифология. Мифология относится к древнейшим формам объяснения мира и исследования неизвестных сторон природы. Эти представления, формирующиеся под влиянием географических, политических, экономических и религиозных особенностей, отражают фундаментальные аспекты культуры каждого народа. Они находят разнообразное выражение в народных верованиях, фольклорных повествованиях и литературе, создавая основу для литературного переосмысления и художественного преобразования. Настоящее исследование посвящено тому, как мифологические мотивы воды отражаются и трансформируются в русской литературе, и рассматривает связь славянских традиций с литературным изображением воды. Исследование выполнено в описательно-аналитическом ключе и основано на сопоставительном прочтении мифологических и фольклорных источников и трёх произведений русской литературы: «Русалки» Александра Пушкина, «Майской ночи, или Утопленницы» Николая Гоголя и «Тамани» из романа Михаила Лермонтова «Герой нашего времени». Показано, что в зависимости от повествовательного контекста и авторского взгляда вода в этих произведениях связывается со смертью, преображением, взаимодействием мира живых и мёртвых и непознанным. Благодаря литературному переосмыслению мифологические и фольклорные элементы приобретают новые значения."
+    },
+    "href": "article-mythological-significance-water-russian-literature.html",
+    "slug": "mythological-significance-water-russian-literature"
+  },
+  {
+    "id": "teaching-russian-indian-university-communicative-activity-approach",
+    "number": 6,
+    "status": "published",
+    "issue": "1/1",
+    "volume": "1",
+    "issueNumber": "1",
+    "type": {
+      "fa": "پژوهشی",
+      "en": "Research Article",
+      "ru": "Научная статья"
+    },
+    "title": {
+      "fa": "آموزش زبان روسی در دانشگاه هند: اجرای اصول رویکرد ارتباطی ـ فعالیت‌محور",
+      "en": "Teaching Russian at an Indian University: Implementing the Principles of the Communicative-Activity Approach",
+      "ru": "Обучение русскому языку в индийском университете: реализация принципов коммуникативно-деятельностного подхода"
+    },
+    "sourceLanguage": "ru",
+    "language": "ru",
+    "authors": [
+      {
+        "name": {
+          "fa": "О. А. Солопова",
+          "en": "O. A. Solopova",
+          "ru": "О. А. Солопова"
+        },
+        "affiliation": {
+          "fa": "دانشگاه دولتی اورال جنوبی، چلیابینسک، فدراسیون روسیه",
+          "en": "South Ural State University, Chelyabinsk, Russian Federation",
+          "ru": "Южно-Уральский государственный университет, Челябинск, Российская Федерация"
+        }
+      },
+      {
+        "name": {
+          "fa": "Н. Н. Кошкарова",
+          "en": "N. N. Koshkarova",
+          "ru": "Н. Н. Кошкарова"
+        },
+        "affiliation": {
+          "fa": "دانشگاه دولتی اورال جنوبی، چلیابینسک، فدراسیون روسیه",
+          "en": "South Ural State University, Chelyabinsk, Russian Federation",
+          "ru": "Южно-Уральский государственный университет, Челябинск, Российская Федерация"
+        },
+        "corresponding": true,
+        "email": "studiumjuvenis@mail.ru"
+      },
+      {
+        "name": {
+          "fa": "С. Саини",
+          "en": "S. Saini",
+          "ru": "С. Саини"
+        },
+        "affiliation": {
+          "fa": "دانشگاه جواهر لعل نهرو، دهلی نو، هند",
+          "en": "Jawaharlal Nehru University, New Delhi, India",
+          "ru": "Университет им. Джавахарлала Неру, Нью-Дели, Индия"
+        }
+      }
+    ],
+    "author": "O. A. Solopova; N. N. Koshkarova; S. Saini",
+    "affiliation": {
+      "fa": "۱، ۲. دانشگاه دولتی اورال جنوبی، چلیابینسک، فدراسیون روسیه؛ ۳. دانشگاه جواهر لعل نهرو، دهلی نو، هند",
+      "en": "1, 2. South Ural State University, Chelyabinsk, Russian Federation; 3. Jawaharlal Nehru University, New Delhi, India",
+      "ru": "1, 2. Южно-Уральский государственный университет, Челябинск, Российская Федерация; 3. Университет им. Джавахарлала Неру, Нью-Дели, Индия"
+    },
+    "received": "2026/10/01",
+    "accepted": "2026/10/17",
+    "online": "2026/10/17",
+    "firstPage": "73",
+    "lastPage": "85",
+    "pdf": "articles/1/Solopova_Koshkarova_Saini_2026.pdf",
+    "keywords": {
+      "fa": "روسی به‌عنوان زبان خارجی؛ شنیدار؛ گفتار؛ خواندن؛ نوشتن؛ رویکرد ارتباطی ـ فعالیت‌محور؛ پیمایش جامعه‌زبان‌شناختی؛ انگیزش؛ هند",
+      "en": "Russian as a foreign language; listening; speaking; reading; writing; communicative-activity approach; sociolinguistic survey; motivation; India",
+      "ru": "русский язык как иностранный; аудирование; говорение; чтение; письмо; коммуникативно-деятельностный подход; социолингвистический опрос; Индия"
+    },
+    "doi": "",
+    "license": "",
+    "abstract": {
+      "fa": "این مقاله نتایج یک پیمایش جامعه‌زبان‌شناختی را ارائه می‌کند که در میان زبان‌آموزان روسی به‌عنوان زبان خارجی در دانشگاه جواهر لعل نهرو (دهلی نو، هند) انجام شده است. اهمیت پژوهش از نقش زبان روسی در همکاری آموزشی روسیه و هند و ضرورت توجه به نیازهای زبان‌آموزان در سازمان‌دهی آموزش زبان ناشی می‌شود. هدف پژوهش، از منظر رویکرد ارتباطی ـ فعالیت‌محور، بررسی رابطه میان ساختار برنامه آموزشی و دشواری‌ها و گرایش‌های انگیزشی گزارش‌شده از سوی شرکت‌کنندگان است. داده‌ها از پیمایش جامعه‌زبان‌شناختی ۱۸۹ پاسخ‌دهنده در هند در سال ۲۰۲۵ و یک سند رسمی برنامه درسی تشکیل شده‌اند که محتوا و توزیع ساعات آموزشی درس‌های زبان روسی در دانشگاه جواهر لعل نهرو را مشخص می‌کند. در پژوهش از آمار توصیفی، تحلیل محتوا، تحلیل مضمون و تفسیر زبان‌آموزی‌شناختی استفاده شده است. نتایج نشان داد دستور زبان دشوارترین جنبه زبان روسی تلقی می‌شود و مهم‌ترین دشواری‌ها در فعالیت گفتاری به شنیدار، گفتار و موانع زبانی مربوط‌اند؛ در مقابل، خواندن و نوشتن بسیار کمتر به‌عنوان دشواری‌های اصلی گزارش شده‌اند. انگیزه‌های شغلی در یادگیری زبان روسی غالب بود و پاسخ‌دهندگان تسلط به این زبان را با فرصت‌های اشتغال و پیشرفت حرفه‌ای مرتبط می‌دانستند. مقایسه یافته‌های پیمایش با ساختار برنامه درسی، تفاوت‌هایی را میان بازنمایی رسمی مؤلفه‌های آموزش زبان و دشواری‌های گزارش‌شده زبان‌آموزان آشکار کرد؛ بااین‌حال، در این پژوهش رابطه علّی میان آن‌ها اثبات نشد. یافته‌ها بر ضرورت تمرین منظم شنیدار و گفتار در کنار آموزش پیوسته دستور زبان تأکید دارند و زمینه‌هایی را برای پشتیبانی روش‌شناختی از دانشجویان در محیط آموزشی با زبان خارجی مشخص می‌کنند.",
+      "en": "The paper presents the results of a sociolinguistic survey conducted among learners of Russian as a foreign language at Jawaharlal Nehru University (New Delhi, India). The relevance of the study is determined by the role of Russian in Russian-Indian educational cooperation and by the need to consider learners’ needs when organizing language training. From the perspective of the communicative-activity approach, the study aims to establish how the curriculum structure relates to the difficulties and motivational orientations reported by survey participants. The data sources comprise a sociolinguistic survey of 189 respondents conducted in India in 2025 and a regulatory curriculum document defining the content and distribution of the course load across Russian language courses at Jawaharlal Nehru University. The study employs descriptive statistics, content analysis, thematic analysis, and linguodidactic interpretation. Grammar was perceived as the most difficult aspect of Russian, while the main difficulties in speech activity concerned listening, speaking, and language barriers. Reading and writing were much less frequently identified as major difficulties. Career prospects prevailed among the motives for learning Russian: respondents associated proficiency in the language with employment opportunities and professional development. Comparison of the survey findings with the curriculum structure revealed differences between the formal representation of particular components of language training and the difficulties reported by learners; no causal relationship between them was established in this study. The findings indicate the need for systematic listening and speaking practice while maintaining consistent grammar instruction. The study specifies areas of methodological support for students in a foreign-language educational environment.",
+      "ru": "В статье представлены результаты социолингвистического опроса, проведенного в Университете им. Дж. Неру (Нью-Дели, Индия) среди изучающих русский язык как иностранный (РКИ). Актуальность исследования обусловлена ролью русского языка (РЯ) в российско-индийском образовательном сотрудничестве и необходимостью учета потребностей обучающихся при организации языковой подготовки. Цель исследования – с позиций коммуникативно-деятельностного подхода установить, как структура образовательной программы соотносится с трудностями и мотивационными установками, отмечаемыми участниками опроса. Источниками данных послужили результаты социолингвистического опроса 189 респондентов, проведенного в Индии в 2025 г., и нормативный учебно-методический документ, регламентирующий содержание и распределение учебной нагрузки по курсам РЯ в Университете им. Дж. Неру. В работе применены методы описательной статистики, контент-анализа и тематического анализа, а также лингводидактическая интерпретация. Установлено, что наименьшие трудности для индийских респондентов представляют чтение и письмо, а самыми проблемными являются аудирование и говорение. Полученные результаты могут быть объяснены доминированием грамматико-переводного метода, который остается востребованным среди индийских преподавателей-русистов, и ограниченным использованием коммуникативного подхода. Подчеркивается, что редукция коммуникативного компонента ведет к нарушению одного из основных постулатов методики преподавания иностранных языков – интегрирование при работе над всеми видами речевой деятельности (РД). Исследование позволяет уточнить направления организации обучения студентов в иноязычной образовательной среде."
+    },
+    "href": "article-teaching-russian-indian-university-communicative-activity-approach.html",
+    "slug": "teaching-russian-indian-university-communicative-activity-approach"
   }
 ];
