@@ -991,3 +991,15 @@ html[lang="ru"] .container {
     padding-right: 24px;
   }
 }
+
+/* Article-list keyword links: keep keyword chips clean without underlines. */
+.article-keywords a,
+.keyword-link,
+.article-list .article-keywords a,
+.article-card .article-keywords a {
+  text-decoration: none !important;
+}
+.article-keywords a:hover,
+.keyword-link:hover {
+  text-decoration: none !important;
+}
