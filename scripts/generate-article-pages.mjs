@@ -71,7 +71,7 @@ function buildHead(lang, a, template) {
   const description = String(a.abstract[lang] || "").slice(0, 250);
   const sourceLanguage = a.language || a.sourceLanguage || "en";
   const citationTitle = a.title[sourceLanguage] || a.title.en || t;
-  const citationPdfUrl = `https://rlsj.ir/${lang === "fa" ? "" : lang + "/"}${path.basename(a.pdf)}`;
+  const citationPdfUrl = /^https?:\\/\\//i.test(a.pdf) ? a.pdf : "https://rlsj.ir/" + String(a.pdf).replace(/^\\/+/, "");
   const authorRecords = Array.isArray(a.authors) && a.authors.length
     ? a.authors.map(x => ({
         name: typeof x.name === "object" ? (x.name[lang] || x.name.en || x.name.fa || x.name.ru || "") : String(x.name || ""),
