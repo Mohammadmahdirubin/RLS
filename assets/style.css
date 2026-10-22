@@ -1044,3 +1044,10 @@ html.rls-mobile-mode .rls-site-banner img{
 @media(orientation:landscape) and (max-width:900px){
   html.rls-mobile-mode .rls-site-banner img{height:auto!important;max-height:none!important}
 }
+
+/* Full-width journal banner with a real, accessible submission link */
+.rls-site-banner{position:relative;width:100%;max-width:none;overflow:hidden;line-height:0;background:#eef5fb}
+.rls-site-banner>img{display:block;width:100%;height:auto;max-height:none;object-fit:contain}
+.rls-banner-submit{position:absolute;top:6%;left:2%;z-index:2;display:inline-flex;align-items:center;gap:.55rem;padding:.7rem 1.1rem;border:1px solid rgba(255,255,255,.75);border-radius:8px;background:#10457f;color:#fff;text-decoration:none;font-size:clamp(12px,1.1vw,17px);font-weight:800;line-height:1.4;box-shadow:0 3px 12px rgba(0,0,0,.18);direction:rtl}
+.rls-banner-submit:hover,.rls-banner-submit:focus-visible{background:#082f5b;color:#fff;outline:3px solid #fff;outline-offset:2px}
+@media(max-width:560px){.rls-banner-submit{top:5%;left:2%;padding:.35rem .55rem;gap:.3rem;font-size:11px;border-radius:6px}}
