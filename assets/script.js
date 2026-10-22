@@ -59,18 +59,24 @@ window.renderRLSArticleList = function(targetId, language) {
       meta.appendChild(item);
     });
     card.appendChild(meta);
-    var abstractText = a.abstract && a.abstract[lang];
-    if (abstractText) {
-      addText(card, 'h3', labels.abstract);
-      addText(card, 'p', abstractText, 'article-abstract');
-    }
+    // Abstracts are intentionally omitted from article and issue listings; they remain on article detail pages.
     var keywordText = a.keywords && a.keywords[lang];
     if (keywordText) {
-      var kw = document.createElement('p');
+      var kw = document.createElement('div');
+      kw.className = 'article-keywords';
       var kwStrong = document.createElement('strong');
       kwStrong.textContent = labels.keywords + ': ';
       kw.appendChild(kwStrong);
-      kw.appendChild(document.createTextNode(keywordText));
+      String(keywordText).split(/[;；،,]+/).map(function(term){ return term.trim(); }).filter(Boolean).forEach(function(term) {
+        var link = document.createElement('a');
+        link.className = 'keyword-link';
+        link.textContent = term;
+        link.href = 'https://www.google.com/search?q=' + encodeURIComponent('site:rlsj.ir "' + term + '"');
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        kw.appendChild(link);
+        kw.appendChild(document.createTextNode(' '));
+      });
       card.appendChild(kw);
     }
     var actions = document.createElement('div');
