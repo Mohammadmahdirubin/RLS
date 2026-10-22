@@ -78,7 +78,7 @@ function sync(html,a,l){
   const url=urlFor(a,l), as=authors(a,l);
   const sourceLanguage=a.language||a.sourceLanguage||'en';
   // Keep the Scholar PDF in the same directory as each language's abstract page.
-  const citationPdfUrl = BASE + l.prefix + path.basename(a.pdf);
+  const citationPdfUrl = abs(a.pdf);
   html=setMeta(html,'citation_title',a.title?.[sourceLanguage]||a.title?.en||a.id);
   html=setAuthors(html,as.map(x=>x.name));
   html=setMeta(html,'citation_publication_date',isoDate(a.online));
@@ -152,8 +152,6 @@ for(const a of published){
   for(const l of langs){
     const page=l.prefix+a.href.replace(/^\//,'');
     if(!fs.existsSync(page))throw new Error('Missing article page: '+page);
-    const localPdfPath = path.join(l.prefix, path.basename(pdfPath));
-    if(path.resolve(localPdfPath)!==path.resolve(pdfPath)) fs.copyFileSync(pdfPath, localPdfPath);
     fs.writeFileSync(page,sync(fs.readFileSync(page,'utf8'),a,l));
   }
 }
@@ -236,6 +234,8 @@ const entries=[];
 for(const file of walk('.')){
   let h=fs.readFileSync(file,'utf8');
   const rel=file.replaceAll('\\\\','/');
+  // Exclude accidental duplicate redirect paths (en/en and ru/ru) from the sitemap.
+  if (/^(?:en\/en|ru\/ru)\//i.test(rel)) continue;
   const l=rel.startsWith('en/')?langs[1]:rel.startsWith('ru/')?langs[2]:langs[0];
   h=setKeywords(h,rel,l);
   h=setPageDescription(h,rel,l);
@@ -256,12 +256,8 @@ for(const file of walk('.')){
     h=setProperty(h,'og:locale',l.key==='fa'?'fa_IR':l.key==='ru'?'ru_RU':'en_US');
     h=setCanonical(h,canonicalUrl);
     if(langs.every(x=>fs.existsSync(path.join(x.prefix,basename))))h=setAlternates(h,{href:basename});
-    const pm=h.match(/<meta\s+name=["']citation_pdf_url["'][^>]*content=["']([^"']+)["'][^>]*>/i);
-    if(pm){
-      let fn='';try{fn=path.basename(new URL(pm[1]).pathname)}catch{}
-      const local=path.join(l.prefix,fn);
-      if(fn&&fs.existsSync(local))h=setMeta(h,'citation_pdf_url',BASE+l.prefix+fn);
-    }
+    const registryArticle=published.find(a=>langs.some(x=>urlFor(a,x)===canonicalUrl));
+    if(registryArticle) h=setMeta(h,'citation_pdf_url',abs(registryArticle.pdf));
   }
   if(h!==fs.readFileSync(file,'utf8')) fs.writeFileSync(file,h);
   const robots=h.match(/<meta\s+name=["']robots["'][^>]*>/i)?.[0]||'';
