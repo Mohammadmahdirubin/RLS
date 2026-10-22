@@ -8,7 +8,7 @@ const dir = path.join(root, "content", "articles");
 const all = fs.readdirSync(dir)
   .filter(f => f.endsWith(".json") && !f.startsWith("_"))
   .map(f => JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")))
-  .filter(a => a.status === "published")
+  .filter(a => a.status === "published" || a.status === "placeholder")
   .sort((a,b) => Number(a.number) - Number(b.number));
 
 const esc = v => String(v ?? "")
@@ -44,6 +44,19 @@ function labels(lang) {
 
 function card(a, lang) {
   const l = labels(lang), pair = titlePair(a, lang);
+  if (a.status === "placeholder") {
+    const volumeLabel = lang === "fa" ? "دوره " : lang === "ru" ? "Том " : "Volume ";
+    const issueLabel = lang === "fa" ? "شماره " : lang === "ru" ? "выпуск " : "Issue ";
+    return `<article class="article-record article-placeholder" data-article-placeholder="7">
+<div class="article-number"><strong>${l.num} 7</strong></div>
+<div class="article-type"></div>
+<h2></h2>
+<p class="authors"><strong></strong> · </p>
+<div class="meta-grid"><div><span>${l.received}</span><strong></strong></div><div><span>${l.online}</span><strong></strong></div><div><span>${l.issue}</span><strong>${volumeLabel}, ${issueLabel}</strong></div><div><span>${l.pages}</span><strong>–</strong></div></div>
+<div class="article-keywords" style="margin:.8rem 0 1rem;line-height:2"><strong>${l.keywords}:</strong></div>
+<div class="article-actions"><span class="status">${l.doi}</span> <span class="button secondary" aria-disabled="true">${l.view}</span> <span class="button primary" aria-disabled="true">${l.pdf}</span></div>
+</article>`;
+  }
   const href = pageUrl(lang,a);
   const pdf = (lang === "fa" ? "" : "../") + a.pdf;
   const type = a.type[lang] || a.type[a.language] || "";
@@ -81,7 +94,8 @@ for (const lang of ["fa","en","ru"]) {
   if (close < 0) throw new Error(`Article list container not closed: ${file}`);
   const replacement = '<div id="rls-article-list">' + all.map(a => card(a,lang)).join("") + "</div>";
   html = html.slice(0,start) + replacement + html.slice(close + "</div>".length);
-  html = html.replace(/(<span data-rls-article-count>)[^<]*(<\/span>)/g, (_, open, close) => open + all.length + close);
+  const publishedCount = all.filter(a => a.status === "published").length;
+  html = html.replace(/(<span data-rls-article-count>)[^<]*(<\/span>)/g, (_, open, close) => open + publishedCount + close);
   fs.writeFileSync(p,html);
   console.log(`Updated article title language logic: ${file}`);
 }
