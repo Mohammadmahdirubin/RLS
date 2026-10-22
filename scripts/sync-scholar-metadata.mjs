@@ -217,7 +217,7 @@ function walkPdfs(dir){
   }
   return out;
 }
-// Repair article pages that predate the central article registry too.
+// Repair legacy article pages while excluding nested language-alias redirects from indexing and sitemap generation.
 const pdfFiles=walkPdfs('.');
 for(const file of walk('.')){
   const h=fs.readFileSync(file,'utf8');
