@@ -1030,3 +1030,17 @@ html[lang="ru"] .container {
 @media(max-width:560px){
   .rls-site-banner img{height:auto!important;max-height:none!important;width:100%!important;object-fit:contain!important}
 }
+
+/* Override legacy mobile-only banner caps so the image keeps its natural ratio. */
+html.rls-mobile-mode .rls-site-banner img{
+  width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+}
+@media(max-width:560px){
+  html.rls-mobile-mode .rls-site-banner img{height:auto!important;max-height:none!important}
+}
+@media(orientation:landscape) and (max-width:900px){
+  html.rls-mobile-mode .rls-site-banner img{height:auto!important;max-height:none!important}
+}
