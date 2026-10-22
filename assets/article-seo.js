@@ -1,17 +1,17 @@
 (function () {
   'use strict';
-  var canonical = document.querySelector('link[rel="canonical"]');
-  var canonicalUrl = canonical ? canonical.href : location.href.split('#')[0];
-  var lang = (document.documentElement.lang || 'en').toLowerCase();
-  var title = document.querySelector('meta[name="citation_title"]')?.content || document.querySelector('h1')?.textContent.trim() || document.title;
-  var author = document.querySelector('meta[name="author"]')?.content || 'Mohammadmahdi Rubin';
-  var pubDate = document.querySelector('meta[name="citation_publication_date"]')?.content || '2026-09-17';
+  var canonicalEl = document.querySelector('link[rel="canonical"]');
+  var canonicalUrl = canonicalEl ? canonicalEl.href : location.href.split('#')[0];
+  var lang = (document.documentElement.lang || 'en').toLowerCase().split('-')[0];
+  var title = document.querySelector('meta[property="og:title"]')?.content || document.querySelector('h1')?.textContent.trim() || document.title;
   var description = document.querySelector('meta[name="description"]')?.content || '';
-  var articleType = lang === 'fa' ? 'مقاله پژوهشی' : lang === 'ru' ? 'Научная статья' : 'Research Article';
-  var publisherName = lang === 'fa' ? 'دوفصلنامه مطالعات زبان روسی' : lang === 'ru' ? 'Исследования русского языка' : 'Russian Language Studies';
+  var publisherName = lang === 'fa' ? 'دوفصلنامه مطالعات زبان روسی' : lang === 'ru' ? 'Исследования по русскому языку' : 'Russian Language Studies';
   function addMeta(attr, key, value) {
-    if (!value || document.head.querySelector('meta[' + attr + '=\"' + key + '\"]')) return;
-    var m = document.createElement('meta'); m.setAttribute(attr, key); m.content = value; document.head.appendChild(m);
+    if (!value) return;
+    var selector = 'meta[' + attr + '="' + key + '"]';
+    var m = document.head.querySelector(selector);
+    if (m) { if (!m.content) m.content = value; return; }
+    m = document.createElement('meta'); m.setAttribute(attr, key); m.content = value; document.head.appendChild(m);
   }
   addMeta('property', 'og:type', 'article');
   addMeta('property', 'og:title', title);
@@ -22,46 +22,13 @@
   addMeta('name', 'twitter:card', 'summary');
   addMeta('name', 'twitter:title', title);
   addMeta('name', 'twitter:description', description);
-  addMeta('name', 'citation_journal_title', publisherName);
+  addMeta('name', 'citation_journal_title', 'Russian Language Studies');
   addMeta('name', 'citation_volume', '1');
   addMeta('name', 'citation_issue', '1');
-  addMeta('name', 'citation_inbook_title', publisherName);
+  addMeta('name', 'citation_inbook_title', 'Russian Language Studies');
 
-  var articleLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ScholarlyArticle',
-    'headline': title,
-    'description': description,
-    'url': canonicalUrl,
-    'datePublished': pubDate,
-    'inLanguage': lang,
-    'author': {
-      '@type': 'Person',
-      'name': author,
-      'url': 'https://orcid.org/0009-0004-8475-2804',
-      'sameAs': ['https://orcid.org/0009-0004-8475-2804']
-    },
-    'isPartOf': {
-      '@type': 'Periodical',
-      'name': publisherName,
-      'issn': undefined
-    },
-    'publisher': {
-      '@type': 'Person',
-      'name': 'Mohammadmahdi Rubin'
-    },
-    'articleSection': articleType,
-    'copyrightHolder': {
-      '@type': 'Organization',
-      'name': publisherName
-    }
-  };
-  delete articleLd.isPartOf.issn;
-  var script = document.createElement('script');
-  script.type = 'application/ld+json';
-  script.textContent = JSON.stringify(articleLd);
-  document.head.appendChild(script);
-
+  // Article pages already contain their authoritative ScholarlyArticle JSON-LD.
+  // Avoid adding duplicate schema or assigning the editor's ORCID to other authors.
   var labels = lang === 'fa' ? ['صفحه اصلی', 'مقالات', 'مقاله'] : lang === 'ru' ? ['Главная', 'Статьи', 'Статья'] : ['Home', 'Articles', 'Article'];
   var bases = lang === 'fa' ? ['https://rlsj.ir/', 'https://rlsj.ir/articles.html'] : lang === 'ru' ? ['https://rlsj.ir/ru/', 'https://rlsj.ir/ru/articles.html'] : ['https://rlsj.ir/en/', 'https://rlsj.ir/en/articles.html'];
   var breadcrumb = {
