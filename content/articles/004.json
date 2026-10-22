@@ -17,21 +17,21 @@
   "author": "Parvaneh Radandish; Mohsen Beigi",
   "authorGiven": "Parvaneh; Mohsen",
   "authorFamily": "Radandish; Beigi",
-  "orcid": "0000-0002-8152-2059; 0009-0002-0296-7170",
+  "orcid": "",
   "language": "fa",
   "affiliation": {
-    "fa": "وابستگی سازمانی در اطلاعات ثبت‌شدهٔ مقاله مشخص نشده است.",
-    "en": "Institutional affiliation was not specified in the registered article metadata.",
-    "ru": "Организационная принадлежность не указана в зарегистрированных метаданных статьи."
+    "fa": "پروانه راداندیش: استادیار زبان روسی، گروه زبان و ادبیات روسی، دانشگاه تهران، تهران، ایران؛ محسن بیگی: دکتری زبان روسی، دانشگاه تهران، تهران، ایران",
+    "en": "Parvaneh Radandish: Assistant Professor of Russian, Department of Russian Language and Literature, University of Tehran, Tehran, Iran; Mohsen Beigi: PhD in Russian, University of Tehran, Tehran, Iran",
+    "ru": "Парване Радандиш: доцент русского языка, кафедра русского языка и литературы, Тегеранский университет, Тегеран, Иран; Мохсен Бейги: докторская степень по русскому языку, Тегеранский университет, Тегеран, Иран"
   },
   "received": "2026/09/22",
-  "accepted": "2026/10/03",
-  "online": "2026/10/04",
+  "accepted": "2026/10/09",
+  "online": "2026/10/09",
   "volume": "1",
   "issueNumber": "1",
   "firstPage": "39",
   "lastPage": "58",
-  "pdf": "Radandish-Beigi-2026-The-Fate-of-the-Family-and-Human-Values-in-Mikhail-Sholokhovs-Don-Stories.pdf",
+  "pdf": "articles/1/Radandish-Beigi-2026-The-Fate-of-the-Family-and-Human-Values-in-Mikhail-Sholokhovs-Don-Stories.pdf",
   "keywords": {
     "fa": "شولوخوف؛ داستان‌های دُن؛ جنگ داخلی؛ خانواده؛ قزاق‌های دُن‌نشین؛ ارزش‌های انسانی؛ رئالیسم",
     "en": "Mikhail Sholokhov; Don Stories; Russian Civil War; Family; Human Values; Realism",
@@ -45,5 +45,22 @@
     "ru": "В статье рассматриваются судьба семьи и отражение общечеловеческих ценностей в «Донских рассказах» Михаила Шолохова на историческом фоне Гражданской войны в России. На основе описательно-аналитического подхода исследуются семейные отношения и нравственные конфликты героев в ситуации, когда политическое и военное противостояние разделяет членов одной семьи и даже близких родственников по разные стороны конфликта. Анализ показывает, что война не только разрушает семейные связи и привычный социальный уклад, но и создаёт сложные ситуации нравственного выбора. Сострадание, самопожертвование, прощение и любовь к ближнему соседствуют с неприязнью, фанатизмом, насилием и стремлением к мести. В этом контексте семья в рассказах Шолохова выступает не просто частной социальной единицей, а художественным пространством, в котором раскрываются кризис общества и историческая судьба донского казачества. Изображая последствия конфликта для повседневных человеческих отношений, реализм Шолохова передаёт сложность исторического опыта и подчёркивает противоречие между коллективной преданностью и личной нравственной ответственностью. Таким образом, «Донские рассказы» предстают как многогранное изображение разрушительного воздействия войны на семейную жизнь и испытания общечеловеческих ценностей в экстремальных обстоятельствах."
   },
   "href": "article-fate-family-human-values-don-stories.html",
-  "slug": "fate-family-human-values-don-stories"
+  "slug": "fate-family-human-values-don-stories",
+  "authorNames": {
+    "fa": "پروانه راداندیش؛ محسن بیگی",
+    "en": "Parvaneh Radandish; Mohsen Beigi",
+    "ru": "Парване Радандиш; Мохсен Бейги"
+  },
+  "authors": [
+    {
+      "name": "Parvaneh Radandish",
+      "orcid": "0000-0002-8152-2059",
+      "affiliation": "Parvaneh Radandish: Assistant Professor of Russian, Department of Russian Language and Literature, University of Tehran, Tehran, Iran; Mohsen Beigi: PhD in Russian, University of Tehran, Tehran, Iran"
+    },
+    {
+      "name": "Mohsen Beigi",
+      "orcid": "0009-0002-0296-7170",
+      "affiliation": "Parvaneh Radandish: Assistant Professor of Russian, Department of Russian Language and Literature, University of Tehran, Tehran, Iran; Mohsen Beigi: PhD in Russian, University of Tehran, Tehran, Iran"
+    }
+  ]
 }
