@@ -81,7 +81,7 @@ for (const lang of ["fa","en","ru"]) {
   if (close < 0) throw new Error(`Article list container not closed: ${file}`);
   const replacement = '<div id="rls-article-list">' + all.map(a => card(a,lang)).join("") + "</div>";
   html = html.slice(0,start) + replacement + html.slice(close + "</div>".length);
-  html = html.replace(/(<span\\s+data-rls-article-count>)[^<]*(<\\/span>)/g, `$1${all.length}$2`);
+  html = html.replace(/(<span data-rls-article-count>)[^<]*(<\/span>)/g, (_, open, close) => open + all.length + close);
   fs.writeFileSync(p,html);
   console.log(`Updated article title language logic: ${file}`);
 }
