@@ -135,6 +135,13 @@ const initRLS=()=>{
   const asset=name=>root+encodeURI(name);
   const header=document.querySelector('.site-header');
   const nav=document.querySelector('.main-nav');
+  // Keep the shared brand subtitle localized even on older pages with stale Persian markup.
+  const brandSubtitle=header && header.querySelector('.brand small');
+  if(brandSubtitle){
+    const subtitleText=brandSubtitle.textContent||'';
+    if(lang==='en' && /دوفصلنامه|Дофаслнаме/i.test(subtitleText)) brandSubtitle.textContent='Biannual Journal';
+    if(lang==='ru' && /دوفصلنامه|Дофаслнаме/i.test(subtitleText)) brandSubtitle.textContent='Два выпуска в год';
+  }
   const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const mobile=isMobileUA && Math.min(window.innerWidth||9999, screen.width||9999)<=900;
   if(mobile)document.documentElement.classList.add('rls-mobile-mode');
