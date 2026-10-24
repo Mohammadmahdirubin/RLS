@@ -5,7 +5,7 @@ const DCE = "http://purl.org/dc/elements/1.1/";
 const esc = v => String(v || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
 const tag = (k,v) => v ? `<dc:${k}>${esc(v)}</dc:${k}>` : "";
 const list = (obj,k) => ["fa","en","ru"].map(lang=>obj&&obj[lang]?tag(k,obj[lang]):"").join("");
-const validDate = v => /^\\d{4}-\\d{2}-\\d{2}$/.test(v||"") ? v : "2026-01-01";
+const validDate = v => /^\d{4}-\d{2}-\d{2}$/.test(v||"") ? v : "2026-01-01";
 function record(a) {
  const identifier="oai:rlsj.ir:"+a.id;
  const fields=list(a.title,"title")+
@@ -16,7 +16,7 @@ function record(a) {
  return `<record><header><identifier>${esc(identifier)}</identifier><datestamp>${validDate(a.publicationDate)}</datestamp><setSpec>rls</setSpec></header><metadata><oai_dc:dc xmlns:oai_dc="${DC}" xmlns:dc="${DCE}">${fields}</oai_dc:dc></metadata></record>`;
 }
 function envelope(verb,body) {
- return `<?xml version="1.0" encoding="UTF-8"?><OAI-PMH xmlns="${NS}"><responseDate>${new Date().toISOString().replace(/\\.\\d{3}Z$/,"Z")}</responseDate><request verb="${esc(verb)}">https://rlsj.ir/oai</request>${body}</OAI-PMH>`;
+ return `<?xml version="1.0" encoding="UTF-8"?><OAI-PMH xmlns="${NS}"><responseDate>${new Date().toISOString().replace(/\.\d{3}Z$/,"Z")}</responseDate><request verb="${esc(verb)}">https://rlsj.ir/oai</request>${body}</OAI-PMH>`;
 }
 export default { async fetch(req) {
  const u=new URL(req.url), verb=u.searchParams.get("verb")||"";
