@@ -1,0 +1,11 @@
+name = "rls-oai-pmh"
+main = "oai-worker.js"
+compatibility_date = "2026-10-24"
+
+# First deploy to workers.dev for testing.
+# To use https://rlsj.ir/oai, the rlsj.ir zone must be active on this Cloudflare account
+# and DNS must be proxied. Then add a Worker Route in the Cloudflare dashboard:
+#   Route pattern: rlsj.ir/oai*
+#   Worker: rls-oai-pmh
+#
+# Do not configure a Custom Domain on rlsj.ir itself: it would intercept the whole site.
