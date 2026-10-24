@@ -17,7 +17,8 @@ function record(a) {
     ["fa","en","ru"].map(k => a.authors && a.authors[k] ? tag("creator",a.authors[k]) : "").join("") +
     tag("publisher","Russian Language Studies") +
     tag("date",validDate(a.publicationDate)) +
-    tag("type","Text") + tag("type","Article") +
+    tag("type","Text") + tag("type","Article") + tag("type","info:eu-repo/semantics/article") +
+    tag("rights","info:eu-repo/semantics/openAccess") + tag("format","application/pdf") +
     tag("identifier",a.landingPage) + tag("identifier",a.pdf) +
     tag("identifier",a.doi) + tag("language",a.language) +
     list(a.keywords,"subject") + list(a.abstract,"description");
@@ -98,7 +99,7 @@ export default {
     let body = "";
 
     if (verb === "Identify") {
-      body = `<Identify><repositoryName>Russian Language Studies</repositoryName><baseURL>${BASE_URL}</baseURL><protocolVersion>2.0</protocolVersion><adminEmail>mm.rubin@ut.ac.ir</adminEmail><earliestDatestamp>2026-01-01</earliestDatestamp><deletedRecord>no</deletedRecord><granularity>YYYY-MM-DD</granularity></Identify>`;
+      body = `<Identify><repositoryName>Russian Language Studies</repositoryName><baseURL>${BASE_URL}</baseURL><protocolVersion>2.0</protocolVersion><adminEmail>mm.rubin@ut.ac.ir</adminEmail><earliestDatestamp>2026-09-17</earliestDatestamp><deletedRecord>no</deletedRecord><granularity>YYYY-MM-DD</granularity></Identify>`;
     } else if (verb === "ListMetadataFormats") {
       const identifier = url.searchParams.get("identifier");
       const exists = !identifier || articles.some(a => "oai:rlsj.ir:" + a.id === identifier);
