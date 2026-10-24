@@ -142,27 +142,25 @@ const initRLS=()=>{
     if(lang==='en' && /دوفصلنامه|Дофаслнаме/i.test(subtitleText)) brandSubtitle.textContent='Biannual Journal';
     if(lang==='ru' && /دوفصلنامه|Дофаслнаме/i.test(subtitleText)) brandSubtitle.textContent='Два выпуска в год';
   }
-  // Article-level RSS shortcut and autodiscovery.
-  const canonicalLink=document.querySelector('link[rel="canonical"]');
-  const canonicalUrl=canonicalLink ? canonicalLink.href : location.href;
-  const isArticlePage=!!document.querySelector('meta[name="citation_title"]') || /^article-(?!click-).+\\.html$/.test(file);
+  // Journal-wide RSS shortcut, positioned after the article's direct links.
+  const isArticlePage=!!document.querySelector('meta[name="citation_title"]') || /^article-(?!click-).+\.html$/.test(file);
   if(isArticlePage){
     if(!document.querySelector('link[rel="alternate"][type="application/rss+xml"]')){
       const rssDiscovery=document.createElement('link');
       rssDiscovery.rel='alternate';rssDiscovery.type='application/rss+xml';
-      rssDiscovery.title='Russian Language Studies RSS Feed';rssDiscovery.href='https://rlsj.ir/rss.xml';
+      rssDiscovery.title='Russian Language Studies — all articles RSS';rssDiscovery.href='https://rlsj.ir/rss.xml';
       document.head.appendChild(rssDiscovery);
     }
-    const titleRow=document.querySelector('.article-title-row');
-    if(titleRow && !document.getElementById('rls-article-rss-link')){
+    const directLinks=document.querySelector('.citation-table-wrap');
+    if(directLinks && !document.getElementById('rls-article-rss-link')){
       const rssLink=document.createElement('a');
       rssLink.id='rls-article-rss-link';rssLink.href='https://rlsj.ir/rss.xml';
-      rssLink.setAttribute('aria-label',lang==='fa'?'دریافت فید مقالات نشریه':lang==='en'?'Subscribe to journal articles RSS':'Подписаться на RSS-ленту журнала');
-      rssLink.title=lang==='fa'?'فید مقالات نشریه':lang==='en'?'Journal articles RSS feed':'RSS-лента статей журнала';
-      rssLink.innerHTML='<img src="'+asset('Rss_logo.png')+'" alt="" width="24" height="24" loading="lazy" decoding="async"><span>RSS</span>';
-      rssLink.style.cssText='display:inline-flex;align-items:center;gap:5px;flex-shrink:0;margin-inline-start:10px;padding:5px 8px;border:1px solid #e2d8d0;border-radius:7px;color:inherit;text-decoration:none;font-size:11px;font-weight:700;line-height:1.2;background:rgba(255,255,255,.8);';
-      const img=rssLink.querySelector('img');if(img)img.style.cssText='display:block;width:24px;height:24px;object-fit:contain';
-      titleRow.appendChild(rssLink);
+      rssLink.setAttribute('aria-label',lang==='fa'?'فید RSS همه مقالات نشریه':lang==='en'?'RSS feed for all journal articles':'RSS-лента всех статей журнала');
+      rssLink.title=lang==='fa'?'دریافت فید همه مقالات نشریه':lang==='en'?'Subscribe to all journal articles':'Подписаться на RSS-ленту всех статей';
+      rssLink.innerHTML='<img src="'+asset('Rss_logo.png')+'" alt="" width="22" height="22" loading="lazy" decoding="async"><span>'+ (lang==='fa'?'فید همه مقالات':lang==='en'?'All articles RSS':'RSS всех статей') +'</span>';
+      rssLink.style.cssText='display:inline-flex;align-items:center;gap:7px;margin:12px 0 20px;padding:7px 11px;border:1px solid #e2d8d0;border-radius:8px;color:inherit;text-decoration:none;font-size:12px;font-weight:700;line-height:1.4;background:var(--card,#fff);';
+      const img=rssLink.querySelector('img');if(img)img.style.cssText='display:block;width:22px;height:22px;object-fit:contain';
+      directLinks.insertAdjacentElement('afterend',rssLink);
     }
   }
   const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
