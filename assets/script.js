@@ -266,7 +266,6 @@ const initRLS=()=>{
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('academia.jpg')}" alt="Academia" loading="lazy"></div><span>Academia</span></div>
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('علوم انسانی.jpg')}" alt="علوم انسانی" loading="lazy"></div><span>${lang==='fa'?'پژوهشگاه علوم انسانی و مطالعات فرهنگی':lang==='en'?'Institute for Humanities and Cultural Studies':'Институт гуманитарных и культурных исследований'}</span></div>
       </div>
-      <div class="rls-rss-mini" style="display:flex;justify-content:flex-end;margin-top:6px;font-size:10px;line-height:1.2;opacity:.72"><a href="${root}rss.xml" type="application/rss+xml" title="RSS 2.0 feed" style="font-size:10px;text-decoration:none;white-space:nowrap">RSS</a></div>
     </div>`;
   }
 
