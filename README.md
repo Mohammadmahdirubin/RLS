@@ -31,9 +31,13 @@ The public site provides manuscript submission forms and journal policies. It is
 
 Confidential peer-review material and unpublished manuscripts must not be committed to this repository.
 
-## Administration
+## Administration and backend
 
-The repository includes an `/admin/` interface for authorized publication management. It is designed to work with a GitHub token supplied at runtime and an externally configured AI endpoint where applicable. No GitHub token should be hard-coded into repository files.
+The Persian role-based administration UI is available at `/admin/panel.html`; sign-in is at `/admin/login.html`. The backend scaffold uses Supabase Auth, PostgreSQL Row Level Security, and a private Storage bucket. Setup instructions are in `admin/BACKEND-SETUP.md`; the SQL migrations are in `supabase/migrations/`.
+
+The backend is **not live until a Supabase project is created, migrations are run, and the public project URL/key are configured** in `admin/backend-config.js`. Only the publishable/anon key belongs in browser code. Never commit a service-role key, database password, or GitHub token. Admin roles are assigned through the trusted Supabase dashboard/SQL editor; browser users cannot self-promote.
+
+GitHub Pages remains the static frontend. The backend is kept separate so the frontend can later move to another host without changing the authentication/data architecture. The admin UI is not yet a complete replacement for the public site's existing article publishing pipeline; syncing approved articles into the existing multilingual article registry remains a separate integration step.
 
 ## Automation and CI
 
@@ -57,7 +61,7 @@ Official journal identity and publication metadata should be kept consistent acr
 - citation metadata
 - future DOI/Crossref deposits
 
-When DOI, ISSN, or other identifiers are not officially assigned, they should not be presented as if they were.
+When DOI, ISSN, or other identifiers are not officially assigned, they should not be presented as if they are.
 
 ## Development principle
 
