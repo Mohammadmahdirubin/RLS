@@ -18,29 +18,28 @@
 <div class="form-note">The form collects author and bibliographic information separately from the anonymized manuscript so the initial screening can be completed properly.</div>
 <div class="notice" role="note"><strong>Manuscript Submission by Email</strong><br>If you are unable to submit your manuscript successfully through the online submission form or encounter an error while completing it, you may submit your manuscript and the relevant author information to the journal’s official email address: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a>.<br>Please use the subject line “Manuscript Submission to Russian Language Studies”.</div>
 <div class="tally-embed" style="display:block;width:100%;max-width:100%;min-width:0;direction:ltr;margin:0 auto;padding:0">
-<p style="text-align:center;margin:0 0 14px"><a href="https://tally.so/r/gbD5xK" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 22px;border-radius:7px;background:#8b2635;color:#fff;text-decoration:none;font-weight:700">Open the submission form directly</a></p>
-<iframe data-tally-src="https://tally.so/embed/gbD5xK?alignLeft=1&amp;hideTitle=1" loading="eager" style="display:block;width:100%;max-width:100%;min-width:0;height:1200px;border:0;margin:0;padding:0;background:transparent" width="100%" height="1200" frameborder="0" marginheight="0" marginwidth="0" title="Submit a Manuscript to Russian Language Studies" allow="clipboard-write"></iframe>
+<p style="text-align:center;margin:0 0 10px"><a href="https://tally.so/r/gbD5xK" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 22px;border-radius:7px;background:#8b2635;color:#fff;text-decoration:none;font-weight:700">Open form in a separate tab</a></p>
+<p style="text-align:center;margin:0 0 14px"><button type="button" id="load-tally-form" style="display:inline-block;padding:10px 18px;border:1px solid #8b2635;border-radius:7px;background:transparent;color:#8b2635;font:inherit;font-weight:700;cursor:pointer">Load the form on this page</button></p>
+<p style="text-align:center;margin:0 0 14px;font-size:.95em">To avoid slowing down the page, the embedded form loads only when you click the button below.</p>
+<iframe id="tally-submission-frame" data-tally-src="https://tally.so/embed/gbD5xK?alignLeft=1&amp;hideTitle=1" loading="lazy" style="display:none;width:100%;max-width:100%;min-width:0;height:1200px;border:0;margin:0;padding:0;background:transparent" width="100%" height="1200" frameborder="0" marginheight="0" marginwidth="0" title="Submit a Manuscript to Russian Language Studies" allow="clipboard-write"></iframe>
 <script>
 (function () {
-  var d = document;
-  var src = 'https://tally.so/widgets/embed.js';
-  function initTally() {
-    if (window.Tally && typeof window.Tally.loadEmbeds === 'function') {
-      window.Tally.loadEmbeds();
+  var button = document.getElementById('load-tally-form');
+  var frame = document.getElementById('tally-submission-frame');
+  if (!button || !frame) return;
+  button.addEventListener('click', function () {
+    frame.style.display = 'block';
+    if (!frame.getAttribute('src')) {
+      frame.setAttribute('src', frame.getAttribute('data-tally-src').replace(/&amp;/g, '&'));
+      button.textContent = "The form is loading…";
     }
-  }
-  if (window.Tally) {
-    initTally();
-  } else if (!d.querySelector('script[src="' + src + '"]')) {
-    var script = d.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.onload = initTally;
-    d.body.appendChild(script);
-  }
+  });
+  frame.addEventListener('load', function () {
+    button.textContent = "Reload form on this page";
+  });
 })();
 </script>
-<div class="notice" style="margin-top:16px;text-align:center"><strong>Form not appearing?</strong><br>If the embedded form does not load, use the direct link above or email the manuscript to the journal.<p style="margin:10px 0 0"><a href="https://tally.so/r/gbD5xK" target="_blank" rel="noopener noreferrer">Open the submission form directly</a></p></div>
+<div class="notice" style="margin-top:16px;text-align:center"><strong>If the form does not load</strong><br>Use the separate-tab link above or email the manuscript to the journal.</div>
 </div>
 </section></main>
 <footer class="site-footer"><div class="container"><p><strong dir="ltr">RLS</strong> — Russian Language Studies</p><p>Publisher & Managing Editor: Mohammadmahdi Rubin · Ministry license 94254</p><p>ISSN, DOI and indexing information will be added only after official registration or confirmation.</p></div></footer>
