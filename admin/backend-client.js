@@ -1,29 +1,25 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 const config = window.RLS_BACKEND_CONFIG || {};
-const configured = Boolean(
-  config.supabaseUrl && config.supabaseAnonKey &&
+const configured = Boolean(config.supabaseUrl && config.supabaseAnonKey &&
   !config.supabaseUrl.includes("YOUR_PROJECT_REF") &&
-  !config.supabaseAnonKey.includes("YOUR_SUPABASE")
-);
+  !config.supabaseAnonKey.includes("YOUR_SUPABASE"));
 
 export const backendConfigured = configured;
-export const supabase = configured
-  ? createClient(config.supabaseUrl, config.supabaseAnonKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-    })
-  : null;
+export const supabase = configured ? createClient(config.supabaseUrl, config.supabaseAnonKey, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+}) : null;
 
 export async function getActiveProfile() {
   if (!supabase) return { profile: null, error: new Error("پیکربندی سرویس پشتیبان انجام نشده است.") };
   const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user) return { profile: null, error: authError || new Error("نشست ورود معتبر نیست.") };
+  if (authError || !user) return { profile: null, user: null, error: authError || new Error("نشست ورود معتبر نیست.") };
   const { data, error } = await supabase.from("profiles")
     .select("id, display_name, role, active").eq("id", user.id).single();
-  if (error) return { profile: null, error };
+  if (error) return { profile: null, user, error };
   if (!data.active) {
     await supabase.auth.signOut();
-    return { profile: null, error: new Error("این حساب غیرفعال شده است.") };
+    return { profile: null, user: null, error: new Error("این حساب غیرفعال شده است.") };
   }
   return { profile: data, user, error: null };
 }
@@ -43,12 +39,9 @@ export async function uploadEditorialFile(file, kind) {
   if (!supabase) throw new Error("سرویس پشتیبان پیکربندی نشده است.");
   const { profile, user, error } = await getActiveProfile();
   if (error || !profile || !user) throw error || new Error("ابتدا وارد شوید.");
-  const allowed = kind === "article_pdf"
-    ? ["application/pdf"]
-    : ["image/jpeg", "image/png", "image/webp"];
+  const allowed = kind === "article_pdf" ? ["application/pdf"] : ["image/jpeg", "image/png", "image/webp"];
   if (!allowed.includes(file.type)) throw new Error("نوع فایل مجاز نیست.");
-  const maxBytes = 20 * 1024 * 1024;
-  if (file.size > maxBytes) throw new Error("حجم فایل نباید بیشتر از ۲۰ مگابایت باشد.");
+  if (file.size > 20 * 1024 * 1024) throw new Error("حجم فایل نباید بیشتر از ۲۰ مگابایت باشد.");
   const safeName = file.name.normalize("NFKC").replace(/[^\p{L}\p{N}._-]+/gu, "-").slice(-120);
   const path = user.id + "/" + kind + "/" + crypto.randomUUID() + "-" + safeName;
   const { error: uploadError } = await supabase.storage.from("rls-editorial").upload(path, file, {
@@ -71,24 +64,30 @@ export async function createArticle(payload, files = {}) {
   if (!supabase) throw new Error("سرویس پشتیبان پیکربندی نشده است.");
   const { profile, user, error } = await getActiveProfile();
   if (error || !profile || !user) throw error || new Error("ابتدا وارد شوید.");
-  const uploaded = {};
-  for (const [field, kind] of [
-    ["pdf", "article_pdf"], ["poster", "poster"], ["cover", "cover"]
-  ]) {
-    if (files[field]) uploaded[field] = await uploadEditorialFile(files[field], kind);
+  const uploaded = [];
+  try {
+    for (const [field, kind] of [["pdf", "article_pdf"], ["poster", "poster"], ["cover", "cover"]]) {
+      if (files[field]) uploaded.push({ field, media: await uploadEditorialFile(files[field], kind) });
+    }
+    const paths = Object.fromEntries(uploaded.map(({field,media}) => [field,media.storage_path]));
+    const { data, error: insertError } = await supabase.from("articles").insert({
+      ...payload, created_by: user.id, status: "pending_review",
+      pdf_path: paths.pdf || null, poster_path: paths.poster || null, cover_path: paths.cover || null
+    }).select().single();
+    if (insertError) throw insertError;
+    for (const {media} of uploaded) {
+      await supabase.from("media").update({article_id:data.id}).eq("id",media.id);
+    }
+    await writeAudit("article_submitted", "article", data.id, { title: data.title });
+    return data;
+  } catch (error) {
+    // Best-effort cleanup on failed submissions; storage is private throughout.
+    for (const {media} of uploaded) {
+      await supabase.storage.from("rls-editorial").remove([media.storage_path]);
+      await supabase.from("media").delete().eq("id", media.id);
+    }
+    throw error;
   }
-  const row = {
-    ...payload,
-    created_by: user.id,
-    status: "pending_review",
-    pdf_path: uploaded.pdf?.storage_path || null,
-    poster_path: uploaded.poster?.storage_path || null,
-    cover_path: uploaded.cover?.storage_path || null
-  };
-  const { data, error: insertError } = await supabase.from("articles").insert(row).select().single();
-  if (insertError) throw insertError;
-  await writeAudit("article_submitted", "article", data.id, { title: data.title });
-  return data;
 }
 
 export async function listArticles() {
@@ -102,17 +101,14 @@ export async function listArticles() {
 
 export async function reviewArticle(id, status) {
   if (!supabase) throw new Error("سرویس پشتیبان پیکربندی نشده است.");
-  if (!["published", "rejected", "pending_review"].includes(status)) {
-    throw new Error("وضعیت درخواستی مجاز نیست.");
-  }
+  if (!["published", "rejected", "pending_review"].includes(status)) throw new Error("وضعیت درخواستی مجاز نیست.");
   const { profile, user, error } = await getActiveProfile();
   if (error || profile?.role !== "admin") throw new Error("این عملیات فقط برای مدیر مجاز است.");
   const changes = {
     status, reviewed_by: user.id, reviewed_at: new Date().toISOString(),
     ...(status === "published" ? { published_at: new Date().toISOString() } : {})
   };
-  const { data, error: updateError } = await supabase.from("articles")
-    .update(changes).eq("id", id).select().single();
+  const { data, error: updateError } = await supabase.from("articles").update(changes).eq("id", id).select().single();
   if (updateError) throw updateError;
   await writeAudit("article_" + status, "article", id, {});
   return data;
