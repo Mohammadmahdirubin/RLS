@@ -7,7 +7,7 @@ const DCE = "http://purl.org/dc/elements/1.1/";
 const esc = v => String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;");
 const tag = (k,v) => v !== undefined && v !== null && String(v).trim() !== "" ? `<dc:${k}>${esc(v)}</dc:${k}>` : "";
 const list = (obj,k) => ["fa","en","ru"].map(lang => obj && obj[lang] ? tag(k,obj[lang]) : "").join("");
-const validDate = v => /^\d{4}-\d{2}-\d{2}$/.test(v || "") ? v : "2026-01-01";
+const validDate = v => /^\d{4}-\d{2}-\d{2}$/.test(v || "") ? v : "2026-09-17";
 const knownVerbs = ["Identify","ListMetadataFormats","ListSets","ListIdentifiers","ListRecords","GetRecord"];
 
 function record(a) {
@@ -99,7 +99,9 @@ export default {
     let body = "";
 
     if (verb === "Identify") {
-      body = `<Identify><repositoryName>Russian Language Studies</repositoryName><baseURL>${BASE_URL}</baseURL><protocolVersion>2.0</protocolVersion><adminEmail>mm.rubin@ut.ac.ir</adminEmail><earliestDatestamp>2026-09-17</earliestDatestamp><deletedRecord>no</deletedRecord><granularity>YYYY-MM-DD</granularity></Identify>`;
+      const dates = articles.map(a => validDate(a.publicationDate)).sort();
+      const earliest = dates.length ? dates[0] : "2026-09-17";
+      body = `<Identify><repositoryName>Russian Language Studies</repositoryName><baseURL>${BASE_URL}</baseURL><protocolVersion>2.0</protocolVersion><adminEmail>mm.rubin@ut.ac.ir</adminEmail><earliestDatestamp>${earliest}</earliestDatestamp><deletedRecord>no</deletedRecord><granularity>YYYY-MM-DD</granularity></Identify>`;
     } else if (verb === "ListMetadataFormats") {
       const identifier = url.searchParams.get("identifier");
       const exists = !identifier || articles.some(a => "oai:rlsj.ir:" + a.id === identifier);
