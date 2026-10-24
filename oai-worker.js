@@ -16,7 +16,7 @@ function record(a) {
  return `<record><header><identifier>${esc(identifier)}</identifier><datestamp>${validDate(a.publicationDate)}</datestamp><setSpec>rls</setSpec></header><metadata><oai_dc:dc xmlns:oai_dc="${DC}" xmlns:dc="${DCE}">${fields}</oai_dc:dc></metadata></record>`;
 }
 function envelope(verb,body) {
- return `<?xml version="1.0" encoding="UTF-8"?><OAI-PMH xmlns="${NS}"><responseDate>${new Date().toISOString().replace(/\.\d{3}Z$/,"Z")}</responseDate><request verb="${esc(verb)}">https://rlsj.ir/oai</request>${body}</OAI-PMH>`;
+ return `<?xml version="1.0" encoding="UTF-8"?><OAI-PMH xmlns="${NS}"><responseDate>${new Date().toISOString().replace(/\.\d{3}Z$/,"Z")}</responseDate><request verb="${esc(verb)}">https://oai.rlsj.ir/</request>${body}</OAI-PMH>`;
 }
 export default { async fetch(req) {
  const u=new URL(req.url), verb=u.searchParams.get("verb")||"";
@@ -26,7 +26,7 @@ export default { async fetch(req) {
  if(!["Identify","ListMetadataFormats","ListSets","ListIdentifiers","ListRecords","GetRecord"].includes(verb)) return new Response(envelope(verb,'<error code="badVerb">Unsupported OAI-PMH verb.</error>'),{status:400,headers});
  let data; try { const r=await fetch(SOURCE); if(!r.ok) throw Error(); data=await r.json(); } catch { return new Response(envelope(verb,'<error code="badArgument">Metadata source unavailable.</error>'),{status:502,headers}); }
  let body="";
- if(verb==="Identify") body='<Identify><repositoryName>Russian Language Studies</repositoryName><baseURL>https://rlsj.ir/oai</baseURL><protocolVersion>2.0</protocolVersion><adminEmail>mm.rubin@ut.ac.ir</adminEmail><earliestDatestamp>2026-01-01</earliestDatestamp><deletedRecord>no</deletedRecord><granularity>YYYY-MM-DD</granularity></Identify>';
+ if(verb==="Identify") body='<Identify><repositoryName>Russian Language Studies</repositoryName><baseURL>https://oai.rlsj.ir/</baseURL><protocolVersion>2.0</protocolVersion><adminEmail>mm.rubin@ut.ac.ir</adminEmail><earliestDatestamp>2026-01-01</earliestDatestamp><deletedRecord>no</deletedRecord><granularity>YYYY-MM-DD</granularity></Identify>';
  if(verb==="ListMetadataFormats") body='<ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat></ListMetadataFormats>';
  if(verb==="ListSets") body='<ListSets><set><setSpec>rls</setSpec><setName>Russian Language Studies</setName></set></ListSets>';
  if(verb==="ListRecords" || verb==="ListIdentifiers") {
