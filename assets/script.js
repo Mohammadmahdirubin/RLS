@@ -168,9 +168,6 @@ const initRLS=()=>{
       wrap.appendChild(makeRssLink('rls-article-rss-link',articleFeed,
         lang==='fa'?'فید اختصاصی این مقاله':lang==='en'?'This article RSS':'RSS этой статьи',
         lang==='fa'?'فید RSS اختصاصی همین مقاله':lang==='en'?'RSS feed for this article only':'RSS-лента только этой статьи'));
-      wrap.appendChild(makeRssLink('rls-journal-rss-link','https://rlsj.ir/rss.xml',
-        lang==='fa'?'فید همه مقالات':lang==='en'?'All articles RSS':'RSS всех статей',
-        lang==='fa'?'فید RSS همه مقالات نشریه':lang==='en'?'RSS feed for all journal articles':'RSS-лента всех статей журнала'));
       directLinks.insertAdjacentElement('afterend',wrap);
     }
   }
