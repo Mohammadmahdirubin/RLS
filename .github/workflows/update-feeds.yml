@@ -86,7 +86,7 @@ jobs:
 
       - name: Commit updated feeds
         run: |
-          if git diff --quiet -- rss.xml feed.xml article-*-rss.xml; then
+          if [ -z "$(git status --porcelain -- rss.xml feed.xml article-*-rss.xml)" ]; then
             echo "Feeds are already up to date."
             exit 0
           fi
