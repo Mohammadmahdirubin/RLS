@@ -283,6 +283,7 @@ const initRLS=()=>{
         <div class="rls-footer-official-logo"><a class="rls-footer-logo-box rls-open-access-logo" href="https://sparcopen.org/open-access/" target="_blank" rel="noopener noreferrer" title="Open Access"><img src="${asset('open.png')}" alt="Open Access" loading="lazy"></a><span>Open Access</span></div>
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('academia.jpg')}" alt="Academia" loading="lazy"></div><span>Academia</span></div>
         <div class="rls-footer-official-logo"><div class="rls-footer-logo-box"><img src="${asset('علوم انسانی.jpg')}" alt="علوم انسانی" loading="lazy"></div><span>${lang==='fa'?'پژوهشگاه علوم انسانی و مطالعات فرهنگی':lang==='en'?'Institute for Humanities and Cultural Studies':'Институт гуманитарных и культурных исследований'}</span></div>
+        <div class="rls-footer-official-logo"><a class="rls-footer-logo-box" href="https://www.openaire.eu/" target="_blank" rel="noopener noreferrer" title="OpenAIRE"><img src="${asset('OpenAire_Logo.webp')}" alt="OpenAIRE" loading="lazy" decoding="async"></a><span>OpenAIRE</span></div>
         <a class="rls-footer-rss-link" href="${root}rss.xml" aria-label="${lang==='fa'?'دریافت فید نشریه':lang==='en'?'Subscribe to the journal RSS feed':'RSS-лента журнала'}" title="RSS Feed"><img src="${asset('Rss_logo.png')}" alt="RSS Feed" width="36" height="36" loading="lazy" decoding="async"><span>${lang==='fa'?'فیدخوان':lang==='en'?'RSS Feed':'RSS-лента'}</span></a>
       </div>
     </div>`;
