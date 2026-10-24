@@ -22,7 +22,7 @@ function record(a) {
     tag("identifier",a.doi) + tag("language",a.language) +
     list(a.keywords,"subject") + list(a.abstract,"description");
 
-  return `<record><header><identifier>${esc(identifier)}</identifier><datestamp>${validDate(a.publicationDate)}</datestamp><setSpec>rls</setSpec></header><metadata><oai_dc:dc xmlns:oai_dc="${DC}" xmlns:dc="${DCE}">${fields}</oai_dc:dc></metadata></record>`;
+  return `<record><header><identifier>${esc(identifier)}</identifier><datestamp>${validDate(a.publicationDate)}</datestamp><setSpec>rls</setSpec><setSpec>openaire</setSpec></header><metadata><oai_dc:dc xmlns:oai_dc="${DC}" xmlns:dc="${DCE}">${fields}</oai_dc:dc></metadata></record>`;
 }
 
 function envelope(url, body) {
@@ -105,7 +105,7 @@ export default {
       if (!exists) return errorResponse(url, "idDoesNotExist", "Record not found.", 200, headers);
       body = '<ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat></ListMetadataFormats>';
     } else if (verb === "ListSets") {
-      body = '<ListSets><set><setSpec>rls</setSpec><setName>Russian Language Studies</setName></set></ListSets>';
+      body = '<ListSets><set><setSpec>rls</setSpec><setName>Russian Language Studies</setName></set><set><setSpec>openaire</setSpec><setName>OpenAIRE records</setName></set></ListSets>';
     } else if (verb === "ListRecords" || verb === "ListIdentifiers") {
       const from = url.searchParams.get("from");
       const until = url.searchParams.get("until");
@@ -113,7 +113,7 @@ export default {
       if (from && !/^\d{4}-\d{2}-\d{2}$/.test(from)) return errorResponse(url, "badArgument", "from must use YYYY-MM-DD.", 200, headers);
       if (until && !/^\d{4}-\d{2}-\d{2}$/.test(until)) return errorResponse(url, "badArgument", "until must use YYYY-MM-DD.", 200, headers);
       if (from && until && from > until) return errorResponse(url, "badArgument", "from must not be later than until.", 200, headers);
-      if (set && set !== "rls") return errorResponse(url, "noRecordsMatch", "No records match the requested set.", 200, headers);
+      if (set && !["rls","openaire"].includes(set)) return errorResponse(url, "noRecordsMatch", "No records match the requested set.", 200, headers);
 
       const matches = articles.filter(a => {
         const d = validDate(a.publicationDate);
@@ -125,7 +125,7 @@ export default {
         body = "<ListRecords>" + matches.map(record).join("") + "</ListRecords>";
       } else {
         body = "<ListIdentifiers>" + matches.map(a =>
-          `<header><identifier>${esc("oai:rlsj.ir:" + a.id)}</identifier><datestamp>${validDate(a.publicationDate)}</datestamp><setSpec>rls</setSpec></header>`
+          `<header><identifier>${esc("oai:rlsj.ir:" + a.id)}</identifier><datestamp>${validDate(a.publicationDate)}</datestamp><setSpec>rls</setSpec><setSpec>openaire</setSpec></header>`
         ).join("") + "</ListIdentifiers>";
       }
     } else if (verb === "GetRecord") {
