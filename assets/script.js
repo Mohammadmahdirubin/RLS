@@ -143,10 +143,10 @@ const initRLS=()=>{
     if(lang==='ru' && /دوفصلنامه|Дофаслнаме/i.test(subtitleText)) brandSubtitle.textContent='Два выпуска в год';
   }
   // Article-specific RSS feed plus the journal-wide feed, placed after direct article links.
-  const isArticlePage=!!document.querySelector('meta[name="citation_title"]') || /^article-(?!click-).+\\.html$/.test(file);
+  const isArticlePage=!!document.querySelector('meta[name="citation_title"]') || /^article-(?!click-).+\.html$/.test(file);
   if(isArticlePage){
-    const articleSlug=file.replace(/\\.html$/,'');
-    const articleFeed='https://rlsj.ir/article-feeds/'+articleSlug+'.xml';
+    const articleSlug=file.replace(/\.html$/,'');
+    const articleFeed='https://rlsj.ir/'+articleSlug+'-rss.xml';
     if(!document.querySelector('link[rel="alternate"][type="application/rss+xml"][data-rls-article-feed]')){
       const articleDiscovery=document.createElement('link');
       articleDiscovery.rel='alternate';articleDiscovery.type='application/rss+xml';
