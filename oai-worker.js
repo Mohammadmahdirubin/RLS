@@ -39,6 +39,10 @@ function errorResponse(url, code, message, status = 200, headers) {
 export default {
   async fetch(req) {
     const url = new URL(req.url);
+    // Ignore common analytics parameters that may be appended by link previews or browsers.
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_id", "gclid", "fbclid"]) {
+      url.searchParams.delete(key);
+    }
     const verb = url.searchParams.get("verb") || "";
     const headers = {
       "content-type": "application/xml; charset=utf-8",
