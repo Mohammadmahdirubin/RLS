@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "journal": {
+    "title": "Russian Language Studies",
+    "titleFa": "مطالعات زبان روسی",
+    "titleRu": "Исследования русского языка",
+    "publisher": "Russian Language Studies",
+    "frequency": "Biannual",
+    "website": "https://rlsj.ir/",
+    "archive": "https://rlsj.ir/archive.html",
+    "articlesPage": "https://rlsj.ir/articles.html",
+    "languages": [
+      "fa",
+      "en",
+      "ru"
+    ],
+    "issn": "",
+    "doiPrefix": "",
+    "note": "ISSN and DOI are intentionally blank until officially assigned."
+  },
+  "issues": [
+    {
+      "volume": "1",
+      "issue": "1",
+      "year": 2026,
+      "season": "Spring–Summer 2026",
+      "status": "published-online",
+      "url": "https://rlsj.ir/archive.html",
+      "articles": 6
+    }
+  ],
+  "articleCount": 6,
+  "articlesEndpoint": "https://rlsj.ir/metadata/articles.json",
+  "rss": "https://rlsj.ir/feed.xml"
+}
