@@ -203,18 +203,18 @@ const initRLS=()=>{
       switcher.value=langUrls[lang];
       switcher.onchange=()=>{location.href=switcher.value;};
     }
-    // Lightweight text-only journal masthead: avoids downloading a large panoramic image on every page.
+    // Keep the original panoramic masthead image while loading it asynchronously.
     const banner=document.createElement('div');
-    banner.className='rls-site-banner rls-text-masthead';
+    banner.className='rls-site-banner';
     const bannerLink=document.createElement('a');
     bannerLink.href=langUrls[lang];
     bannerLink.setAttribute('aria-label',lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies':'دوفصلنامه مطالعات زبان روسی');
-    const mastheadTitle=document.createElement('strong');
-    mastheadTitle.textContent=lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies':'مطالعات زبان روسی';
-    const mastheadSubtitle=document.createElement('span');
-    mastheadSubtitle.textContent=lang==='ru'?'Научный журнал':lang==='en'?'Scholarly Journal':'نشریه علمی';
-    bannerLink.appendChild(mastheadTitle);
-    bannerLink.appendChild(mastheadSubtitle);
+    const image=document.createElement('img');
+    image.src=asset('Russian Language Studies_ Books and Kremlin Panorama.png');
+    image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
+    image.loading='eager';
+    image.decoding='async';
+    bannerLink.appendChild(image);
     banner.appendChild(bannerLink);
     header.insertBefore(banner,header.firstChild);
   }
@@ -272,10 +272,8 @@ const initRLS=()=>{
 html,body{background:#faf7ec!important}
 .site-header{background:#faf7ec!important;box-shadow:none!important}
 .rls-site-banner{background:#faf7ec!important}
-.rls-site-banner a{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:48px;padding:5px 18px;text-decoration:none;color:var(--accent2);line-height:1.35}
-.rls-text-masthead strong{font-size:17px;font-weight:800;letter-spacing:.1px}
-.rls-text-masthead span{font-size:11px;color:var(--muted);font-weight:600}
-.rls-site-banner img{display:block}
+.rls-site-banner a{display:block;text-decoration:none}
+.rls-site-banner img{display:block;width:100%;height:auto;max-height:90px;object-fit:contain}
 .site-header .header-inner{position:relative;display:flex;align-items:center;gap:12px}
 .site-header .main-nav{order:1;flex:1 1 auto;display:flex!important;align-items:center;justify-content:flex-end;gap:10px;font-size:12.5px;font-weight:700;min-width:0}
 .site-header .header-language-switcher{order:2;flex:0 0 86px;width:86px;max-width:86px;height:36px;margin:0}
@@ -301,12 +299,12 @@ footer .rls-footer-official-logo{display:flex;flex-direction:column;align-items:
 footer .rls-footer-logo-box{width:106px;height:74px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px;padding:6px;border:1px solid rgba(255,255,255,.55);box-shadow:0 4px 12px rgba(0,0,0,.12);text-decoration:none}
 footer .rls-footer-logo-box img{display:block;width:auto;height:auto;max-width:94px;max-height:62px;object-fit:contain}
 footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height:1.5;text-align:center;color:inherit;max-width:190px}
-@media(min-width:901px){.rls-text-masthead a{min-height:56px;padding-inline:24px}.header-inner{min-height:56px!important}.main-nav>a,.nav-group>summary{padding-top:14px!important;padding-bottom:14px!important}.main-nav a.active:after{bottom:9px!important}.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}.site-header .main-nav{gap:10px!important;font-size:12.5px!important}}
+@media(min-width:901px){.rls-site-banner img{max-height:90px!important;width:100%!important;object-fit:contain!important}.header-inner{min-height:56px!important}.main-nav>a,.nav-group>summary{padding-top:14px!important;padding-bottom:14px!important}.main-nav a.active:after{bottom:9px!important}.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}.site-header .main-nav{gap:10px!important;font-size:12.5px!important}}
 @media(max-width:900px){.site-header .header-inner{min-height:62px}.site-header .main-nav{display:none!important}.site-header .header-language-switcher{order:2}.site-header .menu-btn{order:3}.nav-group{width:100%!important;display:block!important}.nav-group>summary{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;padding:10px 4px!important;font-size:14px!important;white-space:normal!important;text-align:start!important;box-sizing:border-box!important}.nav-submenu{position:static!important;min-width:0!important;border:0!important;border-inline-start:3px solid var(--accent3)!important;box-shadow:none!important;margin:0 0 6px!important;padding:3px 12px!important;width:100%!important;box-sizing:border-box!important}.nav-submenu a{display:block!important;width:100%!important;padding:8px 4px!important;text-align:start!important;box-sizing:border-box!important}.nav-open .main-nav{display:flex!important;position:absolute;top:62px;left:0;right:0;width:100%;max-width:none;background:#faf7ec;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:10px 24px;box-shadow:0 12px 25px rgba(91,23,35,.1);max-height:calc(100vh - 62px);overflow-y:auto}.nav-open .main-nav>a{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;text-align:start!important;padding:10px 4px!important;box-sizing:border-box!important}.nav-open .main-nav>a.nav-submit,.nav-open .main-nav a.nav-submit{justify-content:center!important;text-align:center!important;margin:10px 0 4px!important}[dir="rtl"] .nav-open .main-nav>a,[dir="rtl"] .nav-group>summary,[dir="rtl"] .nav-submenu a{text-align:right!important;justify-content:flex-start!important}[dir="ltr"] .nav-open .main-nav>a,[dir="ltr"] .nav-group>summary,[dir="ltr"] .nav-submenu a{text-align:left!important;justify-content:flex-start!important}}
 @media(min-width:901px){.site-header .menu-btn{display:none!important}.site-header .main-nav{display:flex!important}}
 @media(max-width:760px){footer .rls-footer-main{grid-template-columns:1fr 1fr}footer .rls-footer-cc{align-items:flex-start}footer .rls-footer-cc *{text-align:left!important}footer .rls-footer-official-logos{gap:12px;flex-wrap:wrap}}
 @media(max-width:560px){.site-header .header-inner{min-height:56px}.site-header .header-language-switcher{flex-basis:76px;width:76px;max-width:76px;height:34px;font-size:11px}.nav-open .main-nav{top:56px;max-height:calc(100vh - 56px);padding:10px 18px}footer .rls-footer-inner{padding:20px 14px 18px}footer .rls-footer-main{grid-template-columns:1fr;gap:12px}footer .rls-email-line,footer .rls-email-line a{white-space:normal}footer .rls-footer-official-logos{gap:10px;margin-top:16px;padding-top:14px;flex-wrap:wrap}footer .rls-footer-official-logo{min-width:0}footer .rls-footer-logo-box{width:92px;height:66px}footer .rls-footer-logo-box img{max-width:82px;max-height:54px}}
-@media(orientation:landscape) and (max-width:900px){.site-header .header-inner{min-height:52px}.rls-text-masthead a{min-height:44px}.nav-open .main-nav{top:52px!important;max-height:calc(100vh - 52px)!important}}
+@media(orientation:landscape) and (max-width:900px){.site-header .header-inner{min-height:52px}.site-header .rls-site-banner img{height:78px!important;max-height:78px!important}.nav-open .main-nav{top:52px!important;max-height:calc(100vh - 52px)!important}}
 #rls-back-to-top{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border:1px solid rgba(139,38,53,.22);border-radius:50%;background:var(--accent,#8b2635);color:#fff;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s ease,visibility .2s ease,transform .2s ease,background .2s ease;z-index:9998;box-shadow:0 8px 20px rgba(36,27,29,.18)}
 #rls-back-to-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
 #rls-back-to-top:hover{background:var(--accent2,#5b1723)}
