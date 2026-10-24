@@ -19,38 +19,28 @@
 <div class="notice" role="note"><strong>Отправка статьи по электронной почте</strong><br>Если вам не удаётся отправить статью через онлайн-форму или при её заполнении возникает ошибка, вы можете направить файл статьи и сведения об авторах на официальный адрес электронной почты журнала: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a>.<br>Пожалуйста, укажите в теме письма: «Подача статьи в журнал Russian Language Studies».</div>
 <div class="tally-embed" style="display:block;width:100%;max-width:100%;min-width:0;direction:ltr;margin:0 auto;padding:0">
 <p style="text-align:center;margin:0 0 14px"><a href="https://tally.so/r/Yj5Zb0" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 22px;border-radius:7px;background:#8b2635;color:#fff;text-decoration:none;font-weight:700">Открыть форму подачи рукописи</a></p>
-<iframe data-tally-src="https://tally.so/embed/Yj5Zb0?alignLeft=1&amp;hideTitle=1&amp;transparentBackground=1" loading="eager" style="display:block;width:100%;max-width:100%;min-width:0;min-height:1200px;height:1200px;border:0;margin:0;padding:0;background:transparent" width="100%" height="1200" frameborder="0" marginheight="0" marginwidth="0" title="Подача рукописи в журнал Russian Language Studies" allow="clipboard-write"></iframe>
+<iframe data-tally-src="https://tally.so/embed/Yj5Zb0?alignLeft=1&amp;hideTitle=1" loading="eager" style="display:block;width:100%;max-width:100%;min-width:0;height:1200px;border:0;margin:0;padding:0;background:transparent" width="100%" height="1200" frameborder="0" marginheight="0" marginwidth="0" title="Подача рукописи в журнал Russian Language Studies" allow="clipboard-write"></iframe>
 <script>
 (function () {
-  var frame = document.querySelector('iframe[data-tally-src]');
-  if (!frame) return;
-  var loadForm = function () {
-    if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-tally-src').replace(/&amp;/g, '&'));
-  };
-  var scriptUrl = 'https://tally.so/widgets/embed.js';
-  if (window.Tally && typeof window.Tally.loadEmbeds === 'function') {
-    window.Tally.loadEmbeds();
-    loadForm();
-  } else {
-    var script = document.querySelector('script[src="' + scriptUrl + '"]');
-    if (!script) {
-      script = document.createElement('script');
-      script.src = scriptUrl;
-      script.onload = function () { if (window.Tally && typeof window.Tally.loadEmbeds === 'function') window.Tally.loadEmbeds(); loadForm(); };
-      script.onerror = loadForm;
-      document.body.appendChild(script);
-    } else {
-      script.addEventListener('load', function () { if (window.Tally && typeof window.Tally.loadEmbeds === 'function') window.Tally.loadEmbeds(); loadForm(); }, { once: true });
-      loadForm();
+  var d = document;
+  var src = 'https://tally.so/widgets/embed.js';
+  function initTally() {
+    if (window.Tally && typeof window.Tally.loadEmbeds === 'function') {
+      window.Tally.loadEmbeds();
     }
+  }
+  if (window.Tally) {
+    initTally();
+  } else if (!d.querySelector('script[src="' + src + '"]')) {
+    var script = d.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = initTally;
+    d.body.appendChild(script);
   }
 })();
 </script>
-<div class="notice" style="margin-top:16px;text-align:center">
-<strong>Форма не отображается?</strong><br>
-Возможно, браузер или сеть блокирует загрузку внешней формы. Откройте её напрямую в новой вкладке.
-<p style="margin:10px 0 0"><a href="https://tally.so/r/Yj5Zb0" target="_blank" rel="noopener noreferrer">Открыть форму на отдельной странице</a></p>
-</div>
+<div class="notice" style="margin-top:16px;text-align:center"><strong>Форма не отображается?</strong><br>Если встроенная форма не загружается, используйте прямую ссылку выше или отправьте рукопись по электронной почте.<p style="margin:10px 0 0"><a href="https://tally.so/r/Yj5Zb0" target="_blank" rel="noopener noreferrer">Открыть форму подачи рукописи</a></p></div>
 </div>
 </section></main>
 <footer class="site-footer"><div class="container"><p><strong dir="ltr">RLS</strong> — Исследования по русскому языку</p><p>Издатель и ответственный редактор: Mohammadmahdi Rubin · Лицензия 94254</p><p>ISSN, DOI и сведения об индексировании будут добавлены только после официальной регистрации или подтверждения.</p></div></footer>
