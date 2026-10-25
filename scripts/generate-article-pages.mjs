@@ -286,7 +286,6 @@ ${a.orcid ? `<p>ORCID<br><a href="https://orcid.org/${esc(a.orcid)}" target="_bl
 for (const a of published) {
   for (const lang of langs) {
     const out = path.join(root, page(lang, a));
-    if (fs.existsSync(out)) continue;
 
     const templatePath = path.join(root,
       lang === "fa"
