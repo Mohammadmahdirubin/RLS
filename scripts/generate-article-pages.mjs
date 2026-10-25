@@ -208,7 +208,7 @@ function buildMain(lang, a, templateMain) {
   out = replaceFirst(out, /(<div class="eyebrow">)[\s\S]*?(<\/div>)/, `$1${heroMeta}$2`, "hero metadata");
   out = replaceFirst(out, /(<h1(?: [^>]*)?>)[\s\S]*?(<\/h1>)/, `$1${esc(title)}$2`, "hero title");
   out = replaceFirst(out, /(<section class="page-hero">[\s\S]*?<h1\b[^>]*>[\s\S]*?<\/h1>[\s\S]*?<p\b[^>]*>)[\s\S]*?(<\/p>)/, `$1${esc(heroSecondary)}$2`, "hero secondary");
-  out = replaceFirst(out, /<div class="article-byline">[\s\S]*?<\/div>/, byline, "byline");
+  out = replaceFirst(out, /<div class="article-byline"[^>]*>[\s\S]*?<\/div>/, byline, "byline");
   out = replaceFirst(out, /<div class="notice" style="margin:18px 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">[\s\S]*?<\/div>/, notice, "PDF notice");
 
   const abstractLabel = esc(l.abstract);
