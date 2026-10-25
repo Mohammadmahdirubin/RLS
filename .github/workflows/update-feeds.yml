@@ -35,18 +35,28 @@ jobs:
             return Number.isNaN(d.getTime()) ? new Date() : d;
           };
           const urlOf = a => 'https://rlsj.ir/article-' + encodeURIComponent(a.id) + '.html';
+          // Prefer the English-language author metadata in multilingual records.
+          const authorOf = a => {
+            if (a.authorNames?.en) return a.authorNames.en;
+            if (Array.isArray(a.authors)) {
+              const names = a.authors.map(x => x?.name?.en || x?.name || '').filter(Boolean);
+              if (names.length) return names.join('; ');
+            }
+            if (a.authors?.en) return Array.isArray(a.authors.en) ? a.authors.en.join('; ') : a.authors.en;
+            return a.author || a.authorGiven || 'Russian Language Studies';
+          };
           const rssItems = articles.map(a => {
             const url = urlOf(a), date = dateOf(a).toUTCString();
             const title = a.title?.en || a.title?.fa || a.id;
             const description = a.abstract?.en || a.abstract?.fa || '';
-            const author = a.author || a.authorGiven || 'Russian Language Studies';
+            const author = authorOf(a);
             return `    <item>\n      <title>${esc(title)}</title>\n      <link>${esc(url)}</link>\n      <guid isPermaLink="true">${esc(url)}</guid>\n      <pubDate>${date}</pubDate>\n      <description>${esc(description)}</description>\n      <author>${esc(author)}</author>\n    </item>`;
           }).join('\n');
           const now = new Date().toUTCString();
           const rss = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>Russian Language Studies</title>\n    <link>https://rlsj.ir/</link>\n    <description>Latest published articles from Russian Language Studies.</description>\n    <language>en</language>\n    <atom:link href="https://rlsj.ir/rss.xml" rel="self" type="application/rss+xml" />\n    <lastBuildDate>${now}</lastBuildDate>\n${rssItems}\n  </channel>\n</rss>\n`;
           const atomEntries = articles.map(a => {
             const url = urlOf(a), date = dateOf(a).toISOString();
-            return `  <entry>\n    <title>${esc(a.title?.en || a.title?.fa || a.id)}</title>\n    <id>${esc(url)}</id>\n    <link href="${esc(url)}" />\n    <updated>${date}</updated>\n    <summary>${esc(a.abstract?.en || a.abstract?.fa || '')}</summary>\n    <author><name>${esc(a.author || 'Russian Language Studies')}</name></author>\n  </entry>`;
+            return `  <entry>\n    <title>${esc(a.title?.en || a.title?.fa || a.id)}</title>\n    <id>${esc(url)}</id>\n    <link href="${esc(url)}" />\n    <updated>${date}</updated>\n    <summary>${esc(a.abstract?.en || a.abstract?.fa || '')}</summary>\n    <author><name>${esc(authorOf(a))}</name></author>\n  </entry>`;
           }).join('\n');
           const atom = `<?xml version="1.0" encoding="UTF-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n  <title>Russian Language Studies</title>\n  <id>https://rlsj.ir/</id>\n  <link href="https://rlsj.ir/feed.xml" rel="self" />\n  <link href="https://rlsj.ir/" />\n  <updated>${new Date().toISOString()}</updated>\n${atomEntries}\n</feed>\n`;
           fs.writeFileSync('rss.xml', rss);
@@ -59,7 +69,7 @@ jobs:
             const feedUrl = 'https://rlsj.ir/article-' + encodeURIComponent(a.id) + '-rss.xml';
             const title = a.title?.en || a.title?.fa || a.id;
             const description = a.abstract?.en || a.abstract?.fa || '';
-            const author = a.author || a.authorGiven || 'Russian Language Studies';
+            const author = authorOf(a);
             const published = dateOf(a).toUTCString();
             const articleRss = `<?xml version="1.0" encoding="UTF-8"?>\n` +
               `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">\n` +
