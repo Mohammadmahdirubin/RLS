@@ -81,6 +81,16 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://rlsj.ir/article-yasnaya-polyana-wwii.html</loc>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-yasnaya-polyana-wwii.html" />
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://rlsj.ir/articles.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -207,6 +217,16 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-teaching-russian-indian-university-communicative-activity-approach.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-teaching-russian-indian-university-communicative-activity-approach.html" />
     <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/en/article-yasnaya-polyana-wwii.html</loc>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-yasnaya-polyana-wwii.html" />
+    <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -472,6 +492,16 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-teaching-russian-indian-university-communicative-activity-approach.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-teaching-russian-indian-university-communicative-activity-approach.html" />
     <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/ru/article-yasnaya-polyana-wwii.html</loc>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/article-yasnaya-polyana-wwii.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/article-yasnaya-polyana-wwii.html" />
+    <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
