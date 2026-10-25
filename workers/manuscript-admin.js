@@ -14,9 +14,10 @@ export default {
    const result=await env.DB.prepare("SELECT id,tracking_code,author,email,title,institution,orcid,abstract,message,main_filename,supplementary_filename,status,received_at,updated_at,editor_note FROM manuscripts ORDER BY received_at DESC LIMIT 500").all();
    return reply({manuscripts:result.results||[]});
   }
-  const historyMatch=url.pathname.match(/^\\/admin-api\\/manuscripts\\/(\\d+)\\/history$/);
-  if(historyMatch && request.method==="GET"){
-   const id=Number(historyMatch[1]);
+  const historyParts=url.pathname.split("/");
+  if(historyParts.length===5 && historyParts[1]==="admin-api" && historyParts[2]==="manuscripts" && historyParts[4]==="history" && request.method==="GET"){
+   const id=Number(historyParts[3]);
+   if(!Number.isInteger(id)||id<1)return reply({error:"Invalid manuscript id"},400);
    const exists=await env.DB.prepare("SELECT id FROM manuscripts WHERE id=?").bind(id).first();
    if(!exists)return reply({error:"Manuscript not found"},404);
    const result=await env.DB.prepare("SELECT id,manuscript_id,status,editor_note,changed_at FROM manuscript_admin_history WHERE manuscript_id=? ORDER BY changed_at DESC,id DESC LIMIT 200").bind(id).all();
