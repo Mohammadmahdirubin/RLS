@@ -32,7 +32,9 @@ export default {
    const existing=await env.DB.prepare("SELECT id,status,email,author,title,tracking_code FROM manuscripts WHERE id=?").bind(id).first();
    if(!existing)return reply({error:"Manuscript not found"},404);
    const previousStatus=existing.status;
-   await env.DB.prepare("UPDATE manuscripts SET status=?,editor_note=?,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?").bind(status,note,id).run();
+   const updateResult=await env.DB.prepare("UPDATE manuscripts SET status=?,editor_note=?,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?").bind(status,note,id).run();
+   const saved=await env.DB.prepare("SELECT status FROM manuscripts WHERE id=?").bind(id).first();
+   if(!saved || saved.status!==status) return reply({error:"Status update could not be verified",previousStatus,requestedStatus:status,savedStatus:saved?.status||null,changes:updateResult?.meta?.changes??null},500);
    await env.DB.prepare("INSERT INTO manuscript_admin_history (manuscript_id,status,editor_note,changed_at) VALUES (?,?,?,strftime('%Y-%m-%dT%H:%M:%fZ','now'))").bind(id,status,note).run();
    let emailSent=false,emailError=null;
    const language=["fa","ru","en"].includes(body.email_language)?body.email_language:"fa";
@@ -58,7 +60,7 @@ export default {
      }catch(e){emailError="Email request failed: "+String(e&&e.message||e).slice(0,200);}
     }
    }
-   return reply({success:true,statusChanged:previousStatus!==status,emailSent,emailError});
+   return reply({success:true,previousStatus,requestedStatus:status,savedStatus:saved.status,statusChanged:previousStatus!==saved.status,emailSent,emailError,emailAddressPresent:!!existing.email});
   }
   return reply({error:"Not found"},404);
  }
