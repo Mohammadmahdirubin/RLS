@@ -151,7 +151,7 @@ ${authorRecords.map(record => `<meta name="citation_author" content="${esc(recor
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${esc(t)} | ${j}">
 <meta name="twitter:description" content="${esc(description)}">
-${css}
+${assetLines}
 <script type="application/ld+json">
 ${jsonLd}
 </script>
