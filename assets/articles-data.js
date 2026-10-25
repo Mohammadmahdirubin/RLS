@@ -357,5 +357,59 @@ window.RLS_ARTICLES = [
       "en": "O. A. Solopova; N. N. Koshkarova; S. Saini",
       "ru": "О. А. Солопова; Н. Н. Кошкарова; С. Саини"
     }
+  },
+  {
+    "id": "article-7-yasnaya-polyana",
+    "number": 7,
+    "status": "published",
+    "issue": "1/1",
+    "volume": "1",
+    "issueNumber": "1",
+    "type": {
+      "fa": "مقاله پژوهشی",
+      "en": "Research Article",
+      "ru": "Научная статья"
+    },
+    "title": {
+      "fa": "یاسنایا پالیانا در جنگ جهانی دوم: تخلیه، آسیب‌های ناشی از اشغال و بازسازی میراث فرهنگی لف تالستوی",
+      "en": "Yasnaya Polyana during the Second World War: Evacuation, Occupation Damage, and the Restoration of Leo Tolstoy’s Cultural Heritage",
+      "ru": "Ясная Поляна во время Второй мировой войны: эвакуация, ущерб в период оккупации и восстановление культурного наследия Льва Толстого"
+    },
+    "sourceLanguage": "fa",
+    "language": "fa",
+    "author": "محمد جواد پیکانی",
+    "authorNames": {
+      "fa": "محمد جواد پیکانی",
+      "en": "Mohammad Javad Paykani",
+      "ru": "Мохаммад Джавад Пейкани"
+    },
+    "affiliation": {
+      "fa": "دانشجوی دکتری ادبیات روسیه، دانشگاه فدرال کازان، کازان، روسیه",
+      "en": "PhD student in Russian Literature, Kazan Federal University, Kazan, Russia",
+      "ru": "Аспирант по русской литературе, Казанский федеральный университет, Казань, Россия"
+    },
+    "email": "j.paykani@yahoo.com",
+    "orcid": "0000-0001-7259-9401",
+    "received": "2026-10-12",
+    "accepted": "2026-10-22",
+    "online": "2026-10-25",
+    "publicationDate": "2026-10-25",
+    "firstPage": "86",
+    "lastPage": "101",
+    "pdf": "/articles/1/Paykani-Yasnaya-Polyana-during-the-Second-World-War-2026.pdf",
+    "keywords": {
+      "fa": "یاسنایا پالیانا؛ لف تالستوی؛ جنگ جهانی دوم؛ تخلیه آثار موزه‌ای؛ میراث فرهنگی؛ حافظه تاریخی",
+      "en": "Yasnaya Polyana; Leo Tolstoy; Second World War; evacuation of museum objects; cultural heritage; historical memory",
+      "ru": "Ясная Поляна; Лев Толстой; Вторая мировая война; эвакуация музейных предметов; культурное наследие; историческая память"
+    },
+    "doi": "",
+    "license": "",
+    "abstract": {
+      "fa": "یاسنایا پالیانا، خانه خانوادگی و محل زندگی و فعالیت ادبی لف نیکلایویچ تالستوی، از مهم‌ترین مکان‌های مرتبط با تاریخ ادبیات روسیه به شمار می‌رود. این مجموعه در جنگ جهانی دوم، به‌ویژه در پاییز و زمستان ۱۹۴۱، با تهدیدی جدی علیه بناهای تاریخی، اشیای یادبود و اسناد مرتبط با زندگی و آثار نویسنده روبه‌رو شد. هدف مقاله حاضر بررسی اقدامات انجام‌شده برای حفاظت از میراث تالستوی در جریان جنگ، پیامدهای اشغال یاسنایا پالیانا و روند بازسازی مجموعه پس از خروج نیروهای آلمانی است. پژوهش با تکیه بر منابع تاریخی و اطلاعات منتشرشده از سوی موزه یاسنایا پالیانا، رویدادهای اصلی این دوره را در سه محور بررسی می‌کند: تخلیه مجموعه‌ای از اشیا و اسناد به تومسک، آسیب‌های واردشده به خانه و دیگر بناهای املاک در دوران اشغال، و تلاش‌های فوری برای مرمت و بازگرداندن فعالیت فرهنگی موزه. همچنین، تبدیل یاسنایا پالیانا از یک ملک خانوادگی به میراثی ملی و نقش آن در حفظ حافظه فرهنگی روسیه مورد توجه قرار می‌گیرد. اهمیت این موضوع تنها به نجات یک بنای تاریخی محدود نیست؛ حفاظت از یاسنایا پالیانا به معنای حفظ بخشی از شواهد مادی زندگی و آفرینش ادبی نویسنده‌ای است که آثارش از مرزهای ملی فراتر رفته‌اند. بررسی این تجربه نشان می‌دهد که حفظ میراث ادبی در شرایط جنگ، مستلزم همکاری کارکنان فرهنگی، نهادهای علمی و جامعه محلی است.",
+      "en": "Yasnaya Polyana, the family estate and literary home of Leo Nikolayevich Tolstoy, occupies an important place in the history of Russian literature. During the Second World War, particularly in the autumn and winter of 1941, the estate faced serious threats to its historic buildings, memorial objects, and documentary collections. This article examines the measures taken to protect Tolstoy’s material heritage during the war, the consequences of the German occupation, and the subsequent restoration of the museum complex. Drawing on historical materials and information published by the Yasnaya Polyana Museum, the study focuses on three interconnected processes: the evacuation of 110 crates of museum objects and documents to Tomsk, the damage sustained by the estate during the occupation, and the restoration work undertaken after the withdrawal of German forces. It also considers the transformation of Yasnaya Polyana from a family estate into a national cultural institution and explores its significance as a site of cultural memory. The study argues that the preservation of Yasnaya Polyana involved more than saving a historic building. It required the protection of personal belongings, books, artworks, and documentary evidence associated with Tolstoy’s life and literary work, as well as the restoration of their relationship with the original historical environment. The estate’s wartime experience demonstrates the importance of preventive evacuation, documentation, institutional cooperation, and evidence-based restoration in safeguarding literary heritage during armed conflict.",
+      "ru": ""
+    },
+    "href": "article-yasnaya-polyana-wwii.html",
+    "slug": "article-yasnaya-polyana-wwii"
   }
 ];
