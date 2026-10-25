@@ -218,6 +218,13 @@ function buildMain(lang, a, templateMain) {
   const keywordsRe = new RegExp(`<h2>${keywordsLabel}<\/h2>[\s\S]*?<p>([\s\S]*?)<\/p>`);
   out = replaceFirst(out, keywordsRe, `<h2>${keywordsLabel}</h2>\\n<p>${esc(a.keywords[lang])}</p>`, "keywords");
 
+  if (lang === "ru") {
+    out = out.replace(
+      new RegExp(`(<h2>${keywordsLabel}<\\/h2>\\s*<p>[\s\S]*?<\\/p>)`),
+      `$1\\n<h2 dir="ltr">Abstract (English)</h2>\\n<p dir="ltr">${esc(a.abstract.en || "")}</p>\\n<h2 dir="ltr">Keywords (English)</h2>\\n<p dir="ltr">${esc(a.keywords.en || "")}</p>`
+    );
+  }
+
   if (lang === "fa") {
     out = replaceFirst(out, /(<h2 dir="ltr">Article Title \(English\)<\/h2>\\s*<p dir="ltr">)[\s\S]*?(<\/p>)/,
       `$1${esc(a.title.en || title)}$2`, "Persian English title");
