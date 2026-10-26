@@ -259,5 +259,5 @@ const feed=published.slice().sort((a,b)=>String(b.online).localeCompare(String(a
   const u=urlFor(a,langs[0]);
   return '  <entry>\n    <title>'+esc(a.title.en)+'</title>\n    <id>'+u+'</id>\n    <link href="'+u+'"/>\n    <updated>'+isoDate(a.online)+'T00:00:00Z</updated>\n    <summary>'+esc(a.abstract?.en||'')+'</summary>\n    <author><name>'+esc(a.author)+'</name></author>\n  </entry>';
 }).join('\n');
-fs.writeFileSync('feed.xml','<?xml version="1.0" encoding="UTF-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n  <title>Russian Language Studies</title>\n  <id>'+BASE+'</id>\n  <link href="'+BASE+'feed.xml" rel="self"/>\n  <link href="'+BASE+'"/>\n  <updated>'+(published[0]?.online||new Date().toISOString().slice(0,10))+'T00:00:00Z</updated>\n'+feed+'\n</feed>\n');
+fs.writeFileSync('feed.xml','<?xml version="1.0" encoding="UTF-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n  <title>Russian Language Studies</title>\n  <id>'+BASE+'</id>\n  <link href="'+BASE+'feed.xml" rel="self"/>\n  <link href="'+BASE+'"/>\n  <updated>'+isoDate(published.slice().sort((a,b)=>String(b.online).localeCompare(String(a.online)))[0]?.online||new Date().toISOString().slice(0,10))+'T00:00:00Z</updated>\n'+feed+'\n</feed>\n');
 console.log('Synchronized '+published.length+' published articles and '+unique.length+' canonical HTML URLs.');
