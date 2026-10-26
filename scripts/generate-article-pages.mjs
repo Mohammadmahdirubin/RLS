@@ -87,7 +87,7 @@ function buildHead(lang, a, template) {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
     "@id": u + "#article",
-    headline: t,
+    headline: a.title[a.language || a.sourceLanguage || lang] || a.title.en || t,
     description: a.abstract[lang],
     datePublished: String(a.online).replace(/\//g, "-"),
     dateModified: String(a.online).replace(/\//g, "-"),
