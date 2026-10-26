@@ -26,10 +26,10 @@
       "season": "Spring–Summer 2026",
       "status": "published-online",
       "url": "https://rlsj.ir/archive.html",
-      "articles": 6
+      "articles": 7
     }
   ],
-  "articleCount": 6,
+  "articleCount": 7,
   "articlesEndpoint": "https://rlsj.ir/metadata/articles.json",
   "rss": "https://rlsj.ir/feed.xml"
 }
