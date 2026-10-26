@@ -255,7 +255,7 @@ for(const e of unique){
 }
 fs.writeFileSync('sitemap.xml',sitemap+'</urlset>\n');
 
-const feed=published.slice().sort((a,b)=>String(b.online).localeCompare(String(a.online))).map(a=>{
+const feed=published.slice().sort((a,b)=>isoDate(b.online).localeCompare(isoDate(a.online))).map(a=>{
   const u=urlFor(a,langs[0]);
   return '  <entry>\n    <title>'+esc(a.title.en)+'</title>\n    <id>'+u+'</id>\n    <link href="'+u+'"/>\n    <updated>'+isoDate(a.online)+'T00:00:00Z</updated>\n    <summary>'+esc(a.abstract?.en||'')+'</summary>\n    <author><name>'+esc(a.author)+'</name></author>\n  </entry>';
 }).join('\n');
