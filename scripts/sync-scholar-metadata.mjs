@@ -109,7 +109,7 @@ function sync(html,a,l){
   if(a.issn) html=setMeta(html,'citation_issn',a.issn);
   const ld={
     '@context':'https://schema.org','@type':'ScholarlyArticle','@id':url+'#article',
-    headline:a.title?.[l.key]||a.title?.en,description:a.abstract?.[l.key]||a.abstract?.en||'',
+    headline:a.title?.[sourceLanguage]||a.title?.en||a.id,description:a.abstract?.[l.key]||a.abstract?.en||'',
     datePublished:isoDate(a.online),dateModified:isoDate(a.online),
     author:as.map(x=>{
       const p={'@type':'Person',name:x.name};
@@ -257,7 +257,7 @@ fs.writeFileSync('sitemap.xml',sitemap+'</urlset>\n');
 
 const feed=published.slice().sort((a,b)=>String(b.online).localeCompare(String(a.online))).map(a=>{
   const u=urlFor(a,langs[0]);
-  return '  <entry>\n    <title>'+esc(a.title.en)+'</title>\n    <id>'+u+'</id>\n    <link href="'+u+'"/>\n    <updated>'+a.online+'T00:00:00Z</updated>\n    <summary>'+esc(a.abstract?.en||'')+'</summary>\n    <author><name>'+esc(a.author)+'</name></author>\n  </entry>';
+  return '  <entry>\n    <title>'+esc(a.title.en)+'</title>\n    <id>'+u+'</id>\n    <link href="'+u+'"/>\n    <updated>'+isoDate(a.online)+'T00:00:00Z</updated>\n    <summary>'+esc(a.abstract?.en||'')+'</summary>\n    <author><name>'+esc(a.author)+'</name></author>\n  </entry>';
 }).join('\n');
 fs.writeFileSync('feed.xml','<?xml version="1.0" encoding="UTF-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n  <title>Russian Language Studies</title>\n  <id>'+BASE+'</id>\n  <link href="'+BASE+'feed.xml" rel="self"/>\n  <link href="'+BASE+'"/>\n  <updated>'+(published[0]?.online||new Date().toISOString().slice(0,10))+'T00:00:00Z</updated>\n'+feed+'\n</feed>\n');
 console.log('Synchronized '+published.length+' published articles and '+unique.length+' canonical HTML URLs.');
