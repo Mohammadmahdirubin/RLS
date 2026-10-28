@@ -170,6 +170,60 @@ const initRLS=()=>{
         lang==='fa'?'فید RSS اختصاصی همین مقاله':lang==='en'?'RSS feed for this article only':'RSS-лента только этой статьи'));
       directLinks.insertAdjacentElement('afterend',wrap);
     }
+    // Crossref XML is downloadable only when a real DOI has been assigned.
+    // Never fabricate DOI values: Crossref deposits require the registered DOI.
+    const addCrossrefExportStatus=()=>{
+      const anchor=document.getElementById('rls-crossref-xml-status');
+      if(anchor) return;
+      const host=document.getElementById('rls-article-rss-links') || directLinks;
+      if(!host) return;
+      const status=document.createElement('div');
+      status.id='rls-crossref-xml-status';
+      status.style.cssText='margin:10px 0 18px;padding:10px 12px;border:1px solid var(--line,#e2d8d0);border-radius:8px;font-size:13px;line-height:1.8';
+      const render=(article)=>{
+        status.replaceChildren();
+        if(article && article.doi && /^10\\.\\d{4,9}\\/\\S+$/.test(String(article.doi).trim())){
+          const link=document.createElement('a');
+          link.href=root+'crossref-xml/article-'+article.id+'.xml';
+          link.download='crossref-'+article.id+'.xml';
+          link.textContent=lang==='fa'?'دریافت فایل XML کراس‌رف':lang==='en'?'Download Crossref XML':'Скачать XML Crossref';
+          link.style.cssText='display:inline-block;padding:7px 11px;border-radius:7px;background:#1769aa;color:#fff;text-decoration:none;font-weight:700';
+          status.appendChild(link);
+          const note=document.createElement('span');
+          note.style.cssText='display:block;margin-top:5px;color:var(--muted,#666)';
+          note.textContent=lang==='fa'?'فایل برای DOI ثبت‌شده تولید می‌شود؛ پیش از ارسال، اطلاعات را بررسی کنید.':lang==='en'?'Generated for the assigned DOI; verify metadata before deposit.':'Файл создаётся для присвоенного DOI; перед отправкой проверьте метаданные.';
+          status.appendChild(note);
+        } else {
+          status.textContent=lang==='fa'
+            ?'فایل XML کراس‌رف پس از تخصیص DOI معتبر به این مقاله قابل دریافت خواهد بود؛ DOI فعلاً ثبت نشده است.'
+            :lang==='en'
+              ?'Crossref XML will be available after a valid DOI is assigned to this article. No DOI is currently recorded.'
+              :'XML Crossref будет доступен после присвоения статье действительного DOI. Сейчас DOI не указан.';
+          status.style.color='var(--muted,#666)';
+        }
+      };
+      host.insertAdjacentElement('afterend',status);
+      const locateArticle=()=>{
+        const title=(document.querySelector('meta[name="citation_title"]')||{}).content||'';
+        const all=window.RLS_ARTICLES||[];
+        const article=all.find(a=>a && (a.href===file || ('article-'+a.id+'.html')===file || (a.title && a.title.en===title)));
+        render(article);
+      };
+      if(Array.isArray(window.RLS_ARTICLES)){ locateArticle(); }
+      else {
+        const existing=document.querySelector('script[data-rls-crossref-data]');
+        if(existing){ existing.addEventListener('load',locateArticle,{once:true}); }
+        else {
+          const dataScript=document.createElement('script');
+          dataScript.src=asset('assets/articles-data.js');
+          dataScript.setAttribute('data-rls-crossref-data','1');
+          dataScript.onload=locateArticle;
+          dataScript.onerror=()=>render(null);
+          document.head.appendChild(dataScript);
+        }
+      }
+    };
+    addCrossrefExportStatus();
   }
   const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const mobile=isMobileUA && Math.min(window.innerWidth||9999, screen.width||9999)<=900;
