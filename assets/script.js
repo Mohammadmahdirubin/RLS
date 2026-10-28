@@ -182,7 +182,7 @@ const initRLS=()=>{
       status.style.cssText='margin:10px 0 18px;padding:10px 12px;border:1px solid var(--line,#e2d8d0);border-radius:8px;font-size:13px;line-height:1.8';
       const render=(article)=>{
         status.replaceChildren();
-        if(article && article.doi && /^10\\.\\d{4,9}\\/\\S+$/.test(String(article.doi).trim())){
+        if(article && article.doi && /^10\.\d{4,9}\/\S+$/.test(String(article.doi).trim())){
           const link=document.createElement('a');
           link.href=root+'crossref-xml/article-'+article.id+'.xml';
           link.download='crossref-'+article.id+'.xml';
