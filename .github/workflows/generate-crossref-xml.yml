@@ -26,21 +26,21 @@ jobs:
           const fs = require('fs');
           const path = require('path');
           const raw = fs.readFileSync('assets/articles-data.js', 'utf8');
-          const match = raw.match(/window\\.RLS_ARTICLES\\s*=\\s*(\\[[\\s\\S]*\\])\\s*;?/);
+          const match = raw.match(/window\.RLS_ARTICLES\s*=\s*(\[[\s\S]*\])\s*;?/);
           if (!match) throw new Error('Could not parse window.RLS_ARTICLES');
           const articles = JSON.parse(match[1]).filter(a => a && a.status === 'published');
           const outDir = 'crossref-xml';
           fs.mkdirSync(outDir, { recursive: true });
           for (const name of fs.readdirSync(outDir)) {
-            if (/^article-.+\\.xml$/.test(name)) fs.unlinkSync(path.join(outDir, name));
+            if (/^article-.+\.xml$/.test(name)) fs.unlinkSync(path.join(outDir, name));
           }
           const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
           const dateParts = value => {
-            const m = String(value || '').match(/^(\\d{4})[-/](\\d{1,2})[-/](\\d{1,2})/);
+            const m = String(value || '').match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
             return m ? { year:m[1], month:String(Number(m[2])), day:String(Number(m[3])) } : { year:'2026' };
           };
           const splitName = name => {
-            const parts = String(name || '').trim().split(/\\s+/).filter(Boolean);
+            const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
             if (parts.length < 2) return { given: parts[0] || 'Unknown', family: 'Unknown' };
             return { given: parts.slice(0,-1).join(' '), family: parts[parts.length-1] };
           };
@@ -55,16 +55,16 @@ jobs:
               return [{ given:a.authorGiven, family:a.authorFamily, orcid:a.orcid || '' }];
             }
             const source = a.authorNames?.en || a.author || '';
-            return String(source).split(/\\s*;\\s*/).map(splitName);
+            return String(source).split(/\s*;\s*/).map(splitName);
           };
           const timestamp = String(Date.now());
           let generated = 0;
           for (const a of articles) {
             const doi = String(a.doi || '').trim();
             // Do not invent or placeholder a DOI: Crossref journal deposits require a real DOI.
-            if (!/^10\\.\\d{4,9}\\/\\S+$/.test(doi)) continue;
+            if (!/^10\.\d{4,9}\/\S+$/.test(doi)) continue;
             const title = a.title?.en || a.title?.fa || a.id;
-            const url = 'https://rlsj.ir/' + String(a.href || ('article-' + a.id + '.html')).replace(/^\\//,'').replace(/^(en|ru)\\//,'');
+            const url = 'https://rlsj.ir/' + String(a.href || ('article-' + a.id + '.html')).replace(/^\//,'').replace(/^(en|ru)\//,'');
             const d = dateParts(a.online || a.publicationDate || a.published || a.accepted);
             const dateXml = '<year>'+d.year+'</year>' + (d.month ? '<month>'+d.month+'</month>' : '') + (d.day ? '<day>'+d.day+'</day>' : '');
             const names = authorsOf(a);
@@ -72,17 +72,17 @@ jobs:
             const contributors = names.map((person, i) =>
               '<person_name sequence="'+(i===0?'first':'additional')+'" contributor_role="author">' +
               '<given_name>'+esc(person.given)+'</given_name><surname>'+esc(person.family)+'</surname>' +
-              (person.orcid ? '<ORCID authenticated="false">https://orcid.org/'+esc(String(person.orcid).replace(/^https?:\\/\\/orcid\\.org\\//,''))+'</ORCID>' : '') +
+              (person.orcid ? '<ORCID authenticated="false">https://orcid.org/'+esc(String(person.orcid).replace(/^https?:\/\/orcid\.org\//,''))+'</ORCID>' : '') +
               '</person_name>'
             ).join('');
             const pages = a.firstPage && a.lastPage ? '<pages><first_page>'+esc(a.firstPage)+'</first_page><last_page>'+esc(a.lastPage)+'</last_page></pages>' : '';
             const issue = a.issueNumber || a.issue || '1';
             const volume = a.volume || '1';
-            const xml = '<?xml version="1.0" encoding="UTF-8"?>\\n' +
-              '<doi_batch xmlns="http://www.crossref.org/schema/5.5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5.5.0" xsi:schemaLocation="http://www.crossref.org/schema/5.5.0 https://www.crossref.org/schemas/crossref5.5.0.xsd">\\n' +
+            const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+              '<doi_batch xmlns="http://www.crossref.org/schema/5.5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="5.5.0" xsi:schemaLocation="http://www.crossref.org/schema/5.5.0 https://www.crossref.org/schemas/crossref5.5.0.xsd">\n' +
               '  <head><doi_batch_id>rls-'+esc(a.id)+'-'+timestamp+'</doi_batch_id><timestamp>'+timestamp+'</timestamp>' +
               '<depositor><depositor_name>Russian Language Studies</depositor_name><email_address>mm.rubin@ut.ac.ir</email_address></depositor>' +
-              '<registrant>Russian Language Studies</registrant></head>\\n' +
+              '<registrant>Russian Language Studies</registrant></head>\n' +
               '  <body><journal><journal_metadata language="en"><full_title>Russian Language Studies</full_title>' +
               (process.env.RLS_ISSN ? '<issn media_type="electronic">'+esc(process.env.RLS_ISSN)+'</issn>' : '') +
               '</journal_metadata><journal_issue><publication_date media_type="online">'+dateXml+'</publication_date>' +
@@ -91,7 +91,7 @@ jobs:
               '<contributors>'+contributors+'</contributors>' +
               '<publication_date media_type="online">'+dateXml+'</publication_date>'+pages+
               '<doi_data><doi>'+esc(doi)+'</doi><resource>'+esc(url)+'</resource></doi_data>' +
-              '</journal_article></journal></body></doi_batch>\\n';
+              '</journal_article></journal></body></doi_batch>\n';
             fs.writeFileSync(path.join(outDir, 'article-'+a.id+'.xml'), xml, 'utf8');
             generated++;
           }
