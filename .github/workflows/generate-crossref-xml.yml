@@ -23,7 +23,7 @@ jobs:
       - name: Refresh article-page cache keys for the shared script
         shell: bash
         run: |
-          find . -maxdepth 2 -type f -name 'article-*.html' -print0 | xargs -0 -r sed -E -i 's#(assets/script\\.js)(\\?v=[^"[:space:]]*)?#\\1?v=20261028crossref#g'
+          find . -maxdepth 2 -type f -name 'article-*.html' -print0 | xargs -0 -r sed -E -i 's#(assets/script\.js)(\?v=[^"[:space:]]*)?#\1?v=20261028crossref#g'
 
       - name: Generate one Crossref deposit XML per article with an assigned DOI
         shell: bash
