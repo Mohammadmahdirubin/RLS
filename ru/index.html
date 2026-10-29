@@ -8,8 +8,16 @@
 <link rel="stylesheet" href="../assets/style.css?v=20261022kremlin">
 <style id="ru-banner-header-fix">
 /* Russian homepage: the panoramic banner replaces the separate RLS wordmark row */
-@media(min-width:0px){body:lang(ru) .site-header>.header-inner>.brand{display:none!important}body:lang(ru) .site-header>.header-inner{justify-content:flex-end!important}}
-@media(max-width:900px){body:lang(ru) .site-header>.header-inner{justify-content:space-between!important}}
+@media(min-width:901px){
+  body:lang(ru) .site-header>.header-inner>.brand{display:none!important}
+  body:lang(ru) .site-header>.header-inner{justify-content:flex-start!important;gap:8px!important}
+  body:lang(ru) .site-header .main-nav{flex:1 1 auto!important;width:100%!important;min-width:0!important;justify-content:space-between!important;gap:clamp(4px,.55vw,9px)!important}
+  body:lang(ru) .site-header .main-nav>a{font-size:clamp(10px,.78vw,12px)!important;white-space:normal!important;text-align:center!important;line-height:1.25!important}
+  body:lang(ru) .site-header .main-nav .nav-submit{padding:8px 10px!important}
+}
+@media(max-width:900px){
+  body:lang(ru) .site-header>.header-inner{justify-content:space-between!important}
+}
 </style>
 <link rel="stylesheet" href="../assets/justify.css?v=20260926j">
 <link rel="stylesheet" href="../assets/international-collaboration.css?v=20260925cre">
