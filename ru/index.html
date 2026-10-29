@@ -42,6 +42,27 @@
 .journal-card>div:not(.card-title){min-width:0}
 .journal-card span,.journal-card strong{min-width:0;overflow-wrap:anywhere;word-break:break-word}
 .journal-card strong{text-align:left}
+</style><style id="ru-navigation-overflow-fix">
+/* Override desktop-mode CSS on phones: keep the full menu collapsed until the menu button is pressed. */
+html:lang(ru).rls-mobile-mode .site-header .main-nav{display:none!important;min-width:0!important;box-sizing:border-box!important}
+html:lang(ru).rls-mobile-mode.nav-open .site-header .main-nav,
+html:lang(ru) body.nav-open .site-header .main-nav{
+  display:flex!important;position:absolute!important;top:62px!important;left:0!important;right:0!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;flex-direction:column!important;
+  flex-wrap:nowrap!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;
+  padding:10px 18px!important;margin:0!important;box-sizing:border-box!important;background:#faf7ec!important;
+  max-height:calc(100vh - 62px)!important;overflow-x:hidden!important;overflow-y:auto!important;z-index:300!important
+}
+html:lang(ru).rls-mobile-mode.nav-open .site-header .main-nav>a,
+html:lang(ru) body.nav-open .site-header .main-nav>a{
+  display:flex!important;flex:0 0 auto!important;width:100%!important;max-width:100%!important;
+  white-space:normal!important;overflow-wrap:anywhere!important;box-sizing:border-box!important;
+  padding:10px 4px!important;font-size:14px!important;line-height:1.5!important;text-align:left!important
+}
+@media(min-width:901px){
+  html:lang(ru):not(.rls-mobile-mode) .site-header .main-nav{display:flex!important;flex-wrap:nowrap!important;min-width:0!important;gap:clamp(5px,.8vw,12px)!important;justify-content:space-between!important}
+  html:lang(ru):not(.rls-mobile-mode) .site-header .main-nav>a{font-size:clamp(10px,.85vw,12.5px)!important;white-space:nowrap!important}
+}
 </style><style id="ru-official-card-readable">
 .journal-card{overflow:hidden}
 .journal-card>div:not(.card-title){white-space:normal;align-items:flex-start}
