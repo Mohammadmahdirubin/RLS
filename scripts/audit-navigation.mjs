@@ -49,7 +49,7 @@ if (fs.existsSync(jsPath)) {
   const js = fs.readFileSync(jsPath, 'utf8');
   if (!/querySelector\('\.menu-btn'\)/.test(js)) errors.push('assets/script.js: menu button handler not found');
   if (!/classList\.toggle\('nav-open'\)/.test(js)) errors.push('assets/script.js: menu open/close toggle not found');
-  if (!/className\s*=\s*'nav-group'/.test(js)) errors.push('assets/script.js: generated navigation groups not found');
+  if (!/class=[\"']nav-group[\"']/.test(js)) errors.push('assets/script.js: generated navigation groups not found');
 }
 
 if (errors.length) {
