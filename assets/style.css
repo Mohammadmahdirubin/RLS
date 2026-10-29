@@ -1188,3 +1188,53 @@ html.rls-mobile-mode .site-header .main-nav .nav-submit{
     max-height:calc(100vh - 58px)!important;overflow-y:auto!important;z-index:300!important
   }
 }
+
+
+/* Navigation regression guard: mobile submenu items must stay in document flow. */
+html.rls-mobile-mode .site-header .main-nav .nav-group {
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+}
+html.rls-mobile-mode .site-header .main-nav .nav-group>summary {
+  display:flex!important;
+  width:100%!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  box-sizing:border-box!important;
+  padding:11px 4px!important;
+  white-space:normal!important;
+}
+html.rls-mobile-mode .site-header .main-nav .nav-group[open]>.nav-submenu {
+  position:static!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0 0 8px!important;
+  padding:4px 12px!important;
+  box-sizing:border-box!important;
+  border:0!important;
+  border-inline-start:2px solid var(--accent3)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
+  display:block!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  padding:9px 4px!important;
+  font-size:13px!important;
+}
+.site-header .menu-btn {
+  flex:0 0 38px;
+  width:38px;
+  min-width:38px;
+  min-height:38px;
+  align-items:center;
+  justify-content:center;
+}
