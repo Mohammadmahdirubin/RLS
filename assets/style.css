@@ -1106,7 +1106,7 @@ html.rls-mobile-mode .rls-site-banner img{
   padding:9px 12px!important;
   white-space:nowrap!important;
 }
-@media(min-width:1101px){
+@media(min-width:761px){
   .site-header .menu-btn{display:none!important}
   .site-header .main-nav{display:flex!important;position:static!important;flex-direction:row!important;max-height:none!important;padding:0!important;box-shadow:none!important;background:transparent!important}
 }
@@ -1177,7 +1177,7 @@ html.rls-mobile-mode .site-header .main-nav .nav-submit{
   justify-content:center!important;
   margin:8px 0 4px!important;
 }
-@media(max-width:1100px){
+@media(max-width:760px){
   html:not(.rls-mobile-mode) .site-header .menu-btn{display:block!important}
   html:not(.rls-mobile-mode) .site-header .main-nav{display:none!important}
   html:not(.rls-mobile-mode).nav-open .site-header .main-nav,
