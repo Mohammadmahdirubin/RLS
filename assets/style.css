@@ -1238,3 +1238,26 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
   align-items:center;
   justify-content:center;
 }
+
+
+/* Keep the mobile menu button and language selector on opposite, consistent ends
+   of the header in Persian (RTL), English and Russian (LTR) pages. */
+@media(max-width:760px){
+  html.rls-mobile-mode .site-header>.header-inner{
+    direction:ltr!important;
+    display:flex!important;
+    flex-direction:row!important;
+    justify-content:space-between!important;
+    align-items:center!important;
+    gap:12px!important;
+  }
+  html.rls-mobile-mode .site-header>.header-inner>.menu-btn{
+    order:1!important;
+    margin-inline:0!important;
+    flex:0 0 38px!important;
+  }
+  html.rls-mobile-mode .site-header>.header-inner>.header-language-switcher{
+    order:2!important;
+    margin-inline:0!important;
+  }
+}
