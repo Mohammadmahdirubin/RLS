@@ -1261,3 +1261,24 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
     margin-inline:0!important;
   }
 }
+
+
+/* Persian mobile navigation follows RTL reading order; EN/RU retain LTR. */
+@media(max-width:760px){
+  html[lang="fa"].rls-mobile-mode .site-header>.header-inner>.main-nav,
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav{
+    direction:rtl!important;
+    text-align:right!important;
+  }
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav>a,
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav>details,
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav>summary,
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav .nav-group>summary,
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav .nav-group>.nav-submenu a{
+    text-align:right!important;
+    direction:rtl!important;
+  }
+  html[lang="fa"].rls-mobile-mode .site-header .main-nav .nav-group>summary{
+    flex-direction:row!important;
+  }
+}
