@@ -1304,3 +1304,27 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
     flex-direction:row!important;
   }
 }
+
+/* Fix Persian mobile menu alignment: align every menu label to the RTL edge. */
+@media(max-width:760px){
+  html[lang="fa"] .site-header .main-nav,
+  html[lang="fa"] .site-header .main-nav>a,
+  html[lang="fa"] .site-header .main-nav .nav-group,
+  html[lang="fa"] .site-header .main-nav .nav-group>summary,
+  html[lang="fa"] .site-header .main-nav .nav-submenu,
+  html[lang="fa"] .site-header .main-nav .nav-submenu a{
+    direction:rtl!important;
+    text-align:right!important;
+  }
+  html[lang="fa"] .site-header .main-nav>a:not(.nav-submit){
+    justify-content:flex-start!important;
+  }
+  html[lang="fa"] .site-header .main-nav .nav-group>summary{
+    flex-direction:row!important;
+    justify-content:space-between!important;
+  }
+  html[lang="fa"] .site-header .main-nav>a.nav-submit{
+    justify-content:center!important;
+    text-align:center!important;
+  }
+}
