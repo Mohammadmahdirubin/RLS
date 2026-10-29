@@ -1,0 +1,34 @@
+name: Navigation regression audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "assets/style.css"
+      - "assets/script.js"
+      - "scripts/audit-navigation.mjs"
+      - ".github/workflows/navigation-audit.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "assets/style.css"
+      - "assets/script.js"
+      - "scripts/audit-navigation.mjs"
+      - ".github/workflows/navigation-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  navigation-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check shared navigation structure and responsive rules
+        run: node scripts/audit-navigation.mjs
