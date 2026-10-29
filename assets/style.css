@@ -1282,3 +1282,25 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
     flex-direction:row!important;
   }
 }
+
+
+/* RTL mobile menu: use actual DOM structure and direction, independent of UA mode detection. */
+@media(max-width:900px){
+  html[dir="rtl"] .site-header .main-nav,
+  html[dir="rtl"].nav-open .site-header .main-nav,
+  html[dir="rtl"] body.nav-open .site-header .main-nav{
+    direction:rtl!important;
+    text-align:right!important;
+    align-items:stretch!important;
+  }
+  html[dir="rtl"] .site-header .main-nav>a,
+  html[dir="rtl"] .site-header .main-nav .nav-group>summary,
+  html[dir="rtl"] .site-header .main-nav .nav-submenu a{
+    direction:rtl!important;
+    text-align:right!important;
+    justify-content:flex-start!important;
+  }
+  html[dir="rtl"] .site-header .main-nav .nav-group>summary{
+    flex-direction:row!important;
+  }
+}
