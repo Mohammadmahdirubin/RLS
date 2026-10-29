@@ -439,36 +439,40 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
 };
 
 
-/* Mobile-only collapsible news cards. Original markup is restored above 600px,
-   so desktop news layout remains unchanged. */
+/* Mobile-only collapsible news cards. Keep desktop markup intact. */
 function initRLSMobileNews(){
-  const query=window.matchMedia('(max-width: 600px)');
-  const cards=[...document.querySelectorAll('.news-list .news-card')];
+  const isMobile=()=>window.matchMedia('(max-width: 900px)').matches &&
+    (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.matchMedia('(max-width: 600px)').matches);
+  const cards=[...document.querySelectorAll('.news-list article.news-card')];
   if(!cards.length)return;
   const apply=()=>{
+    const mobile=isMobile();
     cards.forEach(card=>{
-      if(query.matches){
+      if(mobile){
         if(card.dataset.mobileNewsReady==='1')return;
+        const heading=card.querySelector('h2');
+        if(!heading)return;
         card.dataset.mobileNewsOriginal=card.innerHTML;
         const clone=card.cloneNode(true);
-        const date=clone.querySelector('.news-date');
-        const heading=clone.querySelector('h2');
-        if(!heading)return;
-        const title=heading.textContent.trim();
-        if(date)date.remove();
-        heading.remove();
-        const detail=document.createElement('details');
-        detail.className='mobile-news-details';
+        const cloneHeading=clone.querySelector('h2');
+        const cloneDate=clone.querySelector('.news-date');
+        const title=cloneHeading.textContent.trim();
+        cloneHeading.remove();
+        if(cloneDate)cloneDate.remove();
+        const details=document.createElement('details');
+        details.className='mobile-news-details';
         const summary=document.createElement('summary');
         summary.className='mobile-news-summary';
         summary.textContent=title;
+        summary.setAttribute('aria-label',title);
         const content=document.createElement('div');
         content.className='mobile-news-content';
         content.innerHTML=clone.innerHTML;
-        detail.append(summary,content);
-        const dateHTML=card.querySelector('.news-date')?.outerHTML||'';
+        details.append(summary,content);
+        const date=card.querySelector('.news-date');
+        const dateHTML=date?date.outerHTML:'';
         card.innerHTML=dateHTML;
-        card.appendChild(detail);
+        card.appendChild(details);
         card.dataset.mobileNewsReady='1';
       }else if(card.dataset.mobileNewsReady==='1'){
         card.innerHTML=card.dataset.mobileNewsOriginal||card.innerHTML;
@@ -478,11 +482,13 @@ function initRLSMobileNews(){
     });
   };
   apply();
-  if(query.addEventListener)query.addEventListener('change',apply);
-  else query.addListener(apply);
+  window.addEventListener('resize',apply,{passive:true});
+  window.addEventListener('orientationchange',apply,{passive:true});
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLSMobileNews);
-else initRLSMobileNews();
-
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initRLSMobileNews,{once:true});
+}else{
+  initRLSMobileNews();
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);
 else initRLS();
