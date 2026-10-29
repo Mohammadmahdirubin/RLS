@@ -7,36 +7,34 @@
 <meta name="description" content="Научный журнал «Исследования по русскому языку»: статьи и исследования по русскому языку, обучению, лингвистике, литературе, культуре и переводу.">
 <link rel="stylesheet" href="../assets/style.css?v=20261022kremlin">
 <style id="ru-banner-header-fix">
-/* Keep the Russian navigation consistent with the English site while allowing longer Russian labels to wrap cleanly. */
-@media(min-width:901px){
+/* Match the shared English header styling. On narrow/desktop-mode phone viewports, use the standard collapsible menu instead of wrapping the full navigation. */
+@media(min-width:1101px){
   body:lang(ru) .site-header>.header-inner>.brand{display:none!important}
-  body:lang(ru) .site-header>.header-inner{justify-content:flex-start!important;gap:0!important}
-  body:lang(ru) .site-header .main-nav{
-    display:flex!important;
-    flex:1 1 auto!important;
-    width:100%!important;
-    min-width:0!important;
-    flex-wrap:wrap!important;
-    align-items:center!important;
-    justify-content:space-between!important;
-    gap:0 12px!important;
-    font-size:13px!important;
-  }
-  body:lang(ru) .site-header .main-nav>a{
-    flex:0 0 auto!important;
-    font-size:13px!important;
-    padding:16px 0!important;
-    white-space:nowrap!important;
-    text-align:left!important;
-    line-height:1.5!important;
-  }
-  body:lang(ru) .site-header .main-nav .nav-submit{
-    flex:0 0 auto!important;
-    padding:10px 16px!important;
-    white-space:nowrap!important;
-  }
+  body:lang(ru) .site-header>.header-inner{justify-content:flex-start!important;gap:12px!important}
+  body:lang(ru) .site-header .main-nav{display:flex!important;flex:1 1 auto!important;width:auto!important;min-width:0!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:10px!important;font-size:12.5px!important}
+  body:lang(ru) .site-header .main-nav>a{font-size:12.5px!important;padding:14px 0!important;white-space:nowrap!important;line-height:1.5!important}
+  body:lang(ru) .site-header .main-nav .nav-submit{padding:10px 16px!important;flex:0 0 auto!important}
 }
-</style>
+@media(max-width:1100px){
+  body:lang(ru) .site-header .menu-btn{display:block!important;order:3!important}
+  body:lang(ru) .site-header>.header-inner{justify-content:space-between!important;gap:10px!important}
+  body:lang(ru) .site-header .main-nav{display:none!important}
+  body:lang(ru) .site-header.nav-open .main-nav,
+  html.nav-open body:lang(ru) .site-header .main-nav,
+  html.nav-open body:lang(ru) .site-header.nav-open .main-nav{
+    display:flex!important;position:absolute!important;top:62px!important;left:0!important;right:0!important;width:100%!important;max-width:none!important;
+    flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:0!important;
+    padding:10px 24px!important;background:#faf7ec!important;box-sizing:border-box!important;
+    max-height:calc(100vh - 62px)!important;overflow-y:auto!important;z-index:300!important
+  }
+  body:lang(ru) .site-header.nav-open .main-nav>a,
+  html.nav-open body:lang(ru) .site-header .main-nav>a{
+    display:flex!important;align-items:center!important;justify-content:flex-start!important;width:100%!important;
+    padding:10px 4px!important;font-size:14px!important;white-space:normal!important;line-height:1.5!important;box-sizing:border-box!important
+  }
+  body:lang(ru) .site-header.nav-open .main-nav .nav-submit,
+  html.nav-open body:lang(ru) .site-header .main-nav .nav-submit{justify-content:center!important;text-align:center!important;margin:10px 0 4px!important;padding:10px 16px!important}
+}
 <link rel="stylesheet" href="../assets/justify.css?v=20260926j">
 <link rel="stylesheet" href="../assets/international-collaboration.css?v=20260925cre">
 <style id="official-card-fit">
