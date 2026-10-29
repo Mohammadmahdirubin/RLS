@@ -443,7 +443,7 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
 function initRLSMobileNews(){
   const isMobile=()=>window.matchMedia('(max-width: 900px)').matches &&
     (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.matchMedia('(max-width: 600px)').matches);
-  const cards=[...document.querySelectorAll('.news-list article.news-card')];
+  const cards=[...document.querySelectorAll('.news-list .news-card')];
   if(!cards.length)return;
   const apply=()=>{
     const mobile=isMobile();
@@ -485,10 +485,10 @@ function initRLSMobileNews(){
   window.addEventListener('resize',apply,{passive:true});
   window.addEventListener('orientationchange',apply,{passive:true});
 }
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',initRLSMobileNews,{once:true});
-}else{
-  initRLSMobileNews();
-}
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);
 else initRLS();
+
+/* Run after the shared initializer has finished its page setup. */
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLSMobileNews,{once:true});
+else initRLSMobileNews();
