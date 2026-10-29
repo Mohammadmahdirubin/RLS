@@ -376,6 +376,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://rlsj.ir/news.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://rlsj.ir/open-access.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
