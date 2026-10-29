@@ -438,5 +438,51 @@ footer .rls-footer-official-logo span{font-size:11px;font-weight:700;line-height
 
 };
 
+
+/* Mobile-only collapsible news cards. Original markup is restored above 600px,
+   so desktop news layout remains unchanged. */
+function initRLSMobileNews(){
+  const query=window.matchMedia('(max-width: 600px)');
+  const cards=[...document.querySelectorAll('.news-list .news-card')];
+  if(!cards.length)return;
+  const apply=()=>{
+    cards.forEach(card=>{
+      if(query.matches){
+        if(card.dataset.mobileNewsReady==='1')return;
+        card.dataset.mobileNewsOriginal=card.innerHTML;
+        const clone=card.cloneNode(true);
+        const date=clone.querySelector('.news-date');
+        const heading=clone.querySelector('h2');
+        if(!heading)return;
+        const title=heading.textContent.trim();
+        if(date)date.remove();
+        heading.remove();
+        const detail=document.createElement('details');
+        detail.className='mobile-news-details';
+        const summary=document.createElement('summary');
+        summary.className='mobile-news-summary';
+        summary.textContent=title;
+        const content=document.createElement('div');
+        content.className='mobile-news-content';
+        content.innerHTML=clone.innerHTML;
+        detail.append(summary,content);
+        const dateHTML=card.querySelector('.news-date')?.outerHTML||'';
+        card.innerHTML=dateHTML;
+        card.appendChild(detail);
+        card.dataset.mobileNewsReady='1';
+      }else if(card.dataset.mobileNewsReady==='1'){
+        card.innerHTML=card.dataset.mobileNewsOriginal||card.innerHTML;
+        delete card.dataset.mobileNewsOriginal;
+        delete card.dataset.mobileNewsReady;
+      }
+    });
+  };
+  apply();
+  if(query.addEventListener)query.addEventListener('change',apply);
+  else query.addListener(apply);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLSMobileNews);
+else initRLSMobileNews();
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initRLS);
 else initRLS();
