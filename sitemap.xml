@@ -306,6 +306,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://rlsj.ir/en/news.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://rlsj.ir/en/open-access.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -582,6 +587,11 @@
   </url>
   <url>
     <loc>https://rlsj.ir/ru/journal-metrics.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/ru/news.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
