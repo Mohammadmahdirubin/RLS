@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   var lang = document.documentElement.lang || "en";
-  var received = 13, pending = 1, accepted = 7, rejected = 5;
+  var received = 13, pending = 0, accepted = 7, rejected = 6;
   var resolved = accepted + rejected;
-  var rate = Math.round(accepted * 100 / resolved);
+  var rate = Math.round(accepted * 1000 / resolved) / 10;
   function faDigits(value) {
     return String(value).replace(/\d/g, function (d) { return "۰۱۲۳۴۵۶۷۸۹"[Number(d)]; });
   }
@@ -10,13 +10,13 @@ document.addEventListener("DOMContentLoaded", function () {
   var values = { received: received, accepted: accepted, rejected: rejected, pending: pending, rate: rate };
   Object.keys(values).forEach(function (key) {
     document.querySelectorAll('[data-metric="' + key + '"]').forEach(function (el) {
-      el.textContent = key === "rate" ? (lang === "fa" ? faDigits(rate) + "٪" : rate + "%") : fmt(values[key]);
+      el.textContent = key === "rate" ? (lang === "fa" ? faDigits(rate.toFixed(1)) + "٪" : rate.toFixed(1) + "%") : fmt(values[key]);
     });
   });
   var notes = {
-    fa: "از مجموع ۱۳ مقاله دریافتی، ۷ مقاله پذیرفته شده، ۱ مقاله در حال بررسی و ۵ مقاله رد شده است.",
-    en: "Of 13 manuscripts received, 7 have been accepted, 1 is under review, and 5 have been rejected.",
-    ru: "Из 13 полученных статей 7 приняты, 1 находится на рассмотрении и 5 отклонены."
+    fa: "از مجموع ۱۳ مقاله دریافتی، ۷ مقاله پذیرفته شده، ۶ مقاله رد شده و هیچ پرونده‌ای در انتظار تصمیم نیست.",
+    en: "Of 13 manuscripts received, 7 have been accepted, 6 have been rejected, and none remain pending.",
+    ru: "Из 13 полученных статей 7 приняты, 6 отклонены; ожидающих решения заявок нет."
   };
   document.querySelectorAll(".stat-note").forEach(function (el) {
     if (/مقاله دریافتی|manuscripts received|полученных статей|سال ۱۴۰۵ تاکنون|In 2026, 10 articles|В 2026 году получено 10 статей/.test(el.textContent)) el.textContent = notes[lang] || notes.en;
