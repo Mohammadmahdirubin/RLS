@@ -145,6 +145,12 @@ const initRLS=()=>{
   // Article-specific RSS feed plus the journal-wide feed, placed after direct article links.
   const isArticlePage=!!document.querySelector('meta[name="citation_title"]') || /^article-(?!click-).+\.html$/.test(file);
   if(isArticlePage){
+    if(!document.querySelector('meta[name="citation_issn"]')){
+      const journalIssn=document.createElement('meta');
+      journalIssn.name='citation_issn';
+      journalIssn.content='3150-423X';
+      document.head.appendChild(journalIssn);
+    }
     const articleSlug=file.replace(/\.html$/,'');
     const articleFeed='https://rlsj.ir/'+articleSlug+'-rss.xml';
     if(!document.querySelector('link[rel="alternate"][type="application/rss+xml"][data-rls-article-feed]')){
@@ -324,7 +330,7 @@ const initRLS=()=>{
       <div class="rls-footer-main">
         <div class="rls-footer-col"><strong>${footerJournalName}</strong><p>${lang==='ru'?'Научный журнал, выходящий два раза в год':lang==='en'?'Biannual journal':'نشریه علمی دو فصلنامه'}</p></div>
         <div class="rls-footer-col"><p>${lang==='ru'?'Лицензия Министерства № 94254':lang==='en'?'Ministry License No. 94254':'شماره مجوز وزارت فرهنگ و ارشاد اسلامی: 94254'}</p><p>${lang==='ru'?'Дата выдачи лицензии: 2023/07/24':lang==='en'?'License Date: 2023/07/24':'تاریخ مجوز: 1402/05/02'}</p></div>
-        <div class="rls-footer-col"><p>${lang==='ru'?'ISSN: в процессе получения':lang==='en'?'ISSN: Pending':'ISSN: در دست اقدام'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
+        <div class="rls-footer-col"><p>${lang==='ru'?'eISSN: 3150-423X':lang==='en'?'eISSN: 3150-423X':'شاپای الکترونیکی (eISSN): 3150-423X'}</p><p class="rls-email-line">Email: <a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></p><p>© 2026 RLS</p></div>
         <div class="rls-footer-col rls-footer-cc"><a class="rls-cc-badge" href="${root}copyright.html" title="Creative Commons Attribution 4.0 International"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0" width="88" height="31" loading="lazy" decoding="async"></a><p><a href="${root}copyright.html">${lang==='ru'?'Лицензия CC BY 4.0':lang==='en'?'CC BY 4.0 License':'مجوز CC BY 4.0'}</a></p></div>
       </div>
       <div class="rls-footer-official-logos">
