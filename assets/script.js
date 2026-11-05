@@ -288,7 +288,7 @@ const initRLS=()=>{
     registrationLink.textContent=lang==='fa'?'ثبت‌نام کاربران':lang==='en'?'User Registration':'Регистрация пользователей';
     registrationLink.setAttribute('aria-label',registrationLink.textContent);
     registrationRow.appendChild(registrationLink);
-    header.insertAdjacentElement('afterend',registrationRow);
+    header.appendChild(registrationRow);
   }
 
   const langUrls=lang==='fa'?{fa:'index.html',en:'en/index.html',ru:'ru/index.html'}:lang==='en'?{fa:'../index.html',en:'index.html',ru:'../ru/index.html'}:{fa:'../index.html',en:'../en/index.html',ru:'index.html'};
