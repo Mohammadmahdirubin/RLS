@@ -274,6 +274,23 @@ const initRLS=()=>{
     window.addEventListener('pagehide',closeNavGroups);
   }
 
+  // Language-specific OJS registration shortcut, displayed in a separate row below the main navigation.
+  if(header && !document.querySelector('.rls-registration-row')){
+    const registrationRow=document.createElement('div');
+    registrationRow.className='rls-registration-row container';
+    const registrationLink=document.createElement('a');
+    registrationLink.className='rls-registration-link';
+    registrationLink.href=lang==='fa'
+      ?'https://ojs.rlsj.ir/index.php/rls/fa/user/register'
+      :lang==='en'
+        ?'https://ojs.rlsj.ir/index.php/rls/en/user/register'
+        :'https://ojs.rlsj.ir/index.php/rls/ru/user/register';
+    registrationLink.textContent=lang==='fa'?'ثبت‌نام کاربران':lang==='en'?'User Registration':'Регистрация пользователей';
+    registrationLink.setAttribute('aria-label',registrationLink.textContent);
+    registrationRow.appendChild(registrationLink);
+    header.insertAdjacentElement('afterend',registrationRow);
+  }
+
   const langUrls=lang==='fa'?{fa:'index.html',en:'en/index.html',ru:'ru/index.html'}:lang==='en'?{fa:'../index.html',en:'index.html',ru:'../ru/index.html'}:{fa:'../index.html',en:'../en/index.html',ru:'index.html'};
   if(header){
     header.querySelectorAll('.rls-site-banner').forEach(el=>el.remove());
