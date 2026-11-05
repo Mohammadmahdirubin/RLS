@@ -1331,7 +1331,7 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
 
 
 /* User registration shortcut below the main navigation */
-.rls-registration-row{
+.site-header .rls-registration-row{
   display:flex;
   justify-content:flex-start;
   align-items:center;
@@ -1361,7 +1361,7 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
   color:#fff!important;
 }
 @media(max-width:900px){
-  .rls-registration-row{
+  .site-header .rls-registration-row{
     width:100%;
     padding:7px 16px 10px;
     min-height:40px;
