@@ -1328,3 +1328,43 @@ html.rls-mobile-mode .site-header .main-nav .nav-submenu a {
     text-align:center!important;
   }
 }
+
+
+/* User registration shortcut below the main navigation */
+.rls-registration-row{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  box-sizing:border-box;
+  padding-top:7px;
+  padding-bottom:9px;
+  min-height:42px;
+}
+.rls-registration-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 15px;
+  border:1px solid var(--accent);
+  border-radius:7px;
+  background:var(--accent);
+  color:#fff!important;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.5;
+  text-decoration:none!important;
+  box-shadow:0 4px 12px rgba(139,38,53,.12);
+}
+.rls-registration-link:hover{
+  background:var(--accent2);
+  border-color:var(--accent2);
+  color:#fff!important;
+}
+@media(max-width:900px){
+  .rls-registration-row{
+    width:100%;
+    padding:7px 16px 10px;
+    min-height:40px;
+  }
+  .rls-registration-link{padding:7px 13px;font-size:12px}
+}
