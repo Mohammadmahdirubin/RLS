@@ -12,6 +12,8 @@
   const membershipNote = document.querySelector('#membership-process .community-note');
   const membershipPrivacy = document.querySelector('#membership-process .membership-privacy');
   const sessionText = document.getElementById('member-session-text');
+  const profileMsg = document.getElementById('member-profile-message');
+  const reportUpload = value => say(profileMsg || loginMsg, value);
   const allowed = ['student','graduate','faculty','researcher','translator','culture','honorary'];
   const maxBytes = 5 * 1024 * 1024;
   const types = ['application/pdf','image/jpeg','image/png','image/webp'];
@@ -101,14 +103,14 @@
   }
 
   async function uploadAvatar(user, file) {
-    if (!file) { say(loginMsg, tr('ابتدا عکس را انتخاب کنید.','Choose a photo first.','Сначала выберите фотографию.')); return; }
+    if (!file) { reportUpload(tr('ابتدا عکس را انتخاب کنید.','Choose a photo first.','Сначала выберите фотографию.')); return; }
     if (!avatarTypes.includes(file.type) || file.size > maxBytes) {
-      say(loginMsg, tr('عکس باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.','Use a JPG, PNG or WebP image no larger than 5 MB.','Допустимы JPG, PNG или WebP размером до 5 МБ.'));
+      reportUpload(tr('عکس باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.','Use a JPG, PNG or WebP image no larger than 5 MB.','Допустимы JPG, PNG или WebP размером до 5 МБ.'));
       return;
     }
     const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
     const path = user.id + '/avatar-' + Date.now() + '.' + ext;
-    say(loginMsg, tr('در حال بارگذاری عکس پروفایل…','Uploading profile photo…','Загрузка фотографии профиля…'));
+    reportUpload(tr('در حال بارگذاری عکس پروفایل…','Uploading profile photo…','Загрузка фотографии профиля…'));
     const { error: uploadError } = await db.storage.from('rls-member-avatars')
       .upload(path, file, { contentType: file.type, upsert: false });
     if (uploadError) throw uploadError;
@@ -121,21 +123,21 @@
     if (oldProfile?.avatar_path) await db.storage.from('rls-member-avatars').remove([oldProfile.avatar_path]);
     const photoInput = document.getElementById('member-avatar');
     if (photoInput) photoInput.value = '';
-    say(loginMsg, tr('عکس پروفایل ذخیره شد و پس از تأیید عضویت در فهرست عمومی نمایش داده می‌شود.',
+    reportUpload(tr('عکس پروفایل ذخیره شد و پس از تأیید عضویت در فهرست عمومی نمایش داده می‌شود.',
       'Profile photo saved. It will appear in the public directory after membership approval.',
       'Фотография сохранена и появится в открытом каталоге после одобрения членства.'));
   }
 
   async function uploadEvidence(user, file) {
-    if (!file) { say(loginMsg, tr('ابتدا فایل مدرک را انتخاب کنید.','Choose a document first.','Сначала выберите документ.')); return; }
+    if (!file) { reportUpload(tr('ابتدا فایل مدرک را انتخاب کنید.','Choose a document first.','Сначала выберите документ.')); return; }
     if (file.size > maxBytes || !types.includes(file.type)) {
-      say(loginMsg, tr('فایل باید PDF یا تصویر مجاز و حداکثر ۵ مگابایت باشد.',
+      reportUpload(tr('فایل باید PDF یا تصویر مجاز و حداکثر ۵ مگابایت باشد.',
         'Use a PDF or accepted image no larger than 5 MB.','Допустимы PDF или изображение размером до 5 МБ.'));
       return;
     }
     const ext = file.type === 'application/pdf' ? 'pdf' : file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
     const path = user.id + '/evidence-' + Date.now() + '.' + ext;
-    say(loginMsg, tr('در حال بارگذاری امن مدرک…','Uploading document securely…','Безопасная загрузка документа…'));
+    reportUpload(tr('در حال بارگذاری امن مدرک…','Uploading document securely…','Безопасная загрузка документа…'));
     const { error: uploadError } = await db.storage.from('rls-members-private')
       .upload(path, file, { contentType: file.type, upsert: false });
     if (uploadError) throw uploadError;
@@ -145,7 +147,7 @@
       await db.storage.from('rls-members-private').remove([path]);
       throw updateError;
     }
-    say(loginMsg, tr('مدرک با موفقیت و به‌صورت خصوصی بارگذاری شد.',
+    reportUpload(tr('مدرک با موفقیت و به‌صورت خصوصی بارگذاری شد.',
       'Document uploaded and stored privately.','Документ загружен в закрытое хранилище.'));
   }
 
@@ -222,23 +224,39 @@
     }
   });
 
-  document.getElementById('upload-avatar')?.addEventListener('click', async () => {
-    const { data: { user } } = await db.auth.getUser();
-    if (!user) return;
-    try { await uploadAvatar(user, document.getElementById('member-avatar').files[0]); }
-    catch (error) { say(loginMsg, tr('بارگذاری عکس ناموفق بود: ','Photo upload failed: ','Не удалось загрузить фото: ') + error.message); }
-  });
-
-  document.getElementById('upload-evidence')?.addEventListener('click', async () => {
-    const { data: { user } } = await db.auth.getUser();
-    if (!user) return;
-    try {
-      await uploadEvidence(user, document.getElementById('member-evidence').files[0]);
-      document.getElementById('member-evidence').value = '';
-    } catch (error) {
-      say(loginMsg, tr('بارگذاری ناموفق بود: ','Upload failed: ','Ошибка загрузки: ') + error.message);
+  async function runUpload(buttonId, inputId, uploadFn, successFallback) {
+    const button = document.getElementById(buttonId);
+    const input = document.getElementById(inputId);
+    if (!button || !input) {
+      reportUpload(tr('کنترل بارگذاری در صفحه پیدا نشد. صفحه را تازه‌سازی کنید.',
+        'Upload controls were not found. Please refresh the page.',
+        'Элементы загрузки не найдены. Обновите страницу.'));
+      return;
     }
-  });
+    const original = button.textContent;
+    button.disabled = true;
+    button.textContent = tr('در حال بارگذاری…','Uploading…','Загрузка…');
+    reportUpload(tr('در حال آماده‌سازی بارگذاری…','Preparing upload…','Подготовка загрузки…'));
+    try {
+      const { data, error } = await db.auth.getUser();
+      if (error) throw error;
+      if (!data?.user) throw new Error(tr('نشست کاربری معتبر نیست؛ خارج شوید و دوباره وارد شوید.',
+        'Your session is not valid. Sign out and sign in again.',
+        'Сеанс недействителен. Выйдите и войдите снова.'));
+      await uploadFn(data.user, input.files?.[0]);
+    } catch (error) {
+      reportUpload(tr('بارگذاری ناموفق بود: ','Upload failed: ','Ошибка загрузки: ') +
+        (error?.message || String(error)));
+    } finally {
+      button.disabled = false;
+      button.textContent = original;
+    }
+  }
+
+  document.getElementById('upload-avatar')?.addEventListener('click', () =>
+    runUpload('upload-avatar', 'member-avatar', uploadAvatar));
+  document.getElementById('upload-evidence')?.addEventListener('click', () =>
+    runUpload('upload-evidence', 'member-evidence', uploadEvidence));
 
   document.getElementById('membership-reset')?.addEventListener('click', async () => {
     const email = clean(login.elements.email.value);
@@ -251,6 +269,7 @@
   document.getElementById('membership-logout')?.addEventListener('click', async () => {
     await db.auth.signOut();
     sessionBox.hidden = true;
+    if (profileMsg) profileMsg.textContent = '';
     if (membershipGrid) membershipGrid.hidden = false;
     if (membershipNote) membershipNote.hidden = false;
     if (membershipPrivacy) membershipPrivacy.hidden = false;
