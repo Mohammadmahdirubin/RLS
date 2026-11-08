@@ -106,6 +106,7 @@
     const categoryEl = document.getElementById('member-profile-category');
     const categoryCopyEl = document.getElementById('member-profile-category-copy');
     const joinedEl = document.getElementById('member-profile-joined');
+    const joinedLabelEl = document.getElementById('member-profile-joined-label');
     const avatarEl = document.getElementById('member-profile-avatar');
     const fallbackEl = document.getElementById('member-profile-avatar-fallback');
     const fieldsEl = document.getElementById('member-profile-fields');
