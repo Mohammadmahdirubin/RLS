@@ -38,9 +38,11 @@
     };
   }
 
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,avatar_path,website_url,orcid,membership_status,created_at,reviewed_at';
+
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
-      .select('user_id,membership_status').eq('user_id', user.id).maybeSingle();
+      .select(ownProfileFields).eq('user_id', user.id).maybeSingle();
     if (readError) throw readError;
     if (existing) return existing;
     const profile = profileData(user);
@@ -50,7 +52,7 @@
         'Данные заявки не найдены. Войдите с адресом, использованным при регистрации.'));
     }
     const { data, error } = await db.from('rls_profiles').insert(profile)
-      .select('user_id,membership_status').single();
+      .select(ownProfileFields).single();
     if (error) throw error;
     // Notify the administrator only after a new pending profile was created.
     try {
