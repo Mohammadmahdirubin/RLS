@@ -73,3 +73,5 @@
 #member-session.member-profile-panel #member-session-text{padding:12px;background:#f2f6fa;border-radius:8px}
 #member-session.member-profile-panel label{display:grid;gap:7px}
 #member-session.member-profile-panel button{width:max-content;max-width:100%}
+
+.membership-success{display:block!important;margin:12px 0;padding:12px 16px;border:1px solid #86c99a;border-radius:9px;background:#eaf8ee!important;color:#176b35!important;font-weight:700;opacity:1!important;visibility:visible!important}
