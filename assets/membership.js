@@ -302,29 +302,38 @@
         'The authenticated session is unavailable. Please sign out and sign in again.',
         'Сеанс авторизации недоступен. Выйдите и войдите снова.'));
     }
+    const { data: oldProfile, error: readProfileError } = await db.from('rls_profiles')
+      .select('pending_avatar_path,membership_status').eq('user_id', user.id).maybeSingle();
+    if (readProfileError) throw readProfileError;
+    if (!oldProfile) {
+      throw new Error(tr('پروفایل عضویت شما در پایگاه داده پیدا نشد. با مدیر انجمن تماس بگیرید.',
+        'Your membership profile was not found. Please contact the association administrator.',
+        'Профиль участника не найден. Свяжитесь с администратором.'));
+    }
+    if (oldProfile.membership_status === 'suspended') {
+      throw new Error(tr('وضعیت عضویت حساب شما «تعلیق‌شده» است؛ به همین دلیل مجوز ثبت عکس جدید ندارید. ابتدا مدیر باید وضعیت عضویت را بررسی و در صورت لزوم فعال کند.',
+        'Your membership is currently suspended, so the database does not allow a new profile photo. The administrator must review and, if appropriate, reactivate your membership first.',
+        'Ваше членство приостановлено, поэтому база данных не разрешает загрузку новой фотографии. Сначала администратор должен проверить статус и при необходимости восстановить членство.'));
+    }
     const { error: uploadError } = await db.storage.from('rls-member-avatars')
       .upload(path, file, { contentType: file.type, upsert: false });
     if (uploadError) throw uploadError;
-    const { data: oldProfile, error: readProfileError } = await db.from('rls_profiles')
-      .select('pending_avatar_path,membership_status').eq('user_id', user.id).maybeSingle();
-    if (readProfileError) {
+    const { data: updatedProfile, error: updateError } = await db.from('rls_profiles')
+      .update({ pending_avatar_path: path }).eq('user_id', user.id)
+      .select(ownProfileFields).maybeSingle();
+    if (updateError || !updatedProfile) {
       await db.storage.from('rls-member-avatars').remove([path]);
-      throw readProfileError;
+      if (updateError) throw updateError;
+      throw new Error(tr('تغییر عکس ثبت نشد؛ احتمالاً وضعیت عضویت یا مجوزهای پروفایل اجازهٔ ویرایش نمی‌دهد. عکس قبلی حفظ شده است.',
+        'The photo change was not saved. Your membership status or profile permissions may prevent editing. Your previous photo has been preserved.',
+        'Изменение фотографии не сохранено. Возможно, статус членства или права профиля запрещают редактирование. Предыдущая фотография сохранена.'));
     }
-    const { error: updateError } = await db.from('rls_profiles')
-      .update({ pending_avatar_path: path }).eq('user_id', user.id);
-    if (updateError) {
-      await db.storage.from('rls-member-avatars').remove([path]);
-      throw updateError;
-    }
-    if (oldProfile?.pending_avatar_path) {
+    if (oldProfile.pending_avatar_path) {
       await db.storage.from('rls-member-avatars').remove([oldProfile.pending_avatar_path]);
     }
     const photoInput = document.getElementById('member-avatar');
     if (photoInput) photoInput.value = '';
-    const { data: refreshedProfile, error: profileError } = await db.from('rls_profiles')
-      .select(ownProfileFields).eq('user_id', user.id).single();
-    if (profileError) throw profileError;
+    const refreshedProfile = updatedProfile;
     renderMemberProfile(refreshedProfile, user);
     reportUpload(tr('عکس با موفقیت ارسال شد و اکنون در انتظار تأیید مدیر است.',
       'Photo submitted successfully and is now awaiting administrator approval.',
