@@ -113,7 +113,11 @@
     if (nameEl) nameEl.textContent = name;
     if (categoryEl) categoryEl.textContent = categoryLabel(profile.category);
     if (categoryCopyEl) categoryCopyEl.textContent = categoryLabel(profile.category);
-    if (joinedEl) joinedEl.textContent = formatMemberDate(profile.reviewed_at && profile.membership_status === 'approved' ? profile.reviewed_at : profile.created_at);
+    const isApproved = profile.membership_status === 'approved';
+    if (joinedLabelEl) joinedLabelEl.textContent = isApproved
+      ? tr('تاریخ عضویت','Membership date','Дата вступления')
+      : tr('تاریخ ثبت درخواست','Application date','Дата подачи заявки');
+    if (joinedEl) joinedEl.textContent = formatMemberDate(isApproved && profile.reviewed_at ? profile.reviewed_at : profile.created_at);
 
     if (avatarEl && fallbackEl) {
       const initials = String(name).trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
