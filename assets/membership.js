@@ -128,7 +128,11 @@
     };
     const { data, error } = await db.auth.signUp({
       email: clean(fd.get('email')), password: String(fd.get('password') || ''),
-      options: { data: metadata }
+      options: {
+        data: metadata,
+        // Return confirmed users to the same live community page, not localhost.
+        emailRedirectTo: window.location.origin + window.location.pathname
+      }
     });
     if (error) { say(regMsg, tr('ثبت‌نام ناموفق بود: ','Registration failed: ','Ошибка регистрации: ') + error.message); return; }
     if (data.session && data.user) {
