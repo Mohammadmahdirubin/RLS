@@ -105,7 +105,7 @@
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,avatar_path,website_url,orcid,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,avatar_path,pending_avatar_path,website_url,orcid,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
