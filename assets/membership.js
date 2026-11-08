@@ -8,6 +8,9 @@
   const regMsg = document.getElementById('register-message');
   const loginMsg = document.getElementById('login-message');
   const sessionBox = document.getElementById('member-session');
+  const membershipGrid = document.querySelector('#membership-process .membership-grid');
+  const membershipNote = document.querySelector('#membership-process .community-note');
+  const membershipPrivacy = document.querySelector('#membership-process .membership-privacy');
   const sessionText = document.getElementById('member-session-text');
   const allowed = ['student','graduate','faculty','researcher','translator','culture','honorary'];
   const maxBytes = 5 * 1024 * 1024;
@@ -76,7 +79,11 @@
     if (!user) return;
     // Authentication is already successful. Reveal account actions immediately,
     // independently of the profile lookup, so a profile-read error cannot hide uploads.
+    if (membershipGrid) membershipGrid.hidden = true;
+    if (membershipNote) membershipNote.hidden = true;
+    if (membershipPrivacy) membershipPrivacy.hidden = true;
     sessionBox.hidden = false;
+    sessionBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
     sessionText.textContent = tr('ورود موفق بود؛ در حال دریافت وضعیت عضویت…',
       'Signed in; loading membership status…','Вход выполнен; загружается статус членства…') +
       (user.email ? ' · ' + user.email : '');
@@ -244,6 +251,9 @@
   document.getElementById('membership-logout')?.addEventListener('click', async () => {
     await db.auth.signOut();
     sessionBox.hidden = true;
+    if (membershipGrid) membershipGrid.hidden = false;
+    if (membershipNote) membershipNote.hidden = false;
+    if (membershipPrivacy) membershipPrivacy.hidden = false;
     say(loginMsg, tr('از حساب خارج شدید.','You have signed out.','Вы вышли из системы.'));
   });
 
