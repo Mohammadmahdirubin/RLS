@@ -2,7 +2,7 @@
   const root = document.querySelector('[data-community]');
   if (!root) return;
   const cfg = window.RLS_SUPABASE_CONFIG;
-  const db = cfg && window.supabase ? window.supabase.createClient(cfg.url, cfg.publishableKey) : null;
+  const db = cfg && window.supabase ? (window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }))) : null;
   const search = root.querySelector('#member-search');
   const category = root.querySelector('#member-category');
   const country = root.querySelector('#member-country');
