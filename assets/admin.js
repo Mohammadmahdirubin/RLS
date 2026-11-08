@@ -28,9 +28,15 @@
   }
   async function load(){
     list.textContent='در حال دریافت اطلاعات…';
-    const {data,error}=await client.from('rls_profiles')
-      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,membership_status,created_at')
-      .eq('membership_status',status).order('created_at',{ascending:true});
+    let query=client.from('rls_profiles')
+      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,created_at')
+      .order('created_at',{ascending:true});
+    if(status==='photo_pending'){
+      query=query.eq('membership_status','approved').not('pending_avatar_path','is',null);
+    }else{
+      query=query.eq('membership_status',status);
+    }
+    const {data,error}=await query;
     if(error){list.textContent='خطا در دریافت درخواست‌ها: '+error.message;return;}
     if(!data?.length){list.textContent='در این دسته درخواستی وجود ندارد.';return;}
     const html=await Promise.all(data.map(async p=>{
@@ -41,13 +47,21 @@
           ?'<p><a href="'+esc(signed.signedUrl)+'" target="_blank" rel="noopener noreferrer">مشاهده مدرک (پیوند موقت ۵ دقیقه‌ای)</a></p>'
           :'<p class="admin-meta">مدرک ثبت شده، اما ایجاد پیوند امن ناموفق بود.</p>';
       }
-      return '<article class="admin-member" data-id="'+esc(p.user_id)+'"><h3>'+esc(p.full_name)+'</h3>'+
+      const reviewAvatarPath=p.pending_avatar_path||p.avatar_path;
+      const avatarUrl=reviewAvatarPath
+        ?client.storage.from('rls-member-avatars').getPublicUrl(reviewAvatarPath).data.publicUrl:'';
+      const photo=avatarUrl
+        ?'<div class="admin-photo-review"><img src="'+esc(avatarUrl)+'" alt="عکس پروفایل '+esc(p.full_name)+'"><span>'+(p.pending_avatar_path?'عکس جدید در انتظار تأیید':'عکس پروفایل')+'</span></div>'
+        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است.</p>';
+      return '<article class="admin-member" data-id="'+esc(p.user_id)+'" data-avatar-path="'+esc(p.avatar_path||'')+'" data-pending-avatar="'+esc(p.pending_avatar_path||'')+'"><h3>'+esc(p.full_name)+'</h3>'+
+        photo+
         '<div class="admin-meta">گروه: '+esc(labels[p.category]||p.category)+' · ایمیل: '+esc(p.email)+
         '<br>محل: '+esc([p.city,p.country].filter(Boolean).join('، ')||'ثبت نشده')+' · مؤسسه: '+esc(p.institution||'ثبت نشده')+
         '<br>تحصیلات: '+esc(p.degree||'—')+' · تخصص: '+esc(p.specialty||'—')+
         '<br>معرفی: '+esc(p.bio||'—')+'<br>تاریخ درخواست: '+new Date(p.created_at).toLocaleString('fa-IR')+'</div>'+
         evidence+'<div class="admin-actions">'+
-        (status==='pending'?'<button class="approve" data-action="approve">تأیید و انتشار پروفایل</button><button class="reject" data-action="reject">رد درخواست</button>':'')+
+        (status==='pending'?'<button class="approve" data-action="approve">تأیید عضویت و عکس</button><button class="reject" data-action="reject">رد درخواست</button>':'')+
+        ((status==='approved'||status==='photo_pending')&&p.pending_avatar_path?'<button class="approve" data-action="approve_avatar">تأیید عکس جدید</button><button class="reject" data-action="reject_avatar">رد عکس جدید</button>':'')+
         (status==='approved'?'<button class="suspend" data-action="suspend">تعلیق عضویت</button>':'')+
         '</div><p class="admin-message" role="status"></p></article>';
     }));
@@ -57,12 +71,41 @@
     const message=card.querySelector('.admin-message');message.textContent='در حال ثبت…';
     const {data:{user}}=await client.auth.getUser();
     if(!user){message.textContent='نشست مدیر منقضی شده است.';return;}
-    const update={reviewed_by:user.id,reviewed_at:new Date().toISOString()};
-    if(action==='approve')Object.assign(update,{membership_status:'approved',is_public:true,review_note:null});
-    if(action==='reject')Object.assign(update,{membership_status:'rejected',is_public:false,review_note:'درخواست پس از بررسی تأیید نشد.'});
-    if(action==='suspend')Object.assign(update,{membership_status:'suspended',is_public:false,review_note:'عضویت توسط مدیر تعلیق شد.'});
+    const pendingPath=card.dataset.pendingAvatar||'';
+    const currentPath=card.dataset.avatarPath||'';
+    const update={};
+    let removePath='';
+    if(action==='approve'){
+      const selectedPath=pendingPath||currentPath;
+      if(!selectedPath){message.textContent='تا پیش از ثبت عکس پروفایل، درخواست قابل تأیید نیست.';return;}
+      Object.assign(update,{membership_status:'approved',is_public:true,review_note:null,
+        avatar_path:selectedPath,pending_avatar_path:null,reviewed_by:user.id,reviewed_at:new Date().toISOString()});
+      if(currentPath&&currentPath!==selectedPath)removePath=currentPath;
+    }
+    if(action==='reject'){
+      Object.assign(update,{membership_status:'rejected',is_public:false,review_note:'درخواست پس از بررسی تأیید نشد.',
+        reviewed_by:user.id,reviewed_at:new Date().toISOString()});
+    }
+    if(action==='approve_avatar'){
+      if(!pendingPath){message.textContent='عکس جدیدی برای تأیید پیدا نشد.';return;}
+      Object.assign(update,{avatar_path:pendingPath,pending_avatar_path:null});
+      if(currentPath&&currentPath!==pendingPath)removePath=currentPath;
+    }
+    if(action==='reject_avatar'){
+      if(!pendingPath){message.textContent='عکس جدیدی برای رد کردن پیدا نشد.';return;}
+      Object.assign(update,{pending_avatar_path:null});
+      removePath=pendingPath;
+    }
+    if(action==='suspend'){
+      Object.assign(update,{membership_status:'suspended',is_public:false,review_note:'عضویت توسط مدیر تعلیق شد.',
+        reviewed_by:user.id,reviewed_at:new Date().toISOString()});
+    }
     const {error}=await client.from('rls_profiles').update(update).eq('user_id',id);
     if(error){message.textContent='خطا: '+error.message;return;}
+    if(removePath){
+      const {error:removeError}=await client.storage.from('rls-member-avatars').remove([removePath]);
+      if(removeError)console.warn('Old avatar cleanup failed:',removeError.message);
+    }
     await load();
   }
   form.addEventListener('submit',async e=>{
