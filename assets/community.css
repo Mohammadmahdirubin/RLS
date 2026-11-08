@@ -35,3 +35,24 @@
 .community-footer strong{color:#f2c76c}
 @media(max-width:900px){.community-categories{grid-template-columns:repeat(2,minmax(0,1fr))}.community-layout{grid-template-columns:1fr}.community-members{grid-template-columns:repeat(2,minmax(0,1fr))}.community-tools{grid-template-columns:1fr 1fr}.community-search-btn{min-height:46px}}
 @media(max-width:560px){.community-hero{padding:40px 0}.community-categories{gap:9px}.community-category{padding:14px 9px}.community-members{grid-template-columns:1fr}.community-tools{grid-template-columns:1fr}.community-section{padding:26px 0}}
+
+/* Membership application and login */
+.membership-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.8fr);gap:18px;align-items:start}
+.membership-card{background:#fff;border:1px solid var(--community-line);border-radius:13px;padding:22px;display:grid;gap:13px;box-shadow:0 5px 18px rgba(9,43,80,.045)}
+.membership-card h3{margin:0;color:var(--community-navy);font-size:19px}
+.membership-card p{color:#5d6e80;line-height:1.8;margin:0}
+.membership-card label{display:grid;gap:6px;color:#344b63;font-weight:650;font-size:14px}
+.membership-card input:not([type=checkbox]),.membership-card select,.membership-card textarea{width:100%;min-height:43px;border:1px solid #cbd6e2;border-radius:8px;background:#fff;padding:10px 11px;font:inherit;color:#1d2e40;box-sizing:border-box}
+.membership-card input[type=file]{font-size:13px}
+.membership-card small{font-size:12px;color:#738195;font-weight:400;line-height:1.6}
+.membership-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.membership-consent{display:flex!important;align-items:center;gap:9px!important;font-weight:500!important}
+.membership-consent input{width:17px;height:17px}
+.membership-message{min-height:1.4em;color:#315b7d;font-size:14px;line-height:1.7}
+.membership-link{border:0;background:transparent;color:#164b7b;text-decoration:underline;cursor:pointer;font:inherit;justify-self:start;padding:4px 0}
+.membership-privacy{color:#64748b;font-size:13px;line-height:1.8;margin-top:14px}
+#member-session{border-top:1px solid var(--community-line);padding-top:14px;display:grid;gap:12px}
+#member-session[hidden]{display:none}
+.community-member .member-category{display:inline-block;background:#eef4fa;color:#244c70;border-radius:30px;padding:4px 10px;margin-top:9px;font-size:12px}
+.community-member a{color:#164b7b;font-size:13px;margin-top:7px}
+@media(max-width:760px){.membership-grid{grid-template-columns:1fr}.membership-two{grid-template-columns:1fr}}
