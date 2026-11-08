@@ -30,7 +30,7 @@
     root.querySelectorAll('[data-category-filter]').forEach(b =>
       b.setAttribute('aria-pressed', String(b.dataset.categoryFilter === (category?.value || ''))));
   }
-  function initials(name) {
+  function safeHttpUrl(value) {\n    try { const u = new URL(String(value || '')); return (u.protocol === 'https:' || u.protocol === 'http:') ? u.href : ''; } catch (_) { return ''; }\n  }\n  function initials(name) {
     return String(name || 'RLS').trim().split(/\s+/).slice(0,2).map(x => x[0] || '').join('').toLocaleUpperCase();
   }
   async function load() {
