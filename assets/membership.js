@@ -215,7 +215,7 @@
 
     const editForm = document.getElementById('member-profile-edit');
     if (editForm) {
-      ['display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'].forEach(key => {
+      ['full_name','display_name','category','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'].forEach(key => {
         const input = editForm.elements.namedItem(key);
         if (input) input.value = profile[key] || '';
       });
@@ -305,7 +305,7 @@
       if (sessionError) throw sessionError;
       const user = sessionData?.session?.user;
       if (!user) throw new Error(tr('ابتدا وارد حساب شوید.','Please sign in first.','Сначала войдите в систему.'));
-      const keys = ['display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
+      const keys = ['full_name','display_name','category','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
       if (payload.website_url) {
