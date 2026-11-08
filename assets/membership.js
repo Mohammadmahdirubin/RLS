@@ -441,7 +441,7 @@
       try {
         await completeQueuedAvatar(data.user);
       } catch (avatarError) {
-        reportUpload(tr('Вход выполнен, но фото из заявки пока не отправлено: ',
+        reportUpload(tr('ورود انجام شد، اما عکس ثبت‌نام هنوز ارسال نشده است: ',
           'Signed in, but the saved signup photo could not be submitted yet: ',
           'Вход выполнен, но фотографию из заявки пока не удалось отправить: ') + (avatarError?.message || String(avatarError)));
       }
@@ -510,8 +510,17 @@
     say(loginMsg, tr('از حساب خارج شدید.','You have signed out.','Вы вышли из системы.'));
   });
 
-  db.auth.getSession().then(({ data, error }) => {
+  db.auth.getSession().then(async ({ data, error }) => {
     if (error) { say(loginMsg, tr('بازیابی نشست با خطا روبه‌رو شد: ','Could not restore your session: ','Не удалось восстановить сеанс: ') + error.message); return; }
-    if (data?.session?.user) showSession(data.session.user);
+    if (data?.session?.user) {
+      await showSession(data.session.user);
+      try {
+        await completeQueuedAvatar(data.session.user);
+      } catch (avatarError) {
+        reportUpload(tr('ورود انجام شد، اما عکس ذخیره‌شده هنوز برای بررسی ارسال نشده است: ',
+          'Signed in, but the retained photo has not yet been submitted for review: ',
+          'Вход выполнен, но сохранённая фотография ещё не отправлена на проверку: ') + (avatarError?.message || String(avatarError)));
+      }
+    }
   }).catch(error => say(loginMsg, tr('خطا در بازیابی ورود: ','Session restore error: ','Ошибка восстановления сеанса: ') + (error?.message || String(error))));
 })();
