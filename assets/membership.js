@@ -104,6 +104,7 @@
     const name = profile.full_name || profile.display_name || user.email || tr('عضو انجمن','RLS member','Участник RLS');
     const nameEl = document.getElementById('member-profile-name');
     const categoryEl = document.getElementById('member-profile-category');
+    const categoryCopyEl = document.getElementById('member-profile-category-copy');
     const joinedEl = document.getElementById('member-profile-joined');
     const avatarEl = document.getElementById('member-profile-avatar');
     const fallbackEl = document.getElementById('member-profile-avatar-fallback');
