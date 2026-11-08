@@ -46,6 +46,18 @@
     const { data, error } = await db.from('rls_profiles').insert(profile)
       .select('user_id,membership_status').single();
     if (error) throw error;
+    // Notify the administrator only after a new pending profile was created.
+    try {
+      const { data: sessionData } = await db.auth.getSession();
+      if (sessionData.session?.access_token) {
+        await db.functions.invoke('notify-membership-request', {
+          headers: { Authorization: 'Bearer ' + sessionData.session.access_token },
+          body: {}
+        });
+      }
+    } catch (notifyError) {
+      console.warn('Membership notification could not be sent:', notifyError);
+    }
     return data;
   }
 
