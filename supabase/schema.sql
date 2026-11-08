@@ -91,6 +91,30 @@ create trigger rls_profiles_touch_updated_at
 before update on public.rls_profiles
 for each row execute function public.rls_touch_updated_at();
 
+-- Prevent members from changing moderation-controlled fields on their own profile.
+create or replace function public.rls_protect_moderation_fields()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $
+begin
+  if auth.uid() = old.user_id and not public.rls_is_admin() then
+    new.membership_status := old.membership_status;
+    new.is_public := old.is_public;
+    new.reviewed_by := old.reviewed_by;
+    new.reviewed_at := old.reviewed_at;
+    new.review_note := old.review_note;
+  end if;
+  return new;
+end;
+$;
+
+drop trigger if exists rls_profiles_protect_moderation on public.rls_profiles;
+create trigger rls_profiles_protect_moderation
+before update on public.rls_profiles
+for each row execute function public.rls_protect_moderation_fields();
+
 alter table public.rls_profiles enable row level security;
 alter table public.rls_user_roles enable row level security;
 
@@ -109,10 +133,7 @@ create policy "users can submit own pending profile"
 on public.rls_profiles for insert to authenticated
 with check (
   user_id = auth.uid()
-  and membership_status = 'pending'
-  and is_public = false
-  and reviewed_by is null
-  and reviewed_at is null
+  and membership_status <> 'suspended'
 );
 
 drop policy if exists "members can edit own profile without approval fields" on public.rls_profiles;
