@@ -219,6 +219,8 @@
         const input = editForm.elements.namedItem(key);
         if (input) input.value = profile[key] || '';
       });
+      const emailInput = editForm.elements.namedItem('email');
+      if (emailInput) emailInput.value = profile.email || user.email || '';
       const phonePublicInput = editForm.elements.namedItem('phone_public');
       if (phonePublicInput) phonePublicInput.checked = !!profile.phone_public;
     }
