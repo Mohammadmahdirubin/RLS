@@ -12,6 +12,7 @@
   const allowed = ['student','graduate','faculty','researcher','translator','culture','honorary'];
   const maxBytes = 5 * 1024 * 1024;
   const types = ['application/pdf','image/jpeg','image/png','image/webp'];
+  const avatarTypes = ['image/jpeg','image/png','image/webp'];
   const lang = document.documentElement.lang;
   const tr = (fa,en,ru) => lang === 'fa' ? fa : lang === 'ru' ? ru : en;
   const say = (el, value) => { if (el) el.textContent = value; };
@@ -84,6 +85,32 @@
     }
   }
 
+  async function uploadAvatar(user, file) {
+    if (!file) { say(loginMsg, tr('ابتدا عکس را انتخاب کنید.','Choose a photo first.','Сначала выберите фотографию.')); return; }
+    if (!avatarTypes.includes(file.type) || file.size > maxBytes) {
+      say(loginMsg, tr('عکس باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.','Use a JPG, PNG or WebP image no larger than 5 MB.','Допустимы JPG, PNG или WebP размером до 5 МБ.'));
+      return;
+    }
+    const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+    const path = user.id + '/avatar-' + Date.now() + '.' + ext;
+    say(loginMsg, tr('در حال بارگذاری عکس پروفایل…','Uploading profile photo…','Загрузка фотографии профиля…'));
+    const { error: uploadError } = await db.storage.from('rls-member-avatars')
+      .upload(path, file, { contentType: file.type, upsert: false });
+    if (uploadError) throw uploadError;
+    const { data: oldProfile } = await db.from('rls_profiles').select('avatar_path').eq('user_id', user.id).maybeSingle();
+    const { error: updateError } = await db.from('rls_profiles').update({ avatar_path: path }).eq('user_id', user.id);
+    if (updateError) {
+      await db.storage.from('rls-member-avatars').remove([path]);
+      throw updateError;
+    }
+    if (oldProfile?.avatar_path) await db.storage.from('rls-member-avatars').remove([oldProfile.avatar_path]);
+    const photoInput = document.getElementById('member-avatar');
+    if (photoInput) photoInput.value = '';
+    say(loginMsg, tr('عکس پروفایل ذخیره شد و پس از تأیید عضویت در فهرست عمومی نمایش داده می‌شود.',
+      'Profile photo saved. It will appear in the public directory after membership approval.',
+      'Фотография сохранена и появится в открытом каталоге после одобрения членства.'));
+  }
+
   async function uploadEvidence(user, file) {
     if (!file) { say(loginMsg, tr('ابتدا فایل مدرک را انتخاب کنید.','Choose a document first.','Сначала выберите документ.')); return; }
     if (file.size > maxBytes || !types.includes(file.type)) {
@@ -139,6 +166,8 @@
       try {
         await ensureProfile(data.user);
         if (file && file.size) await uploadEvidence(data.user, file);
+        const avatarFile = fd.get('avatar');
+        if (avatarFile && avatarFile.size) await uploadAvatar(data.user, avatarFile);
         say(regMsg, tr('درخواست شما ثبت شد و در انتظار بررسی مدیر است.',
           'Your application was submitted and is awaiting administrator review.',
           'Заявка отправлена и ожидает проверки администратора.'));
@@ -165,6 +194,13 @@
     if (error) { say(loginMsg, tr('ورود ناموفق بود: ','Sign-in failed: ','Не удалось войти: ') + error.message); return; }
     await showSession(data.user);
     login.reset();
+  });
+
+  document.getElementById('upload-avatar')?.addEventListener('click', async () => {
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) return;
+    try { await uploadAvatar(user, document.getElementById('member-avatar').files[0]); }
+    catch (error) { say(loginMsg, tr('بارگذاری عکس ناموفق بود: ','Photo upload failed: ','Не удалось загрузить фото: ') + error.message); }
   });
 
   document.getElementById('upload-evidence')?.addEventListener('click', async () => {
