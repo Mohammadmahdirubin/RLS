@@ -176,6 +176,7 @@
     const joinedLabelEl = document.getElementById('member-profile-joined-label');
     const avatarEl = document.getElementById('member-profile-avatar');
     const fallbackEl = document.getElementById('member-profile-avatar-fallback');
+    const avatarReviewEl = document.getElementById('member-avatar-review-note');
     const fieldsEl = document.getElementById('member-profile-fields');
     if (nameEl) nameEl.textContent = name;
     if (categoryEl) categoryEl.textContent = categoryLabel(profile.category);
@@ -190,8 +191,9 @@
       const initials = String(name).trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
       fallbackEl.textContent = initials || 'RLS';
       avatarEl.onerror = () => { avatarEl.hidden = true; fallbackEl.hidden = false; };
-      if (profile.avatar_path) {
-        const publicUrl = db.storage.from('rls-member-avatars').getPublicUrl(profile.avatar_path).data.publicUrl;
+      const visibleAvatarPath = profile.pending_avatar_path || profile.avatar_path;
+      if (visibleAvatarPath) {
+        const publicUrl = db.storage.from('rls-member-avatars').getPublicUrl(visibleAvatarPath).data.publicUrl;
         avatarEl.src = publicUrl;
         avatarEl.alt = tr('عکس پروفایل ','Profile photo of ','Фотография профиля ') + name;
         avatarEl.hidden = false;
@@ -200,6 +202,14 @@
         avatarEl.removeAttribute('src');
         avatarEl.hidden = true;
         fallbackEl.hidden = false;
+      }
+      if (avatarReviewEl) {
+        avatarReviewEl.hidden = !profile.pending_avatar_path;
+        avatarReviewEl.textContent = profile.pending_avatar_path
+          ? tr('عکس جدید ارسال شده و در انتظار تأیید مدیر است. عکس قبلی تا زمان تأیید در فهرست عمومی باقی می‌ماند.',
+            'Your new photo is awaiting administrator approval. Your current public photo remains visible until approval.',
+            'Новая фотография ожидает одобрения администратора. Текущая фотография останется в открытом каталоге до подтверждения.')
+          : '';
       }
     }
 
@@ -295,22 +305,30 @@
     const { error: uploadError } = await db.storage.from('rls-member-avatars')
       .upload(path, file, { contentType: file.type, upsert: false });
     if (uploadError) throw uploadError;
-    const { data: oldProfile } = await db.from('rls_profiles').select('avatar_path').eq('user_id', user.id).maybeSingle();
-    const { error: updateError } = await db.from('rls_profiles').update({ avatar_path: path }).eq('user_id', user.id);
+    const { data: oldProfile, error: readProfileError } = await db.from('rls_profiles')
+      .select('pending_avatar_path,membership_status').eq('user_id', user.id).maybeSingle();
+    if (readProfileError) {
+      await db.storage.from('rls-member-avatars').remove([path]);
+      throw readProfileError;
+    }
+    const { error: updateError } = await db.from('rls_profiles')
+      .update({ pending_avatar_path: path }).eq('user_id', user.id);
     if (updateError) {
       await db.storage.from('rls-member-avatars').remove([path]);
       throw updateError;
     }
-    if (oldProfile?.avatar_path) await db.storage.from('rls-member-avatars').remove([oldProfile.avatar_path]);
+    if (oldProfile?.pending_avatar_path) {
+      await db.storage.from('rls-member-avatars').remove([oldProfile.pending_avatar_path]);
+    }
     const photoInput = document.getElementById('member-avatar');
     if (photoInput) photoInput.value = '';
     const { data: refreshedProfile, error: profileError } = await db.from('rls_profiles')
       .select(ownProfileFields).eq('user_id', user.id).single();
     if (profileError) throw profileError;
     renderMemberProfile(refreshedProfile, user);
-    reportUpload(tr('عکس پروفایل ذخیره شد و پس از تأیید عضویت در فهرست عمومی نمایش داده می‌شود.',
-      'Profile photo saved. It will appear in the public directory after membership approval.',
-      'Фотография сохранена и появится в открытом каталоге после одобрения членства.'));
+    reportUpload(tr('عکس با موفقیت ارسال شد و اکنون در انتظار تأیید مدیر است.',
+      'Photo submitted successfully and is now awaiting administrator approval.',
+      'Фотография успешно отправлена и ожидает одобрения администратора.'));
   }
 
   async function uploadEvidence(user, file) {
