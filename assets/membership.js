@@ -23,6 +23,73 @@
   const say = (el, value) => { if (el) el.textContent = value; };
   const clean = value => String(value || '').trim();
 
+  const avatarQueueDbName = 'rls-membership-pending';
+  function openAvatarQueue() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) {
+        reject(new Error(tr('ذخیره امن عکس در این مرورگر پشتیبانی نمی‌شود. از مرورگر دیگری استفاده کنید.',
+          'This browser cannot securely retain the photo while email is confirmed. Please use another browser.',
+          'Этот браузер не поддерживает временное сохранение фотографии. Используйте другой браузер.')));
+        return;
+      }
+      const request = window.indexedDB.open(avatarQueueDbName, 1);
+      request.onupgradeneeded = () => {
+        if (!request.result.objectStoreNames.contains('avatars')) {
+          request.result.createObjectStore('avatars');
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error('Could not open the local upload queue.'));
+    });
+  }
+
+  async function queueAvatar(email, file) {
+    const localDb = await openAvatarQueue();
+    const key = clean(email).toLowerCase();
+    await new Promise((resolve, reject) => {
+      const tx = localDb.transaction('avatars', 'readwrite');
+      tx.objectStore('avatars').put(file, key);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error || new Error('Could not save the selected photo.'));
+      tx.onabort = () => reject(tx.error || new Error('Saving the selected photo was cancelled.'));
+    });
+    localDb.close();
+  }
+
+  async function readQueuedAvatar(email) {
+    const localDb = await openAvatarQueue();
+    const key = clean(email).toLowerCase();
+    const file = await new Promise((resolve, reject) => {
+      const tx = localDb.transaction('avatars', 'readonly');
+      const request = tx.objectStore('avatars').get(key);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error || new Error('Could not retrieve the saved photo.'));
+    });
+    localDb.close();
+    return file;
+  }
+
+  async function removeQueuedAvatar(email) {
+    const localDb = await openAvatarQueue();
+    const key = clean(email).toLowerCase();
+    await new Promise((resolve, reject) => {
+      const tx = localDb.transaction('avatars', 'readwrite');
+      tx.objectStore('avatars').delete(key);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error || new Error('Could not remove the temporary photo.'));
+    });
+    localDb.close();
+  }
+
+  async function completeQueuedAvatar(user) {
+    if (!user?.email) return false;
+    const file = await readQueuedAvatar(user.email);
+    if (!file || !file.size) return false;
+    await uploadAvatar(user, file);
+    await removeQueuedAvatar(user.email);
+    return true;
+  }
+
   function profileData(user) {
     const m = user.user_metadata || {};
     return {
