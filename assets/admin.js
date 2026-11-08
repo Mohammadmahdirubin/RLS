@@ -1,7 +1,7 @@
 (function(){
   const cfg=window.RLS_SUPABASE_CONFIG;
   if(!cfg||!window.supabase)return;
-  const client=window.supabase.createClient(cfg.url,cfg.publishableKey);
+  const client=window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}));
   const login=document.getElementById('admin-login'),dashboard=document.getElementById('admin-dashboard');
   const form=document.getElementById('admin-login-form'),msg=document.getElementById('login-message'),list=document.getElementById('admin-list');
   let status='pending',checking=false;
@@ -13,9 +13,13 @@
       const {data:{session}}=await client.auth.getSession();
       if(!session){login.hidden=false;dashboard.hidden=true;return;}
       const {data:role,error}=await client.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
-      if(error||role?.role!=='admin'){
-        msg.textContent='این حساب دسترسی مدیر انجمن را ندارد.';
-        await client.auth.signOut();login.hidden=false;dashboard.hidden=true;return;
+      if(error){
+        msg.textContent='بررسی دسترسی مدیر ناموفق بود: '+error.message+' · نشست شما حفظ شده است.';
+        login.hidden=false;dashboard.hidden=true;return;
+      }
+      if(role?.role!=='admin'){
+        msg.textContent='این حساب دسترسی مدیر انجمن را ندارد. نشست کاربری شما حفظ شده است.';
+        login.hidden=false;dashboard.hidden=true;return;
       }
       login.hidden=true;dashboard.hidden=false;
       document.getElementById('admin-identity').textContent=session.user.email||'مدیر انجمن';
