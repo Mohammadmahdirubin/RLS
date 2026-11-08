@@ -115,7 +115,7 @@
     if (joinedEl) joinedEl.textContent = formatMemberDate(profile.reviewed_at && profile.membership_status === 'approved' ? profile.reviewed_at : profile.created_at);
 
     if (avatarEl && fallbackEl) {
-      const initials = String(name).trim().split(/\\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
+      const initials = String(name).trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
       fallbackEl.textContent = initials || 'RLS';
       avatarEl.onerror = () => { avatarEl.hidden = true; fallbackEl.hidden = false; };
       if (profile.avatar_path) {
