@@ -111,6 +111,7 @@
     const fieldsEl = document.getElementById('member-profile-fields');
     if (nameEl) nameEl.textContent = name;
     if (categoryEl) categoryEl.textContent = categoryLabel(profile.category);
+    if (categoryCopyEl) categoryCopyEl.textContent = categoryLabel(profile.category);
     if (joinedEl) joinedEl.textContent = formatMemberDate(profile.reviewed_at && profile.membership_status === 'approved' ? profile.reviewed_at : profile.created_at);
 
     if (avatarEl && fallbackEl) {
