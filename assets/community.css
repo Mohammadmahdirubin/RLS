@@ -1,0 +1,37 @@
+:root{--community-navy:#092b50;--community-blue:#164b7b;--community-gold:#d8a43a;--community-paper:#f7f8fb;--community-line:#dce3eb}
+.community-page{background:var(--community-paper)}
+.community-hero{background:linear-gradient(112deg,rgba(5,34,66,.96),rgba(13,67,111,.91)),url('../assets/community-kremlin.jpg') center/cover;color:#fff;padding:58px 0}
+.community-hero h1{color:#fff;font-size:clamp(28px,4vw,44px);margin:0 0 12px}
+.community-hero p{max-width:760px;color:#e6eef7;font-size:16px;margin:0;line-height:2}
+.community-hero .eyebrow{color:#f2c76c}
+.community-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.community-button{display:inline-flex;align-items:center;justify-content:center;padding:11px 20px;border-radius:8px;text-decoration:none;font-weight:800;border:1px solid transparent}
+.community-button.primary{background:var(--community-gold);color:#132d49}
+.community-button.outline{border-color:#dce9f5;color:#fff;background:transparent}
+.community-section{padding:34px 0}
+.community-section h2{color:var(--community-navy);margin:0 0 18px;font-size:23px}
+.community-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.community-category{background:#fff;border:1px solid var(--community-line);border-radius:12px;padding:18px 14px;text-align:center;box-shadow:0 5px 16px rgba(9,43,80,.05);cursor:pointer;color:var(--community-navy);font:inherit;transition:.18s}
+.community-category:hover,.community-category[aria-pressed=true]{border-color:var(--community-gold);box-shadow:0 8px 22px rgba(9,43,80,.11);transform:translateY(-2px)}
+.community-category .symbol{display:block;font-size:28px;margin-bottom:8px}
+.community-category strong{display:block;font-size:14px}
+.community-tools{display:grid;grid-template-columns:minmax(220px,1.6fr) repeat(2,minmax(150px,1fr)) auto;gap:10px;align-items:center;margin:22px 0}
+.community-tools input,.community-tools select{min-height:46px;border:1px solid var(--community-line);border-radius:8px;background:#fff;padding:9px 12px;font:inherit}
+.community-search-btn{border:0;background:var(--community-navy);color:#fff;border-radius:8px;padding:12px 20px;font:inherit;font-weight:800;cursor:pointer}
+.community-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:22px;align-items:start}
+.community-members{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.community-member{background:#fff;border:1px solid var(--community-line);border-radius:12px;padding:20px;text-align:center;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.community-avatar{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:#e8eef5;color:var(--community-navy);font-size:28px;margin-bottom:12px}
+.community-member h3{font-size:16px;color:var(--community-navy);margin:0 0 5px}
+.community-member p{margin:0;color:#657486;font-size:13px}
+.community-member .pending-note{margin-top:12px;font-size:12px;color:#8a6a2c}
+.community-sidebar{background:#fff;border:1px solid var(--community-line);border-radius:12px;padding:18px}
+.community-sidebar h3{color:var(--community-navy);margin:0 0 12px}
+.community-sidebar a{display:block;padding:9px 0;border-bottom:1px solid #edf0f4;text-decoration:none;color:#334b66}
+.community-empty{grid-column:1/-1;background:#fff;border:1px dashed #bac8d7;border-radius:12px;padding:30px;text-align:center;color:#607187}
+.community-note{background:#eef4fa;border-right:4px solid var(--community-gold);border-radius:8px;padding:15px 18px;color:#334b66;line-height:1.9}
+[dir=ltr] .community-note{border-right:0;border-left:4px solid var(--community-gold)}
+.community-footer{background:var(--community-navy);color:#eaf1f8;padding:24px 0;text-align:center}
+.community-footer strong{color:#f2c76c}
+@media(max-width:900px){.community-categories{grid-template-columns:repeat(2,minmax(0,1fr))}.community-layout{grid-template-columns:1fr}.community-members{grid-template-columns:repeat(2,minmax(0,1fr))}.community-tools{grid-template-columns:1fr 1fr}.community-search-btn{min-height:46px}}
+@media(max-width:560px){.community-hero{padding:40px 0}.community-categories{gap:9px}.community-category{padding:14px 9px}.community-members{grid-template-columns:1fr}.community-tools{grid-template-columns:1fr}.community-section{padding:26px 0}}
