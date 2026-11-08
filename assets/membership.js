@@ -360,10 +360,31 @@
     const fd = new FormData(register);
     const category = clean(fd.get('category'));
     const file = fd.get('evidence');
+    const avatarFile = fd.get('avatar');
+    const applicationEmail = clean(fd.get('email'));
     if (!allowed.includes(category)) { say(regMsg, tr('گروه عضویت معتبر نیست.','Select a valid membership category.','Выберите допустимую категорию.')); return; }
+    if (!avatarFile || !avatarFile.size) {
+      say(regMsg, tr('انتخاب عکس پروفایل برای ثبت‌نام الزامی است.','A profile photo is required to register.','Для регистрации необходимо загрузить фотографию профиля.'));
+      return;
+    }
+    if (!avatarTypes.includes(avatarFile.type) || avatarFile.size > maxBytes) {
+      say(regMsg, tr('عکس باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.',
+        'Choose a JPG, PNG or WebP photo no larger than 5 MB.',
+        'Выберите фотографию JPG, PNG или WebP размером до 5 МБ.'));
+      return;
+    }
     if (file && file.size && (file.size > maxBytes || !types.includes(file.type))) {
       say(regMsg, tr('فایل باید PDF یا تصویر مجاز و حداکثر ۵ مگابایت باشد.',
         'The file must be an accepted PDF/image and no larger than 5 MB.','Файл должен быть PDF или изображением размером до 5 МБ.'));
+      return;
+    }
+    try {
+      // Keep the required photo locally while the user confirms their email.
+      await queueAvatar(applicationEmail, avatarFile);
+    } catch (queueError) {
+      say(regMsg, tr('ذخیره موقت عکس برای تکمیل ثبت‌نام ممکن نشد: ',
+        'The selected photo could not be retained until email confirmation: ',
+        'Не удалось временно сохранить фотографию для завершения регистрации: ') + (queueError?.message || String(queueError)));
       return;
     }
     const metadata = {
@@ -374,7 +395,7 @@
       website_url: clean(fd.get('website_url')), orcid: clean(fd.get('orcid'))
     };
     const { data, error } = await db.auth.signUp({
-      email: clean(fd.get('email')), password: String(fd.get('password') || ''),
+      email: applicationEmail, password: String(fd.get('password') || ''),
       options: {
         data: metadata,
         // Return confirmed users to the same live community page, not localhost.
@@ -386,8 +407,8 @@
       try {
         await ensureProfile(data.user);
         if (file && file.size) await uploadEvidence(data.user, file);
-        const avatarFile = fd.get('avatar');
-        if (avatarFile && avatarFile.size) await uploadAvatar(data.user, avatarFile);
+        await uploadAvatar(data.user, avatarFile);
+        await removeQueuedAvatar(applicationEmail);
         say(regMsg, tr('درخواست شما ثبت شد و در انتظار بررسی مدیر است.',
           'Your application was submitted and is awaiting administrator review.',
           'Заявка отправлена и ожидает проверки администратора.'));
@@ -398,9 +419,9 @@
           'Account created, but application setup failed: ','Учётная запись создана, но заявку не удалось завершить: ') + err.message);
       }
     } else {
-      say(regMsg, tr('حساب ساخته شد. ایمیل تأیید را باز کنید؛ سپس از بخش ورود وارد شوید تا درخواست شما ثبت نهایی شود. پوشه هرزنامه را هم بررسی کنید.',
-        'Your account was created. Confirm your email, then sign in below to finalize your application. Check your spam folder too.',
-        'Учётная запись создана. Подтвердите адрес по ссылке из письма, затем войдите ниже для завершения заявки. Проверьте папку «Спам».'));
+      say(regMsg, tr('حساب ساخته شد و عکس شما در این مرورگر نگهداری شده است. ایمیل را تأیید کنید، سپس با همان مرورگر و همان ایمیل وارد شوید تا عکس برای بررسی مدیر ارسال شود. اگر تأیید ایمیل در همین صفحه باز شد، پس از بازگشت وارد شوید.',
+        'Your account was created and the photo has been retained in this browser. Confirm your email, then sign in here with the same email so the photo can be sent for administrator review.',
+        'Учётная запись создана, фотография сохранена в этом браузере. Подтвердите адрес и войдите здесь с тем же адресом, чтобы отправить фотографию администратору на проверку.'));
     }
   });
 
@@ -417,6 +438,13 @@
       });
       if (error) throw error;
       await showSession(data.user);
+      try {
+        await completeQueuedAvatar(data.user);
+      } catch (avatarError) {
+        reportUpload(tr('Вход выполнен, но фото из заявки пока не отправлено: ',
+          'Signed in, but the saved signup photo could not be submitted yet: ',
+          'Вход выполнен, но фотографию из заявки пока не удалось отправить: ') + (avatarError?.message || String(avatarError)));
+      }
       login.reset();
       // Clear the transient "signing in" notice after a successful login.
       say(loginMsg, '');
