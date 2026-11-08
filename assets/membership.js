@@ -211,6 +211,13 @@
     const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
     const path = user.id + '/avatar-' + Date.now() + '.' + ext;
     reportUpload(tr('در حال بارگذاری عکس پروفایل…','Uploading profile photo…','Загрузка фотографии профиля…'));
+    const { data: sessionData, error: sessionError } = await db.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (!sessionData.session?.access_token || sessionData.session.user.id !== user.id) {
+      throw new Error(tr('نشست ورود در دسترس نیست؛ یک‌بار خارج شوید و دوباره وارد شوید.',
+        'The authenticated session is unavailable. Please sign out and sign in again.',
+        'Сеанс авторизации недоступен. Выйдите и войдите снова.'));
+    }
     const { error: uploadError } = await db.storage.from('rls-member-avatars')
       .upload(path, file, { contentType: file.type, upsert: false });
     if (uploadError) throw uploadError;
@@ -223,6 +230,10 @@
     if (oldProfile?.avatar_path) await db.storage.from('rls-member-avatars').remove([oldProfile.avatar_path]);
     const photoInput = document.getElementById('member-avatar');
     if (photoInput) photoInput.value = '';
+    const { data: refreshedProfile, error: profileError } = await db.from('rls_profiles')
+      .select(ownProfileFields).eq('user_id', user.id).single();
+    if (profileError) throw profileError;
+    renderMemberProfile(refreshedProfile, user);
     reportUpload(tr('عکس پروفایل ذخیره شد و پس از تأیید عضویت در فهرست عمومی نمایش داده می‌شود.',
       'Profile photo saved. It will appear in the public directory after membership approval.',
       'Фотография сохранена и появится в открытом каталоге после одобрения членства.'));
