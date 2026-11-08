@@ -1,7 +1,7 @@
 (function () {
   const cfg = window.RLS_SUPABASE_CONFIG;
   if (!cfg || !window.supabase) return;
-  const db = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: 'rls-member-auth' } });
+  const db = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
   const register = document.getElementById('membership-register');
   const login = document.getElementById('membership-login');
   if (!register || !login) return;
