@@ -1,6 +1,6 @@
 :root{--community-navy:#092b50;--community-blue:#164b7b;--community-gold:#d8a43a;--community-paper:#f7f8fb;--community-line:#dce3eb}
 .community-page{background:var(--community-paper)}
-.community-hero{background:linear-gradient(112deg,rgba(5,34,66,.96),rgba(13,67,111,.91)),url('../assets/community-kremlin.jpg') center/cover;color:#fff;padding:58px 0}
+.community-hero{background:linear-gradient(112deg,#052242,#164b7b 72%,#0c3158);color:#fff;padding:58px 0}
 .community-hero h1{color:#fff;font-size:clamp(28px,4vw,44px);margin:0 0 12px}
 .community-hero p{max-width:760px;color:#e6eef7;font-size:16px;margin:0;line-height:2}
 .community-hero .eyebrow{color:#f2c76c}
