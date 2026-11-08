@@ -60,7 +60,8 @@
       const name = esc(m.display_name || 'RLS Member');
       const desc = [m.specialty,m.institution,m.city,m.country].filter(Boolean).join(' · ');
       const hay = [m.display_name,m.specialty,m.institution,m.city,m.country,m.bio].filter(Boolean).join(' ');
-      const website = m.website_url ? '<a href="' + esc(m.website_url) +
+      const safeWebsite = safeHttpUrl(m.website_url);
+      const website = safeWebsite ? '<a href="' + esc(safeWebsite) +
         '" target="_blank" rel="noopener noreferrer">Website</a>' : '';
       return '<article class="community-member" data-category="' + esc(m.category) +
         '" data-country="' + esc(m.country || '') + '" data-search="' + esc(hay) + '">' +
