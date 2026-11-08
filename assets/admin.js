@@ -32,7 +32,7 @@
       .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,created_at')
       .order('created_at',{ascending:true});
     if(status==='photo_pending'){
-      query=query.eq('membership_status','approved').not('pending_avatar_path','is',null);
+      query=query.in('membership_status',['approved','suspended']).not('pending_avatar_path','is',null);
     }else{
       query=query.eq('membership_status',status);
     }
