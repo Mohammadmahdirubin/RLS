@@ -186,14 +186,25 @@
 
   login.addEventListener('submit', async event => {
     event.preventDefault();
+    const submitButton = login.querySelector('button[type="submit"]');
+    const originalLabel = submitButton ? submitButton.textContent : '';
+    if (submitButton) { submitButton.disabled = true; submitButton.textContent = tr('در حال ورود…','Signing in…','Выполняется вход…'); }
     say(loginMsg, tr('در حال ورود…','Signing in…','Выполняется вход…'));
-    const fd = new FormData(login);
-    const { data, error } = await db.auth.signInWithPassword({
-      email: clean(fd.get('email')), password: String(fd.get('password') || '')
-    });
-    if (error) { say(loginMsg, tr('ورود ناموفق بود: ','Sign-in failed: ','Не удалось войти: ') + error.message); return; }
-    await showSession(data.user);
-    login.reset();
+    try {
+      const fd = new FormData(login);
+      const { data, error } = await db.auth.signInWithPassword({
+        email: clean(fd.get('email')), password: String(fd.get('password') || '')
+      });
+      if (error) throw error;
+      await showSession(data.user);
+      login.reset();
+      // Clear the transient "signing in" notice after a successful login.
+      say(loginMsg, '');
+    } catch (error) {
+      say(loginMsg, tr('ورود ناموفق بود: ','Sign-in failed: ','Не удалось войти: ') + (error?.message || String(error)));
+    } finally {
+      if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel || tr('ورود','Sign in','Войти'); }
+    }
   });
 
   document.getElementById('upload-avatar')?.addEventListener('click', async () => {
