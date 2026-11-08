@@ -2,6 +2,8 @@
 -- Apply in Supabase SQL Editor. Do not expose service_role keys in client code.
 
 create extension if not exists pgcrypto;
+create schema if not exists private;
+grant usage on schema private to authenticated;
 
 do $$ begin
   create type public.rls_member_category as enum (
@@ -59,12 +61,12 @@ create index if not exists rls_profiles_public_category_idx
 create index if not exists rls_profiles_status_created_idx
   on public.rls_profiles(membership_status, created_at desc);
 
-create or replace function public.rls_is_admin()
+create or replace function private.rls_is_admin()
 returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = ''
 as $$
   select exists (
     select 1 from public.rls_user_roles
@@ -72,13 +74,13 @@ as $$
   );
 $$;
 
-revoke all on function public.rls_is_admin() from public;
-grant execute on function public.rls_is_admin() to authenticated;
+revoke all on function private.rls_is_admin() from public, anon;
+grant execute on function private.rls_is_admin() to authenticated;
 
-create or replace function public.rls_touch_updated_at()
+create or replace function private.rls_touch_updated_at()
 returns trigger
 language plpgsql
-set search_path = public
+set search_path = ''
 as $$
 begin
   new.updated_at = now();
@@ -89,17 +91,17 @@ $$;
 drop trigger if exists rls_profiles_touch_updated_at on public.rls_profiles;
 create trigger rls_profiles_touch_updated_at
 before update on public.rls_profiles
-for each row execute function public.rls_touch_updated_at();
+for each row execute function private.rls_touch_updated_at();
 
 -- Prevent members from changing moderation-controlled fields on their own profile.
-create or replace function public.rls_protect_moderation_fields()
+create or replace function private.rls_protect_moderation_fields()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
-as $
+set search_path = ''
+as $$
 begin
-  if auth.uid() = old.user_id and not public.rls_is_admin() then
+  if auth.uid() = old.user_id and not private.rls_is_admin() then
     new.membership_status := old.membership_status;
     new.is_public := old.is_public;
     new.reviewed_by := old.reviewed_by;
@@ -108,12 +110,11 @@ begin
   end if;
   return new;
 end;
-$;
-
+$$;
 drop trigger if exists rls_profiles_protect_moderation on public.rls_profiles;
 create trigger rls_profiles_protect_moderation
 before update on public.rls_profiles
-for each row execute function public.rls_protect_moderation_fields();
+for each row execute function private.rls_protect_moderation_fields();
 
 alter table public.rls_profiles enable row level security;
 alter table public.rls_user_roles enable row level security;
@@ -121,7 +122,7 @@ alter table public.rls_user_roles enable row level security;
 drop policy if exists "profile owner or admin can read" on public.rls_profiles;
 create policy "profile owner or admin can read"
 on public.rls_profiles for select to authenticated
-using (user_id = auth.uid() or public.rls_is_admin());
+using (user_id = auth.uid() or private.rls_is_admin());
 
 drop policy if exists "approved public profiles are readable" on public.rls_profiles;
 create policy "approved public profiles are readable"
@@ -133,7 +134,11 @@ create policy "users can submit own pending profile"
 on public.rls_profiles for insert to authenticated
 with check (
   user_id = auth.uid()
-  and membership_status <> 'suspended'
+  and membership_status = 'pending'
+  and is_public = false
+  and reviewed_by is null
+  and reviewed_at is null
+  and review_note is null
 );
 
 drop policy if exists "members can edit own profile without approval fields" on public.rls_profiles;
@@ -151,13 +156,13 @@ with check (
 drop policy if exists "admins manage all profiles" on public.rls_profiles;
 create policy "admins manage all profiles"
 on public.rls_profiles for all to authenticated
-using (public.rls_is_admin())
-with check (public.rls_is_admin());
+using (private.rls_is_admin())
+with check (private.rls_is_admin());
 
 drop policy if exists "users read own role" on public.rls_user_roles;
 create policy "users read own role"
 on public.rls_user_roles for select to authenticated
-using (user_id = auth.uid() or public.rls_is_admin());
+using (user_id = auth.uid() or private.rls_is_admin());
 
 -- Public directory view deliberately excludes email, evidence, review notes and private fields.
 create or replace view public.rls_public_members
@@ -214,7 +219,7 @@ using (
   bucket_id = 'rls-members-private'
   and (
     (storage.foldername(name))[1] = auth.uid()::text
-    or public.rls_is_admin()
+    or private.rls_is_admin()
   )
 );
 
@@ -237,7 +242,7 @@ using (
   bucket_id = 'rls-members-private'
   and (
     (storage.foldername(name))[1] = auth.uid()::text
-    or public.rls_is_admin()
+    or private.rls_is_admin()
   )
 );
 
@@ -245,3 +250,36 @@ using (
 -- insert into public.rls_user_roles(user_id, role)
 -- values ('YOUR-AUTH-USER-UUID', 'admin')
 -- on conflict (user_id) do update set role = 'admin';
+
+ 
+-- Performance indexes and optimized policy predicates.
+create index if not exists rls_profiles_reviewed_by_idx
+  on public.rls_profiles(reviewed_by);
+
+drop policy if exists "profile owner or admin can read" on public.rls_profiles;
+create policy "profile owner or admin can read"
+on public.rls_profiles for select to authenticated
+using (user_id = (select auth.uid()) or (select private.rls_is_admin()));
+
+drop policy if exists "users can submit own pending profile" on public.rls_profiles;
+create policy "users can submit own pending profile"
+on public.rls_profiles for insert to authenticated
+with check (
+  user_id = (select auth.uid())
+  and membership_status = 'pending'
+  and is_public = false
+  and reviewed_by is null
+  and reviewed_at is null
+  and review_note is null
+);
+
+drop policy if exists "members can edit own profile without approval fields" on public.rls_profiles;
+create policy "members can edit own profile without approval fields"
+on public.rls_profiles for update to authenticated
+using (user_id = (select auth.uid()) and membership_status <> 'suspended')
+with check (user_id = (select auth.uid()) and membership_status <> 'suspended');
+
+drop policy if exists "users read own role" on public.rls_user_roles;
+create policy "users read own role"
+on public.rls_user_roles for select to authenticated
+using (user_id = (select auth.uid()) or (select private.rls_is_admin()));
