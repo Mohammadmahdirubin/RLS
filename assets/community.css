@@ -75,3 +75,15 @@
 #member-session.member-profile-panel button{width:max-content;max-width:100%}
 
 .membership-success{display:block!important;margin:12px 0;padding:12px 16px;border:1px solid #86c99a;border-radius:9px;background:#eaf8ee!important;color:#176b35!important;font-weight:700;opacity:1!important;visibility:visible!important}
+
+.member-profile-summary{display:flex;align-items:center;gap:18px;padding:18px;background:#f5f8fb;border:1px solid #e3ebf2;border-radius:14px}
+.member-profile-avatar{width:112px;height:112px;min-width:112px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 12px #17365322}
+.member-profile-avatar-fallback{display:flex;align-items:center;justify-content:center;background:#e8eef5;color:#173653;font-size:28px;font-weight:800}
+.member-profile-heading h3{margin:0 0 8px;color:var(--community-navy,#173653)}
+.member-profile-heading .member-category{display:inline-block}
+.member-profile-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.member-profile-facts>div,.member-profile-field{display:grid;gap:5px;padding:12px 14px;background:#f7f9fb;border:1px solid #e8edf2;border-radius:9px}
+.member-profile-facts strong,.member-profile-field strong{color:#526579;font-size:13px}
+.member-profile-facts span,.member-profile-field span,.member-profile-field a{color:#183b59;overflow-wrap:anywhere}
+.member-profile-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(max-width:600px){.member-profile-summary{align-items:flex-start;flex-direction:column}.member-profile-facts,.member-profile-fields{grid-template-columns:1fr}}
