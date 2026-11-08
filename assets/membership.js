@@ -305,6 +305,19 @@
       if (sessionError) throw sessionError;
       const user = sessionData?.session?.user;
       if (!user) throw new Error(tr('ابتدا وارد حساب شوید.','Please sign in first.','Сначала войдите в систему.'));
+      const { data: currentProfile, error: profileReadError } = await db.from('rls_profiles')
+        .select('user_id,membership_status').eq('user_id', user.id).maybeSingle();
+      if (profileReadError) throw profileReadError;
+      if (!currentProfile) {
+        throw new Error(tr('پروفایل این حساب پیدا نشد؛ از حساب خارج شوید و با ایمیل ثبت‌شده برای عضویت دوباره وارد شوید.',
+          'No membership profile is linked to this signed-in account. Sign out and use the email address registered for membership.',
+          'Профиль участника не связан с этой учётной записью. Выйдите и войдите с адресом, указанным при регистрации.'));
+      }
+      if (currentProfile.membership_status === 'suspended') {
+        throw new Error(tr('عضویت این حساب تعلیق شده و ویرایش اطلاعات تا بررسی مدیر امکان‌پذیر نیست.',
+          'This membership is suspended, so profile editing is disabled until an administrator reviews it.',
+          'Членство приостановлено; редактирование профиля недоступно до проверки администратором.'));
+      }
       const keys = ['full_name','display_name','category','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
@@ -312,10 +325,26 @@
         const url = new URL(payload.website_url);
         if (!['https:','http:'].includes(url.protocol)) throw new Error(tr('نشانی وب‌سایت معتبر نیست.','Enter a valid website URL.','Укажите корректный адрес сайта.'));
       }
-      const { data: updated, error } = await db.from('rls_profiles').update(payload)
+      let { data: updated, error } = await db.from('rls_profiles').update(payload)
         .eq('user_id', user.id).select(ownProfileFields).maybeSingle();
       if (error) throw error;
-      if (!updated) throw new Error(tr('اطلاعات ذخیره نشد؛ وضعیت عضویت یا مجوز ویرایش را بررسی کنید.','Profile was not saved. Check membership status or editing permissions.','Профиль не сохранён. Проверьте статус членства или права редактирования.'));
+      if (!updated) {
+        const { data: refreshed, error: refreshError } = await db.auth.refreshSession();
+        if (refreshError) throw refreshError;
+        if (!refreshed?.session?.user || refreshed.session.user.id !== user.id) {
+          throw new Error(tr('نشست ورود با پروفایل عضویت مطابقت ندارد؛ خارج شوید و دوباره با حساب صحیح وارد شوید.',
+            'The active sign-in session does not match this membership profile. Sign out and sign in with the correct account.',
+            'Активный сеанс не соответствует профилю участника. Выйдите и войдите в правильную учётную запись.'));
+        }
+        const retry = await db.from('rls_profiles').update(payload)
+          .eq('user_id', user.id).select(ownProfileFields).maybeSingle();
+        updated = retry.data;
+        error = retry.error;
+      }
+      if (error) throw error;
+      if (!updated) throw new Error(tr('پروفایل خوانده می‌شود، اما پایگاه داده اجازه ثبت تغییرات را نمی‌دهد. لطفاً یک‌بار خارج شوید و دوباره وارد شوید؛ اگر خطا تکرار شد، جزئیات نشست ورود را بررسی می‌کنیم.',
+        'The profile is readable, but the database did not accept the update. Sign out and sign in once; if the issue continues, we will inspect the active session details.',
+        'Профиль доступен для чтения, но база данных не приняла изменения. Выйдите и войдите снова; если ошибка повторится, проверим параметры сеанса.'));
       renderMemberProfile(updated, user);
       say(profileMsg, tr('اطلاعات پروفایل با موفقیت ذخیره شد.','Profile information saved successfully.','Данные профиля успешно сохранены.'));
     } catch (error) {
