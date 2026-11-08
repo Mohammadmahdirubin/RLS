@@ -105,7 +105,7 @@
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,avatar_path,pending_avatar_path,website_url,orcid,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
@@ -213,6 +213,14 @@
       }
     }
 
+    const editForm = document.getElementById('member-profile-edit');
+    if (editForm) {
+      ['display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'].forEach(key => {
+        const input = editForm.elements.namedItem(key);
+        if (input) input.value = profile[key] || '';
+      });
+    }
+
     if (fieldsEl) {
       const fields = [
         [tr('ایمیل','Email','Электронная почта'), profile.email || user.email],
@@ -285,6 +293,37 @@
         'Вход выполнен, но не удалось загрузить профиль: ') + (error?.message || String(error)));
     }
   }
+
+  document.getElementById('member-profile-edit')?.addEventListener('submit', async event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const original = button?.textContent || '';
+    if (button) { button.disabled = true; button.textContent = tr('در حال ذخیره…','Saving…','Сохранение…'); }
+    try {
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+      const user = sessionData?.session?.user;
+      if (!user) throw new Error(tr('ابتدا وارد حساب شوید.','Please sign in first.','Сначала войдите в систему.'));
+      const keys = ['display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
+      const payload = {};
+      keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
+      if (payload.website_url) {
+        const url = new URL(payload.website_url);
+        if (!['https:','http:'].includes(url.protocol)) throw new Error(tr('نشانی وب‌سایت معتبر نیست.','Enter a valid website URL.','Укажите корректный адрес сайта.'));
+      }
+      const { data: updated, error } = await db.from('rls_profiles').update(payload)
+        .eq('user_id', user.id).select(ownProfileFields).maybeSingle();
+      if (error) throw error;
+      if (!updated) throw new Error(tr('اطلاعات ذخیره نشد؛ وضعیت عضویت یا مجوز ویرایش را بررسی کنید.','Profile was not saved. Check membership status or editing permissions.','Профиль не сохранён. Проверьте статус членства или права редактирования.'));
+      renderMemberProfile(updated, user);
+      say(profileMsg, tr('اطلاعات پروفایل با موفقیت ذخیره شد.','Profile information saved successfully.','Данные профиля успешно сохранены.'));
+    } catch (error) {
+      say(profileMsg, tr('ذخیره اطلاعات ناموفق بود: ','Could not save profile: ','Не удалось сохранить профиль: ') + (error?.message || String(error)));
+    } finally {
+      if (button) { button.disabled = false; button.textContent = original; }
+    }
+  });
 
   async function uploadAvatar(user, file) {
     if (!file) { reportUpload(tr('ابتدا عکس را انتخاب کنید.','Choose a photo first.','Сначала выберите фотографию.')); return; }
