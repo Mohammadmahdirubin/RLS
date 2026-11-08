@@ -43,7 +43,7 @@
     }
     wrap.innerHTML = '<div class="community-empty">Loading approved members…</div>';
     const { data, error } = await db.from('rls_public_members')
-      .select('user_id,display_name,category,country,city,institution,degree,specialty,bio,website_url,orcid')
+      .select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,orcid')
       .order('display_name', { ascending: true });
     if (error) {
       wrap.innerHTML = '<div class="community-empty">Could not load the member directory. Please try again later.</div>';
@@ -63,9 +63,11 @@
       const safeWebsite = safeHttpUrl(m.website_url);
       const website = safeWebsite ? '<a href="' + esc(safeWebsite) +
         '" target="_blank" rel="noopener noreferrer">Website</a>' : '';
+      const avatarUrl = m.avatar_path ? db.storage.from('rls-member-avatars').getPublicUrl(m.avatar_path).data.publicUrl : '';
+      const avatar = avatarUrl ? '<img class="community-avatar-image" src="' + esc(avatarUrl) + '" alt="' + name + '" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">' : '';
       return '<article class="community-member" data-category="' + esc(m.category) +
         '" data-country="' + esc(m.country || '') + '" data-search="' + esc(hay) + '">' +
-        '<div class="community-avatar">' + esc(initials(m.display_name)) + '</div><h3>' + name +
+        avatar + '<div class="community-avatar"' + (avatarUrl ? ' hidden' : '') + '>' + esc(initials(m.display_name)) + '</div><h3>' + name +
         '</h3><span class="member-category">' + esc((labels[lang] || labels.en)[m.category] || m.category) +
         '</span><p>' + esc(desc) + '</p>' + website + '</article>';
     }).join('');
