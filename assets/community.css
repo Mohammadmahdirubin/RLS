@@ -58,3 +58,7 @@
 @media(max-width:760px){.membership-grid{grid-template-columns:1fr}.membership-two{grid-template-columns:1fr}}
 
 .community-avatar-image{width:76px;height:76px;min-width:76px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:2px solid #e4ebf2}.community-avatar[hidden]{display:none}
+
+/* Ensure account upload actions remain visible above site-wide button styles */
+#member-session button#upload-avatar,
+#member-session button#upload-evidence{display:inline-flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:11px 20px!important;background:#d8a43a!important;color:#132d49!important;border:1px solid #d8a43a!important;border-radius:8px!important;font:inherit!important;font-weight:800!important;cursor:pointer!important;position:relative!important;z-index:1!important}
