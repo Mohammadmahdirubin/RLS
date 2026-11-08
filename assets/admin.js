@@ -31,7 +31,7 @@
     if(!data?.length){list.textContent='در این دسته درخواستی وجود ندارد.';return;}
     const html=await Promise.all(data.map(async p=>{
       let evidence='';
-      if(p.evidence_url){
+      if(p.evidence_url && p.evidence_url.startsWith(p.user_id + '/') && !p.evidence_url.includes('..')){
         const {data:signed,error:signedError}=await client.storage.from('rls-members-private').createSignedUrl(p.evidence_url,300);
         evidence=!signedError&&signed?.signedUrl
           ?'<p><a href="'+esc(signed.signedUrl)+'" target="_blank" rel="noopener noreferrer">مشاهده مدرک (پیوند موقت ۵ دقیقه‌ای)</a></p>'
