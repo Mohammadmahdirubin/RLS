@@ -74,14 +74,22 @@
 
   async function showSession(user) {
     if (!user) return;
+    // Authentication is already successful. Reveal account actions immediately,
+    // independently of the profile lookup, so a profile-read error cannot hide uploads.
+    sessionBox.hidden = false;
+    sessionText.textContent = tr('ورود موفق بود؛ در حال دریافت وضعیت عضویت…',
+      'Signed in; loading membership status…','Вход выполнен; загружается статус членства…') +
+      (user.email ? ' · ' + user.email : '');
     try {
       const profile = await ensureProfile(user);
-      sessionBox.hidden = false;
       sessionText.textContent = tr('وضعیت درخواست: ','Application status: ','Статус заявки: ') +
         statusLabel(profile.membership_status) + ' · ' + (user.email || '');
+      say(loginMsg, '');
     } catch (error) {
-      say(loginMsg, tr('ورود انجام شد، اما تکمیل پروفایل ناموفق بود: ',
-        'Signed in, but profile setup failed: ','Вход выполнен, но профиль не создан: ') + error.message);
+      // Keep the authenticated upload controls visible and explain only the profile issue.
+      say(loginMsg, tr('ورود موفق بود؛ دریافت وضعیت عضویت با خطا روبه‌رو شد: ',
+        'Signed in, but membership status could not be loaded: ',
+        'Вход выполнен, но не удалось загрузить статус членства: ') + (error?.message || String(error)));
     }
   }
 
