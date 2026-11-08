@@ -349,12 +349,15 @@
     button.textContent = tr('در حال بارگذاری…','Uploading…','Загрузка…');
     reportUpload(tr('در حال آماده‌سازی بارگذاری…','Preparing upload…','Подготовка загрузки…'));
     try {
-      const { data, error } = await db.auth.getUser();
-      if (error) throw error;
-      if (!data?.user) throw new Error(tr('نشست کاربری معتبر نیست؛ خارج شوید و دوباره وارد شوید.',
-        'Your session is not valid. Sign out and sign in again.',
-        'Сеанс недействителен. Выйдите и войдите снова.'));
-      await uploadFn(data.user, input.files?.[0]);
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+      const session = sessionData?.session;
+      if (!session?.access_token || !session.user) {
+        throw new Error(tr('نشست کاربری پیدا نشد؛ دوباره وارد حساب شوید.',
+          'No active session was found. Please sign in again.',
+          'Активный сеанс не найден. Войдите снова.'));
+      }
+      await uploadFn(session.user, input.files?.[0]);
     } catch (error) {
       reportUpload(tr('بارگذاری ناموفق بود: ','Upload failed: ','Ошибка загрузки: ') +
         (error?.message || String(error)));
