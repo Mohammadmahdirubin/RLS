@@ -1,7 +1,7 @@
 (function () {
   const cfg = window.RLS_SUPABASE_CONFIG;
   if (!cfg || !window.supabase) return;
-  const db = window.supabase.createClient(cfg.url, cfg.publishableKey);
+  const db = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: 'rls-member-auth' } });
   const register = document.getElementById('membership-register');
   const login = document.getElementById('membership-login');
   if (!register || !login) return;
@@ -86,6 +86,7 @@
     if (membershipPrivacy) membershipPrivacy.hidden = true;
     sessionBox.hidden = false;
     sessionBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (profileMsg) { profileMsg.textContent = tr('خوش آمدید! به پروفایل اختصاصی خود وارد شده‌اید.','Welcome! You are now in your member profile.','Добро пожаловать! Вы вошли в свой профиль.'); profileMsg.classList.add('membership-success'); }
     sessionText.textContent = tr('ورود موفق بود؛ در حال دریافت وضعیت عضویت…',
       'Signed in; loading membership status…','Вход выполнен; загружается статус членства…') +
       (user.email ? ' · ' + user.email : '');
@@ -269,12 +270,15 @@
   document.getElementById('membership-logout')?.addEventListener('click', async () => {
     await db.auth.signOut();
     sessionBox.hidden = true;
-    if (profileMsg) profileMsg.textContent = '';
+    if (profileMsg) { profileMsg.textContent = ''; profileMsg.classList.remove('membership-success'); }
     if (membershipGrid) membershipGrid.hidden = false;
     if (membershipNote) membershipNote.hidden = false;
     if (membershipPrivacy) membershipPrivacy.hidden = false;
     say(loginMsg, tr('از حساب خارج شدید.','You have signed out.','Вы вышли из системы.'));
   });
 
-  db.auth.getSession().then(({ data }) => { if (data.session) showSession(data.session.user); });
+  db.auth.getSession().then(({ data, error }) => {
+    if (error) { say(loginMsg, tr('بازیابی نشست با خطا روبه‌رو شد: ','Could not restore your session: ','Не удалось восстановить сеанс: ') + error.message); return; }
+    if (data?.session?.user) showSession(data.session.user);
+  }).catch(error => say(loginMsg, tr('خطا در بازیابی ورود: ','Session restore error: ','Ошибка восстановления сеанса: ') + (error?.message || String(error))));
 })();
