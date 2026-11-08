@@ -22,7 +22,7 @@
 <div class="membership-two"><label>Website or professional page<input name="website_url" type="url" maxlength="500" placeholder="https://"></label><label>ORCID iD<input name="orcid" maxlength="50" placeholder="0000-0000-0000-0000"></label></div>
 <label>Email *<input name="email" type="email" required autocomplete="email"></label>
 <label>Password *<input name="password" type="password" required minlength="8" autocomplete="new-password"><small>At least 8 characters</small></label>
-<label>Supporting document (optional)<input name="evidence" type="file" accept=".pdf,image/jpeg,image/png,image/webp"><small>PDF or image; maximum 5 MB. Only authorized administrators can access it.</small></label>
+<label>Profile photo (optional)<input name="avatar" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG, PNG or WebP; maximum 5 MB. Visible in the public directory only after membership approval.</small></label>
 <label class="membership-consent"><input type="checkbox" name="consent" required> I agree to submit this information for membership review.</label>
 <button class="community-button primary" type="submit">Submit application</button>
 <p id="register-message" class="membership-message" role="status" aria-live="polite"></p>
@@ -34,7 +34,7 @@
 <button class="community-button primary" type="submit">Sign in</button>
 <button class="membership-link" type="button" id="membership-reset">Forgot password?</button>
 <p id="login-message" class="membership-message" role="status" aria-live="polite"></p>
-<div id="member-session" hidden><p id="member-session-text"></p><label>Add supporting document (PDF or image, max 5 MB)<input id="member-evidence" type="file" accept=".pdf,image/jpeg,image/png,image/webp"></label><button class="community-button outline" type="button" id="upload-evidence">Upload document</button><button class="membership-link" type="button" id="membership-logout">Sign out</button></div>
+<div id="member-session" hidden><p id="member-session-text"></p><label>Add profile photo<input id="member-avatar" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG, PNG or WebP; maximum 5 MB</small></label><button class="community-button outline" type="button" id="upload-avatar">Upload photo</button><label>Add supporting document (PDF or image, max 5 MB)<input id="member-evidence" type="file" accept=".pdf,image/jpeg,image/png,image/webp"></label><button class="community-button outline" type="button" id="upload-evidence">Upload document</button><button class="membership-link" type="button" id="membership-logout">Sign out</button></div>
 </form>
 </div>
 <p class="membership-privacy">Contact details and submitted documents are never shown in the public directory. Only approved member-profile information is published.</p>
