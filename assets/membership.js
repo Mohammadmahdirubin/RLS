@@ -105,7 +105,7 @@
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,phone,phone_public,country,city,institution,degree,specialty,bio,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
@@ -215,15 +215,18 @@
 
     const editForm = document.getElementById('member-profile-edit');
     if (editForm) {
-      ['full_name','display_name','category','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'].forEach(key => {
+      ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'].forEach(key => {
         const input = editForm.elements.namedItem(key);
         if (input) input.value = profile[key] || '';
       });
+      const phonePublicInput = editForm.elements.namedItem('phone_public');
+      if (phonePublicInput) phonePublicInput.checked = !!profile.phone_public;
     }
 
     if (fieldsEl) {
       const fields = [
         [tr('ایمیل','Email','Электронная почта'), profile.email || user.email],
+        [tr('شماره تماس','Phone','Телефон'), profile.phone],
         [tr('کشور','Country','Страна'), profile.country],
         [tr('شهر','City','Город'), profile.city],
         [tr('دانشگاه یا مؤسسه','Institution','Учреждение'), profile.institution],
@@ -318,9 +321,10 @@
           'This membership is suspended, so profile editing is disabled until an administrator reviews it.',
           'Членство приостановлено; редактирование профиля недоступно до проверки администратором.'));
       }
-      const keys = ['full_name','display_name','category','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
+      const keys = ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
+      payload.phone_public = !!form.elements.namedItem('phone_public')?.checked;
       if (payload.website_url) {
         const url = new URL(payload.website_url);
         if (!['https:','http:'].includes(url.protocol)) throw new Error(tr('نشانی وب‌سایت معتبر نیست.','Enter a valid website URL.','Укажите корректный адрес сайта.'));
