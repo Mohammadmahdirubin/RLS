@@ -79,29 +79,126 @@
     return labels[status] || status;
   }
 
+  function categoryLabel(category) {
+    const labels = {
+      student: tr('دانشجو','Student','Студент'),
+      graduate: tr('دانش‌آموخته','Graduate','Выпускник'),
+      faculty: tr('استاد و عضو هیئت علمی','Faculty member','Преподаватель'),
+      researcher: tr('پژوهشگر','Researcher','Исследователь'),
+      translator: tr('مترجم','Translator','Переводчик'),
+      culture: tr('ادبیات و فرهنگ','Literature and culture','Литература и культура'),
+      honorary: tr('عضو افتخاری','Honorary member','Почётный участник')
+    };
+    return labels[category] || category || '—';
+  }
+
+  function formatMemberDate(value) {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '—';
+    const locale = lang === 'fa' ? 'fa-IR' : lang === 'ru' ? 'ru-RU' : 'en-GB';
+    return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+  }
+
+  function renderMemberProfile(profile, user) {
+    const name = profile.full_name || profile.display_name || user.email || tr('عضو انجمن','RLS member','Участник RLS');
+    const nameEl = document.getElementById('member-profile-name');
+    const categoryEl = document.getElementById('member-profile-category');
+    const joinedEl = document.getElementById('member-profile-joined');
+    const avatarEl = document.getElementById('member-profile-avatar');
+    const fallbackEl = document.getElementById('member-profile-avatar-fallback');
+    const fieldsEl = document.getElementById('member-profile-fields');
+    if (nameEl) nameEl.textContent = name;
+    if (categoryEl) categoryEl.textContent = categoryLabel(profile.category);
+    if (joinedEl) joinedEl.textContent = formatMemberDate(profile.reviewed_at && profile.membership_status === 'approved' ? profile.reviewed_at : profile.created_at);
+
+    if (avatarEl && fallbackEl) {
+      const initials = String(name).trim().split(/\\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
+      fallbackEl.textContent = initials || 'RLS';
+      avatarEl.onerror = () => { avatarEl.hidden = true; fallbackEl.hidden = false; };
+      if (profile.avatar_path) {
+        const publicUrl = db.storage.from('rls-member-avatars').getPublicUrl(profile.avatar_path).data.publicUrl;
+        avatarEl.src = publicUrl;
+        avatarEl.alt = tr('عکس پروفایل ','Profile photo of ','Фотография профиля ') + name;
+        avatarEl.hidden = false;
+        fallbackEl.hidden = true;
+      } else {
+        avatarEl.removeAttribute('src');
+        avatarEl.hidden = true;
+        fallbackEl.hidden = false;
+      }
+    }
+
+    if (fieldsEl) {
+      const fields = [
+        [tr('ایمیل','Email','Электронная почта'), profile.email || user.email],
+        [tr('کشور','Country','Страна'), profile.country],
+        [tr('شهر','City','Город'), profile.city],
+        [tr('دانشگاه یا مؤسسه','Institution','Учреждение'), profile.institution],
+        [tr('مدرک تحصیلی','Degree','Степень'), profile.degree],
+        [tr('تخصص','Specialty','Специализация'), profile.specialty],
+        [tr('زندگی‌نامه و سوابق','Biography','Биография'), profile.bio],
+        ['ORCID', profile.orcid]
+      ].filter(item => clean(item[1]));
+      fieldsEl.replaceChildren();
+      fields.forEach(([label, value]) => {
+        const row = document.createElement('div');
+        row.className = 'member-profile-field';
+        const title = document.createElement('strong');
+        title.textContent = label;
+        const detail = document.createElement('span');
+        detail.textContent = value;
+        row.append(title, detail);
+        fieldsEl.append(row);
+      });
+      const website = profile.website_url;
+      if (website) {
+        try {
+          const url = new URL(website);
+          if (url.protocol === 'https:' || url.protocol === 'http:') {
+            const row = document.createElement('div');
+            row.className = 'member-profile-field';
+            const title = document.createElement('strong');
+            title.textContent = tr('وب‌سایت','Website','Веб-сайт');
+            const link = document.createElement('a');
+            link.href = url.href;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = url.hostname;
+            row.append(title, link);
+            fieldsEl.append(row);
+          }
+        } catch (_) {}
+      }
+    }
+  }
+
   async function showSession(user) {
     if (!user) return;
-    // Authentication is already successful. Reveal account actions immediately,
-    // independently of the profile lookup, so a profile-read error cannot hide uploads.
     if (membershipGrid) membershipGrid.hidden = true;
     if (membershipNote) membershipNote.hidden = true;
     if (membershipPrivacy) membershipPrivacy.hidden = true;
     sessionBox.hidden = false;
     sessionBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (profileMsg) { profileMsg.textContent = tr('خوش آمدید! به پروفایل اختصاصی خود وارد شده‌اید.','Welcome! You are now in your member profile.','Добро пожаловать! Вы вошли в свой профиль.'); profileMsg.classList.add('membership-success'); }
-    sessionText.textContent = tr('ورود موفق بود؛ در حال دریافت وضعیت عضویت…',
-      'Signed in; loading membership status…','Вход выполнен; загружается статус членства…') +
+    if (profileMsg) {
+      profileMsg.textContent = tr('خوش آمدید! به پروفایل اختصاصی خود وارد شده‌اید.',
+        'Welcome! You are now in your member profile.',
+        'Добро пожаловать! Вы вошли в свой профиль.');
+      profileMsg.classList.add('membership-success');
+    }
+    sessionText.textContent = tr('ورود موفق بود؛ در حال دریافت مشخصات پروفایل…',
+      'Signed in; loading your profile…','Вход выполнен; загружается профиль…') +
       (user.email ? ' · ' + user.email : '');
     try {
       const profile = await ensureProfile(user);
-      sessionText.textContent = tr('وضعیت درخواست: ','Application status: ','Статус заявки: ') +
-        statusLabel(profile.membership_status) + ' · ' + (user.email || '');
+      renderMemberProfile(profile, user);
+      sessionText.textContent = tr('وضعیت عضویت: ','Membership status: ','Статус членства: ') +
+        statusLabel(profile.membership_status);
       say(loginMsg, '');
     } catch (error) {
-      // Keep the authenticated upload controls visible and explain only the profile issue.
-      say(loginMsg, tr('ورود موفق بود؛ دریافت وضعیت عضویت با خطا روبه‌رو شد: ',
-        'Signed in, but membership status could not be loaded: ',
-        'Вход выполнен, но не удалось загрузить статус членства: ') + (error?.message || String(error)));
+      say(loginMsg, tr('ورود موفق بود؛ دریافت پروفایل با خطا روبه‌رو شد: ',
+        'Signed in, but the profile could not be loaded: ',
+        'Вход выполнен, но не удалось загрузить профиль: ') + (error?.message || String(error)));
     }
   }
 
