@@ -96,7 +96,7 @@ window.renderRLSArticleList = function(targetId, language) {
     if (pdfPath) {
       var pdf = document.createElement('a');
       pdf.className = 'button primary';
-      pdf.href = prefix + pdfPath;
+      pdf.href = a.ojsPdfUrl || (prefix + pdfPath);
       pdf.target = '_blank';
       pdf.rel = 'noopener';
       pdf.textContent = labels.pdf;
