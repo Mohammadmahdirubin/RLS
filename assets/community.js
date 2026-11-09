@@ -114,17 +114,21 @@
   root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';filter();}));
   root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';filter();});
 
-  // Click a portrait to toggle a local 2x zoom; never open a full-screen viewer.
+  // Keep portrait zoom local to the image: no lightbox, original-image navigation,
+  // or full-screen overlay. Capture clicks before the surrounding profile link.
   document.addEventListener('click',event=>{
     const img=event.target.closest('.community-avatar-image,.member-public-avatar,.member-profile-avatar');
-    if(!img||img.hidden||!img.src)return;
+    if(!img||img.hidden||!img.getAttribute('src'))return;
     event.preventDefault();
     event.stopPropagation();
+    event.stopImmediatePropagation();
     img.classList.toggle('is-zoomed');
-  });
+  },true);
   document.addEventListener('pointerout',event=>{
     const img=event.target.closest('.community-avatar-image.is-zoomed,.member-public-avatar.is-zoomed,.member-profile-avatar.is-zoomed');
     if(img&&!img.contains(event.relatedTarget))img.classList.remove('is-zoomed');
-  });
+  },true);
+  // Remove any stale viewer left by an older cached script.
+  document.querySelectorAll('.avatar-lightbox,.image-lightbox,.community-image-overlay').forEach(node=>node.remove());
   load();
 })();
