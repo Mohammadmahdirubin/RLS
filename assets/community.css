@@ -382,3 +382,8 @@
 .community-join-cta .community-actions{margin:0}
 .community-button.secondary{background:var(--community-primary);border-color:var(--community-primary);color:#fff}
 @media(max-width:760px){.member-account-page .membership-grid{grid-template-columns:1fr}.community-join-cta{align-items:stretch;flex-direction:column}.community-join-cta .community-actions{flex-direction:column}}
+
+.member-admin-access{padding:22px;border:1px solid #d9c69e;border-right:4px solid var(--community-gold);border-radius:12px;background:#fbf7ee}
+.member-admin-access h3{margin:0 0 8px;color:var(--community-primary-dark)}
+.member-admin-access p{margin:0 0 16px;line-height:1.9;color:#665637}
+.member-admin-access[hidden]{display:none!important}
