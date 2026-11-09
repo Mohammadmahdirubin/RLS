@@ -183,3 +183,30 @@
 .membership-access-column .membership-card{width:100%;box-sizing:border-box}
 .membership-access-column .membership-privacy{display:block;margin-top:14px}
 @media(max-width:850px){.membership-columns{grid-template-columns:1fr;direction:rtl}.membership-profile-column{grid-row:1}.membership-access-column{grid-row:2}}
+
+
+/* Final portrait interaction override: strictly local 2x zoom, never a full-screen image. */
+.community-avatar-image,
+.member-profile-avatar,
+.member-public-avatar{
+  cursor:zoom-in!important;
+  transform-origin:center center!important;
+  transition:transform .2s ease,box-shadow .2s ease!important;
+  position:relative!important;
+  z-index:1;
+}
+.community-avatar-image:hover,
+.community-avatar-image.is-zoomed,
+.member-profile-avatar:hover,
+.member-profile-avatar.is-zoomed,
+.member-public-avatar:hover,
+.member-public-avatar.is-zoomed{
+  transform:scale(2)!important;
+  z-index:20!important;
+  cursor:zoom-out!important;
+  box-shadow:0 8px 24px rgba(16,43,69,.35)!important;
+}
+/* No image is ever promoted to a viewport-sized overlay. */
+.avatar-lightbox,
+.image-lightbox,
+.community-image-overlay{display:none!important}
