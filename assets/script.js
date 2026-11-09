@@ -87,7 +87,8 @@ window.renderRLSArticleList = function(targetId, language) {
     actions.appendChild(doi);
     var page = document.createElement('a');
     page.className = 'button secondary';
-    page.href = a.href || ('article-' + a.id + '.html'); // Keep readers in the current language directory (FA/EN/RU).
+    page.href = a.ojsUrl || a.href || ('article-' + a.id + '.html'); // Prefer the matching OJS article page.
+    page.setAttribute('data-rls-article-id', a.id);
     page.textContent = labels.view;
     actions.appendChild(page);
     var pdfPath = a.pdf || '';
