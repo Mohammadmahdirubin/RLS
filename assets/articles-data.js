@@ -48,6 +48,7 @@ window.RLS_ARTICLES = [
     },
     "href": "article-ai-supported-multimodal-russian-language-learning.html",
     "slug": "ai-supported-multimodal-russian-language-learning"
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/6/1",
   },
   {
     "id": "role-of-context-russian-verbal-aspect",
@@ -98,6 +99,7 @@ window.RLS_ARTICLES = [
     },
     "href": "article-role-of-context-russian-verbal-aspect.html",
     "slug": "role-of-context-russian-verbal-aspect"
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/7/2",
   },
   {
     "id": "challenges-russian-technical-military-terminology",
@@ -148,6 +150,7 @@ window.RLS_ARTICLES = [
     "href": "article-challenges-russian-technical-military-terminology.html",
     "slug": "challenges-russian-technical-military-terminology",
     "sourceLanguage": "en"
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/9/4",
   },
   {
     "id": "fate-family-human-values-don-stories",
@@ -215,6 +218,7 @@ window.RLS_ARTICLES = [
         "affiliation": "Parvaneh Radandish: Assistant Professor of Russian, Department of Russian Language and Literature, University of Tehran, Tehran, Iran; Mohsen Beigi: PhD in Russian, University of Tehran, Tehran, Iran"
       }
     ]
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/11/5",
   },
   {
     "id": "mythological-significance-water-russian-literature",
@@ -271,6 +275,7 @@ window.RLS_ARTICLES = [
       "en": "Samin Babazadeh",
       "ru": "Самин Бабазаде"
     }
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/13/6",
   },
   {
     "id": "teaching-russian-indian-university-communicative-activity-approach",
@@ -363,6 +368,7 @@ window.RLS_ARTICLES = [
       "en": "O. A. Solopova; N. N. Koshkarova; S. Saini",
       "ru": "О. А. Солопова; Н. Н. Кошкарова; С. Саини"
     }
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/15/7",
   },
   {
     "id": "article-7-yasnaya-polyana",
@@ -420,3 +426,4 @@ window.RLS_ARTICLES = [
     "slug": "article-yasnaya-polyana-wwii"
   }
 ];
+    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/17/8",
