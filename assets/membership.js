@@ -226,19 +226,30 @@
     if (joinedLabelEl) joinedLabelEl.textContent = isApproved
       ? tr('تاریخ عضویت','Membership date','Дата вступления')
       : tr('تاریخ ثبت درخواست','Application date','Дата подачи заявки');
-    if (joinedEl) joinedEl.textContent = formatMemberDate(isApproved && profile.reviewed_at ? profile.reviewed_at : profile.created_at);
+    if (joinedEl) joinedEl.textContent = formatMemberDate((isApproved && profile.reviewed_at) || profile.created_at || user?.created_at);
 
     if (avatarEl && fallbackEl) {
       const initials = String(name).trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
       fallbackEl.textContent = initials || 'RLS';
-      avatarEl.onerror = () => { avatarEl.hidden = true; fallbackEl.hidden = false; };
       const visibleAvatarPath = profile.pending_avatar_path || profile.avatar_path;
+      avatarEl.dataset.avatarFallbackTried = '0';
+      avatarEl.onerror = () => {
+        // Retry without any image transformation/cache variant before showing initials.
+        if (visibleAvatarPath && avatarEl.dataset.avatarFallbackTried !== '1') {
+          avatarEl.dataset.avatarFallbackTried = '1';
+          const directUrl = db.storage.from('rls-member-avatars').getPublicUrl(visibleAvatarPath).data.publicUrl;
+          avatarEl.src = directUrl + (directUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
+          return;
+        }
+        avatarEl.hidden = true;
+        fallbackEl.hidden = false;
+      };
       if (visibleAvatarPath) {
         const publicUrl = db.storage.from('rls-member-avatars').getPublicUrl(visibleAvatarPath).data.publicUrl;
-        avatarEl.src = publicUrl;
         avatarEl.alt = tr('عکس پروفایل ','Profile photo of ','Фотография профиля ') + name;
         avatarEl.hidden = false;
         fallbackEl.hidden = true;
+        avatarEl.src = publicUrl + (publicUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
       } else {
         avatarEl.removeAttribute('src');
         avatarEl.hidden = true;
