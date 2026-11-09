@@ -9,7 +9,7 @@
   const loginMsg = document.getElementById('login-message');
   const sessionBox = document.getElementById('member-session');
   const membershipGrid = document.querySelector('#membership-process .membership-grid');
-  const membershipNote = document.querySelector('#membership-process .community-note');
+  const membershipNote = document.querySelector('#membership-process .membership-access-column > .community-note:not(#member-authenticated-note)');
   const membershipPrivacy = document.querySelector('#membership-process .membership-privacy');
   const authenticatedNote = document.getElementById('member-authenticated-note');
   const sessionText = document.getElementById('member-session-text');
