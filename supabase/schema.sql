@@ -27,6 +27,7 @@ create table if not exists public.rls_profiles (
   display_name text check (display_name is null or char_length(display_name) <= 160),
   category public.rls_member_category not null,
   email text,
+  email_public boolean not null default false,
   country text,
   city text,
   institution text,
@@ -164,7 +165,7 @@ create policy "users read own role"
 on public.rls_user_roles for select to authenticated
 using (user_id = auth.uid() or private.rls_is_admin());
 
--- Public directory view excludes email and only exposes phone when explicitly enabled.
+-- Public directory view exposes email and phone only when each member explicitly opts in.
 create or replace view public.rls_public_members
 as
 select
@@ -215,7 +216,8 @@ select
   research_interests_en,
   research_interests_ru,
   languages_en,
-  languages_ru
+  languages_ru,
+  case when email_public then email else null::text end as email
 from public.rls_profiles
 where membership_status = 'approved' and is_public = true;
 
