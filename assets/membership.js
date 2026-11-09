@@ -332,6 +332,10 @@
     if (membershipPrivacy) membershipPrivacy.hidden = true;
     if (authenticatedNote) authenticatedNote.hidden = false;
     sessionBox.hidden = false;
+    const adminAccess = document.getElementById('member-admin-access');
+    if (adminAccess) adminAccess.hidden = true;
+    ['.member-profile-summary','.member-profile-facts','#member-profile-fields','#member-profile-edit','#member-avatar-review-note'].forEach(selector => { const node = sessionBox.querySelector(selector); if (node) node.hidden = false; });
+    sessionBox.querySelectorAll('#member-avatar,#upload-avatar,#member-evidence,#upload-evidence').forEach(node => { const label = node.closest('label'); if (label) label.hidden = false; node.hidden = false; });
     if (profileEntry) profileEntry.hidden = false;
     if (profileOpen) profileOpen.textContent = tr('ورود به صفحه شخصی','Open my personal page','Открыть личную страницу');
     if (profileEntryNote) profileEntryNote.textContent = tr('حساب شما فعال است؛ برای مشاهده و تنظیم پروفایل کلیک کنید.','You are signed in. Open your personal page to manage your profile.','Вы вошли в систему. Откройте личную страницу для настройки профиля.');
@@ -351,9 +355,19 @@
         statusLabel(profile.membership_status);
       say(loginMsg, '');
     } catch (error) {
-      say(loginMsg, tr('ورود موفق بود؛ دریافت پروفایل با خطا روبه‌رو شد: ',
-        'Signed in, but the profile could not be loaded: ',
-        'Вход выполнен, но не удалось загрузить профиль: ') + (error?.message || String(error)));
+      // Administrator accounts authenticate successfully but do not need a member profile row.
+      const { data: roleData } = await db.from('rls_user_roles').select('role').eq('user_id', user.id).maybeSingle();
+      if (roleData?.role === 'admin') {
+        if (adminAccess) adminAccess.hidden = false;
+        ['.member-profile-summary','.member-profile-facts','#member-profile-fields','#member-profile-edit','#member-avatar-review-note'].forEach(selector => { const node = sessionBox.querySelector(selector); if (node) node.hidden = true; });
+        sessionBox.querySelectorAll('#member-avatar,#upload-avatar,#member-evidence,#upload-evidence').forEach(node => { const label = node.closest('label'); if (label) label.hidden = true; node.hidden = true; });
+        sessionText.textContent = tr('ورود مدیر با موفقیت انجام شد. این حساب پروفایل عضویت عمومی ندارد.','Administrator sign-in successful. This account does not have a public membership profile.','Вход администратора выполнен. У этой учётной записи нет публичного профиля участника.');
+        say(profileMsg, '');
+        return;
+      }
+      say(loginMsg, tr('ورود انجام شد، اما پروفایل عضویت به این حساب متصل نیست: ',
+        'Sign-in succeeded, but no membership profile is linked to this account: ',
+        'Вход выполнен, но профиль участника не связан с этой учётной записью: ') + (error?.message || String(error)));
     }
   }
 
