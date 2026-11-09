@@ -164,7 +164,7 @@ create policy "users read own role"
 on public.rls_user_roles for select to authenticated
 using (user_id = auth.uid() or private.rls_is_admin());
 
--- Public directory view deliberately excludes email, evidence, review notes and private fields.
+-- Public directory view excludes email and only exposes phone when explicitly enabled.
 create or replace view public.rls_public_members
 with (security_invoker = true)
 as
@@ -181,7 +181,42 @@ select
   avatar_path,
   website_url,
   orcid,
-  created_at
+  created_at,
+  profile_headline,
+  memberships,
+  activities,
+  publications,
+  research_interests,
+  languages,
+  case when phone_public then phone else null::text end as phone,
+  coalesce(display_name_en, display_name, full_name_en, full_name) as display_name_en,
+  coalesce(display_name_ru, display_name, full_name_ru, full_name) as display_name_ru,
+  full_name_en,
+  full_name_ru,
+  profile_headline_en,
+  profile_headline_ru,
+  country_en,
+  country_ru,
+  city_en,
+  city_ru,
+  institution_en,
+  institution_ru,
+  degree_en,
+  degree_ru,
+  specialty_en,
+  specialty_ru,
+  bio_en,
+  bio_ru,
+  memberships_en,
+  memberships_ru,
+  activities_en,
+  activities_ru,
+  publications_en,
+  publications_ru,
+  research_interests_en,
+  research_interests_ru,
+  languages_en,
+  languages_ru
 from public.rls_profiles
 where membership_status = 'approved' and is_public = true;
 
