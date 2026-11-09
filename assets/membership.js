@@ -203,7 +203,7 @@
   }
 
   function renderMemberProfile(profile, user) {
-    const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || profile[key] || '');
+    const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || '');
     const name = localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS');
     const nameEl = document.getElementById('member-profile-name');
     const categoryEl = document.getElementById('member-profile-category');
