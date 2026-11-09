@@ -423,8 +423,7 @@ window.RLS_ARTICLES = [
       "ru": ""
     },
     "href": "article-yasnaya-polyana-wwii.html",
-    "slug": "article-yasnaya-polyana-wwii"
-  }
-];,
-    "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/17/8",
+    "slug": "article-yasnaya-polyana-wwii",
     "ojsPdfUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/17/8"
+  }
+];
