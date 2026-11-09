@@ -1,6 +1,7 @@
 window.RLS_ARTICLES = [
   {
     "id": "ai-supported-multimodal-russian-language-learning",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/6",
     "number": 1,
     "status": "published",
     "issue": "1/1",
@@ -50,6 +51,7 @@ window.RLS_ARTICLES = [
   },
   {
     "id": "role-of-context-russian-verbal-aspect",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/7",
     "number": 2,
     "status": "published",
     "issue": "1/1",
@@ -99,6 +101,7 @@ window.RLS_ARTICLES = [
   },
   {
     "id": "challenges-russian-technical-military-terminology",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/9",
     "number": 3,
     "status": "published",
     "issue": "1/1",
@@ -148,6 +151,7 @@ window.RLS_ARTICLES = [
   },
   {
     "id": "fate-family-human-values-don-stories",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/11",
     "number": 4,
     "status": "published",
     "issue": "1/1",
@@ -214,6 +218,7 @@ window.RLS_ARTICLES = [
   },
   {
     "id": "mythological-significance-water-russian-literature",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/13",
     "number": 5,
     "status": "published",
     "issue": "1/1",
@@ -269,6 +274,7 @@ window.RLS_ARTICLES = [
   },
   {
     "id": "teaching-russian-indian-university-communicative-activity-approach",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/15",
     "number": 6,
     "status": "published",
     "issue": "1/1",
@@ -360,6 +366,7 @@ window.RLS_ARTICLES = [
   },
   {
     "id": "article-7-yasnaya-polyana",
+    "ojsUrl": "https://ojs.rlsj.ir/index.php/rls/fa/article/view/17",
     "number": 7,
     "status": "published",
     "issue": "1/1",
