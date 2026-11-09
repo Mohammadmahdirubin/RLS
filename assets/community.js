@@ -27,7 +27,7 @@
     const locale = lang === 'fa' ? 'fa-IR' : lang === 'ru' ? 'ru-RU' : 'en-GB';
     return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
   }
-  const localized = (m,key) => lang==='fa' ? (m[key] || '') : (m[key+'_'+lang] || m[key] || '');
+  const localized = (m,key) => lang==='fa' ? (m[key] || '') : (m[key+'_'+lang] || '');
   const initials = name => String(name || 'RLS').trim().split(/\\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
   let cards = [];
   function filter() {
