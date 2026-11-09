@@ -105,7 +105,7 @@
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,display_name,category,email,phone,phone_public,country,city,institution,degree,specialty,bio,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
@@ -215,7 +215,7 @@
 
     const editForm = document.getElementById('member-profile-edit');
     if (editForm) {
-      ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'].forEach(key => {
+      ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid'].forEach(key => {
         const input = editForm.elements.namedItem(key);
         if (input) input.value = profile[key] || '';
       });
@@ -323,7 +323,7 @@
           'This membership is suspended, so profile editing is disabled until an administrator reviews it.',
           'Членство приостановлено; редактирование профиля недоступно до проверки администратором.'));
       }
-      const keys = ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','website_url','orcid'];
+      const keys = ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
       payload.phone_public = !!form.elements.namedItem('phone_public')?.checked;
@@ -475,7 +475,21 @@
       category, country: clean(fd.get('country')), city: clean(fd.get('city')),
       institution: clean(fd.get('institution')), degree: clean(fd.get('degree')),
       specialty: clean(fd.get('specialty')), bio: clean(fd.get('bio')),
-      website_url: clean(fd.get('website_url')), orcid: clean(fd.get('orcid'))
+      website_url: clean(fd.get('website_url')), orcid: clean(fd.get('orcid')),
+      full_name_en: clean(fd.get('full_name_en')), full_name_ru: clean(fd.get('full_name_ru')),
+      display_name_en: clean(fd.get('display_name_en')), display_name_ru: clean(fd.get('display_name_ru')),
+      profile_headline_en: clean(fd.get('profile_headline_en')), profile_headline_ru: clean(fd.get('profile_headline_ru')),
+      country_en: clean(fd.get('country_en')), country_ru: clean(fd.get('country_ru')),
+      city_en: clean(fd.get('city_en')), city_ru: clean(fd.get('city_ru')),
+      institution_en: clean(fd.get('institution_en')), institution_ru: clean(fd.get('institution_ru')),
+      degree_en: clean(fd.get('degree_en')), degree_ru: clean(fd.get('degree_ru')),
+      specialty_en: clean(fd.get('specialty_en')), specialty_ru: clean(fd.get('specialty_ru')),
+      bio_en: clean(fd.get('bio_en')), bio_ru: clean(fd.get('bio_ru')),
+      memberships_en: clean(fd.get('memberships_en')), memberships_ru: clean(fd.get('memberships_ru')),
+      activities_en: clean(fd.get('activities_en')), activities_ru: clean(fd.get('activities_ru')),
+      publications_en: clean(fd.get('publications_en')), publications_ru: clean(fd.get('publications_ru')),
+      research_interests_en: clean(fd.get('research_interests_en')), research_interests_ru: clean(fd.get('research_interests_ru')),
+      languages_en: clean(fd.get('languages_en')), languages_ru: clean(fd.get('languages_ru'))
     };
     const { data, error } = await db.auth.signUp({
       email: applicationEmail, password: String(fd.get('password') || ''),
