@@ -493,22 +493,7 @@
       research_interests_en: clean(fd.get('research_interests_en')), research_interests_ru: clean(fd.get('research_interests_ru')),
       languages_en: clean(fd.get('languages_en')), languages_ru: clean(fd.get('languages_ru'))
     };
-    if (lang !== 'fa') {
-      metadata.full_name_lang = metadata.full_name;
-      metadata.display_name_lang = metadata.display_name;
-      metadata.profile_headline_lang = metadata.profile_headline;
-      metadata.country_lang = metadata.country;
-      metadata.city_lang = metadata.city;
-      metadata.institution_lang = metadata.institution;
-      metadata.degree_lang = metadata.degree;
-      metadata.specialty_lang = metadata.specialty;
-      metadata.bio_lang = metadata.bio;
-      metadata.memberships_lang = metadata.memberships;
-      metadata.activities_lang = metadata.activities;
-      metadata.publications_lang = metadata.publications;
-      metadata.research_interests_lang = metadata.research_interests;
-      metadata.languages_lang = metadata.languages;
-    }
+    if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { metadata[key + '_' + lang] = metadata[key]; });
     const { data, error } = await db.auth.signUp({
       email: applicationEmail, password: String(fd.get('password') || ''),
       options: {
