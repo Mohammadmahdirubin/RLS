@@ -5,7 +5,6 @@
   const db = cfg && window.supabase ? (window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }))) : null;
   const search = root.querySelector('#member-search');
   const category = root.querySelector('#member-category');
-  const country = root.querySelector('#member-country');
   const wrap = root.querySelector('.community-members');
   const lang = document.documentElement.lang || 'en';
   const labels = {
@@ -35,7 +34,6 @@
     let shown=0;
     cards.forEach(card=>{
       const ok=(!category?.value||category.value===card.dataset.category)
-        &&(!country?.value||country.value===card.dataset.country)
         &&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q));
       card.hidden=!ok;
       if(ok) shown++;
@@ -81,11 +79,10 @@
     emptyState.className='community-empty member-filter-empty';
     emptyState.hidden=true;
     wrap.appendChild(emptyState);
-    if(country){const current=country.value,all=lang==='fa'?'همه کشورها':lang==='ru'?'Все страны':'All countries',countries=[...new Set(data.map(m=>m.country).filter(Boolean))].sort();country.innerHTML='<option value="">'+all+'</option>'+countries.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');country.value=current;}
     filter();
   }
-  search?.addEventListener('input',filter);category?.addEventListener('change',filter);country?.addEventListener('change',filter);
+  search?.addEventListener('input',filter);category?.addEventListener('change',filter);
   root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';filter();}));
-  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';if(country)country.value='';filter();});
+  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';filter();});
   load();
 })();
