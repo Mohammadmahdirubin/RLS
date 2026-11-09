@@ -61,7 +61,33 @@
 <div class="community-note">برای عضویت، فرم زیر را تکمیل کنید. اگر تأیید ایمیل فعال باشد، پس از تأیید ایمیل وارد شوید تا درخواست شما ثبت نهایی شود. همه درخواست‌ها ابتدا در وضعیت «در انتظار بررسی» قرار می‌گیرند.</div>
 <div class="membership-grid">
 <form id="membership-register" class="membership-card">
-<h3>ثبت‌نام و درخواست عضویت</h3>
+<h3>ثبت‌نام و درخواست عضویت</h3><details class="member-language-fields"><summary>اطلاعات تکمیلی به انگلیسی و روسی (اختیاری)</summary><h4>English</h4><label>Full name<input name="full_name_en" maxlength="3000"></label>
+<label>Display name<input name="display_name_en" maxlength="3000"></label>
+<label>Professional title / introduction<input name="profile_headline_en" maxlength="3000"></label>
+<label>Country<input name="country_en" maxlength="3000"></label>
+<label>City<input name="city_en" maxlength="3000"></label>
+<label>Institution / university<input name="institution_en" maxlength="3000"></label>
+<label>Degree<input name="degree_en" maxlength="3000"></label>
+<label>Specialty<input name="specialty_en" maxlength="3000"></label>
+<label>Biography<textarea name="bio_en" rows="2" maxlength="3000"></textarea></label>
+<label>Memberships and affiliations<textarea name="memberships_en" rows="2" maxlength="3000"></textarea></label>
+<label>Academic and cultural activities<textarea name="activities_en" rows="2" maxlength="3000"></textarea></label>
+<label>Publications and translations<textarea name="publications_en" rows="2" maxlength="3000"></textarea></label>
+<label>Research interests<textarea name="research_interests_en" rows="2" maxlength="3000"></textarea></label>
+<label>Languages and skills<textarea name="languages_en" rows="2" maxlength="3000"></textarea></label><h4>Русский</h4><label>Полное имя<input name="full_name_ru" maxlength="3000"></label>
+<label>Отображаемое имя<input name="display_name_ru" maxlength="3000"></label>
+<label>Профессиональное звание / представление<input name="profile_headline_ru" maxlength="3000"></label>
+<label>Страна<input name="country_ru" maxlength="3000"></label>
+<label>Город<input name="city_ru" maxlength="3000"></label>
+<label>Организация / университет<input name="institution_ru" maxlength="3000"></label>
+<label>Образование / степень<input name="degree_ru" maxlength="3000"></label>
+<label>Специализация<input name="specialty_ru" maxlength="3000"></label>
+<label>Биография<textarea name="bio_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Членство и объединения<textarea name="memberships_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Научная и культурная деятельность<textarea name="activities_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Публикации и переводы<textarea name="publications_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Научные интересы<textarea name="research_interests_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Языки и навыки<textarea name="languages_ru" rows="2" maxlength="3000"></textarea></label></details>
 <label>نام و نام خانوادگی *<input name="full_name" required minlength="2" maxlength="160" autocomplete="name"></label>
 <label>نام نمایشی (اختیاری)<input name="display_name" maxlength="160"></label>
 <label>گروه عضویت *<select name="category" required><option value="">انتخاب کنید</option><option value="student">دانشجو</option><option value="graduate">دانش‌آموخته</option><option value="faculty">استاد و عضو هیئت علمی</option><option value="researcher">پژوهشگر</option><option value="translator">مترجم</option><option value="culture">فعال حوزه ادبیات و فرهنگ</option><option value="honorary">عضو افتخاری</option></select></label>
@@ -89,7 +115,33 @@
 </form>
 </div>
 <div id="member-session" class="membership-card member-profile-panel" hidden><h2>پروفایل اختصاصی عضو</h2><p id="member-session-text"></p><p id="member-profile-message" class="membership-message" role="status" aria-live="polite"></p><p id="member-avatar-review-note" class="membership-message" hidden></p><div class="member-profile-summary"><img id="member-profile-avatar" class="member-profile-avatar" alt="عکس پروفایل" hidden><div id="member-profile-avatar-fallback" class="member-profile-avatar member-profile-avatar-fallback">RLS</div><div class="member-profile-heading"><h3 id="member-profile-name">عضو انجمن</h3></div></div><div class="member-profile-facts"><div><strong id="member-profile-joined-label">تاریخ عضویت</strong><span id="member-profile-joined">—</span></div><div><strong>نوع عضویت</strong><span id="member-profile-category-copy">نمایش در بالا</span></div></div><div id="member-profile-fields" class="member-profile-fields"></div><form id="member-profile-edit" class="member-profile-edit">
-<h3>ویرایش اطلاعات عمومی پروفایل</h3><p>تکمیل همه موارد زیر اختیاری است. اطلاعات ذخیره‌شده در صفحه عمومی شما نمایش داده می‌شود.</p>
+<h3>ویرایش اطلاعات عمومی پروفایل</h3><p>تکمیل همه موارد زیر اختیاری است. اطلاعات ذخیره‌شده در صفحه عمومی شما نمایش داده می‌شود.</p><details class="member-language-fields"><summary>اطلاعات تکمیلی به انگلیسی و روسی (اختیاری)</summary><h4>English</h4><label>Full name<input name="full_name_en" maxlength="3000"></label>
+<label>Display name<input name="display_name_en" maxlength="3000"></label>
+<label>Professional title / introduction<input name="profile_headline_en" maxlength="3000"></label>
+<label>Country<input name="country_en" maxlength="3000"></label>
+<label>City<input name="city_en" maxlength="3000"></label>
+<label>Institution / university<input name="institution_en" maxlength="3000"></label>
+<label>Degree<input name="degree_en" maxlength="3000"></label>
+<label>Specialty<input name="specialty_en" maxlength="3000"></label>
+<label>Biography<textarea name="bio_en" rows="2" maxlength="3000"></textarea></label>
+<label>Memberships and affiliations<textarea name="memberships_en" rows="2" maxlength="3000"></textarea></label>
+<label>Academic and cultural activities<textarea name="activities_en" rows="2" maxlength="3000"></textarea></label>
+<label>Publications and translations<textarea name="publications_en" rows="2" maxlength="3000"></textarea></label>
+<label>Research interests<textarea name="research_interests_en" rows="2" maxlength="3000"></textarea></label>
+<label>Languages and skills<textarea name="languages_en" rows="2" maxlength="3000"></textarea></label><h4>Русский</h4><label>Полное имя<input name="full_name_ru" maxlength="3000"></label>
+<label>Отображаемое имя<input name="display_name_ru" maxlength="3000"></label>
+<label>Профессиональное звание / представление<input name="profile_headline_ru" maxlength="3000"></label>
+<label>Страна<input name="country_ru" maxlength="3000"></label>
+<label>Город<input name="city_ru" maxlength="3000"></label>
+<label>Организация / университет<input name="institution_ru" maxlength="3000"></label>
+<label>Образование / степень<input name="degree_ru" maxlength="3000"></label>
+<label>Специализация<input name="specialty_ru" maxlength="3000"></label>
+<label>Биография<textarea name="bio_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Членство и объединения<textarea name="memberships_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Научная и культурная деятельность<textarea name="activities_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Публикации и переводы<textarea name="publications_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Научные интересы<textarea name="research_interests_ru" rows="2" maxlength="3000"></textarea></label>
+<label>Языки и навыки<textarea name="languages_ru" rows="2" maxlength="3000"></textarea></label></details>
 <label>نام و نام خانوادگی<input name="full_name" required minlength="2" maxlength="160"></label>
 <label>گروه عضویت<select name="category" required><option value="student">دانشجو</option><option value="graduate">دانش‌آموخته</option><option value="faculty">استاد و عضو هیئت علمی</option><option value="researcher">پژوهشگر</option><option value="translator">مترجم</option><option value="culture">فعال حوزه ادبیات و فرهنگ</option><option value="honorary">عضو افتخاری</option></select></label>
 <label>ایمیل عمومی<input name="email" type="email" readonly aria-readonly="true"><small>نشانی ایمیل حساب عضویت شماست و در صفحه عمومی نمایش داده می‌شود.</small></label>
@@ -111,4 +163,4 @@
 </form>
 <label>ارسال عکس جدید برای تأیید مدیر<input id="member-avatar" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG، PNG یا WebP؛ حداکثر ۵ مگابایت</small></label><button class="community-button primary" type="button" id="upload-avatar">بارگذاری عکس</button><label>افزودن مدرک (PDF یا تصویر، حداکثر ۵ مگابایت)<input id="member-evidence" type="file" accept=".pdf,image/jpeg,image/png,image/webp"></label><button class="community-button primary" type="button" id="upload-evidence">بارگذاری مدرک</button><button class="membership-link" type="button" id="membership-logout">خروج از حساب</button></div>
 <p class="membership-privacy">نشانی ایمیل در صفحه عمومی پروفایل نمایش داده می‌شود. شماره تماس فقط در صورت فعال‌کردن گزینه نمایش آن منتشر می‌شود. مدارک ارسالی خصوصی باقی می‌مانند.</p>
-</section></main><footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>شبکه‌ای برای همکاری و توسعه مطالعات زبان روسی</div></div></footer><script src="assets/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script src="assets/supabase-config.js?v=shared-auth-20261109"></script><script src="assets/community.js?v=contact-fields-20261109"></script><script src="assets/membership.js?v=contact-fields-v2-20261109"></script></body></html>
+</section></main><footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>شبکه‌ای برای همکاری و توسعه مطالعات زبان روسی</div></div></footer><script src="assets/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script src="assets/supabase-config.js?v=shared-auth-20261109"></script><script src="assets/community.js?v=multilingual-profiles-20261109"></script><script src="assets/membership.js?v=multilingual-profiles-20261109"></script></body></html>
