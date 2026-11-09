@@ -166,7 +166,6 @@ using (user_id = auth.uid() or private.rls_is_admin());
 
 -- Public directory view excludes email and only exposes phone when explicitly enabled.
 create or replace view public.rls_public_members
-with (security_invoker = true)
 as
 select
   user_id,
