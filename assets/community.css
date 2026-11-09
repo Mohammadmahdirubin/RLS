@@ -333,3 +333,33 @@
 @media(prefers-reduced-motion:reduce){
   .community-page *{scroll-behavior:auto!important;transition:none!important}
 }
+
+
+/* Membership workspace placement and personal-profile visibility fixes */
+#membership-process{margin-top:34px;margin-bottom:42px;scroll-margin-top:105px}
+#membership-process>.membership-columns{margin-top:20px}
+#membership-process .member-session-stage{clear:both;width:100%;margin:26px 0 0}
+#member-session.member-profile-panel{width:100%;max-width:none;min-width:0}
+#member-session .member-profile-summary{display:flex;align-items:center;gap:22px;min-height:156px}
+#member-session .member-profile-avatar{
+  width:132px;height:156px;flex:0 0 132px;object-fit:cover;
+  border:3px solid var(--community-gold);border-radius:12px;
+  background:#f7f0e2;box-shadow:0 5px 16px rgba(50,25,30,.12)
+}
+#member-session .member-profile-avatar-fallback{
+  display:grid;place-items:center;width:132px;height:156px;flex:0 0 132px;
+  border:3px solid var(--community-gold);border-radius:12px;
+  background:#f7f0e2;color:var(--community-primary);font-size:27px;font-weight:800
+}
+#member-session .member-profile-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#member-session .member-profile-facts>div{
+  display:grid;gap:5px;padding:13px 16px;border:1px solid var(--community-line);
+  border-radius:9px;background:#fffefa
+}
+#member-session .member-profile-facts strong{color:var(--community-primary-dark);font-size:13px}
+#member-session .member-profile-facts span{color:var(--community-text);font-size:15px;font-weight:700}
+@media(max-width:700px){
+  #membership-process{margin-top:24px}
+  #member-session .member-profile-summary{align-items:flex-start;flex-wrap:wrap}
+  #member-session .member-profile-facts{grid-template-columns:minmax(0,1fr)}
+}
