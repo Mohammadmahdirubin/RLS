@@ -22,6 +22,8 @@
 .community-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:22px;align-items:start}
 .community-members{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
 .community-member{background:#fff;border:1px solid var(--community-line);border-radius:12px;padding:20px;text-align:center;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.community-member[hidden]{display:none!important}
+.member-filter-empty[hidden]{display:none!important}
 .community-avatar{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:#e8eef5;color:var(--community-navy);font-size:28px;margin-bottom:12px}
 .community-member h3{font-size:16px;color:var(--community-navy);margin:0 0 5px}
 .community-member p{margin:0;color:#657486;font-size:13px}
@@ -140,3 +142,6 @@
 /* Public membership date on directory cards and member profiles */
 .community-member-joined{display:block;margin-top:7px;color:#718096;font-size:12px;line-height:1.7}
 .member-public-join-date{margin:10px 0 0;color:#64748b;font-size:13px;line-height:1.8}
+
+/* Keep filtered member cards hidden despite their flex layout. */
+.community-members>.community-member[hidden]{display:none!important}
