@@ -136,3 +136,7 @@
 .community-vision strong{color:var(--community-navy);line-height:1.9}
 @media(max-width:900px){.community-about-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.community-about-grid{grid-template-columns:1fr}.community-about-card{padding:19px}.community-vision{padding:18px}}
+
+/* Public membership date on directory cards and member profiles */
+.community-member-joined{display:block;margin-top:7px;color:#718096;font-size:12px;line-height:1.7}
+.member-public-join-date{margin:10px 0 0;color:#64748b;font-size:13px;line-height:1.8}
