@@ -168,7 +168,8 @@
   }
 
   function renderMemberProfile(profile, user) {
-    const name = profile.full_name || profile.display_name || user.email || tr('عضو انجمن','RLS member','Участник RLS');
+    const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || profile[key] || '');
+    const name = localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS');
     const nameEl = document.getElementById('member-profile-name');
     const categoryEl = document.getElementById('member-profile-category');
     const categoryCopyEl = document.getElementById('member-profile-category-copy');
@@ -217,7 +218,7 @@
     if (editForm) {
       ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid'].forEach(key => {
         const input = editForm.elements.namedItem(key);
-        if (input) input.value = profile[key] || '';
+        if (input) input.value = (['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].includes(key) && lang !== 'fa') ? localized(key) : (profile[key] || '');
       });
       const emailInput = editForm.elements.namedItem('email');
       if (emailInput) emailInput.value = profile.email || user.email || '';
@@ -229,12 +230,12 @@
       const fields = [
         [tr('ایمیل','Email','Электронная почта'), profile.email || user.email],
         [tr('شماره تماس','Phone','Телефон'), profile.phone],
-        [tr('کشور','Country','Страна'), profile.country],
-        [tr('شهر','City','Город'), profile.city],
-        [tr('دانشگاه یا مؤسسه','Institution','Учреждение'), profile.institution],
-        [tr('مدرک تحصیلی','Degree','Степень'), profile.degree],
-        [tr('تخصص','Specialty','Специализация'), profile.specialty],
-        [tr('زندگی‌نامه و سوابق','Biography','Биография'), profile.bio],
+        [tr('کشور','Country','Страна'), localized('country')],
+        [tr('شهر','City','Город'), localized('city')],
+        [tr('دانشگاه یا مؤسسه','Institution','Учреждение'), localized('institution')],
+        [tr('مدرک تحصیلی','Degree','Степень'), localized('degree')],
+        [tr('تخصص','Specialty','Специализация'), localized('specialty')],
+        [tr('زندگی‌نامه و سوابق','Biography','Биография'), localized('bio')],
         ['ORCID', profile.orcid]
       ].filter(item => clean(item[1]));
       fieldsEl.replaceChildren();
@@ -326,6 +327,7 @@
       const keys = ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
+      if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { payload[key + '_' + lang] = payload[key]; });
       payload.phone_public = !!form.elements.namedItem('phone_public')?.checked;
       if (payload.website_url) {
         const url = new URL(payload.website_url);
@@ -491,6 +493,22 @@
       research_interests_en: clean(fd.get('research_interests_en')), research_interests_ru: clean(fd.get('research_interests_ru')),
       languages_en: clean(fd.get('languages_en')), languages_ru: clean(fd.get('languages_ru'))
     };
+    if (lang !== 'fa') {
+      metadata.full_name_lang = metadata.full_name;
+      metadata.display_name_lang = metadata.display_name;
+      metadata.profile_headline_lang = metadata.profile_headline;
+      metadata.country_lang = metadata.country;
+      metadata.city_lang = metadata.city;
+      metadata.institution_lang = metadata.institution;
+      metadata.degree_lang = metadata.degree;
+      metadata.specialty_lang = metadata.specialty;
+      metadata.bio_lang = metadata.bio;
+      metadata.memberships_lang = metadata.memberships;
+      metadata.activities_lang = metadata.activities;
+      metadata.publications_lang = metadata.publications;
+      metadata.research_interests_lang = metadata.research_interests;
+      metadata.languages_lang = metadata.languages;
+    }
     const { data, error } = await db.auth.signUp({
       email: applicationEmail, password: String(fd.get('password') || ''),
       options: {
