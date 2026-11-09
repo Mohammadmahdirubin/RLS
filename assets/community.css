@@ -363,3 +363,22 @@
   #member-session .member-profile-summary{align-items:flex-start;flex-wrap:wrap}
   #member-session .member-profile-facts{grid-template-columns:minmax(0,1fr)}
 }
+
+/* Dedicated member portal */
+.member-account-page main{padding-bottom:56px}
+.member-account-hero{padding-bottom:8px}
+.member-account-page #membership-process{padding-top:24px}
+.member-account-page #membership-process>h2{display:none}
+.member-account-page .membership-columns{display:block}
+.member-account-page .membership-access-column{width:100%;max-width:none}
+.member-account-page .membership-grid{grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);align-items:start;gap:22px}
+.member-account-page .membership-card{border-radius:16px;box-shadow:0 12px 32px rgba(58,30,35,.07)}
+.member-account-page .member-session-stage{max-width:1100px;margin:28px auto 0}
+.member-account-page .member-profile-panel{width:100%;padding:clamp(20px,3vw,34px)}
+.member-account-page .membership-privacy{max-width:900px;margin:18px auto;text-align:center}
+.community-join-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px;background:#fffefa;border:1px solid var(--community-line);border-right:4px solid var(--community-gold);border-radius:14px;box-shadow:var(--community-shadow)}
+.community-join-cta h2{margin:0 0 8px;color:var(--community-primary-dark);font-size:22px}
+.community-join-cta p{margin:0;color:var(--community-muted);line-height:1.9}
+.community-join-cta .community-actions{margin:0}
+.community-button.secondary{background:var(--community-primary);border-color:var(--community-primary);color:#fff}
+@media(max-width:760px){.member-account-page .membership-grid{grid-template-columns:1fr}.community-join-cta{align-items:stretch;flex-direction:column}.community-join-cta .community-actions{flex-direction:column}}
