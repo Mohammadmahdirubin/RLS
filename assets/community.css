@@ -115,3 +115,23 @@
 .member-public-field a{color:#164b7b;overflow-wrap:anywhere}
 .member-back{color:var(--community-navy)!important;border-color:#b9c8d8!important}
 @media(max-width:650px){.member-public-heading{align-items:flex-start;flex-direction:column}.member-public-avatar{width:145px;height:145px;min-width:145px}.member-public-fields{grid-template-columns:1fr}}
+
+
+/* Expanded association introduction */
+.community-about{padding-top:42px;padding-bottom:26px}
+.community-about-intro{max-width:900px;margin:0 auto 24px;text-align:center}
+.community-about-intro .community-about-kicker{margin:0 0 8px;color:#9a7428;font-size:12px;font-weight:850;letter-spacing:.08em}
+.community-about-intro>p:not(.community-about-kicker){color:#465b70;line-height:2;margin:10px auto;max-width:850px}
+.community-about-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:25px}
+.community-about-card{background:#fff;border:1px solid var(--community-line);border-radius:13px;padding:22px 20px;box-shadow:0 5px 18px rgba(9,43,80,.045)}
+.community-about-number{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:#f8f1df;color:#8a6723;font-size:12px;font-weight:900;direction:ltr}
+.community-about-card h3,.community-vision h3{margin:12px 0;color:var(--community-navy);font-size:18px}
+.community-about-card ul{margin:0;padding:0 18px 0 0;color:#526579;line-height:2;font-size:14px}
+.community-about-card li{padding:3px 0}
+.community-vision{margin-top:17px;padding:22px 25px;background:#eef4fa;border-right:4px solid var(--community-gold);border-radius:11px}
+[dir=ltr] .community-vision{border-right:0;border-left:4px solid var(--community-gold)}
+.community-vision h3{margin:0 0 8px}
+.community-vision p{margin:0 0 12px;color:#435a70;line-height:2}
+.community-vision strong{color:var(--community-navy);line-height:1.9}
+@media(max-width:900px){.community-about-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.community-about-grid{grid-template-columns:1fr}.community-about-card{padding:19px}.community-vision{padding:18px}}
