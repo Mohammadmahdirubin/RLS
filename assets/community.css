@@ -153,3 +153,7 @@
 .member-language-fields h4{margin:14px 0 8px;color:var(--accent);font-size:14px}
 .member-language-fields label{display:block;margin:9px 0;font-size:13px;font-weight:600}
 .member-language-fields input,.member-language-fields textarea{width:100%;box-sizing:border-box;margin-top:5px}
+
+/* Performance: stable image geometry, async decode, and admin link spacing */
+.community-avatar-image{aspect-ratio:1/1;object-fit:cover;background:#eef3f8}
+.community-admin-link[hidden],#community-admin-link[hidden]{display:none!important}
