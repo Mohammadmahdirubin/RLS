@@ -144,7 +144,8 @@
 <label>Языки и навыки<textarea name="languages_ru" rows="2" maxlength="3000"></textarea></label></details>
 <label>نام و نام خانوادگی<input name="full_name" required minlength="2" maxlength="160"></label>
 <label>گروه عضویت<select name="category" required><option value="student">دانشجو</option><option value="graduate">دانش‌آموخته</option><option value="faculty">استاد و عضو هیئت علمی</option><option value="researcher">پژوهشگر</option><option value="translator">مترجم</option><option value="culture">فعال حوزه ادبیات و فرهنگ</option><option value="honorary">عضو افتخاری</option></select></label>
-<label>ایمیل عمومی<input name="email" type="email" readonly aria-readonly="true"><small>نشانی ایمیل حساب عضویت شماست و در صفحه عمومی نمایش داده می‌شود.</small></label>
+<label>ایمیل حساب<input name="email" type="email" readonly aria-readonly="true"><small>ایمیل حساب عضویت شماست؛ نمایش آن در پروفایل عمومی اختیاری است.</small></label>
+<label class="membership-consent"><input type="checkbox" name="email_public"> تأیید می‌کنم ایمیل من در صفحه عمومی پروفایل نمایش داده شود.</label>
 <label>شماره تماس<input name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="مثلاً 0912…"></label>
 <label class="membership-consent"><input type="checkbox" name="phone_public"> نمایش شماره تماس در صفحه عمومی پروفایل</label>
 <label>نام نمایشی<input name="display_name" maxlength="160"></label>
@@ -162,5 +163,5 @@
 <button class="community-button primary" type="submit">ذخیره تغییرات پروفایل</button>
 </form>
 <label>ارسال عکس جدید برای تأیید مدیر<input id="member-avatar" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG، PNG یا WebP؛ حداکثر ۵ مگابایت</small></label><button class="community-button primary" type="button" id="upload-avatar">بارگذاری عکس</button><label>افزودن مدرک (PDF یا تصویر، حداکثر ۵ مگابایت)<input id="member-evidence" type="file" accept=".pdf,image/jpeg,image/png,image/webp"></label><button class="community-button primary" type="button" id="upload-evidence">بارگذاری مدرک</button><button class="membership-link" type="button" id="membership-logout">خروج از حساب</button></div>
-<p class="membership-privacy">نشانی ایمیل و مدارک ارسالی در صفحه عمومی نمایش داده نمی‌شوند. شماره تماس فقط در صورت فعال‌کردن گزینه نمایش آن منتشر می‌شود.</p>
-</section></main><footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>شبکه‌ای برای همکاری و توسعه مطالعات زبان روسی</div></div></footer><script src="assets/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script src="assets/supabase-config.js?v=shared-auth-20261109"></script><script src="assets/community.js?v=community-performance-20261109b"></script><script src="assets/membership.js?v=multilingual-profiles-20261109"></script></body></html>
+<p class="membership-privacy">ایمیل و شماره تماس فقط در صورت فعال‌کردن گزینه مربوط به نمایش آن‌ها در صفحه عمومی منتشر می‌شوند. مدارک ارسالی محرمانه باقی می‌مانند.</p>
+</section></main><footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>شبکه‌ای برای همکاری و توسعه مطالعات زبان روسی</div></div></footer><script src="assets/script.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script src="assets/supabase-config.js?v=shared-auth-20261109"></script><script src="assets/community.js?v=community-performance-20261109b"></script><script src="assets/membership.js?v=public-email-consent-20261109"></script></body></html>
