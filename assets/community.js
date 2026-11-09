@@ -31,9 +31,24 @@
   const initials = name => String(name || 'RLS').trim().split(/\\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
   let cards = [];
   function filter() {
-    const q=(search?.value||'').trim().toLocaleLowerCase(); let shown=0;
-    cards.forEach(card=>{const ok=(!category?.value||category.value===card.dataset.category)&&(!country?.value||country.value===card.dataset.country)&&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q));card.hidden=!ok;if(ok)shown++;});
-    const empty=wrap.querySelector('.community-empty'); if(empty) empty.hidden=shown>0;
+    const q=(search?.value||'').trim().toLocaleLowerCase();
+    let shown=0;
+    cards.forEach(card=>{
+      const ok=(!category?.value||category.value===card.dataset.category)
+        &&(!country?.value||country.value===card.dataset.country)
+        &&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q));
+      card.hidden=!ok;
+      if(ok) shown++;
+    });
+    const empty=wrap.querySelector('.member-filter-empty');
+    if(empty) {
+      empty.hidden=shown>0;
+      empty.textContent=lang==='fa'
+        ? 'هیچ عضوی با این دسته‌بندی یا عبارت جست‌وجو پیدا نشد.'
+        : lang==='ru'
+          ? 'По выбранной категории или запросу участники не найдены.'
+          : 'No members match this category or search.';
+    }
     root.querySelectorAll('[data-category-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.categoryFilter===(category?.value||''))));
   }
   function avatarUrl(path){return path ? db.storage.from('rls-member-avatars').getPublicUrl(path).data.publicUrl : '';}
@@ -58,10 +73,14 @@
     if(error){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با خطا روبه‌رو شد.':'Could not load the member directory.')+'</div>';return;}
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     wrap.innerHTML=data.map(m=>{
-      const name=esc(m.display_name||'RLS Member'),desc=[m.profile_headline||m.specialty,m.institution,m.city,m.country].filter(Boolean).join(' · '),hay=[m.display_name,m.profile_headline,m.specialty,m.institution,m.city,m.country,m.bio,m.activities,m.publications].filter(Boolean).join(' '),photo=avatarUrl(m.avatar_path);
+      const name=esc(m.display_name||'RLS Member'),desc=[m.profile_headline||m.specialty,m.institution,m.city,m.country].filter(Boolean).join(' · '),hay=[m.display_name,m.profile_headline,m.specialty,m.institution,m.city,m.country,m.bio,m.activities,m.publications,m.research_interests,m.email,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' '),photo=avatarUrl(m.avatar_path);
       return '<article class="community-member" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'"><a class="community-member-link" href="?member='+encodeURIComponent(m.user_id)+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" alt="'+name+'" loading="lazy">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3><span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category)+'</span><p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span><span class="member-open-profile">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</span></a></article>';
     }).join('');
     cards=[...wrap.querySelectorAll('.community-member')];
+    const emptyState=document.createElement('div');
+    emptyState.className='community-empty member-filter-empty';
+    emptyState.hidden=true;
+    wrap.appendChild(emptyState);
     if(country){const current=country.value,all=lang==='fa'?'همه کشورها':lang==='ru'?'Все страны':'All countries',countries=[...new Set(data.map(m=>m.country).filter(Boolean))].sort();country.innerHTML='<option value="">'+all+'</option>'+countries.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');country.value=current;}
     filter();
   }
