@@ -331,7 +331,7 @@
     if (membershipNote) membershipNote.hidden = true;
     if (membershipPrivacy) membershipPrivacy.hidden = true;
     if (authenticatedNote) authenticatedNote.hidden = false;
-    sessionBox.hidden = true;
+    sessionBox.hidden = false;
     if (profileEntry) profileEntry.hidden = false;
     if (profileOpen) profileOpen.textContent = tr('ورود به صفحه شخصی','Open my personal page','Открыть личную страницу');
     if (profileEntryNote) profileEntryNote.textContent = tr('حساب شما فعال است؛ برای مشاهده و تنظیم پروفایل کلیک کنید.','You are signed in. Open your personal page to manage your profile.','Вы вошли в систему. Откройте личную страницу для настройки профиля.');
