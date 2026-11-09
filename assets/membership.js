@@ -140,7 +140,7 @@
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,display_name,category,email,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,email_public,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
@@ -259,11 +259,13 @@
       if (emailInput) emailInput.value = profile.email || user.email || '';
       const phonePublicInput = editForm.elements.namedItem('phone_public');
       if (phonePublicInput) phonePublicInput.checked = !!profile.phone_public;
+      const emailPublicInput = editForm.elements.namedItem('email_public');
+      if (emailPublicInput) emailPublicInput.checked = !!profile.email_public;
     }
 
     if (fieldsEl) {
       const fields = [
-        [tr('ایمیل','Email','Электронная почта'), profile.email || user.email],
+        ...(profile.email_public ? [[tr('ایمیل','Email','Электронная почта'), profile.email || user.email]] : []),
         [tr('شماره تماس','Phone','Телефон'), profile.phone],
         [tr('کشور','Country','Страна'), localized('country')],
         [tr('شهر','City','Город'), localized('city')],
@@ -364,6 +366,7 @@
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
       if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { if (!payload[key + '_' + lang]) payload[key + '_' + lang] = payload[key]; });
       payload.phone_public = !!form.elements.namedItem('phone_public')?.checked;
+      payload.email_public = !!form.elements.namedItem('email_public')?.checked;
       if (payload.website_url) {
         const url = new URL(payload.website_url);
         if (!['https:','http:'].includes(url.protocol)) throw new Error(tr('نشانی وب‌سایت معتبر نیست.','Enter a valid website URL.','Укажите корректный адрес сайта.'));
