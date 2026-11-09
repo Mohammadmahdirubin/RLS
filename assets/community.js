@@ -124,10 +124,6 @@
     event.stopImmediatePropagation();
     img.classList.toggle('is-zoomed');
   },true);
-  document.addEventListener('pointerout',event=>{
-    const img=event.target.closest('.community-avatar-image.is-zoomed,.member-public-avatar.is-zoomed,.member-profile-avatar.is-zoomed');
-    if(img&&!img.contains(event.relatedTarget))img.classList.remove('is-zoomed');
-  },true);
   // Remove any stale viewer left by an older cached script.
   document.querySelectorAll('.avatar-lightbox,.image-lightbox,.community-image-overlay').forEach(node=>node.remove());
   load();
