@@ -11,6 +11,7 @@
   const membershipGrid = document.querySelector('#membership-process .membership-grid');
   const membershipNote = document.querySelector('#membership-process .community-note');
   const membershipPrivacy = document.querySelector('#membership-process .membership-privacy');
+  const authenticatedNote = document.getElementById('member-authenticated-note');
   const sessionText = document.getElementById('member-session-text');
   const profileMsg = document.getElementById('member-profile-message');
   const profileEntry = document.getElementById('member-profile-entry');
@@ -318,6 +319,7 @@
     if (membershipGrid) membershipGrid.hidden = true;
     if (membershipNote) membershipNote.hidden = true;
     if (membershipPrivacy) membershipPrivacy.hidden = true;
+    if (authenticatedNote) authenticatedNote.hidden = false;
     sessionBox.hidden = true;
     if (profileEntry) profileEntry.hidden = false;
     if (profileOpen) profileOpen.textContent = tr('ورود به صفحه شخصی','Open my personal page','Открыть личную страницу');
@@ -667,6 +669,7 @@
     if (membershipGrid) membershipGrid.hidden = false;
     if (membershipNote) membershipNote.hidden = false;
     if (membershipPrivacy) membershipPrivacy.hidden = false;
+    if (authenticatedNote) authenticatedNote.hidden = true;
     say(loginMsg, tr('از حساب خارج شدید.','You have signed out.','Вы вышли из системы.'));
   });
 
