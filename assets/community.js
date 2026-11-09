@@ -113,5 +113,34 @@
   db?.auth.onAuthStateChange(()=>{showAdminLink();});
   root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';filter();}));
   root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';filter();});
+
+  // Click any member portrait to open a large, royal-framed lightbox.
+  function openMemberAvatar(src, alt) {
+    let layer=document.querySelector('.member-avatar-lightbox');
+    if(!layer){
+      layer=document.createElement('div');
+      layer.className='member-avatar-lightbox';
+      layer.hidden=true;
+      layer.setAttribute('role','dialog');
+      layer.setAttribute('aria-modal','true');
+      layer.setAttribute('aria-label',lang==='fa'?'نمایش بزرگ عکس عضو':lang==='ru'?'Увеличенное фото участника':'Enlarged member photo');
+      layer.innerHTML='<button type="button" aria-label="Close">×</button><img alt="">';
+      document.body.appendChild(layer);
+      layer.addEventListener('click',e=>{if(e.target===layer||e.target.tagName==='BUTTON')layer.hidden=true;});
+    }
+    const image=layer.querySelector('img');
+    image.src=src; image.alt=alt||'Member portrait';
+    layer.hidden=false;
+  }
+  document.addEventListener('click',event=>{
+    const img=event.target.closest('.community-avatar-image,.member-public-avatar,.member-profile-avatar');
+    if(!img||img.hidden||!img.src)return;
+    event.preventDefault();
+    event.stopPropagation();
+    openMemberAvatar(img.currentSrc||img.src,img.alt);
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){const layer=document.querySelector('.member-avatar-lightbox');if(layer)layer.hidden=true;}
+  });
   load();
 })();
