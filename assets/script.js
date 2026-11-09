@@ -85,11 +85,20 @@ window.renderRLSArticleList = function(targetId, language) {
     doi.className = 'status';
     doi.textContent = labels.doi + ': ' + (a.doi || (lang === 'fa' ? 'تعیین نشده' : lang === 'en' ? 'Not assigned' : 'Не присвоен'));
     actions.appendChild(doi);
-    var localizedOjsUrl = a.ojsUrl ? a.ojsUrl.replace('/rls/fa/', '/rls/' + lang + '/') : '';
-    var localizedOjsPdfUrl = a.ojsPdfUrl ? a.ojsPdfUrl.replace('/rls/fa/', '/rls/' + lang + '/') : '';
+    // Always open the article in the language of the original submission,
+    // regardless of the language currently selected on the RLS website.
+    var articleLocale = ['fa', 'en', 'ru'].includes(a.language)
+      ? a.language
+      : (['fa', 'en', 'ru'].includes(a.sourceLanguage) ? a.sourceLanguage : 'fa');
+    var localizedOjsUrl = a.ojsUrl
+      ? a.ojsUrl.replace(/\/rls\/(?:fa|en|ru)\//, '/rls/' + articleLocale + '/')
+      : '';
+    var localizedOjsPdfUrl = a.ojsPdfUrl
+      ? a.ojsPdfUrl.replace(/\/rls\/(?:fa|en|ru)\//, '/rls/' + articleLocale + '/')
+      : '';
     var page = document.createElement('a');
     page.className = 'button secondary';
-    page.href = localizedOjsUrl || a.href || ('article-' + a.id + '.html'); // Open the article in the current site language.
+    page.href = localizedOjsUrl || a.href || ('article-' + a.id + '.html'); // Open the article in its original language.
     page.setAttribute('data-rls-article-id', a.id);
     page.textContent = labels.view;
     actions.appendChild(page);
