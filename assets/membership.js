@@ -13,6 +13,10 @@
   const membershipPrivacy = document.querySelector('#membership-process .membership-privacy');
   const sessionText = document.getElementById('member-session-text');
   const profileMsg = document.getElementById('member-profile-message');
+  const profileEntry = document.getElementById('member-profile-entry');
+  const profileOpen = document.getElementById('member-profile-open');
+  const profileEntryNote = document.getElementById('member-profile-entry-note');
+  let memberIsAuthenticated = false;
   const reportUpload = value => say(profileMsg || loginMsg, value);
   const allowed = ['student','graduate','faculty','researcher','translator','culture','honorary'];
   const maxBytes = 5 * 1024 * 1024;
@@ -310,11 +314,14 @@
 
   async function showSession(user) {
     if (!user) return;
+    memberIsAuthenticated = true;
     if (membershipGrid) membershipGrid.hidden = true;
     if (membershipNote) membershipNote.hidden = true;
     if (membershipPrivacy) membershipPrivacy.hidden = true;
-    sessionBox.hidden = false;
-    sessionBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    sessionBox.hidden = true;
+    if (profileEntry) profileEntry.hidden = false;
+    if (profileOpen) profileOpen.textContent = tr('ورود به صفحه شخصی','Open my personal page','Открыть личную страницу');
+    if (profileEntryNote) profileEntryNote.textContent = tr('حساب شما فعال است؛ برای مشاهده و تنظیم پروفایل کلیک کنید.','You are signed in. Open your personal page to manage your profile.','Вы вошли в систему. Откройте личную страницу для настройки профиля.');
     if (profileMsg) {
       profileMsg.textContent = tr('خوش آمدید! به پروفایل اختصاصی خود وارد شده‌اید.',
         'Welcome! You are now in your member profile.',
@@ -638,9 +645,24 @@
       'If an account exists, a recovery link will be sent.','Если учётная запись существует, будет отправлена ссылка для восстановления.'));
   });
 
+
+  profileOpen?.addEventListener('click', () => {
+    if (memberIsAuthenticated) {
+      sessionBox.hidden = false;
+      sessionBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      login?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      say(loginMsg, tr('برای ورود به صفحه شخصی، ایمیل و گذرواژه خود را وارد کنید.','Sign in with your email and password to open your personal page.','Чтобы открыть личную страницу, введите почту и пароль.'));
+      login?.querySelector('input[name="email"]')?.focus({preventScroll:true});
+    }
+  });
   document.getElementById('membership-logout')?.addEventListener('click', async () => {
     await db.auth.signOut();
+    memberIsAuthenticated = false;
     sessionBox.hidden = true;
+    if (profileEntry) profileEntry.hidden = false;
+    if (profileOpen) profileOpen.textContent = tr('ورود به صفحه شخصی','Open my personal page','Открыть личную страницу');
+    if (profileEntryNote) profileEntryNote.textContent = tr('برای ورود، ابتدا با حساب کاربری خود وارد شوید.','Sign in first to access your personal page.','Сначала войдите в систему, чтобы открыть личную страницу.');
     if (profileMsg) { profileMsg.textContent = ''; profileMsg.classList.remove('membership-success'); }
     if (membershipGrid) membershipGrid.hidden = false;
     if (membershipNote) membershipNote.hidden = false;
