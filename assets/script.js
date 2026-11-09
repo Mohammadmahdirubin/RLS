@@ -85,9 +85,11 @@ window.renderRLSArticleList = function(targetId, language) {
     doi.className = 'status';
     doi.textContent = labels.doi + ': ' + (a.doi || (lang === 'fa' ? 'تعیین نشده' : lang === 'en' ? 'Not assigned' : 'Не присвоен'));
     actions.appendChild(doi);
+    var localizedOjsUrl = a.ojsUrl ? a.ojsUrl.replace('/rls/fa/', '/rls/' + lang + '/') : '';
+    var localizedOjsPdfUrl = a.ojsPdfUrl ? a.ojsPdfUrl.replace('/rls/fa/', '/rls/' + lang + '/') : '';
     var page = document.createElement('a');
     page.className = 'button secondary';
-    page.href = a.ojsUrl || a.href || ('article-' + a.id + '.html'); // Prefer the matching OJS article page.
+    page.href = localizedOjsUrl || a.href || ('article-' + a.id + '.html'); // Open the article in the current site language.
     page.setAttribute('data-rls-article-id', a.id);
     page.textContent = labels.view;
     actions.appendChild(page);
@@ -96,7 +98,7 @@ window.renderRLSArticleList = function(targetId, language) {
     if (pdfPath) {
       var pdf = document.createElement('a');
       pdf.className = 'button primary';
-      pdf.href = a.ojsPdfUrl || (prefix + pdfPath);
+      pdf.href = localizedOjsPdfUrl || (prefix + pdfPath);
       pdf.target = '_blank';
       pdf.rel = 'noopener';
       pdf.textContent = labels.pdf;
