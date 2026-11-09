@@ -88,10 +88,10 @@
     const detailAvatar=detail.querySelector('img[data-avatar-path]');
     if(detailAvatar)attachAvatarFallback(detailAvatar,detailAvatar.dataset.avatarPath);
   }
-  async function load() {
+  async function load(forceDirectory = false) {
     if(!db){wrap.innerHTML='<div class="community-empty">Member directory is temporarily unavailable.</div>';return;}
     const memberId=new URLSearchParams(location.search).get('member');
-    if(memberId){await showMember(memberId);return;}
+    if(memberId && !forceDirectory){await showMember(memberId);return;}
     wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'در حال بارگذاری اعضا…':lang==='ru'?'Загрузка участников…':'Loading approved members…')+'</div>';
     const {data,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru').order('display_name',{ascending:true});
     if(error){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با خطا روبه‌رو شد.':'Could not load the member directory.')+'</div>';return;}
@@ -109,6 +109,19 @@
     filter();
   }
   search?.addEventListener('input',filter);category?.addEventListener('change',filter);
+  // Make the hero's "View members" action work even when a public profile
+  // has hidden the directory sections or the URL contains ?member=...
+  root.querySelector('.community-actions a[href="#member-directory"]')?.addEventListener('click', async event => {
+    event.preventDefault();
+    root.querySelectorAll('.community-section').forEach(section => { section.hidden = false; });
+    root.querySelector('#member-public-page')?.remove();
+    if (location.search) history.replaceState(null, '', location.pathname);
+    await load(true);
+    const directory = root.querySelector('#member-directory');
+    directory?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (directory) directory.setAttribute('tabindex', '-1');
+    directory?.focus({ preventScroll: true });
+  });
   showAdminLink();
   db?.auth.onAuthStateChange(()=>{showAdminLink();});
   root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';filter();}));
