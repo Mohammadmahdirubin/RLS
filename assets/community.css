@@ -224,3 +224,13 @@
   #membership-process .membership-profile-entry,
   #membership-process .membership-profile-column #member-session.member-profile-panel{width:100%;max-width:none}
 }
+
+
+/* Keep the membership columns balanced and explain the empty access area for signed-in users. */
+#membership-process .membership-columns{display:grid!important;grid-template-columns:minmax(230px,250px) minmax(0,1fr)!important;gap:22px!important;align-items:start!important;direction:ltr!important}
+#membership-process .membership-profile-column{grid-column:1!important;grid-row:1!important;width:100%!important;max-width:250px!important;justify-self:start!important}
+#membership-process .membership-access-column{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important}
+#membership-process .member-authenticated-note[hidden]{display:none!important}
+#membership-process .member-authenticated-note:not([hidden]){display:block!important;background:#eef4fa;border-right:4px solid var(--community-gold);border-radius:12px;padding:20px 22px;line-height:1.9}
+#membership-process .member-authenticated-note p{margin:6px 0 0;color:#53677d}
+@media(max-width:850px){#membership-process .membership-columns{grid-template-columns:minmax(0,1fr)!important;direction:rtl!important}#membership-process .membership-profile-column,#membership-process .membership-access-column{grid-column:1!important;grid-row:auto!important;width:100%!important;max-width:none!important}}
