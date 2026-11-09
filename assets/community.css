@@ -387,3 +387,25 @@
 .member-admin-access h3{margin:0 0 8px;color:var(--community-primary-dark)}
 .member-admin-access p{margin:0 0 16px;line-height:1.9;color:#665637}
 .member-admin-access[hidden]{display:none!important}
+
+
+/* Top-of-page member access panel */
+.community-join-cta{
+  max-width:1104px;margin:18px auto 28px;padding:24px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  background:linear-gradient(110deg,#fffefa 0%,#f7f0e5 100%);
+  border:1px solid #e3d6c2;border-right:5px solid var(--community-gold);
+  border-radius:14px;box-shadow:0 8px 22px rgba(58,30,35,.055)
+}
+.community-join-cta>div:first-child{min-width:0;flex:1}
+.community-join-cta .community-about-kicker{margin:0 0 5px;color:#98763a;font-size:11px;font-weight:850;letter-spacing:.12em}
+.community-join-cta h2{margin:0 0 6px;color:var(--community-primary-dark);font-size:21px;font-weight:850}
+.community-join-cta p{margin:0;color:var(--community-muted);font-size:14px;line-height:1.9}
+.community-join-cta .community-actions{display:flex;flex:0 0 auto;gap:10px;margin:0}
+.community-join-cta .community-button{min-width:172px;white-space:nowrap}
+@media(max-width:760px){
+ .community-join-cta{align-items:stretch;flex-direction:column;margin:14px 17px 22px;padding:20px;gap:14px}
+ .community-join-cta .community-actions{display:grid;grid-template-columns:1fr 1fr}
+ .community-join-cta .community-button{min-width:0;width:100%;box-sizing:border-box}
+}
+@media(max-width:420px){.community-join-cta .community-actions{grid-template-columns:1fr}}
