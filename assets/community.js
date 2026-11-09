@@ -52,9 +52,7 @@
   }
   function avatarUrl(path, size=112){
     if(!path)return '';
-    return db.storage.from('rls-member-avatars').getPublicUrl(path,{
-      transform:{width:size,height:size,resize:'cover',quality:72}
-    }).data.publicUrl;
+    return db.storage.from('rls-member-avatars').getPublicUrl(path).data.publicUrl;
   }
   function attachAvatarFallback(img,path){
     if(!img||!path)return;
