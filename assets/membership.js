@@ -234,7 +234,7 @@
     const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=132x132&margin=2&data=' + encodeURIComponent(verifyUrl);
     const logoUrl = 'https://rlsj.ir/assets/association-emblem.svg';
     const sealUrl = 'https://rlsj.ir/assets/journal-seal.svg';
-    const win = window.open('', '_blank', 'noopener,noreferrer');
+    const win = window.open('', '_blank');
     if (!win) {
       say(certificateNote, tr('مرورگر پنجره گواهی را مسدود کرد؛ اجازه بازشدن پنجره جدید را فعال کنید.',
         'Your browser blocked the certificate window. Allow pop-ups and try again.',
