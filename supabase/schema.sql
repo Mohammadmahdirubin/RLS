@@ -174,7 +174,7 @@ on public.rls_user_roles for select to authenticated
 using (user_id = auth.uid() or private.rls_is_admin());
 
 -- Public directory view exposes email and phone only when each member explicitly opts in.
-create or replace view public.rls_public_members
+create or replace view public.rls_public_members with (security_invoker = true)
 as
 select
   user_id,
