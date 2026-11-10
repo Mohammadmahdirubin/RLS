@@ -222,7 +222,7 @@
   }
 
   async function showMember(id) {
-    const {data:m,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,email,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,salutation,reviewed_at,member_number,membership_status').eq('user_id',id).maybeSingle();
+    const {data:m,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,blog_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,email,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,salutation,reviewed_at,member_number,membership_status').eq('user_id',id).maybeSingle();
     const detail=document.createElement('section'); detail.className='community-section container member-public-page'; detail.id='member-public-page';
     const directory=root.querySelector('#member-directory');
     directory?.before(detail);
@@ -253,7 +253,7 @@
     let result;
     let timeoutId;
     try {
-      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,website_url,orcid,researchgate_url,instagram_url,telegram_url,linkedin_url,x_url,salutation,member_number').order('display_name',{ascending:true}).limit(500);
+      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,website_url,blog_url,orcid,researchgate_url,instagram_url,telegram_url,linkedin_url,x_url,salutation,member_number').order('display_name',{ascending:true}).limit(500);
       const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
       result=await Promise.race([request,timeout]);
     } catch(requestError) {
