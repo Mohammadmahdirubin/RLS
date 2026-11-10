@@ -87,8 +87,10 @@
   }
   function profileQr(id,name) {
     const url=memberProfileUrl(id);
-    const image='https://api.qrserver.com/v1/create-qr-code/?size=112x112&format=svg&data='+encodeURIComponent(url);
-    return '<div class="member-card-qr"><img src="'+esc(image)+'" alt="'+esc((lang==='fa'?'کد QR پروفایل ':'Profile QR for ')+(name||''))+'" width="72" height="72" loading="lazy" decoding="async"></div>';
+    const encoded=encodeURIComponent(url);
+    const primary='https://quickchart.io/qr?text='+encoded+'&size=160&margin=1&format=png';
+    const fallback='https://api.qrserver.com/v1/create-qr-code/?size=160x160&format=png&data='+encoded;
+    return '<div class="member-card-qr"><a class="member-card-qr-link" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc((lang==='fa'?'باز کردن پروفایل ':'Open profile ')+(name||''))+'"><img src="'+esc(primary)+'" data-fallback-src="'+esc(fallback)+'" alt="'+esc((lang==='fa'?'کد QR پروفایل ':'Profile QR for ')+(name||''))+'" width="76" height="76" loading="eager" decoding="async" referrerpolicy="no-referrer"></a><span>'+(lang==='fa'?'اسکن برای مشاهده پروفایل عضو':lang==='ru'?'Сканируйте, чтобы открыть профиль':'Scan to view member profile')+'</span></div>';
   }
   const approvedStatusLabel=lang==='fa'?'عضویت تأییدشده':lang==='ru'?'Членство подтверждено':'Approved membership';
   function formatMemberNumber(value) {
@@ -293,12 +295,17 @@
           const holder=document.createElement('div');
           holder.innerHTML=profileQr(qr.dataset.qrUser,qr.dataset.qrName);
           qr.replaceWith(holder.firstElementChild || document.createTextNode(''));
-          const qrImg=wrap.querySelectorAll('.member-card-qr img[data-fallback-src]');
-          qrImg.forEach(img=>img.addEventListener('error',()=>{
-            if(img.dataset.fallbackAttempted==='1')return;
-            img.dataset.fallbackAttempted='1';
-            if(img.dataset.fallbackSrc)img.src=img.dataset.fallbackSrc;
-          },{once:true}));
+          const qrImg=holder.querySelector('img[data-fallback-src]') || card.querySelector('.member-card-qr img[data-fallback-src]');
+          if(qrImg){
+            qrImg.addEventListener('error',()=>{
+              if(qrImg.dataset.fallbackAttempted==='1'){
+                qrImg.closest('.member-card-qr')?.classList.add('member-card-qr--unavailable');
+                return;
+              }
+              qrImg.dataset.fallbackAttempted='1';
+              qrImg.src=qrImg.dataset.fallbackSrc;
+            });
+          }
         }catch(_){qr.remove();}
       }
     };
