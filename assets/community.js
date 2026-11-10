@@ -16,7 +16,7 @@
     student:{symbol:'🎓',tone:'student'},
     graduate:{symbol:'📜',tone:'graduate'},
     faculty:{symbol:'👩‍🏫',tone:'faculty'},
-    researcher:{symbol:'🔬',tone:'researcher'},
+    researcher:{symbol:'👓',tone:'researcher'},
     translator:{symbol:'📚',tone:'translator'},
     culture:{symbol:'🏛️',tone:'culture'},
     honorary:{symbol:'🏅',tone:'honorary'}
