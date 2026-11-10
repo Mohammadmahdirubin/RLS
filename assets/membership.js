@@ -236,8 +236,8 @@
     }
     const memberNumberPadded = String(memberNumber).padStart(6, '0');
     const memberNumberFa = memberNumberPadded.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
-    const verifyUrl = 'https://rlsj.ir/community.html?member=' + encodeURIComponent(user.id || profile.user_id);
-    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=132x132&margin=2&data=' + encodeURIComponent(verifyUrl);
+    const profileUrl = 'https://rlsj.ir/community.html?member=' + encodeURIComponent(user.id || profile.user_id);
+    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=132x132&margin=2&data=' + encodeURIComponent(profileUrl);
     const logoUrl = 'https://rlsj.ir/assets/association-emblem.svg';
     const sealUrl = 'https://rlsj.ir/assets/journal-seal.svg';
     const win = window.open('', '_blank');
