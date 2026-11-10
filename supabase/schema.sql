@@ -38,6 +38,14 @@ create table if not exists public.rls_profiles (
   evidence_url text,
   website_url text,
   orcid text,
+  researchgate_url text,
+  google_scholar_url text,
+  instagram_url text,
+  telegram_url text,
+  linkedin_url text,
+  x_url text,
+  articles_count integer check (articles_count is null or articles_count between 0 and 999999),
+  books_count integer check (books_count is null or books_count between 0 and 999999),
   membership_status public.rls_membership_status not null default 'pending',
   is_public boolean not null default false,
   reviewed_by uuid references auth.users(id) on delete set null,
@@ -217,7 +225,15 @@ select
   research_interests_ru,
   languages_en,
   languages_ru,
-  case when email_public then email else null::text end as email
+  case when email_public then email else null::text end as email,
+  researchgate_url,
+  google_scholar_url,
+  instagram_url,
+  telegram_url,
+  linkedin_url,
+  x_url,
+  articles_count,
+  books_count
 from public.rls_profiles
 where membership_status = 'approved' and is_public = true;
 
