@@ -286,7 +286,8 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
 
   function renderMemberProfile(profile, user) {
     const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || '');
-    const name = localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS');
+    const honorific = profile.salutation ? (lang === 'fa' ? (profile.salutation === 'ms' ? 'خانم ' : 'آقای ') : lang === 'ru' ? (profile.salutation === 'ms' ? 'г-жа ' : 'г-н ') : (profile.salutation === 'ms' ? 'Ms ' : 'Mr ')) : '';
+    const name = honorific + (localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS'));
     const nameEl = document.getElementById('member-profile-name');
     const categoryEl = document.getElementById('member-profile-category');
     const categoryCopyEl = document.getElementById('member-profile-category-copy');
