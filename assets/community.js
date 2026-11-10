@@ -41,9 +41,13 @@
   }
   function profileQr(userId, name) {
     const target = memberProfileUrl(userId);
-    const qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=160x160&margin=2&data=' + encodeURIComponent(target);
+    // QuickChart serves a PNG QR image; QR Server is retained as a fallback.
+    const encodedTarget = encodeURIComponent(target);
+    const qrSrc = 'https://quickchart.io/qr?text=' + encodedTarget + '&size=220&margin=2&format=png';
+    const fallbackQrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=2&data=' + encodedTarget;
     const label = lang==='fa' ? 'اسکن برای مشاهده پروفایل' : lang==='ru' ? 'Сканировать для просмотра профиля' : 'Scan to view profile';
-    return '<div class="member-card-qr"><img src="'+esc(qrSrc)+'" alt="'+esc(label+' — '+name)+'" loading="lazy" width="88" height="88"><span>'+esc(label)+'</span></div>';
+    const openLabel = lang==='fa' ? 'بازکردن پروفایل عضو' : lang==='ru' ? 'Открыть профиль участника' : 'Open member profile';
+    return '<div class="member-card-qr"><a class="member-card-qr-link" href="'+esc(target)+'" aria-label="'+esc(openLabel+' — '+name)+'"><img src="'+esc(qrSrc)+'" data-fallback-src="'+esc(fallbackQrSrc)+'" alt="'+esc(label+' — '+name)+'" loading="lazy" decoding="async" width="88" height="88"></a><span>'+esc(label)+'</span></div>';
   }
 
   function profileLinks(m) {
@@ -191,6 +195,14 @@
       const profileHref=memberProfileUrl(m.user_id);
       return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="lazy" decoding="async" width="76" height="76">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+profileQr(m.user_id, displayName||'RLS Member')+'</article>';
     }).join('');
+    wrap.querySelectorAll('.member-card-qr img[data-fallback-src]').forEach(img=>{
+      img.addEventListener('error',()=>{
+        if(img.dataset.fallbackAttempted==='1')return;
+        img.dataset.fallbackAttempted='1';
+        const fallback=img.dataset.fallbackSrc;
+        if(fallback)img.src=fallback;
+      });
+    });
     wrap.querySelectorAll('img[data-avatar-path]').forEach(img=>attachAvatarFallback(img,img.dataset.avatarPath));
     cards=[...wrap.querySelectorAll('.community-member')];
     const emptyState=document.createElement('div');
