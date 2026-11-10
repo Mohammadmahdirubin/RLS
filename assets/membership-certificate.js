@@ -14,8 +14,7 @@
     return Number.isSafeInteger(n) && n > 0 ? digits(String(n).padStart(6,'0')) : '—';
   }
   function svgFor(m) {
-    const honor = m.salutation === 'ms' ? 'خانم' : 'آقای';
-    const name = honor + ' ' + (m.display_name || m.full_name || '');
+    const name = String(m.display_name || m.full_name || '').replace(/^\\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\\s*)/i,'').trim();
     const group = groups[m.category] || m.category || '—';
     const join = faDate(m.reviewed_at || m.created_at);
     const issued = faDate(new Date().toISOString());
@@ -45,7 +44,7 @@
     ].join('');
   }
   function render(container, m) {
-    if (!container || !m || m.membership_status !== 'approved' || !m.member_number || !m.salutation) return;
+    if (!container || !m || m.membership_status !== 'approved' || !m.member_number) return;
     if (container.querySelector('.rls-certificate-section')) return;
     const panel = document.createElement('section');
     panel.className = 'rls-certificate-section';
