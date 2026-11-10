@@ -70,16 +70,16 @@
 
       ctx.textAlign = 'right';
       ctx.font = 'bold 29px Tahoma, Arial, sans-serif';
-      ctx.fillText(membershipNumber(member.member_number), 320, 744, 250);
-      ctx.fillText(groups[member.category] || member.category || '—', 320, 800, 250);
+      ctx.fillText(membershipNumber(member.member_number), 350, 770, 250);
+      ctx.fillText(groups[member.category] || member.category || '—', 350, 826, 250);
       // The member profile uses created_at as its membership date; keep the certificate consistent with it.
-      ctx.fillText(faDate(member.created_at), 320, 856, 250);
+      ctx.fillText(faDate(member.created_at), 350, 882, 250);
 
       // The QR frame is preprinted on the right side of the approved template.
       ctx.imageSmoothingEnabled = false;
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(1225, 710, 156, 156);
-      ctx.drawImage(qr, 1228, 713, 150, 150);
+      ctx.fillRect(1265, 735, 156, 156);
+      ctx.drawImage(qr, 1268, 738, 150, 150);
       URL.revokeObjectURL(qrObjectUrl);
 
       const blob = await new Promise((resolve,reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('تبدیل گواهی به PNG ناموفق بود.')), 'image/png'));
