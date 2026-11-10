@@ -596,3 +596,56 @@
   .community-accordion-content h3{font-size:14px}
   .community-accordion-content ul{padding-right:19px}
 }
+
+
+/* Official PNG certificate: compact actions and shared presentation in both profile views */
+.member-account-page .member-certificate-panel{
+  display:block;
+  margin:20px 0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.member-account-page .member-certificate-panel[hidden]{display:none!important}
+.member-account-page .member-certificate-panel .rls-certificate-section{
+  max-width:900px;
+  margin:18px auto;
+  padding:18px 16px;
+}
+.rls-certificate-download.community-button,
+.rls-certificate-download{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:260px;
+  min-height:38px;
+  padding:8px 18px!important;
+  margin:0 auto;
+  border-radius:8px;
+  font-size:13px!important;
+  line-height:1.5!important;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+.rls-certificate-actions{
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:12px;
+}
+.rls-certificate-hint{
+  display:block;
+  text-align:center;
+  line-height:1.7;
+}
+@media(max-width:650px){
+  .member-account-page .member-certificate-panel .rls-certificate-section{padding:12px 8px}
+  .rls-certificate-actions{flex-direction:column;gap:8px}
+  .rls-certificate-download.community-button,
+  .rls-certificate-download{width:auto!important;max-width:100%;min-height:36px;padding:7px 16px!important;font-size:12px!important}
+}
