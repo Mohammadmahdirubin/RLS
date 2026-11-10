@@ -660,4 +660,34 @@
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592</loc>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/en/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592</loc>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rlsj.ir/ru/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592</loc>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rlsj.ir/en/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592" />
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
