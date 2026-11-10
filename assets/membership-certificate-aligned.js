@@ -36,7 +36,7 @@
 
     const panel = document.createElement('section');
     panel.className = 'rls-certificate-section';
-    panel.innerHTML = '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>نسخه رسمی · تصویر PNG</p></div><div class="rls-certificate-frame"><img class="rls-membership-certificate-image" alt="گواهی عضویت اختصاصی عضو" /></div><div class="rls-certificate-actions"><button type="button" class="community-button primary rls-certificate-download" disabled>در حال صدور گواهی…</button><span class="rls-certificate-hint">این گواهی فقط برای صاحب حساب واردشده نمایش داده می‌شود.</span></div>';
+    panel.innerHTML = '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>نسخه رسمی · تصویر PNG</p></div><div class="rls-certificate-frame"><img class="rls-membership-certificate-image" alt="گواهی عضویت اختصاصی عضو" /></div><div class="rls-certificate-actions"><button type="button" class="community-button primary rls-certificate-download" disabled>در حال صدور گواهی…</button><span class="rls-certificate-hint">نسخه عمومی گواهی عضویت؛ اطلاعات آن از پرونده تأییدشده عضو درج شده است.</span></div>';
     container.appendChild(panel);
 
     const preview = panel.querySelector('.rls-membership-certificate-image');
