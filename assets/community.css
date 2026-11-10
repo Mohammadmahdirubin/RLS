@@ -502,3 +502,16 @@
 .member-public-card--translator{--member-profile-bg:#fff7d9;--member-profile-border:#eadb9b;--member-profile-accent:#785b12;--member-profile-badge-bg:#fff0b8;--member-profile-badge-border:#e5d17a}
 .member-public-card--culture{--member-profile-bg:#ffeded;--member-profile-border:#efc1c1;--member-profile-accent:#8b3535;--member-profile-badge-bg:#ffdada;--member-profile-badge-border:#eab0b0}
 .member-public-card--honorary{--member-profile-bg:#fff0df;--member-profile-border:#e8c99e;--member-profile-accent:#80501d;--member-profile-badge-bg:#ffe2bf;--member-profile-badge-border:#e5bd8d}
+
+
+/* Four fixed placeholder cards for the Association Council. */
+.council-section{padding-top:22px;padding-bottom:24px}
+.council-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;align-items:stretch}
+.council-member{position:relative;z-index:0;display:flex;min-width:0;min-height:174px;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:18px 12px;border:1px solid var(--community-line);border-radius:13px;background:var(--community-surface);box-shadow:0 5px 16px rgba(58,30,35,.045);text-align:center;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.council-member:hover{z-index:4;border-color:#c9aa72;box-shadow:0 12px 25px rgba(58,30,35,.11)}
+.council-avatar{display:grid;place-items:center;width:76px;height:76px;border:3px solid #e7ded3;border-radius:50%;background:#f4f0eb;color:#8a7b76;font-size:30px;transform-origin:center;transition:transform .2s ease,box-shadow .2s ease}
+.council-member:hover .council-avatar{transform:scale(2);box-shadow:0 5px 18px rgba(35,25,20,.18)}
+.council-member-name{min-height:8px;width:78%;border-bottom:1px solid #e9e1d9}
+.council-member-role{color:var(--community-muted);font-size:12px;font-weight:750;line-height:1.7}
+@media(max-width:760px){.council-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:390px){.council-grid{gap:10px}.council-member{min-height:158px;padding:14px 8px}.council-avatar{width:66px;height:66px}}
