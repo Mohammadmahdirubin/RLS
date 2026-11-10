@@ -3,6 +3,39 @@
   'use strict';
   const TEMPLATE_URL = 'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/Bilingual%20Russian%20Language%20Membership%20Certificate.png';
   const PROFILE_BASE = 'https://rlsj.ir/community.html?member=';
+  // Reuse the template and generated QR during this page session.
+  let templatePromise = null;
+  const qrPromises = new Map();
+  function getTemplate() {
+    if (!templatePromise) {
+      templatePromise = loadImage('/Bilingual%20Russian%20Language%20Membership%20Certificate.png?v=20261111', false)
+        .catch(error => { templatePromise = null; throw error; });
+    }
+    return templatePromise;
+  }
+  function getQr(userId) {
+    if (!qrPromises.has(userId)) {
+      const data = encodeURIComponent(PROFILE_BASE + userId);
+      const urls = [
+        'https://quickchart.io/qr?text=' + data + '&size=320&margin=1&format=png',
+        'https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=' + data
+      ];
+      const task = (async () => {
+        let lastError;
+        for (const url of urls) {
+          try {
+            const response = await fetch(url, {mode:'cors', cache:'force-cache', signal:AbortSignal.timeout(7000)});
+            if (!response.ok) throw new Error('QR HTTP ' + response.status);
+            return loadImage(URL.createObjectURL(await response.blob()), false);
+          } catch (error) { lastError = error; }
+        }
+        throw lastError || new Error('ساخت QR ناموفق بود.');
+      })();
+      qrPromises.set(userId, task);
+      task.catch(() => qrPromises.delete(userId));
+    }
+    return qrPromises.get(userId);
+  }
   const groups = {
     student:'دانشجو', graduate:'دانش‌آموخته', faculty:'استاد و عضو هیئت علمی',
     researcher:'پژوهشگر', translator:'مترجم', culture:'ادبیات و فرهنگ', honorary:'عضو افتخاری'
@@ -44,15 +77,7 @@
     let pngUrl = '';
 
     try {
-      const template = await loadImage(TEMPLATE_URL + '?v=20261110', true);
-      const qrUrl = 'https://quickchart.io/qr?text=' + encodeURIComponent(PROFILE_BASE + member.user_id) + '&size=320&margin=1&format=png';
-      const qrResponse = await fetch(qrUrl, {mode:'cors', cache:'no-store'});
-      if (!qrResponse.ok) throw new Error('ساخت QR ناموفق بود.');
-      const qrBlob = await qrResponse.blob();
-      const qrObjectUrl = URL.createObjectURL(qrBlob);
-      let qr;
-      try { qr = await loadImage(qrObjectUrl, false); }
-      finally { /* revoked after canvas draw */ }
+      const [template, qr] = await Promise.all([getTemplate(), getQr(member.user_id)]);
 
       const canvas = document.createElement('canvas');
       canvas.width = template.naturalWidth;
@@ -80,7 +105,6 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(1265, 735, 156, 156);
       ctx.drawImage(qr, 1268, 738, 150, 150);
-      URL.revokeObjectURL(qrObjectUrl);
 
       const blob = await new Promise((resolve,reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('تبدیل گواهی به PNG ناموفق بود.')), 'image/png'));
       pngUrl = URL.createObjectURL(blob);
@@ -97,8 +121,9 @@
       };
     } catch (error) {
       console.error('RLS membership certificate generation failed:', error);
-      download.textContent = 'صدور گواهی انجام نشد؛ دوباره بارگذاری کنید';
-      download.disabled = true;
+      download.textContent = 'تلاش دوباره برای نمایش گواهی';
+      download.disabled = false;
+      download.onclick = () => { panel.remove(); render(container, member); };
     }
   }
   window.RLSMembershipCertificate = {render};
