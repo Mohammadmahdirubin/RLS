@@ -6,6 +6,7 @@
   const form=document.getElementById('admin-login-form'),msg=document.getElementById('login-message'),list=document.getElementById('admin-list');
   let status='pending',checking=false;
   const labels={student:'دانشجو',graduate:'دانش‌آموخته',faculty:'استاد و عضو هیئت علمی',researcher:'پژوهشگر مطالعات روسیه',translator:'مترجم زبان روسی',culture:'فعال ادبیات و فرهنگ روسیه',honorary:'عضو افتخاری'};
+  const categories=Object.entries(labels);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   async function checkAdmin(){
     if(checking)return;checking=true;
@@ -29,7 +30,7 @@
   async function load(){
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
-      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,created_at')
+      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,is_public,created_at')
       .order('created_at',{ascending:true});
     if(status==='photo_pending'){
       query=query.in('membership_status',['approved','suspended']).not('pending_avatar_path','is',null);
@@ -59,10 +60,12 @@
         '<br>محل: '+esc([p.city,p.country].filter(Boolean).join('، ')||'ثبت نشده')+' · مؤسسه: '+esc(p.institution||'ثبت نشده')+
         '<br>تحصیلات: '+esc(p.degree||'—')+' · تخصص: '+esc(p.specialty||'—')+
         '<br>معرفی: '+esc(p.bio||'—')+'<br>تاریخ درخواست: '+new Date(p.created_at).toLocaleString('fa-IR')+'</div>'+
-        evidence+'<div class="admin-actions">'+
+        evidence+'<div class="admin-category-editor"><label>گروه عضویت<select data-category-select>'+categories.map(([key,label])=>'<option value="'+key+'"'+(p.category===key?' selected':'')+'>'+label+'</option>').join('')+'</select></label><button type="button" class="approve" data-action="change_category">ذخیره گروه عضویت</button></div>'+
+        '<div class="admin-actions">'+
         (status==='pending'?'<button class="approve" data-action="approve">تأیید عضویت و عکس</button><button class="reject" data-action="reject">رد درخواست</button>':'')+
         ((status==='approved'||status==='photo_pending')&&p.pending_avatar_path?'<button class="approve" data-action="approve_avatar">تأیید عکس جدید</button><button class="reject" data-action="reject_avatar">رد عکس جدید</button>':'')+
-        (status==='approved'?'<button class="suspend" data-action="suspend">تعلیق عضویت</button>':'')+
+        (status==='approved'?'<button class="suspend" data-action="suspend">تعلیق عضویت</button><button class="visibility" data-action="toggle_visibility">'+(p.is_public?'پنهان‌کردن پروفایل عمومی':'نمایش پروفایل عمومی')+'</button>':'')+
+        (status==='suspended'?'<button class="approve" data-action="restore">فعال‌سازی دوباره عضویت</button>':'')+
         '</div><p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=html.join('');
@@ -75,6 +78,20 @@
     const currentPath=card.dataset.avatarPath||'';
     const update={};
     let removePath='';
+    if(action==='change_category'){
+      const selected=card.querySelector('[data-category-select]')?.value;
+      if(!categories.some(([key])=>key===selected)){message.textContent='گروه انتخاب‌شده معتبر نیست.';return;}
+      update.category=selected;
+    }
+    if(action==='toggle_visibility'){
+      const {data:current,error:readError}=await client.from('rls_profiles').select('is_public,membership_status').eq('user_id',id).single();
+      if(readError){message.textContent='خواندن وضعیت پروفایل ناموفق بود: '+readError.message;return;}
+      if(current.membership_status!=='approved'){message.textContent='فقط اعضای تأییدشده امکان نمایش عمومی دارند.';return;}
+      update.is_public=!current.is_public;
+    }
+    if(action==='restore'){
+      Object.assign(update,{membership_status:'approved',is_public:true,review_note:null,reviewed_by:user.id,reviewed_at:new Date().toISOString()});
+    }
     if(action==='approve'){
       const selectedPath=pendingPath||currentPath;
       if(!selectedPath){message.textContent='تا پیش از ثبت عکس پروفایل، درخواست قابل تأیید نیست.';return;}
@@ -100,6 +117,7 @@
       Object.assign(update,{membership_status:'suspended',is_public:false,review_note:'عضویت توسط مدیر تعلیق شد.',
         reviewed_by:user.id,reviewed_at:new Date().toISOString()});
     }
+    if(!Object.keys(update).length){message.textContent='تغییری برای ذخیره وجود ندارد.';return;}
     const {error}=await client.from('rls_profiles').update(update).eq('user_id',id);
     if(error){message.textContent='خطا: '+error.message;return;}
     if(removePath){
