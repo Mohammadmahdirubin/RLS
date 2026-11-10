@@ -218,78 +218,6 @@
   }
 
 
-  function escapeCertificateText(value) {
-    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  }
-
-  function printMembershipCertificate(profile, user) {
-    if (profile.membership_status !== 'approved') return;
-    const fullName = clean(profile.full_name).replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i, '');
-    const joinedAt = profile.created_at || user?.created_at;
-    const memberDate = formatMemberDate(joinedAt);
-    const issuedDate = formatMemberDate(new Date().toISOString());
-    const group = categoryLabel(profile.category);
-    const memberNumber = Number(profile.member_number);
-    if (!Number.isSafeInteger(memberNumber) || memberNumber < 1) {
-      say(document.getElementById('member-certificate-note'), tr('شماره عضویت در پرونده این عضو ثبت نشده است؛ صدور گواهی فعلاً ممکن نیست.','A member number is not assigned to this profile yet.','Номер участника ещё не назначен этому профилю.'));
-      return;
-    }
-    const memberNumberPadded = String(memberNumber).padStart(6, '0');
-    const memberNumberFa = memberNumberPadded.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
-    const profileUrl = 'https://rlsj.ir/community.html?member=' + encodeURIComponent(user.id || profile.user_id);
-    const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=132x132&margin=2&data=' + encodeURIComponent(profileUrl);
-    const logoUrl = 'https://rlsj.ir/assets/association-emblem.svg';
-    const sealUrl = 'https://rlsj.ir/assets/journal-seal.svg';
-    const win = window.open('', '_blank');
-    if (!win) {
-      say(document.getElementById('member-certificate-note'), tr('مرورگر پنجره گواهی را مسدود کرد؛ اجازه بازشدن پنجره جدید را فعال کنید.',
-        'Your browser blocked the certificate window. Allow pop-ups and try again.',
-        'Браузер заблокировал окно сертификата. Разрешите всплывающие окна и повторите попытку.'));
-      return;
-    }
-    const esc = escapeCertificateText;
-    win.document.open();
-    win.document.write(`<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>گواهی عضویت · ${esc(fullName)}</title>
-<style>
-@page{size:A4 landscape;margin:9mm}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#f4f0e7;color:#172d4c;font-family:Tahoma,"Noto Naskh Arabic",serif}
-body{padding:0}
-.certificate{width:100%;min-height:190mm;position:relative;overflow:hidden;background:linear-gradient(135deg,#fffdf7,#f8f0dc 48%,#fffdf7);border:5px double #c59a3d;padding:10mm 15mm 8mm;box-shadow:inset 0 0 0 2px #f0d99c,inset 0 0 0 7px #fffaf0}
-.certificate:before,.certificate:after{content:"";position:absolute;width:42mm;height:42mm;border:2px solid #c59a3d;opacity:.55;transform:rotate(45deg)}
-.certificate:before{top:-24mm;right:-24mm}.certificate:after{bottom:-24mm;left:-24mm}
-.corner{position:absolute;width:34mm;height:34mm;border:1px solid #c59a3d;opacity:.7;transform:rotate(45deg)}
-.c1{top:-21mm;left:-21mm}.c2{bottom:-21mm;right:-21mm}
-.head{display:flex;align-items:center;justify-content:center;gap:12mm;text-align:center;border-bottom:1px solid #d7bd7a;padding-bottom:5mm}
-.head img{width:34mm;height:34mm;object-fit:contain}
-.brand{font-size:17pt;font-weight:800;color:#102d50}.brand-en{font: bold 11pt Georgia,serif;letter-spacing:1px;direction:ltr;margin-top:2mm}
-h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0 1px #fff}
-.en-title{text-align:center;direction:ltr;font: bold 12pt Georgia,serif;color:#7e6127;margin-bottom:5mm}
-.intro{text-align:center;font-size:15pt;color:#273b5a;margin:3mm 0}
-.person{text-align:center;font-size:25pt;font-weight:900;color:#102d50;margin:3mm auto 5mm;padding:2mm 0;border-bottom:1px solid #d6bb79;width:72%}
-.bodycopy{text-align:center;font-size:14pt;line-height:2.15;color:#29374c;max-width:230mm;margin:0 auto}
-.bodycopy strong{color:#8b6825}
-.meta{display:flex;justify-content:space-between;align-items:end;margin-top:8mm;gap:8mm}
-.sign{width:55mm;text-align:center;font-size:10pt;line-height:1.8;color:#243754}
-.signline{border-top:1px solid #8e7a50;margin-top:12mm;padding-top:2mm}
-.seal{width:31mm;height:31mm;object-fit:contain;display:block;margin:2mm auto 0}
-.details{font-size:10pt;line-height:2;color:#39465b}
-.qr{text-align:center;font-size:8pt;color:#43516a}.qr img{display:block;width:25mm;height:25mm;margin:0 auto 1mm}
-.footer{position:absolute;left:15mm;right:15mm;bottom:4mm;border-top:1px solid #d7bd7a;padding-top:2mm;text-align:center;font:9pt Georgia,serif;direction:ltr;color:#7b673d;letter-spacing:.5px}
-@media screen{body{padding:12px}.certificate{max-width:1120px;margin:0 auto;min-height:760px}}
-@media print{html,body{background:#fff}.certificate{min-height:190mm;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
-</style></head><body><main class="certificate"><i class="corner c1"></i><i class="corner c2"></i>
-<header class="head"><img src="${logoUrl}" alt="RLS Association"><div><div class="brand">انجمن مطالعات زبان روسی</div><div class="brand-en">RUSSIAN LANGUAGE STUDIES ASSOCIATION</div></div></header>
-<h1>گواهی عضویت</h1><div class="en-title">CERTIFICATE OF MEMBERSHIP</div>
-<p class="intro">بدین‌وسیله گواهی می‌شود که</p><div class="person">${esc(fullName)}</div>
-<div class="bodycopy">از تاریخ <strong>${esc(memberDate)}</strong> به‌عنوان عضو گروه <strong>${esc(group)}</strong> در انجمن مطالعات زبان روسی پذیرفته شده و عضویت ایشان در انجمن به ثبت رسیده است.</div>
-<div class="meta"><div class="sign"><div>رئیس انجمن مطالعات زبان روسی</div><div class="signline">امضا و مهر</div><img class="seal" src="${sealUrl}" alt="مهر نشریه"></div>
-<div class="details"><div>شماره عضویت: <strong dir="ltr">${esc(memberNumberFa)}</strong></div><div>تاریخ صدور: ${esc(issuedDate)}</div></div>
-<div class="qr"><img src="${qrUrl}" alt="Member profile QR">اسکن برای ورود به پروفایل عضو</div></div>
-<div class="footer">RUSSIAN LANGUAGE STUDIES ASSOCIATION · RLS</div></main><script>window.addEventListener('load',()=>setTimeout(()=>window.print(),700));</script></body></html>`);
-    win.document.close();
-  }
-
   function renderMemberProfile(profile, user) {
     const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || '');
     const name = (localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS')).replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i, '');
@@ -311,13 +239,28 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
       : tr('تاریخ ثبت درخواست','Application date','Дата подачи заявки');
     if (joinedEl) joinedEl.textContent = formatMemberDate(profile.created_at || user?.created_at);
     const certificatePanel = document.getElementById('member-certificate-panel');
-    const certificateButton = document.getElementById('member-certificate-print');
-    const certificateNote = document.getElementById('member-certificate-note');
-    if (certificatePanel) certificatePanel.hidden = !isApproved;
-    if (certificateNote) certificateNote.textContent = '';
-    if (certificateButton) {
-      certificateButton.disabled = !isApproved;
-      certificateButton.onclick = () => printMembershipCertificate(profile, user);
+    const ownsProfile = !!(user?.id && profile?.user_id && String(user.id) === String(profile.user_id));
+    const mayViewCertificate = isApproved && ownsProfile && !!window.RLSMembershipCertificate;
+    if (certificatePanel) {
+      certificatePanel.hidden = !mayViewCertificate;
+      if (mayViewCertificate) {
+        if (certificatePanel.dataset.certificateOwner !== String(user.id)) {
+          certificatePanel.replaceChildren();
+          certificatePanel.dataset.certificateOwner = String(user.id);
+          window.RLSMembershipCertificate.render(certificatePanel, {
+            user_id: String(user.id),
+            display_name: name,
+            full_name: name,
+            category: profile.category,
+            created_at: profile.created_at || user.created_at,
+            member_number: profile.member_number,
+            membership_status: profile.membership_status
+          });
+        }
+      } else {
+        certificatePanel.replaceChildren();
+        delete certificatePanel.dataset.certificateOwner;
+      }
     }
 
     if (avatarEl && fallbackEl) {
