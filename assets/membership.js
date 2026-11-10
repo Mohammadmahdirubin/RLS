@@ -155,7 +155,7 @@
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,salutation,display_name,category,email,email_public,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,salutation,member_number,display_name,category,email,email_public,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
@@ -214,7 +214,7 @@
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return '—';
     const locale = lang === 'fa' ? 'fa-IR' : lang === 'ru' ? 'ru-RU' : 'en-GB';
-    return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+    return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tehran' }).format(date);
   }
 
 
@@ -229,7 +229,14 @@
     const memberDate = formatMemberDate(joinedAt);
     const issuedDate = formatMemberDate(new Date().toISOString());
     const group = categoryLabel(profile.category);
-    const certificateId = 'RLS-MEM-' + String(user.id || profile.user_id).replace(/-/g,'').slice(0,10).toUpperCase();
+    const memberNumber = Number(profile.member_number);
+    if (!Number.isSafeInteger(memberNumber) || memberNumber < 1) {
+      say(document.getElementById('member-certificate-note'), tr('شماره عضویت در پرونده این عضو ثبت نشده است؛ صدور گواهی فعلاً ممکن نیست.','A member number is not assigned to this profile yet.','Номер участника ещё не назначен этому профилю.'));
+      return;
+    }
+    const memberNumberPadded = String(memberNumber).padStart(6, '0');
+    const memberNumberFa = memberNumberPadded.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
+    const certificateId = 'RLS-' + memberNumberPadded;
     const verifyUrl = 'https://rlsj.ir/community.html?member=' + encodeURIComponent(user.id || profile.user_id);
     const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=132x132&margin=2&data=' + encodeURIComponent(verifyUrl);
     const logoUrl = 'https://rlsj.ir/assets/association-emblem.svg';
@@ -278,7 +285,7 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
 <p class="intro">بدین‌وسیله گواهی می‌شود که</p><div class="person">${esc(fullName)}</div>
 <div class="bodycopy">از تاریخ <strong>${esc(memberDate)}</strong> به‌عنوان عضو گروه <strong>${esc(group)}</strong> در انجمن مطالعات زبان روسی پذیرفته شده و عضویت ایشان در انجمن به ثبت رسیده است.</div>
 <div class="meta"><div class="sign"><div>رئیس انجمن مطالعات زبان روسی</div><div class="signline">امضا و مهر</div><img class="seal" src="${sealUrl}" alt="مهر نشریه"></div>
-<div class="details"><div>شماره عضویت: <strong dir="ltr">${esc(certificateId)}</strong></div><div>تاریخ صدور: ${esc(issuedDate)}</div><div>کد اعتبارسنجی: <strong dir="ltr">${esc(certificateId)}</strong></div></div>
+<div class="details"><div>شماره عضویت: <strong dir="ltr">${esc(memberNumberFa)}</strong></div><div>تاریخ صدور: ${esc(issuedDate)}</div><div>کد اعتبارسنجی: <strong dir="ltr">${esc(certificateId)}</strong></div></div>
 <div class="qr"><img src="${qrUrl}" alt="QR verification">اسکن برای مشاهده پروفایل عضو</div></div>
 <div class="footer">RUSSIAN LANGUAGE STUDIES ASSOCIATION · RLS</div></main><script>window.addEventListener('load',()=>setTimeout(()=>window.print(),700));</script></body></html>`);
     win.document.close();
