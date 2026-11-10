@@ -225,7 +225,7 @@
   function printMembershipCertificate(profile, user) {
     if (profile.membership_status !== 'approved' || !['mr','ms'].includes(profile.salutation)) return;
     const fullName = (profile.salutation === 'ms' ? 'خانم ' : 'آقای ') + clean(profile.full_name);
-    const joinedAt = profile.reviewed_at || profile.created_at || user?.created_at;
+    const joinedAt = profile.created_at || user?.created_at;
     const memberDate = formatMemberDate(joinedAt);
     const issuedDate = formatMemberDate(new Date().toISOString());
     const group = categoryLabel(profile.category);
@@ -310,7 +310,7 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
     if (joinedLabelEl) joinedLabelEl.textContent = isApproved
       ? tr('تاریخ عضویت','Membership date','Дата вступления')
       : tr('تاریخ ثبت درخواست','Application date','Дата подачи заявки');
-    if (joinedEl) joinedEl.textContent = formatMemberDate((isApproved && profile.reviewed_at) || profile.created_at || user?.created_at);
+    if (joinedEl) joinedEl.textContent = formatMemberDate(profile.created_at || user?.created_at);
     const certificatePanel = document.getElementById('member-certificate-panel');
     const certificateButton = document.getElementById('member-certificate-print');
     const certificateNote = document.getElementById('member-certificate-note');
