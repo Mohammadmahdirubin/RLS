@@ -103,13 +103,68 @@
       if(role?.role==='admin')link.textContent=lang==='fa'?'مدیریت انجمن':lang==='ru'?'Панель управления':'Administration';
     }catch(_){}
   }
+  function setMeta(selector, attribute, key, value) {
+    let node=document.head.querySelector(selector);
+    if(!node){node=document.createElement('meta');node.setAttribute(attribute,key);document.head.appendChild(node);}
+    node.setAttribute('content',String(value||''));
+  }
+  function setLink(rel, href, hreflang) {
+    const selector='link[rel="'+rel+'"]'+(hreflang?'[hreflang="'+hreflang+'"]':'');
+    let node=document.head.querySelector(selector);
+    if(!node){node=document.createElement('link');node.rel=rel;if(hreflang)node.hreflang=hreflang;document.head.appendChild(node);}
+    node.href=href;
+  }
+  function setProfileSeo(m, id) {
+    const displayName=localized(m,'display_name')||localized(m,'full_name')||'RLS Member';
+    const group=(labels[lang]||labels.en)[m.category]||m.category||'Member';
+    const headline=localized(m,'profile_headline')||localized(m,'specialty')||group;
+    const bio=localized(m,'bio')||headline;
+    const description=String((headline+'. '+bio).replace(/\\s+/g,' ').trim()).slice(0,300);
+    const title=lang==='fa' ? displayName+' | پروفایل عضو انجمن مطالعات زبان روسی' : lang==='ru' ? displayName+' | Профиль участника RLS' : displayName+' | RLS Member Profile';
+    const canonical=new URL(location.pathname,location.origin);
+    canonical.searchParams.set('member',id);
+    const canonicalUrl=canonical.href;
+    document.title=title;
+    setMeta('meta[name="description"]','name','description',description);
+    setMeta('meta[name="robots"]','name','robots','index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
+    setMeta('meta[property="og:type"]','property','og:type','profile');
+    setMeta('meta[property="og:title"]','property','og:title',title);
+    setMeta('meta[property="og:description"]','property','og:description',description);
+    setMeta('meta[property="og:url"]','property','og:url',canonicalUrl);
+    setMeta('meta[name="twitter:card"]','name','twitter:card','summary');
+    setMeta('meta[name="twitter:title"]','name','twitter:title',title);
+    setMeta('meta[name="twitter:description"]','name','twitter:description',description);
+    setLink('canonical',canonicalUrl);
+    const routes=[['fa','/community.html?member='+encodeURIComponent(id)],['en','/en/community.html?member='+encodeURIComponent(id)],['ru','/ru/community.html?member='+encodeURIComponent(id)]];
+    routes.forEach(([code,path])=>setLink('alternate',new URL(path,location.origin).href,code));
+    setLink('alternate',new URL(routes[0][1],location.origin).href,'x-default');
+    const image=avatarUrl(m.avatar_path,512);
+    if(image){setMeta('meta[property="og:image"]','property','og:image',image);setMeta('meta[name="twitter:image"]','name','twitter:image',image);}
+    const sameAs=[m.website_url,m.orcid,m.researchgate_url,m.google_scholar_url,m.instagram_url,m.telegram_url,m.linkedin_url,m.x_url].map(safeUrl).filter(Boolean);
+    const person={
+      '@context':'https://schema.org','@type':'Person','name':displayName,'url':canonicalUrl,
+      'description':description,'memberOf':{'@type':'Organization','name':'Russian Language Studies Association','url':'https://rlsj.ir/'},
+      'jobTitle':group,'sameAs':sameAs
+    };
+    if(image)person.image=image;
+    let script=document.getElementById('rls-member-jsonld');
+    if(!script){script=document.createElement('script');script.id='rls-member-jsonld';script.type='application/ld+json';document.head.appendChild(script);}
+    script.textContent=JSON.stringify(person).replace(/</g,'\\u003c');
+  }
+  function markProfileUnavailable() {
+    setMeta('meta[name="robots"]','name','robots','noindex,follow');
+    const canonical=new URL(location.pathname,location.origin).href;
+    setLink('canonical',canonical);
+  }
+
   async function showMember(id) {
     const {data:m,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,email,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru').eq('user_id',id).maybeSingle();
     const detail=document.createElement('section'); detail.className='community-section container member-public-page'; detail.id='member-public-page';
     const directory=root.querySelector('#member-directory');
     directory?.before(detail);
     root.querySelectorAll('.community-section').forEach(section=>{if(section!==detail)section.hidden=true;});
-    if(error||!m){detail.innerHTML='<p class="community-empty">'+esc(lang==='fa'?'پروفایل عمومی این عضو پیدا نشد یا در دسترس نیست.':lang==='ru'?'Публичный профиль не найден или недоступен.':'This public member profile was not found or is unavailable.')+'</p><a class="community-button primary" href="'+esc(location.pathname)+'">'+esc(w.back)+'</a>';return;}
+    if(error||!m){markProfileUnavailable();detail.innerHTML='<p class="community-empty">'+esc(lang==='fa'?'پروفایل عمومی این عضو پیدا نشد یا در دسترس نیست.':lang==='ru'?'Публичный профиль не найден или недоступен.':'This public member profile was not found or is unavailable.')+'</p><a class="community-button primary" href="'+esc(location.pathname)+'">'+esc(w.back)+'</a>';return;}
+    setProfileSeo(m,id);
     const name=esc(localized(m,'display_name')||localized(m,'full_name')||'RLS Member'),photo=avatarUrl(m.avatar_path,320);
     const fields=[['profile_headline',localized(m,'profile_headline')],['bio',localized(m,'bio')],['phone',m.phone],['email',m.email],['country',localized(m,'country')],['city',localized(m,'city')],['institution',localized(m,'institution')],['degree',localized(m,'degree')],['specialty',localized(m,'specialty')],['memberships',localized(m,'memberships')],['activities',localized(m,'activities')],['publications',localized(m,'publications')],['research_interests',localized(m,'research_interests')],['languages',localized(m,'languages')],['articles_count',m.articles_count===null||m.articles_count===undefined?'':String(m.articles_count)],['books_count',m.books_count===null||m.books_count===undefined?'':String(m.books_count)],['orcid',m.orcid]].filter(x=>String(x[1]||'').trim());
     const website=safeUrl(m.website_url);
