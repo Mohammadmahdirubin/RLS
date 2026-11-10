@@ -163,8 +163,8 @@
     if (readError) throw readError;
     if (existing) return existing;
     const profile = profileData(user);
-    if (!profile.full_name || !profile.category) {
-      throw new Error(tr('اطلاعات درخواست در حساب پیدا نشد. با همان ایمیل ثبت‌نام‌شده وارد شوید.',
+    if (!profile.full_name || !profile.category || !profile.salutation) {
+      throw new Error(tr('اطلاعات درخواست کامل نیست؛ عنوان آقا یا خانم، نام و گروه عضویت را بررسی کنید و با همان ایمیل ثبت‌نام‌شده وارد شوید.',
         'Application details were not found. Please use the email address used at registration.',
         'Данные заявки не найдены. Войдите с адресом, использованным при регистрации.'));
     }
