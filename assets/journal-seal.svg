@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+<circle cx="150" cy="150" r="143" fill="none" stroke="#102d50" stroke-width="5"/><circle cx="150" cy="150" r="132" fill="none" stroke="#102d50" stroke-width="1.8"/><circle cx="150" cy="150" r="91" fill="none" stroke="#102d50" stroke-width="1.5"/>
+<defs><path id="topArc" d="M 35,150 A115,115 0 0,1 265,150"/><path id="bottomArc" d="M 265,150 A115,115 0 0,1 35,150"/></defs>
+<text font-family="Georgia,serif" font-size="15" font-weight="bold" letter-spacing="1.2" fill="#102d50"><textPath href="#topArc" startOffset="50%" text-anchor="middle">RUSSIAN LANGUAGE STUDIES JOURNAL</textPath></text>
+<text font-family="Georgia,serif" font-size="10" letter-spacing="1" fill="#102d50"><textPath href="#bottomArc" startOffset="50%" text-anchor="middle">ACADEMIC JOURNAL · RLS</textPath></text>
+<g fill="#102d50"><path d="M115 102h70l-6 9h-58zM120 114h60v9h-60zM126 123h8v46h-8zM146 123h8v46h-8zM166 123h8v46h-8z"/><path d="M150 179c-23-18-47-19-70-9 25 10 47 22 70 36 23-14 45-26 70-36-23-10-47-9-70 9z"/><path d="M150 181c-17-12-35-13-53-8 19 8 37 17 53 27 16-10 34-19 53-27-18-5-36-4-53 8z" fill="#fffdf8"/></g>
+<text x="150" y="240" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="bold" fill="#102d50">RLS JOURNAL</text>
+</svg>
