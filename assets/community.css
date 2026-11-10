@@ -649,3 +649,15 @@
   .rls-certificate-download.community-button,
   .rls-certificate-download{width:auto!important;max-width:100%;min-height:36px;padding:7px 16px!important;font-size:12px!important}
 }
+
+
+/* Full profile: recognizable brand logos with their names; directory cards remain icon-only. */
+.member-profile-links{display:flex;align-items:center;justify-content:center;gap:12px 18px;flex-wrap:wrap;width:100%;margin:0 0 20px;padding:12px 14px;border:1px solid #eadfc9;border-radius:14px;background:rgba(255,255,255,.72);direction:rtl}
+.member-profile-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:6px 10px;border-radius:10px;color:var(--community-primary-dark,#17365d);font-size:14px;font-weight:800;text-decoration:none;transition:background .18s ease,transform .18s ease}
+.member-profile-link:hover{background:#f8f0df;transform:translateY(-1px)}
+.member-profile-link img{display:block;width:30px;height:30px;object-fit:contain;flex:0 0 30px}
+.member-profile-link span{white-space:nowrap}
+.member-profile-link--orcid span{color:#6b941e}
+.member-profile-link--researchgate span{color:#087e9c}
+.member-profile-link--scholar span{color:#3367b1}
+@media(max-width:600px){.member-profile-links{justify-content:flex-start;gap:8px;padding:10px}.member-profile-link{min-height:40px;padding:5px 8px;font-size:13px}.member-profile-link img{width:27px;height:27px;flex-basis:27px}}
