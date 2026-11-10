@@ -181,8 +181,23 @@
     const memberId=new URLSearchParams(location.search).get('member');
     if(memberId && !forceDirectory){await showMember(memberId);return;}
     wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'در حال بارگذاری اعضا…':lang==='ru'?'Загрузка участников…':'Loading approved members…')+'</div>';
-    const {data,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,email,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,salutation,reviewed_at,member_number').order('display_name',{ascending:true}).limit(500);
-    if(error){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با خطا روبه‌رو شد.':'Could not load the member directory.')+'</div>';return;}
+    let result;
+    let timeoutId;
+    try {
+      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,email,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,salutation,reviewed_at,member_number').order('display_name',{ascending:true}).limit(500);
+      const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
+      result=await Promise.race([request,timeout]);
+    } catch(requestError) {
+      result={data:null,error:requestError};
+    } finally {
+      if(timeoutId)clearTimeout(timeoutId);
+    }
+    const {data,error}=result||{};
+    if(error){
+      wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با تأخیر یا خطا روبه‌رو شد. لطفاً دوباره تلاش کنید.':lang==='ru'?'Не удалось загрузить список участников. Попробуйте ещё раз.':'The member directory could not be loaded. Please try again.')+' <button type="button" class="community-search-btn" data-retry-members>'+(lang==='fa'?'تلاش دوباره':'Retry')+'</button></div>';
+      wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>load(forceDirectory),{once:true});
+      return;
+    }
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     wrap.innerHTML=data.map(m=>{
       const displayName=localized(m,'display_name')||localized(m,'full_name'),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const honorific=m.salutation?(lang==='fa'?(m.salutation==='ms'?'خانم ':'آقای '):lang==='ru'?(m.salutation==='ms'?'г-жа ':'г-н '):(m.salutation==='ms'?'Ms ':'Mr ')):''; const name=esc(honorific+(displayName||'RLS Member')),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
