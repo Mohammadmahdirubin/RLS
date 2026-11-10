@@ -236,7 +236,6 @@
     }
     const memberNumberPadded = String(memberNumber).padStart(6, '0');
     const memberNumberFa = memberNumberPadded.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
-    const certificateId = 'RLS-' + memberNumberPadded;
     const verifyUrl = 'https://rlsj.ir/community.html?member=' + encodeURIComponent(user.id || profile.user_id);
     const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=132x132&margin=2&data=' + encodeURIComponent(verifyUrl);
     const logoUrl = 'https://rlsj.ir/assets/association-emblem.svg';
@@ -285,8 +284,8 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
 <p class="intro">بدین‌وسیله گواهی می‌شود که</p><div class="person">${esc(fullName)}</div>
 <div class="bodycopy">از تاریخ <strong>${esc(memberDate)}</strong> به‌عنوان عضو گروه <strong>${esc(group)}</strong> در انجمن مطالعات زبان روسی پذیرفته شده و عضویت ایشان در انجمن به ثبت رسیده است.</div>
 <div class="meta"><div class="sign"><div>رئیس انجمن مطالعات زبان روسی</div><div class="signline">امضا و مهر</div><img class="seal" src="${sealUrl}" alt="مهر نشریه"></div>
-<div class="details"><div>شماره عضویت: <strong dir="ltr">${esc(memberNumberFa)}</strong></div><div>تاریخ صدور: ${esc(issuedDate)}</div><div>کد اعتبارسنجی: <strong dir="ltr">${esc(certificateId)}</strong></div></div>
-<div class="qr"><img src="${qrUrl}" alt="QR verification">اسکن برای مشاهده پروفایل عضو</div></div>
+<div class="details"><div>شماره عضویت: <strong dir="ltr">${esc(memberNumberFa)}</strong></div><div>تاریخ صدور: ${esc(issuedDate)}</div></div>
+<div class="qr"><img src="${qrUrl}" alt="Member profile QR">اسکن برای ورود به پروفایل عضو</div></div>
 <div class="footer">RUSSIAN LANGUAGE STUDIES ASSOCIATION · RLS</div></main><script>window.addEventListener('load',()=>setTimeout(()=>window.print(),700));</script></body></html>`);
     win.document.close();
   }
