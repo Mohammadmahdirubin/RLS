@@ -140,12 +140,21 @@
       languages_en: clean(m.languages_en) || null,
       languages_ru: clean(m.languages_ru) || null,
       website_url: clean(m.website_url) || null,
-      orcid: clean(m.orcid) || null, membership_status: 'pending',
+      orcid: clean(m.orcid) || null,
+      researchgate_url: clean(m.researchgate_url) || null,
+      google_scholar_url: clean(m.google_scholar_url) || null,
+      instagram_url: clean(m.instagram_url) || null,
+      telegram_url: clean(m.telegram_url) || null,
+      linkedin_url: clean(m.linkedin_url) || null,
+      x_url: clean(m.x_url) || null,
+      articles_count: clean(m.articles_count) === '' ? null : Number(m.articles_count),
+      books_count: clean(m.books_count) === '' ? null : Number(m.books_count),
+      membership_status: 'pending',
       is_public: false, reviewed_by: null, reviewed_at: null, review_note: null
     };
   }
 
-  const ownProfileFields = 'user_id,full_name,display_name,category,email,email_public,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
+  const ownProfileFields = 'user_id,full_name,display_name,category,email,email_public,phone,phone_public,country,city,institution,degree,specialty,bio,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,avatar_path,pending_avatar_path,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,profile_headline,memberships,activities,publications,research_interests,languages,membership_status,created_at,reviewed_at';
 
   async function ensureProfile(user) {
     const { data: existing, error: readError } = await db.from('rls_profiles')
@@ -267,7 +276,7 @@
 
     const editForm = document.getElementById('member-profile-edit');
     if (editForm) {
-      ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid'].forEach(key => {
+      ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','articles_count','books_count'].forEach(key => {
         const input = editForm.elements.namedItem(key);
         if (input) input.value = (['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].includes(key) && lang !== 'fa') ? localized(key) : (profile[key] || '');
       });
@@ -289,8 +298,10 @@
         [tr('مدرک تحصیلی','Degree','Степень'), localized('degree')],
         [tr('تخصص','Specialty','Специализация'), localized('specialty')],
         [tr('زندگی‌نامه و سوابق','Biography','Биография'), localized('bio')],
-        ['ORCID', profile.orcid]
-      ].filter(item => clean(item[1]));
+        ['ORCID', profile.orcid],
+        [tr('تعداد مقاله‌ها','Articles','Статьи'), profile.articles_count],
+        [tr('تعداد کتاب‌ها','Books','Книги'), profile.books_count]
+      ].filter(item => item[1] !== null && item[1] !== undefined && clean(item[1]) !== '');
       fieldsEl.replaceChildren();
       fields.forEach(([label, value]) => {
         const row = document.createElement('div');
@@ -302,6 +313,8 @@
         row.append(title, detail);
         fieldsEl.append(row);
       });
+      const profileLinks = [['ResearchGate',profile.researchgate_url],['Google Scholar',profile.google_scholar_url],['Instagram',profile.instagram_url],['Telegram',profile.telegram_url],['LinkedIn',profile.linkedin_url],['X',profile.x_url]];
+      profileLinks.forEach(([label,value])=>{if(!value)return;try{const url=new URL(value);if(!['https:','http:'].includes(url.protocol))return;const row=document.createElement('div');row.className='member-profile-field';const title=document.createElement('strong');title.textContent=label;const link=document.createElement('a');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=url.hostname;row.append(title,link);fieldsEl.append(row);}catch(_){}});
       const website = profile.website_url;
       if (website) {
         try {
@@ -395,7 +408,7 @@
           'This membership is suspended, so profile editing is disabled until an administrator reviews it.',
           'Членство приостановлено; редактирование профиля недоступно до проверки администратором.'));
       }
-      const keys = ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid'];
+      const keys = ['full_name','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','articles_count','books_count'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
       if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { if (!payload[key + '_' + lang]) payload[key + '_' + lang] = payload[key]; });
@@ -550,6 +563,11 @@
       institution: clean(fd.get('institution')), degree: clean(fd.get('degree')),
       specialty: clean(fd.get('specialty')), bio: clean(fd.get('bio')),
       website_url: clean(fd.get('website_url')), orcid: clean(fd.get('orcid')),
+      researchgate_url: clean(fd.get('researchgate_url')), google_scholar_url: clean(fd.get('google_scholar_url')),
+      instagram_url: clean(fd.get('instagram_url')), telegram_url: clean(fd.get('telegram_url')),
+      linkedin_url: clean(fd.get('linkedin_url')), x_url: clean(fd.get('x_url')),
+      articles_count: clean(fd.get('articles_count')) === '' ? null : Number(fd.get('articles_count')),
+      books_count: clean(fd.get('books_count')) === '' ? null : Number(fd.get('books_count')),
       full_name_en: clean(fd.get('full_name_en')), full_name_ru: clean(fd.get('full_name_ru')),
       display_name_en: clean(fd.get('display_name_en')), display_name_ru: clean(fd.get('display_name_ru')),
       profile_headline_en: clean(fd.get('profile_headline_en')), profile_headline_ru: clean(fd.get('profile_headline_ru')),
