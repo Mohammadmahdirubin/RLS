@@ -125,4 +125,30 @@
 </main>
 <footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>درگاه اختصاصی اعضا</div></div></footer>
 <script src="assets/script.js?v=member-certificate-template-20261110"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script src="assets/supabase-config.js?v=shared-auth-20261109"></script><script src="assets/membership-certificate-aligned.js?v=aligned-fields-qr-20261110"></script><script src="assets/membership.js?v=orcid-links-fix2"></script>
+<script>
+(function(){
+  function canonicalOrcid(value){
+    var raw=String(value||'').trim();
+    var id=raw.replace(/^https?:\/\/(?:www\.)?orcid\.org\//i,'').replace(/^orcid\.org\//i,'').replace(/\/$/,'').trim();
+    return /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(id)?'https://orcid.org/'+id:'';
+  }
+  function repairOrcid(){
+    document.querySelectorAll('.member-profile-field').forEach(function(row){
+      var title=row.querySelector('strong');
+      var detail=row.querySelector('span');
+      if(!title||!detail||!/ORCID|ارکید/i.test(title.textContent)||detail.querySelector('a'))return;
+      var url=canonicalOrcid(detail.textContent);
+      if(!url)return;
+      var link=document.createElement('a');
+      link.href=url;link.target='_blank';link.rel='noopener noreferrer';
+      link.textContent=detail.textContent.trim();
+      detail.replaceChildren(link);
+    });
+  }
+  repairOrcid();
+  if(document.body&&window.MutationObserver){
+    new MutationObserver(repairOrcid).observe(document.body,{childList:true,subtree:true});
+  }
+})();
+</script>
 </body></html>
