@@ -14,7 +14,7 @@
     return Number.isSafeInteger(n) && n > 0 ? digits(String(n).padStart(6,'0')) : '—';
   }
   function svgFor(m) {
-    const name = String(m.display_name || m.full_name || '').replace(/^\\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\\s*)/i,'').trim();
+    const name = String(m.display_name || m.full_name || '').replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i,'').trim();
     const group = groups[m.category] || m.category || '—';
     const join = faDate(m.reviewed_at || m.created_at);
     const issued = faDate(new Date().toISOString());
