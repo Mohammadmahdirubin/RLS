@@ -13,13 +13,13 @@
     ru: {student:'Студент',graduate:'Выпускник',faculty:'Преподаватель',researcher:'Исследователь',translator:'Переводчик',culture:'Литература и культура',honorary:'Почётный участник'}
   };
   const categoryMeta = {
-    student:{symbol:'✦',tone:'student'},
-    graduate:{symbol:'◆',tone:'graduate'},
-    faculty:{symbol:'✚',tone:'faculty'},
-    researcher:{symbol:'⌕',tone:'researcher'},
-    translator:{symbol:'文',tone:'translator'},
-    culture:{symbol:'❖',tone:'culture'},
-    honorary:{symbol:'♛',tone:'honorary'}
+    student:{symbol:'🎓',tone:'student'},
+    graduate:{symbol:'📜',tone:'graduate'},
+    faculty:{symbol:'👩‍🏫',tone:'faculty'},
+    researcher:{symbol:'🔬',tone:'researcher'},
+    translator:{symbol:'📚',tone:'translator'},
+    culture:{symbol:'🏛️',tone:'culture'},
+    honorary:{symbol:'🏅',tone:'honorary'}
   };
   const categoryBadge = key => {
     const meta=categoryMeta[key]||{symbol:'✦',tone:'other'};
