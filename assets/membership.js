@@ -337,11 +337,20 @@
         const title = document.createElement('strong');
         title.textContent = label;
         const detail = document.createElement('span');
-        detail.textContent = value;
+        if (label === 'ORCID' && /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(String(value).trim())) {
+          const link = document.createElement('a');
+          link.href = 'https://orcid.org/' + String(value).trim();
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.textContent = String(value).trim();
+          detail.append(link);
+        } else {
+          detail.textContent = value;
+        }
         row.append(title, detail);
         fieldsEl.append(row);
       });
-      const profileLinks = [['ResearchGate',profile.researchgate_url],['Google Scholar',profile.google_scholar_url],['Instagram',profile.instagram_url],['Telegram',profile.telegram_url],['LinkedIn',profile.linkedin_url],['X',profile.x_url]];
+      const profileLinks = [['ORCID',profile.orcid ? (/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(String(profile.orcid).trim()) ? 'https://orcid.org/'+String(profile.orcid).trim() : (/^https?:\/\/(?:www\.)?orcid\.org\//i.test(String(profile.orcid).trim()) ? String(profile.orcid).trim() : '')) : ''],['ResearchGate',profile.researchgate_url],['Google Scholar',profile.google_scholar_url],['Instagram',profile.instagram_url],['Telegram',profile.telegram_url],['LinkedIn',profile.linkedin_url],['X',profile.x_url]];
       profileLinks.forEach(([label,value])=>{if(!value)return;try{const url=new URL(value);if(!['https:','http:'].includes(url.protocol))return;const row=document.createElement('div');row.className='member-profile-field';const title=document.createElement('strong');title.textContent=label;const link=document.createElement('a');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=url.hostname;row.append(title,link);fieldsEl.append(row);}catch(_){}});
       const website = profile.website_url;
       if (website) {
