@@ -568,3 +568,31 @@
 .member-card-links{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;direction:ltr;width:100%;margin:0 0 12px}
 .member-card-links .member-social-icon{min-width:29px;height:27px;padding:0 7px;border-radius:7px;font-size:10px;line-height:1;white-space:nowrap}
 .member-public-card>.member-card-links{justify-content:center;margin:0 0 16px}
+
+
+/* Collapsible membership conditions panel — responsive on desktop and mobile */
+.membership-conditions-section{padding-top:22px;padding-bottom:22px}
+.community-accordion{overflow:hidden;border:1px solid #e7ded3;border-radius:12px;background:#fffefa;box-shadow:0 5px 16px rgba(58,30,35,.045)}
+.community-accordion-summary{display:flex;align-items:center;gap:12px;min-height:62px;padding:14px 19px;cursor:pointer;list-style:none;direction:rtl}
+.community-accordion-summary::-webkit-details-marker{display:none}
+.community-accordion-summary::marker{content:""}
+.community-accordion-summary:hover{background:#fcf8f0}
+.community-accordion-title{color:var(--community-primary-dark);font-size:20px;font-weight:850;line-height:1.65}
+.community-accordion-icon{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border:1px solid #d7c29b;border-radius:50%;background:#fbf5e9;color:var(--community-primary);font-size:22px;font-weight:500;line-height:1}
+.community-accordion-icon::before{content:"+";transform:translateY(-1px)}
+.community-accordion[open] .community-accordion-icon::before{content:"−";transform:none}
+.community-accordion-content{padding:4px 20px 20px;border-top:1px solid #eee5d8;color:var(--community-text);line-height:1.9}
+.community-accordion-content h3{margin:17px 0 7px;color:var(--community-primary-dark);font-size:16px;font-weight:850}
+.community-accordion-content p{margin:10px 0;line-height:1.95}
+.community-accordion-content ul{margin:8px 0 14px;padding-right:23px;line-height:2}
+.community-accordion-content .community-actions{margin-top:14px}
+.community-accordion-summary:focus-visible{outline:3px solid rgba(189,150,80,.6);outline-offset:-3px}
+@media(max-width:620px){
+  .membership-conditions-section{padding-top:16px;padding-bottom:16px}
+  .community-accordion-summary{min-height:54px;padding:11px 13px;gap:9px}
+  .community-accordion-title{font-size:16px;line-height:1.7}
+  .community-accordion-icon{flex-basis:27px;width:27px;height:27px;font-size:20px}
+  .community-accordion-content{padding:4px 13px 16px;font-size:13px}
+  .community-accordion-content h3{font-size:14px}
+  .community-accordion-content ul{padding-right:19px}
+}
