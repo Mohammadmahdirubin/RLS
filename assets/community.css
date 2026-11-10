@@ -548,3 +548,18 @@
 /* Public membership identity details displayed on the QR destination profile */
 .member-public-number,.member-public-status{margin:3px 0 0;color:#53627a;font-size:.9rem;font-weight:700}
 .member-public-number{color:#8b6825}
+
+.community-guide{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2.2vw,28px);flex-wrap:nowrap;max-width:1104px;margin:0 auto 12px;padding:9px 15px;border:1px solid #e7ded3;border-right:3px solid var(--community-gold);border-radius:8px;background:#fffefa;white-space:nowrap;overflow-x:auto}
+.community-guide strong{flex:0 0 auto;color:var(--community-primary-dark);font-size:12px;font-weight:850}
+.community-guide a{flex:0 0 auto;color:#66595b;font-size:11.5px;text-decoration:none}
+.community-guide a:hover{color:var(--community-primary);text-decoration:underline}
+.community-layout{display:block}
+.community-members{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.community-pagination{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:20px 0 4px}
+.community-page-btn{min-width:34px;height:34px;padding:0 10px;border:1px solid #dfd4c9;border-radius:7px;background:#fff;color:var(--community-primary);font-size:12px;font-weight:800;cursor:pointer}
+.community-page-btn:hover{border-color:var(--community-gold);background:#faf5e9}
+.community-page-btn[aria-current="page"]{border-color:var(--community-primary);background:var(--community-primary);color:#fff}
+.community-page-btn:disabled{opacity:.4;cursor:default}
+@media(max-width:900px){.community-members{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.community-members{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.community-guide{justify-content:flex-start}}
+@media(max-width:390px){.community-members{grid-template-columns:1fr}}
