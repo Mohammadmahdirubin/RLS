@@ -31,6 +31,48 @@
     ru:{back:'Вернуться к списку участников',headline:'Краткое представление',bio:'Биография и опыт',country:'Страна',city:'Город',institution:'Университет или организация',degree:'Образование',specialty:'Специализация',memberships:'Членство и объединения',activities:'Научная, образовательная и культурная деятельность',publications:'Публикации, статьи и переводы',research_interests:'Научные интересы',languages:'Языки и навыки',articles_count:'Статьи',books_count:'Книги',member_number:'Номер участника',membership_status:'Статус членства',website_url:'Веб-сайт',orcid:'ORCID',email:'Электронная почта',phone:'Телефон',empty:'Участник пока не добавил дополнительную общедоступную информацию.'}
   };
   const w = words[lang] || words.en;
+
+  // Shared rendering helpers for directory cards and public member profiles.
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[ch]));
+  function safeUrl(value) {
+    const raw=String(value||'').trim();
+    if(!raw)return '';
+    try {
+      const candidate=/^https?:\/\//i.test(raw)?raw:raw.startsWith('www.')?'https://'+raw:'https://'+raw;
+      const url=new URL(candidate);
+      return ['http:','https:'].includes(url.protocol)?url.href:'';
+    } catch (_) { return ''; }
+  }
+  function formatJoinDate(value) {
+    if(!value)return '—';
+    const date=new Date(value);
+    if(Number.isNaN(date.getTime()))return '—';
+    const locale=lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-GB';
+    try{return new Intl.DateTimeFormat(locale,{year:'numeric',month:'long',day:'numeric',timeZone:'Asia/Tehran'}).format(date);}
+    catch(_){return date.toISOString().slice(0,10);}
+  }
+  function memberProfileUrl(id) {
+    return 'https://rlsj.ir/community.html?member='+encodeURIComponent(String(id||''));
+  }
+  function profileLinks(m) {
+    const links=[
+      ['وب‌سایت',m.website_url],['ORCID',m.orcid],['ResearchGate',m.researchgate_url],
+      ['Google Scholar',m.google_scholar_url],['Instagram',m.instagram_url],
+      ['Telegram',m.telegram_url],['LinkedIn',m.linkedin_url],['X',m.x_url]
+    ].map(([label,value])=>[label,safeUrl(value)]).filter(([,url])=>url);
+    if(!links.length)return '';
+    return '<nav class="member-profile-links" aria-label="'+(lang==='fa'?'پیوندهای عضو':'Member links')+'">'+
+      links.map(([label,url])=>'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(label)+'</a>').join('')+
+      '</nav>';
+  }
+  function profileQr(id,name) {
+    const url=memberProfileUrl(id);
+    const image='https://api.qrserver.com/v1/create-qr-code/?size=112x112&format=svg&data='+encodeURIComponent(url);
+    return '<div class="member-card-qr"><img src="'+esc(image)+'" alt="'+esc((lang==='fa'?'کد QR پروفایل ':'Profile QR for ')+(name||''))+'" width="72" height="72" loading="lazy" decoding="async"></div>';
+  }
+  const approvedStatusLabel=lang==='fa'?'عضویت تأییدشده':lang==='ru'?'Членство подтверждено':'Approved membership';
   function formatMemberNumber(value) {
     const number = Number(value);
     if (!Number.isSafeInteger(number) || number < 1) return '';
