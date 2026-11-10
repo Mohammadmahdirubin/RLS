@@ -119,7 +119,7 @@
     const group=(labels[lang]||labels.en)[m.category]||m.category||'Member';
     const headline=localized(m,'profile_headline')||localized(m,'specialty')||group;
     const bio=localized(m,'bio')||headline;
-    const description=String((headline+'. '+bio).replace(/\\s+/g,' ').trim()).slice(0,300);
+    const description=String((headline+'. '+bio).replace(/\s+/g,' ').trim()).slice(0,300);
     const title=lang==='fa' ? displayName+' | پروفایل عضو انجمن مطالعات زبان روسی' : lang==='ru' ? displayName+' | Профиль участника RLS' : displayName+' | RLS Member Profile';
     const canonical=new URL(location.pathname,location.origin);
     canonical.searchParams.set('member',id);
