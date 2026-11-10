@@ -111,4 +111,34 @@
 <section class="community-section container"><h2>دسته‌بندی اعضا</h2><div class="community-categories">
 <button class="community-category" data-category-filter="student" aria-pressed="false"><span class="symbol">🎓</span><strong>دانشجو</strong></button><button class="community-category" data-category-filter="graduate" aria-pressed="false"><span class="symbol">📜</span><strong>دانش‌آموخته</strong></button><button class="community-category" data-category-filter="faculty" aria-pressed="false"><span class="symbol">👩‍🏫</span><strong>استاد و عضو هیئت علمی</strong></button><button class="community-category" data-category-filter="researcher" aria-pressed="false"><span class="symbol">🔬</span><strong>پژوهشگر مطالعات روسیه</strong></button><button class="community-category" data-category-filter="translator" aria-pressed="false"><span class="symbol">📚</span><strong>مترجم زبان روسی</strong></button><button class="community-category" data-category-filter="culture" aria-pressed="false"><span class="symbol">🏛️</span><strong>فعالان ادبیات و فرهنگ روسیه</strong></button><button class="community-category" data-category-filter="honorary" aria-pressed="false"><span class="symbol">🏅</span><strong>اعضای افتخاری</strong></button><button class="community-category" data-category-filter="" aria-pressed="true"><span class="symbol">👥</span><strong>همه گروه‌ها</strong></button></div></section>
 <section class="community-section container" id="member-directory"><h2>فهرست اعضای انجمن</h2><div class="community-tools"><input id="member-search" type="search" placeholder="جست‌وجو بر اساس نام، تخصص یا دانشگاه" aria-label="جست‌وجوی اعضا"><select id="member-category" aria-label="نوع عضویت"><option value="">همه گروه‌های عضویت</option><option value="student">دانشجو</option><option value="graduate">دانش‌آموخته</option><option value="faculty">استاد و عضو هیئت علمی</option><option value="researcher">پژوهشگر مطالعات روسیه</option><option value="translator">مترجم زبان روسی</option><option value="culture">فعالان ادبیات و فرهنگ روسیه</option><option value="honorary">عضو افتخاری</option></select><button class="community-search-btn" type="button" data-clear-filters>پاک‌کردن فیلترها</button></div><div class="community-layout"><div class="community-members"><div class="community-empty">پروفایل اعضا پس از ثبت‌نام، بررسی و تأیید انجمن در این بخش نمایش داده خواهد شد.</div></div></div></section>
-</main><footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>شبکه‌ای برای همکاری و توسعه مطالعات زبان روسی</div></div></footer></body></html>
+</main><footer class="community-footer"><div class="container"><strong>انجمن مطالعات زبان روسی · RLS</strong><div>شبکه‌ای برای همکاری و توسعه مطالعات زبان روسی</div></div></footer><script>
+(function(){
+  function canonicalOrcid(value){
+    var raw=String(value||'').trim();
+    var id=raw.replace(/^https?:\/\/(?:www\.)?orcid\.org\//i,'').replace(/^orcid\.org\//i,'').replace(/\/$/,'').trim();
+    return /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(id)?'https://orcid.org/'+id:'';
+  }
+  function repairOrcid(){
+    document.querySelectorAll('a[aria-label="ORCID"],a[title="ORCID"],.member-social-icon--orcid').forEach(function(a){
+      var url=canonicalOrcid(a.getAttribute('href')||a.textContent);
+      if(url){a.href=url;a.target='_blank';a.rel='noopener noreferrer';}
+    });
+    document.querySelectorAll('.member-public-field').forEach(function(section){
+      var heading=section.querySelector('h2');
+      var value=section.querySelector('p');
+      if(!heading||!value||!/ORCID|ارکید/i.test(heading.textContent))return;
+      var url=canonicalOrcid(value.textContent);
+      if(!url||value.querySelector('a'))return;
+      var link=document.createElement('a');
+      link.href=url;link.target='_blank';link.rel='noopener noreferrer';
+      link.textContent=value.textContent.trim();
+      value.replaceChildren(link);
+    });
+  }
+  repairOrcid();
+  if(document.body&&window.MutationObserver){
+    new MutationObserver(repairOrcid).observe(document.body,{childList:true,subtree:true});
+  }
+})();
+</script>
+</body></html>
