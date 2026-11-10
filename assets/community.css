@@ -563,3 +563,8 @@
 @media(max-width:900px){.community-members{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.community-members{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.community-guide{justify-content:flex-start}}
 @media(max-width:390px){.community-members{grid-template-columns:1fr}}
+
+/* Compact, separated social links on public member profiles */
+.member-card-links{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;direction:ltr;width:100%;margin:0 0 12px}
+.member-card-links .member-social-icon{min-width:29px;height:27px;padding:0 7px;border-radius:7px;font-size:10px;line-height:1;white-space:nowrap}
+.member-public-card>.member-card-links{justify-content:center;margin:0 0 16px}
