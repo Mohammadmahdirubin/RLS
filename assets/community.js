@@ -31,47 +31,6 @@
     ru:{back:'Вернуться к списку участников',headline:'Краткое представление',bio:'Биография и опыт',country:'Страна',city:'Город',institution:'Университет или организация',degree:'Образование',specialty:'Специализация',memberships:'Членство и объединения',activities:'Научная, образовательная и культурная деятельность',publications:'Публикации, статьи и переводы',research_interests:'Научные интересы',languages:'Языки и навыки',articles_count:'Статьи',books_count:'Книги',member_number:'Номер участника',membership_status:'Статус членства',website_url:'Веб-сайт',orcid:'ORCID',email:'Электронная почта',phone:'Телефон',empty:'Участник пока не добавил дополнительную общедоступную информацию.'}
   };
   const w = words[lang] || words.en;
-  const formatMemberNumber = value => {
-    const number = Number(value);
-    if (!Number.isSafeInteger(number) || number < 1) return '';
-    const padded = String(number).padStart(6, '0');
-    return lang === 'fa' ? padded.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]) : padded;
-  };
-  const approvedStatusLabel = lang === 'fa' ? 'تأیید شده' : lang === 'ru' ? 'Одобрено' : 'Approved';
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const safeUrl = value => { try { const u=new URL(String(value||'')); return ['https:','http:'].includes(u.protocol) ? u.href : ''; } catch (_) { return ''; } };
-  function memberProfileUrl(userId) {
-    const path = lang==='fa' ? '/community.html' : lang==='ru' ? '/ru/community.html' : '/en/community.html';
-    const target = new URL(path, 'https://rlsj.ir');
-    target.searchParams.set('member', String(userId || '').trim());
-    return target.href;
-  }
-  function profileQr(userId, name) {
-    const target = memberProfileUrl(userId);
-    // QuickChart serves a PNG QR image; QR Server is retained as a fallback.
-    const encodedTarget = encodeURIComponent(target);
-    const qrSrc = 'https://quickchart.io/qr?text=' + encodedTarget + '&size=220&margin=2&format=png';
-    const fallbackQrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=2&data=' + encodedTarget;
-    const label = lang==='fa' ? 'اسکن برای مشاهده پروفایل' : lang==='ru' ? 'Сканировать для просмотра профиля' : 'Scan to view profile';
-    const openLabel = lang==='fa' ? 'بازکردن پروفایل عضو' : lang==='ru' ? 'Открыть профиль участника' : 'Open member profile';
-    return '<div class="member-card-qr"><a class="member-card-qr-link" href="'+esc(target)+'" aria-label="'+esc(openLabel+' — '+name)+'"><img src="'+esc(qrSrc)+'" data-fallback-src="'+esc(fallbackQrSrc)+'" alt="'+esc(label+' — '+name)+'" loading="lazy" decoding="async" width="88" height="88"></a><span>'+esc(label)+'</span></div>';
-  }
-
-  function profileLinks(m) {
-    const rawOrcid=String(m.orcid||'').trim();
-    const orcidUrl=rawOrcid ? safeUrl(rawOrcid.toLowerCase().startsWith('http') ? rawOrcid : 'https://orcid.org/'+rawOrcid) : '';
-    const items=[['email',m.email?'mailto:'+String(m.email).trim():'','@'],['website',safeUrl(m.website_url),'↗'],['orcid',orcidUrl,'iD'],['researchgate',safeUrl(m.researchgate_url),'RG'],['scholar',safeUrl(m.google_scholar_url),'GS'],['instagram',safeUrl(m.instagram_url),'IG'],['telegram',safeUrl(m.telegram_url),'TG'],['linkedin',safeUrl(m.linkedin_url),'in'],['x',safeUrl(m.x_url),'X']].filter(item=>item[1]);
-    const titles={email:'Email',website:'Website',orcid:'ORCID',researchgate:'ResearchGate',scholar:'Google Scholar',instagram:'Instagram',telegram:'Telegram',linkedin:'LinkedIn',x:'X'};
-    if(!items.length)return '';
-    return '<nav class="member-card-links" aria-label="Contact and academic links">'+items.map(([key,url,mark])=>'<a class="member-social-icon member-social-icon--'+key+'" href="'+esc(url)+'" title="'+titles[key]+'" aria-label="'+titles[key]+'"'+(key==='email'?'':' target="_blank" rel="noopener noreferrer"')+'><span>'+mark+'</span></a>').join('')+'</nav>';
-  }
-  function formatJoinDate(value) {
-    if (!value) return lang === 'fa' ? 'ثبت نشده' : lang === 'ru' ? 'Не указана' : 'Not available';
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return lang === 'fa' ? 'ثبت نشده' : lang === 'ru' ? 'Не указана' : 'Not available';
-    const locale = lang === 'fa' ? 'fa-IR' : lang === 'ru' ? 'ru-RU' : 'en-GB';
-    return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Tehran' }).format(date);
-  }
   function formatMemberNumber(value) {
     const number = Number(value);
     if (!Number.isSafeInteger(number) || number < 1) return '';
@@ -101,16 +60,17 @@
     }
     root.querySelectorAll('[data-category-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.categoryFilter===(category?.value||''))));
   }
-  function avatarUrl(path, size=112){
+  function avatarUrl(path, size=112, optimized=true){
     if(!path)return '';
-    return db.storage.from('rls-member-avatars').getPublicUrl(path).data.publicUrl;
+    const options=optimized&&size?{transform:{width:size,height:size,resize:'cover',quality:78}}:undefined;
+    return db.storage.from('rls-member-avatars').getPublicUrl(path,options).data.publicUrl;
   }
   function attachAvatarFallback(img,path){
     if(!img||!path)return;
     img.addEventListener('error',()=>{
       if(img.dataset.originalFallback==='1')return;
       img.dataset.originalFallback='1';
-      img.src=db.storage.from('rls-member-avatars').getPublicUrl(path).data.publicUrl;
+      img.src=avatarUrl(path,null,false);
     },{once:true});
   }
   async function showAdminLink(){
@@ -191,7 +151,7 @@
     const honorific=m.salutation?(lang==='fa'?(m.salutation==='ms'?'خانم ':'آقای '):lang==='ru'?(m.salutation==='ms'?'г-жа ':'г-н '):(m.salutation==='ms'?'Ms ':'Mr ')):''; const name=esc(honorific+(localized(m,'display_name')||localized(m,'full_name')||'RLS Member')),photo=avatarUrl(m.avatar_path,320);
     const fields=[['profile_headline',localized(m,'profile_headline')],['bio',localized(m,'bio')],['phone',m.phone],['email',m.email],['country',localized(m,'country')],['city',localized(m,'city')],['institution',localized(m,'institution')],['degree',localized(m,'degree')],['specialty',localized(m,'specialty')],['memberships',localized(m,'memberships')],['activities',localized(m,'activities')],['publications',localized(m,'publications')],['research_interests',localized(m,'research_interests')],['languages',localized(m,'languages')],['articles_count',m.articles_count===null||m.articles_count===undefined?'':String(m.articles_count)],['books_count',m.books_count===null||m.books_count===undefined?'':String(m.books_count)],['member_number',formatMemberNumber(m.member_number)],['membership_status',approvedStatusLabel],['orcid',m.orcid]].filter(x=>String(x[1]||'').trim());
     const website=safeUrl(m.website_url);
-    detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" decoding="async" width="190" height="190">':'<div class="member-public-avatar member-profile-avatar-fallback">'+esc(initials(m.display_name))+'</div>')+'<div><h1>'+name+'</h1><span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span><p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'</article>';
+    detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" decoding="async" width="190" height="190">':'<div class="member-public-avatar member-profile-avatar-fallback">'+esc(initials(m.display_name))+'</div>')+'<div><h1>'+name+'</h1><span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span><p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.reviewed_at || m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'</article>';
     const detailAvatar=detail.querySelector('img[data-avatar-path]');
     if(detailAvatar)attachAvatarFallback(detailAvatar,detailAvatar.dataset.avatarPath);
     if(window.RLSMembershipCertificate) window.RLSMembershipCertificate.render(detail,m);
@@ -201,13 +161,13 @@
     const memberId=new URLSearchParams(location.search).get('member');
     if(memberId && !forceDirectory){await showMember(memberId);return;}
     wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'در حال بارگذاری اعضا…':lang==='ru'?'Загрузка участников…':'Loading approved members…')+'</div>';
-    const {data,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,email,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,salutation,reviewed_at,member_number').order('display_name',{ascending:true});
+    const {data,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,email,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,salutation,reviewed_at,member_number').order('display_name',{ascending:true}).limit(500);
     if(error){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با خطا روبه‌رو شد.':'Could not load the member directory.')+'</div>';return;}
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     wrap.innerHTML=data.map(m=>{
       const displayName=localized(m,'display_name')||localized(m,'full_name'),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const honorific=m.salutation?(lang==='fa'?(m.salutation==='ms'?'خانم ':'آقای '):lang==='ru'?(m.salutation==='ms'?'г-жа ':'г-н '):(m.salutation==='ms'?'Ms ':'Mr ')):''; const name=esc(honorific+(displayName||'RLS Member')),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' '),photo=avatarUrl(m.avatar_path,112);
       const profileHref=memberProfileUrl(m.user_id);
-      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="lazy" decoding="async" width="76" height="76">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+profileQr(m.user_id, displayName||'RLS Member')+'</article>';
+      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="lazy" decoding="async" width="76" height="76">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.reviewed_at || m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+profileQr(m.user_id, displayName||'RLS Member')+'</article>';
     }).join('');
     wrap.querySelectorAll('.member-card-qr img[data-fallback-src]').forEach(img=>{
       img.addEventListener('error',()=>{
