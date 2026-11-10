@@ -36,31 +36,50 @@
 '<text x="842" y="535" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="58" font-weight="bold" fill="#10284e">'+esc(name)+'</text>',
 '<text x="842" y="615" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="35" fill="#18365e">از تاریخ '+esc(join)+' به‌عنوان عضو گروه '+esc(group)+'</text>',
 '<text x="842" y="680" text-anchor="middle" font-family="Tahoma,Arial,sans-serif" font-size="32" fill="#18365e">در انجمن مطالعات زبان روسی پذیرفته شده و عضویت ایشان به ثبت رسیده است.</text>',
-'<g transform="translate(180 790)"><text x="0" y="0" font-family="Tahoma,Arial,sans-serif" font-size="27" fill="#18365e">رئیس انجمن مطالعات زبان روسی</text><path d="M0 95q70-75 130-15t130-5" fill="none" stroke="#18365e" stroke-width="5" stroke-linecap="round"/><path d="M0 115h270" stroke="url(#gold)" stroke-width="3"/></g>',
+
 '<g transform="translate(842 900)"><circle r="104" fill="#f8f0df" stroke="url(#gold)" stroke-width="9"/><circle r="87" fill="none" stroke="#17365f" stroke-width="4"/><path d="M-45 12h90l-9 10h-72zM-30 7v-44h10V7M-8 7v-58h12V7M18 7v-44h10V7" fill="#17365f"/><path d="M-56 32q31-16 56 6q25-22 56-6v15q-32-12-56 10q-24-22-56-10z" fill="#17365f"/><text x="0" y="-63" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#17365f">RUSSIAN LANGUAGE STUDIES</text><text x="0" y="78" text-anchor="middle" font-family="Georgia,serif" font-size="16" fill="#17365f">JOURNAL</text></g>',
 '<g transform="translate(1230 795)"><text x="0" y="0" text-anchor="end" font-family="Tahoma,Arial,sans-serif" font-size="29" fill="#18365e">شماره عضویت: '+esc(num)+'</text><text x="0" y="55" text-anchor="end" font-family="Tahoma,Arial,sans-serif" font-size="29" fill="#18365e">تاریخ صدور: '+esc(issued)+'</text><text x="0" y="110" text-anchor="end" font-family="Tahoma,Arial,sans-serif" font-size="21" fill="#7a6335">QR: مشاهده پروفایل عضو</text></g>',
 '<rect x="1380" y="790" width="190" height="190" rx="8" fill="#fff" stroke="url(#gold)" stroke-width="5"/><image x="1390" y="800" width="170" height="170" xlink:href="'+esc(qr)+'" preserveAspectRatio="xMidYMid meet"/>',
 '<path d="M80 1070q80-90 130-10q50 80 100 0M1604 1070q-80-90-130-10q-50 80-100 0" fill="none" stroke="url(#gold)" stroke-width="9"/><path d="M280 1100h1124" stroke="url(#gold)" stroke-width="3"/><text x="842" y="1132" text-anchor="middle" font-family="Georgia,serif" font-size="19" fill="#7d6331">RLS · Russian Language Studies Association</text></svg>'
     ].join('');
   }
-  function render(container, m) {
+  async function render(container, m) {
     if (!container || !m || m.membership_status !== 'approved' || !m.member_number) return;
     if (container.querySelector('.rls-certificate-section')) return;
     const panel = document.createElement('section');
     panel.className = 'rls-certificate-section';
-    panel.innerHTML = '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>نسخه رسمی · قطع A4 افقی</p></div><div class="rls-certificate-frame"><img class="rls-membership-certificate-image" alt="گواهی عضویت انجمن مطالعات زبان روسی" role="button" tabindex="0" title="برای بزرگ‌نمایی کلیک کنید"></div><div class="rls-certificate-actions"><button type="button" class="community-button primary rls-certificate-download">دانلود تصویر گواهی</button><span class="rls-certificate-hint">برای بزرگ‌نمایی دوبرابری روی تصویر کلیک کنید.</span></div>';
+    panel.innerHTML = '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>نسخه تصویری رسمی · قطع A4 افقی</p></div><div class="rls-certificate-frame"><img class="rls-membership-certificate-image" alt="گواهی عضویت انجمن مطالعات زبان روسی" role="button" tabindex="0" title="برای بزرگ‌نمایی کلیک کنید"></div><div class="rls-certificate-actions"><button type="button" class="community-button primary rls-certificate-download" disabled>آماده‌سازی تصویر گواهی…</button><span class="rls-certificate-hint">گواهی فقط در پروفایل خود عضو نمایش داده می‌شود.</span></div>';
     container.appendChild(panel);
-    const img = panel.querySelector('img');
-    const url = URL.createObjectURL(new Blob([svgFor(m)], {type:'image/svg+xml;charset=utf-8'}));
-    img.src = url;
-    const zoom = () => img.classList.toggle('is-zoomed');
-    img.addEventListener('click', zoom);
-    img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); zoom(); } });
-    panel.querySelector('.rls-certificate-download').addEventListener('click', () => {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'RLS-Membership-Certificate-' + String(m.member_number).padStart(6,'0') + '.svg';
-      document.body.appendChild(a); a.click(); a.remove();
+    const img=panel.querySelector('img'), download=panel.querySelector('.rls-certificate-download');
+    let pngUrl='';
+    try {
+      const qrUrl='https://quickchart.io/qr?text='+encodeURIComponent('https://rlsj.ir/community.html?member='+m.user_id)+'&size=260&margin=2&format=png';
+      const response=await fetch(qrUrl,{mode:'cors',cache:'force-cache'});
+      if(!response.ok) throw new Error('QR image unavailable');
+      const blob=await response.blob();
+      const qrData=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
+      const svg=svgFor(m).replace(/https:\/\/quickchart\.io\/qr\?text=[^"]+/,String(qrData));
+      const svgUrl=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+      const source=new Image();
+      source.onload=()=>{
+        const canvas=document.createElement('canvas');canvas.width=3368;canvas.height=2380;
+        const ctx=canvas.getContext('2d');ctx.fillStyle='#fffaf0';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(source,0,0,canvas.width,canvas.height);
+        canvas.toBlob(png=>{
+          URL.revokeObjectURL(svgUrl);
+          if(!png){download.textContent='ساخت تصویر ناموفق بود';return;}
+          pngUrl=URL.createObjectURL(png);img.src=pngUrl;download.disabled=false;download.textContent='دانلود گواهی (PNG)';
+        },'image/png');
+      };
+      source.onerror=()=>{URL.revokeObjectURL(svgUrl);download.textContent='بارگذاری گواهی ناموفق بود';};
+      source.src=svgUrl;
+    } catch(error){download.textContent='آماده‌سازی گواهی ناموفق بود';download.disabled=true;return;}
+    const zoom=()=>img.classList.toggle('is-zoomed');
+    img.addEventListener('click',zoom);
+    img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();zoom();}});
+    download.addEventListener('click',()=>{
+      if(!pngUrl)return;
+      const a=document.createElement('a');a.href=pngUrl;a.download='RLS-Membership-Certificate-'+String(m.member_number).padStart(6,'0')+'.png';
+      document.body.appendChild(a);a.click();a.remove();
     });
   }
   window.RLSMembershipCertificate = {render};
