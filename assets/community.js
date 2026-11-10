@@ -33,9 +33,15 @@
   const w = words[lang] || words.en;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const safeUrl = value => { try { const u=new URL(String(value||'')); return ['https:','http:'].includes(u.protocol) ? u.href : ''; } catch (_) { return ''; } };
-  function profileQr(profileHref, name) {
-    const target = new URL(profileHref, location.href).href;
-    const qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=120x120&margin=2&data=' + encodeURIComponent(target);
+  function memberProfileUrl(userId) {
+    const path = lang==='fa' ? '/community.html' : lang==='ru' ? '/ru/community.html' : '/en/community.html';
+    const target = new URL(path, 'https://rlsj.ir');
+    target.searchParams.set('member', String(userId || '').trim());
+    return target.href;
+  }
+  function profileQr(userId, name) {
+    const target = memberProfileUrl(userId);
+    const qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?format=svg&size=160x160&margin=2&data=' + encodeURIComponent(target);
     const label = lang==='fa' ? 'اسکن برای مشاهده پروفایل' : lang==='ru' ? 'Сканировать для просмотра профиля' : 'Scan to view profile';
     return '<div class="member-card-qr"><img src="'+esc(qrSrc)+'" alt="'+esc(label+' — '+name)+'" loading="lazy" width="88" height="88"><span>'+esc(label)+'</span></div>';
   }
@@ -182,8 +188,8 @@
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     wrap.innerHTML=data.map(m=>{
       const displayName=localized(m,'display_name')||localized(m,'full_name'),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const name=esc(displayName||'RLS Member'),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' '),photo=avatarUrl(m.avatar_path,112);
-      const profileHref='?member='+encodeURIComponent(m.user_id);
-      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="lazy" decoding="async" width="76" height="76">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+profileQr(profileHref, displayName||'RLS Member')+'</article>';
+      const profileHref=memberProfileUrl(m.user_id);
+      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="lazy" decoding="async" width="76" height="76">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+profileQr(m.user_id, displayName||'RLS Member')+'</article>';
     }).join('');
     wrap.querySelectorAll('img[data-avatar-path]').forEach(img=>attachAvatarFallback(img,img.dataset.avatarPath));
     cards=[...wrap.querySelectorAll('.community-member')];
