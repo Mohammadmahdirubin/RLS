@@ -236,7 +236,7 @@
     const sealUrl = 'https://rlsj.ir/assets/journal-seal.svg';
     const win = window.open('', '_blank');
     if (!win) {
-      say(certificateNote, tr('مرورگر پنجره گواهی را مسدود کرد؛ اجازه بازشدن پنجره جدید را فعال کنید.',
+      say(document.getElementById('member-certificate-note'), tr('مرورگر پنجره گواهی را مسدود کرد؛ اجازه بازشدن پنجره جدید را فعال کنید.',
         'Your browser blocked the certificate window. Allow pop-ups and try again.',
         'Браузер заблокировал окно сертификата. Разрешите всплывающие окна и повторите попытку.'));
       return;
