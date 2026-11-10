@@ -1,0 +1,59 @@
+{
+  "template_id": "rls-membership-certificate-gold-a4",
+  "version": 1,
+  "purpose": "Reusable official membership certificate template for all approved RLS Association members.",
+  "source": "User-supplied reference image from 2026-11-10. Preserve its layout, ornaments, colors, Russian landmarks, flag, upper-left journal emblem, and lower-center seal placement.",
+  "page": {
+    "paper": "A4",
+    "orientation": "landscape",
+    "width_mm": 297,
+    "height_mm": 210,
+    "pixel_width": 3508,
+    "pixel_height": 2480,
+    "dpi": 300,
+    "print_margins_mm": 0,
+    "print_scale": "fit-to-page"
+  },
+  "palette": {
+    "navy": "#102D50",
+    "gold": "#BD913B",
+    "parchment": "#FFF8E9",
+    "body_text": "#26364B"
+  },
+  "fixed_visuals": {
+    "border": "ornate double navy-and-gold academic frame with decorative corners",
+    "upper_left": "journal seal-derived emblem adapted for association certificate",
+    "right": "Russian tricolor and Kremlin architecture",
+    "left": "Saint Basil's Cathedral illustration and laurel",
+    "lower_center": "fixed journal seal extracted from the supplied Word document"
+  },
+  "dynamic_fields": [
+    "salutation",
+    "full_name",
+    "membership_start_date",
+    "membership_category",
+    "member_number",
+    "issue_date",
+    "certificate_code",
+    "profile_qr"
+  ],
+  "data_rules": {
+    "issue_only_when": "membership_status = approved",
+    "salutation_values": ["mr", "ms"],
+    "salutation_labels_fa": {"mr": "آقای", "ms": "خانم"},
+    "membership_start_date_source": "rls_profiles.reviewed_at",
+    "membership_start_timezone": "Asia/Tehran",
+    "member_number_source": "rls_profiles.member_number",
+    "member_number_format": "6 digits, Persian numerals on the Persian certificate",
+    "certificate_code_format": "RLS- plus the six-digit member number",
+    "category_source": "rls_profiles.category",
+    "qr_destination": "https://rlsj.ir/community.html?member=<user_id>",
+    "numbers": "Render Persian numerals in Persian copy; preserve certificate code in left-to-right Latin characters."
+  },
+  "print_notes": [
+    "Use actual member data only; never invent dates or serial numbers.",
+    "Do not alter the master border, palette, layout, logo, or seal position for individual members.",
+    "Keep the QR code readable with a white quiet zone.",
+    "Use A4 landscape and print-color-adjust: exact."
+  ]
+}
