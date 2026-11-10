@@ -165,20 +165,50 @@
     if(error){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با خطا روبه‌رو شد.':'Could not load the member directory.')+'</div>';return;}
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     wrap.innerHTML=data.map(m=>{
-      const displayName=localized(m,'display_name')||localized(m,'full_name'),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const honorific=m.salutation?(lang==='fa'?(m.salutation==='ms'?'خانم ':'آقای '):lang==='ru'?(m.salutation==='ms'?'г-жа ':'г-н '):(m.salutation==='ms'?'Ms ':'Mr ')):''; const name=esc(honorific+(displayName||'RLS Member')),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' '),photo=avatarUrl(m.avatar_path,112);
+      const displayName=localized(m,'display_name')||localized(m,'full_name'),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const honorific=m.salutation?(lang==='fa'?(m.salutation==='ms'?'خانم ':'آقای '):lang==='ru'?(m.salutation==='ms'?'г-жа ':'г-н '):(m.salutation==='ms'?'Ms ':'Mr ')):''; const name=esc(honorific+(displayName||'RLS Member')),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
       const profileHref=memberProfileUrl(m.user_id);
-      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+(photo?'<img class="community-avatar-image" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="lazy" decoding="async" width="76" height="76">':'<div class="community-avatar">'+esc(initials(m.display_name))+'</div>')+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+profileQr(m.user_id, displayName||'RLS Member')+'</article>';
+      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+'<div class="community-avatar community-avatar-placeholder" data-avatar-placeholder="1" data-avatar-path="'+esc(m.avatar_path||'')+'">'+esc(initials(m.display_name))+'</div>'+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+'<div class="member-qr-deferred" data-qr-user="'+esc(m.user_id)+'" data-qr-name="'+esc(displayName||'RLS Member')+'"></div>'+'</article>';
     }).join('');
-    wrap.querySelectorAll('.member-card-qr img[data-fallback-src]').forEach(img=>{
-      img.addEventListener('error',()=>{
-        if(img.dataset.fallbackAttempted==='1')return;
-        img.dataset.fallbackAttempted='1';
-        const fallback=img.dataset.fallbackSrc;
-        if(fallback)img.src=fallback;
-      });
-    });
-    wrap.querySelectorAll('img[data-avatar-path]').forEach(img=>attachAvatarFallback(img,img.dataset.avatarPath));
+    // Cards and text become visible immediately; portraits and QR codes are hydrated later.
     cards=[...wrap.querySelectorAll('.community-member')];
+    const hydrateCard = card => {
+      const avatar=card.querySelector('[data-avatar-placeholder="1"]');
+      if(avatar && avatar.dataset.avatarPath){
+        const img=document.createElement('img');
+        img.className='community-avatar-image'; img.alt=card.querySelector('h3')?.textContent||'Member';
+        img.width=76; img.height=76; img.loading='lazy'; img.decoding='async';
+        img.src=avatarUrl(avatar.dataset.avatarPath,112);
+        img.dataset.avatarPath=avatar.dataset.avatarPath;
+        attachAvatarFallback(img,img.dataset.avatarPath);
+        avatar.replaceWith(img);
+      }
+      const qr=card.querySelector('.member-qr-deferred');
+      if(qr && !qr.dataset.ready){
+        qr.dataset.ready='1';
+        try{
+          const holder=document.createElement('div');
+          holder.innerHTML=profileQr(qr.dataset.qrUser,qr.dataset.qrName);
+          qr.replaceWith(holder.firstElementChild || document.createTextNode(''));
+          const qrImg=wrap.querySelectorAll('.member-card-qr img[data-fallback-src]');
+          qrImg.forEach(img=>img.addEventListener('error',()=>{
+            if(img.dataset.fallbackAttempted==='1')return;
+            img.dataset.fallbackAttempted='1';
+            if(img.dataset.fallbackSrc)img.src=img.dataset.fallbackSrc;
+          },{once:true}));
+        }catch(_){qr.remove();}
+      }
+    };
+    if('IntersectionObserver' in window){
+      const observer=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{if(entry.isIntersecting){hydrateCard(entry.target);observer.unobserve(entry.target);}});
+      },{rootMargin:'300px'});
+      cards.forEach(card=>observer.observe(card));
+    }else{
+      cards.slice(0,12).forEach(hydrateCard);
+      let next=12;
+      const hydrateNext=()=>{cards.slice(next,next+12).forEach(hydrateCard);next+=12;if(next<cards.length)setTimeout(hydrateNext,250);};
+      if(next<cards.length)setTimeout(hydrateNext,250);
+    }
     const emptyState=document.createElement('div');
     emptyState.className='community-empty member-filter-empty';
     emptyState.hidden=true;
