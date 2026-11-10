@@ -223,8 +223,8 @@
   }
 
   function printMembershipCertificate(profile, user) {
-    if (profile.membership_status !== 'approved' || !['mr','ms'].includes(profile.salutation)) return;
-    const fullName = (profile.salutation === 'ms' ? 'خانم ' : 'آقای ') + clean(profile.full_name);
+    if (profile.membership_status !== 'approved') return;
+    const fullName = clean(profile.full_name).replace(/^\\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\\s*)/i, '');
     const joinedAt = profile.created_at || user?.created_at;
     const memberDate = formatMemberDate(joinedAt);
     const issuedDate = formatMemberDate(new Date().toISOString());
@@ -292,8 +292,7 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
 
   function renderMemberProfile(profile, user) {
     const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || '');
-    const honorific = profile.salutation ? (lang === 'fa' ? (profile.salutation === 'ms' ? 'خانم ' : 'آقای ') : lang === 'ru' ? (profile.salutation === 'ms' ? 'г-жа ' : 'г-н ') : (profile.salutation === 'ms' ? 'Ms ' : 'Mr ')) : '';
-    const name = honorific + (localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS'));
+    const name = (localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS')).replace(/^\\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\\s*)/i, '');
     const nameEl = document.getElementById('member-profile-name');
     const categoryEl = document.getElementById('member-profile-category');
     const categoryCopyEl = document.getElementById('member-profile-category-copy');
@@ -315,13 +314,9 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
     const certificateButton = document.getElementById('member-certificate-print');
     const certificateNote = document.getElementById('member-certificate-note');
     if (certificatePanel) certificatePanel.hidden = !isApproved;
-    if (certificateNote) certificateNote.textContent = isApproved && !['mr','ms'].includes(profile.salutation)
-      ? tr('برای صدور گواهی، ابتدا عنوان خطاب خود (آقا یا خانم) را در بخش ویرایش پروفایل انتخاب و ذخیره کنید.',
-        'To issue your certificate, first select and save your salutation in the profile editor.',
-        'Чтобы получить сертификат, сначала выберите и сохраните обращение в редакторе профиля.')
-      : '';
+    if (certificateNote) certificateNote.textContent = '';
     if (certificateButton) {
-      certificateButton.disabled = !isApproved || !['mr','ms'].includes(profile.salutation);
+      certificateButton.disabled = !isApproved;
       certificateButton.onclick = () => printMembershipCertificate(profile, user);
     }
 
