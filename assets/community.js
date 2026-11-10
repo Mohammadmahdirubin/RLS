@@ -58,13 +58,13 @@
   }
   function profileLinks(m) {
     const links=[
-      ['وب‌سایت',m.website_url],['ORCID',m.orcid],['ResearchGate',m.researchgate_url],
-      ['Google Scholar',m.google_scholar_url],['Instagram',m.instagram_url],
-      ['Telegram',m.telegram_url],['LinkedIn',m.linkedin_url],['X',m.x_url]
-    ].map(([label,value])=>[label,safeUrl(value)]).filter(([,url])=>url);
+      ['وب‌سایت',m.website_url,'website'],['ORCID',m.orcid,'orcid'],['ResearchGate',m.researchgate_url,'researchgate'],
+      ['Scholar',m.google_scholar_url,'scholar'],['Instagram',m.instagram_url,'instagram'],
+      ['Telegram',m.telegram_url,'telegram'],['LinkedIn',m.linkedin_url,'linkedin'],['X',m.x_url,'x']
+    ].map(([label,value,key])=>[label,safeUrl(value),key]).filter(([,url])=>url);
     if(!links.length)return '';
-    return '<nav class="member-profile-links" aria-label="'+(lang==='fa'?'پیوندهای عضو':'Member links')+'">'+
-      links.map(([label,url])=>'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(label)+'</a>').join('')+
+    return '<nav class="member-card-links" aria-label="'+(lang==='fa'?'پیوندهای عضو':'Member links')+'">'+
+      links.map(([label,url,key])=>'<a class="member-social-icon member-social-icon--'+key+'" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+esc(key==='website'?'وب':key==='researchgate'?'RG':key==='scholar'?'GS':key==='instagram'?'IG':key==='telegram'?'TG':key==='linkedin'?'in':key==='orcid'?'iD':'X')+'</a>').join('')+
       '</nav>';
   }
   function profileQr(id,name) {
@@ -226,7 +226,7 @@
     let result;
     let timeoutId;
     try {
-      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,email,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,salutation,reviewed_at,member_number').order('display_name',{ascending:true}).limit(500);
+      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,specialty,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,salutation,member_number').order('display_name',{ascending:true}).limit(500);
       const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
       result=await Promise.race([request,timeout]);
     } catch(requestError) {
@@ -244,7 +244,7 @@
     wrap.innerHTML=data.map(m=>{
       const displayName=localized(m,'display_name')||localized(m,'full_name'),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const honorific=m.salutation?(lang==='fa'?(m.salutation==='ms'?'خانم ':'آقای '):lang==='ru'?(m.salutation==='ms'?'г-жа ':'г-н '):(m.salutation==='ms'?'Ms ':'Mr ')):''; const name=esc(honorific+(displayName||'RLS Member')),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
       const profileHref=memberProfileUrl(m.user_id);
-      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">'+profileLinks(m)+'<a class="community-member-link" href="'+profileHref+'">'+'<div class="community-avatar community-avatar-placeholder" data-avatar-placeholder="1" data-avatar-path="'+esc(m.avatar_path||'')+'">'+esc(initials(m.display_name))+'</div>'+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+'<div class="member-qr-deferred" data-qr-user="'+esc(m.user_id)+'" data-qr-name="'+esc(displayName||'RLS Member')+'"></div>'+'</article>';
+      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'">+'<a class="community-member-link" href="'+profileHref+'">'+'<div class="community-avatar community-avatar-placeholder" data-avatar-placeholder="1" data-avatar-path="'+esc(m.avatar_path||'')+'">'+esc(initials(m.display_name))+'</div>'+'<h3>'+name+'</h3>'+categoryBadge(m.category)+'<p>'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span>'+'</a><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a>'+'<div class="member-qr-deferred" data-qr-user="'+esc(m.user_id)+'" data-qr-name="'+esc(displayName||'RLS Member')+'"></div>'+'</article>';
     }).join('');
     // Cards and text become visible immediately; portraits and QR codes are hydrated later.
     cards=[...wrap.querySelectorAll('.community-member')];
