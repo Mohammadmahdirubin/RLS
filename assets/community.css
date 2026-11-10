@@ -469,3 +469,36 @@
 /* Make the QR image itself an accessible, clickable link to its member profile. */
 .member-card-qr-link{display:block;line-height:0;text-decoration:none;border-radius:6px}
 .member-card-qr-link:focus-visible{outline:3px solid #b98b3d;outline-offset:3px}
+
+
+/* Full public profile uses the same pastel identity as its member-directory card. */
+.member-public-card[class*="member-public-card--"]{
+  background:var(--member-profile-bg);
+  border-color:var(--member-profile-border);
+}
+.member-public-card[class*="member-public-card--"] .member-public-heading{
+  border-bottom-color:var(--member-profile-border);
+}
+.member-public-card[class*="member-public-card--"] .member-public-avatar{
+  border-color:var(--member-profile-badge-border);
+  outline-color:var(--member-profile-border);
+}
+.member-public-card[class*="member-public-card--"] .member-category{
+  background:var(--member-profile-badge-bg);
+  border-color:var(--member-profile-badge-border);
+  color:var(--member-profile-accent);
+}
+.member-public-card[class*="member-public-card--"] .member-public-field{
+  background:rgba(255,255,255,.78);
+  border-color:var(--member-profile-border);
+}
+.member-public-card[class*="member-public-card--"] .member-public-field h2{
+  color:var(--member-profile-accent);
+}
+.member-public-card--student{--member-profile-bg:#f2eaff;--member-profile-border:#d8c5f4;--member-profile-accent:#58358a;--member-profile-badge-bg:#e5d5fb;--member-profile-badge-border:#c8a9ed}
+.member-public-card--graduate{--member-profile-bg:#e1f8f4;--member-profile-border:#a9e3d8;--member-profile-accent:#17695d;--member-profile-badge-bg:#c9f0e9;--member-profile-badge-border:#8bd4c6}
+.member-public-card--faculty{--member-profile-bg:#e8f7e8;--member-profile-border:#b8dfb8;--member-profile-accent:#28652c;--member-profile-badge-bg:#d1efd1;--member-profile-badge-border:#9bd19b}
+.member-public-card--researcher{--member-profile-bg:#e8f2ff;--member-profile-border:#bfd5f5;--member-profile-accent:#24558f;--member-profile-badge-bg:#d3e5ff;--member-profile-badge-border:#a5c7f1}
+.member-public-card--translator{--member-profile-bg:#fff7d9;--member-profile-border:#eadb9b;--member-profile-accent:#785b12;--member-profile-badge-bg:#fff0b8;--member-profile-badge-border:#e5d17a}
+.member-public-card--culture{--member-profile-bg:#ffeded;--member-profile-border:#efc1c1;--member-profile-accent:#8b3535;--member-profile-badge-bg:#ffdada;--member-profile-badge-border:#eab0b0}
+.member-public-card--honorary{--member-profile-bg:#fff0df;--member-profile-border:#e8c99e;--member-profile-accent:#80501d;--member-profile-badge-bg:#ffe2bf;--member-profile-badge-border:#e5bd8d}
