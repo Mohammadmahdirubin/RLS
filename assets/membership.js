@@ -224,7 +224,7 @@
 
   function printMembershipCertificate(profile, user) {
     if (profile.membership_status !== 'approved') return;
-    const fullName = clean(profile.full_name).replace(/^\\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\\s*)/i, '');
+    const fullName = clean(profile.full_name).replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i, '');
     const joinedAt = profile.created_at || user?.created_at;
     const memberDate = formatMemberDate(joinedAt);
     const issuedDate = formatMemberDate(new Date().toISOString());
@@ -292,7 +292,7 @@ h1{font-size:27pt;color:#a57b25;margin:5mm 0 2mm;text-align:center;text-shadow:0
 
   function renderMemberProfile(profile, user) {
     const localized = key => lang === 'fa' ? (profile[key] || '') : (profile[key + '_' + lang] || '');
-    const name = (localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS')).replace(/^\\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\\s*)/i, '');
+    const name = (localized('full_name') || localized('display_name') || user.email || tr('عضو انجمن','RLS member','Участник RLS')).replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i, '');
     const nameEl = document.getElementById('member-profile-name');
     const categoryEl = document.getElementById('member-profile-category');
     const categoryCopyEl = document.getElementById('member-profile-category-copy');
