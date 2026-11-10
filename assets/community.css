@@ -529,3 +529,17 @@
 .member-certificate-panel button{flex:0 0 auto}
 #member-certificate-note{margin-top:7px}
 @media(max-width:650px){.member-certificate-panel{align-items:stretch;flex-direction:column}.member-certificate-panel button{width:100%}}
+
+
+/* Dynamic membership certificate image: landscape A4, zoom and download */
+.rls-certificate-section{margin:34px 0 12px;padding:24px 20px;border:1px solid #d7bd7d;border-radius:15px;background:linear-gradient(135deg,#fffdf7,#f5ecd6);box-shadow:0 10px 26px rgba(80,58,22,.07);overflow:visible}
+.rls-certificate-heading{text-align:center;margin-bottom:16px}
+.rls-certificate-heading h2{margin:0 0 5px;color:#17365f;font-size:22px}
+.rls-certificate-heading p{margin:0;color:#766342;font-size:13px}
+.rls-certificate-frame{width:100%;overflow:visible;display:flex;justify-content:center;align-items:flex-start}
+.rls-membership-certificate-image{display:block;width:100%;height:auto;max-width:1120px;border-radius:4px;box-shadow:0 9px 28px rgba(32,35,43,.18);cursor:zoom-in;transform-origin:center top;transition:transform .22s ease,box-shadow .22s ease;background:#fffaf0}
+.rls-membership-certificate-image.is-zoomed{position:relative;z-index:30;transform:scale(2);cursor:zoom-out;box-shadow:0 18px 42px rgba(20,24,34,.3)}
+.rls-certificate-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:18px}
+.rls-certificate-hint{color:#766b55;font-size:12px}
+@media(max-width:650px){.rls-certificate-section{padding:15px 10px}.rls-certificate-actions{flex-direction:column}.rls-certificate-hint{text-align:center}}
+@media print{.rls-certificate-heading,.rls-certificate-actions{display:none!important}.rls-certificate-section{padding:0;border:0;box-shadow:none;background:#fff}.rls-membership-certificate-image{max-width:none;width:100%;box-shadow:none}}
