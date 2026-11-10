@@ -446,3 +446,12 @@
 .member-category{gap:6px;font-weight:800}
 .member-category-symbol{display:inline-grid;place-items:center;min-width:17px;height:17px;border-radius:50%;font-size:12px;line-height:1}
 .member-public-card .member-category{margin-top:0}
+
+/* Match category filter icons to the membership badges used on member cards. */
+.community-category[data-category-filter="student"] .symbol{background:#f2eaff;color:#58358a;font-weight:850;border:1px solid #d8c5f4}
+.community-category[data-category-filter="graduate"] .symbol{background:#e1f8f4;color:#17695d;font-weight:850;border:1px solid #a9e3d8}
+.community-category[data-category-filter="faculty"] .symbol{background:#e8f7e8;color:#28652c;font-weight:850;border:1px solid #b8dfb8}
+.community-category[data-category-filter="researcher"] .symbol{background:#e8f2ff;color:#24558f;font-weight:850;border:1px solid #bfd5f5}
+.community-category[data-category-filter="translator"] .symbol{background:#fff7d9;color:#785b12;font-weight:850;border:1px solid #eadb9b}
+.community-category[data-category-filter="culture"] .symbol{background:#ffeded;color:#8b3535;font-weight:850;border:1px solid #efc1c1}
+.community-category[data-category-filter="honorary"] .symbol{background:#fff0df;color:#80501d;font-weight:850;border:1px solid #e8c99e}
