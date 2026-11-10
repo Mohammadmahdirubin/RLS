@@ -118,6 +118,7 @@ begin
     new.reviewed_by := old.reviewed_by;
     new.reviewed_at := old.reviewed_at;
     new.review_note := old.review_note;
+    new.member_number := old.member_number;
   end if;
   return new;
 end;
