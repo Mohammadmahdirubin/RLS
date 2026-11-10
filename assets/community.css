@@ -426,3 +426,23 @@
  .community-join-cta .community-button{min-width:0;width:100%;box-sizing:border-box}
 }
 @media(max-width:420px){.community-join-cta .community-actions{grid-template-columns:1fr}}
+
+
+/* Membership-group identity colors: each member card and its group emblem share a distinct pastel palette. */
+.community-member--student{background:#f2eaff;border-color:#d8c5f4}
+.community-member--graduate{background:#e1f8f4;border-color:#a9e3d8}
+.community-member--faculty{background:#e8f7e8;border-color:#b8dfb8}
+.community-member--researcher{background:#e8f2ff;border-color:#bfd5f5}
+.community-member--translator{background:#fff7d9;border-color:#eadb9b}
+.community-member--culture{background:#ffeded;border-color:#efc1c1}
+.community-member--honorary{background:#fff0df;border-color:#e8c99e}
+.community-member--student .member-category--student{background:#e5d5fb;border-color:#c8a9ed;color:#58358a}
+.community-member--graduate .member-category--graduate{background:#c9f0e9;border-color:#8bd4c6;color:#17695d}
+.community-member--faculty .member-category--faculty{background:#d1efd1;border-color:#9bd19b;color:#28652c}
+.community-member--researcher .member-category--researcher{background:#d3e5ff;border-color:#a5c7f1;color:#24558f}
+.community-member--translator .member-category--translator{background:#fff0b8;border-color:#e5d17a;color:#785b12}
+.community-member--culture .member-category--culture{background:#ffdada;border-color:#eab0b0;color:#8b3535}
+.community-member--honorary .member-category--honorary{background:#ffe2bf;border-color:#e5bd8d;color:#80501d}
+.member-category{gap:6px;font-weight:800}
+.member-category-symbol{display:inline-grid;place-items:center;min-width:17px;height:17px;border-radius:50%;font-size:12px;line-height:1}
+.member-public-card .member-category{margin-top:0}
