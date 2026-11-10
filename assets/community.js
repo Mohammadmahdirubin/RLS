@@ -64,20 +64,20 @@
   }
   function profileLinks(m, detailed=false) {
     const links=[
-      ['وب‌سایت',m.website_url,'website','https://cdn.simpleicons.org/googlechrome/4285F4'],
-      ['ORCID',orcidUrl(m.orcid),'orcid','https://cdn.simpleicons.org/orcid/A6CE39'],
-      ['ResearchGate',m.researchgate_url,'researchgate','https://cdn.simpleicons.org/researchgate/00CCBB'],
-      ['Google Scholar',m.google_scholar_url,'scholar','https://cdn.simpleicons.org/googlescholar/4285F4'],
-      ['Instagram',m.instagram_url,'instagram','https://cdn.simpleicons.org/instagram/E4405F'],
-      ['Telegram',m.telegram_url,'telegram','https://cdn.simpleicons.org/telegram/26A5E4'],
-      ['LinkedIn',m.linkedin_url,'linkedin','https://cdn.simpleicons.org/linkedin/0A66C2'],
-      ['X',m.x_url,'x','https://cdn.simpleicons.org/x/111111']
+      ['وب‌سایت',m.website_url,'website','/assets/brand-icons/website.svg'],
+      ['ORCID',orcidUrl(m.orcid),'orcid','/assets/brand-icons/orcid.svg'],
+      ['ResearchGate',m.researchgate_url,'researchgate','/assets/brand-icons/researchgate.svg'],
+      ['Google Scholar',m.google_scholar_url,'scholar','/assets/brand-icons/google-scholar.svg'],
+      ['Instagram',m.instagram_url,'instagram','/assets/brand-icons/instagram.svg'],
+      ['Telegram',m.telegram_url,'telegram','/assets/brand-icons/telegram.svg'],
+      ['LinkedIn',m.linkedin_url,'linkedin','/assets/brand-icons/linkedin.svg'],
+      ['X',m.x_url,'x','/assets/brand-icons/x.svg']
     ].map(([label,value,key,logo])=>[label,safeUrl(value),key,logo]).filter(([,url])=>url);
     if(!links.length)return '';
     if(detailed){
       return '<nav class="member-profile-links" aria-label="'+(lang==='fa'?'شناسه‌ها و شبکه‌های علمی عضو':'Academic identifiers and social links')+'">'+
         links.map(([label,url,key,logo])=>'<a class="member-profile-link member-profile-link--'+key+'" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(label)+'">'+
-          '<img src="'+esc(logo)+'" alt="" width="30" height="30" loading="lazy" decoding="async" onerror="this.hidden=true">'+
+          '<img src="'+esc(logo)+'" alt="'+esc(label)+'" width="36" height="36" loading="eager" decoding="async">'+
           '<span>'+esc(label)+'</span></a>').join('')+'</nav>';
     }
     return '<nav class="member-card-links" aria-label="'+(lang==='fa'?'پیوندهای عضو':'Member links')+'">'+
