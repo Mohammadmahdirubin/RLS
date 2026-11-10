@@ -40,15 +40,34 @@
   const localized = (m,key) => lang==='fa' ? (m[key] || '') : (m[key+'_'+lang] || '');
   const initials = name => String(name || 'RLS').trim().split(/\\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
   let cards = [];
+  let currentPage = 1;
+  const PAGE_SIZE = 28;
+  let pagination = null;
+  function renderPagination(totalPages) {
+    if(!pagination){pagination=document.createElement('nav');pagination.className='community-pagination';pagination.setAttribute('aria-label',lang==='fa'?'صفحه‌بندی اعضا':'Member pagination');wrap.appendChild(pagination);}
+    pagination.innerHTML='';
+    if(totalPages<=1)return;
+    const add=(label,page,disabled=false,current=false)=>{
+      const b=document.createElement('button');b.type='button';b.className='community-page-btn';b.textContent=label;b.disabled=disabled;
+      if(current)b.setAttribute('aria-current','page');
+      b.addEventListener('click',()=>{currentPage=page;filter();root.querySelector('#member-directory')?.scrollIntoView({behavior:'smooth',block:'start'});});
+      pagination.appendChild(b);
+    };
+    add(lang==='fa'?'قبلی':'‹',currentPage-1,currentPage===1);
+    for(let p=1;p<=totalPages;p++){
+      if(totalPages>9 && p>2 && p<totalPages-1 && Math.abs(p-currentPage)>1){if(p===3||p===totalPages-2){const dots=document.createElement('span');dots.textContent='…';pagination.appendChild(dots);}continue;}
+      add(String(p),p,false,p===currentPage);
+    }
+    add(lang==='fa'?'بعدی':'›',currentPage+1,currentPage===totalPages);
+  }
   function filter() {
     const q=(search?.value||'').trim().toLocaleLowerCase();
-    let shown=0;
-    cards.forEach(card=>{
-      const ok=(!category?.value||category.value===card.dataset.category)
-        &&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q));
-      card.hidden=!ok;
-      if(ok) shown++;
-    });
+    const matched=cards.filter(card=>(!category?.value||category.value===card.dataset.category)&&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q)));
+    const totalPages=Math.max(1,Math.ceil(matched.length/PAGE_SIZE));
+    if(currentPage>totalPages)currentPage=totalPages;
+    const visible=new Set(matched.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE));
+    cards.forEach(card=>{card.hidden=!visible.has(card);});
+    const shown=matched.length;
     const empty=wrap.querySelector('.member-filter-empty');
     if(empty) {
       empty.hidden=shown>0;
@@ -58,6 +77,7 @@
           ? 'По выбранной категории или запросу участники не найдены.'
           : 'No members match this category or search.';
     }
+    renderPagination(totalPages);
     root.querySelectorAll('[data-category-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.categoryFilter===(category?.value||''))));
   }
   function avatarUrl(path, size=112, optimized=true){
@@ -215,7 +235,7 @@
     wrap.appendChild(emptyState);
     filter();
   }
-  search?.addEventListener('input',filter);category?.addEventListener('change',filter);
+  search?.addEventListener('input',()=>{currentPage=1;filter();});category?.addEventListener('change',()=>{currentPage=1;filter();});
   // Make the hero's "View members" action work even when a public profile
   // has hidden the directory sections or the URL contains ?member=...
   root.querySelector('.community-actions a[href="#member-directory"]')?.addEventListener('click', async event => {
@@ -231,8 +251,8 @@
   });
   showAdminLink();
   db?.auth.onAuthStateChange(()=>{showAdminLink();});
-  root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';filter();}));
-  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';filter();});
+  root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';currentPage=1;filter();}));
+  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';currentPage=1;filter();});
 
   // Keep portrait zoom local to the image: no lightbox, original-image navigation,
   // or full-screen overlay. Capture clicks before the surrounding profile link.
