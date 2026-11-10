@@ -287,7 +287,7 @@ const initRLS=()=>{
   }
 
   // Language-specific OJS registration shortcut, displayed in a separate row below the main navigation.
-  if(header && !document.querySelector('.rls-registration-row')){
+  if(header && file !== 'community.html' && !document.querySelector('.rls-registration-row')){
     const registrationRow=document.createElement('div');
     registrationRow.className='rls-registration-row container';
     const registrationLink=document.createElement('a');
