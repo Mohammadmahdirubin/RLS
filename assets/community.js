@@ -64,7 +64,7 @@
   }
   function profileLinks(m, detailed=false) {
     const links=[
-      ['وب‌سایت',m.website_url,'website','/assets/brand-icons/website.svg'],
+
       ['وبلاگ RussianLan',m.blog_url,'blogger','/assets/brand-icons/blogger.svg'],
       ['ORCID',orcidUrl(m.orcid),'orcid','/assets/brand-icons/orcid.svg'],
       ['ResearchGate',m.researchgate_url,'researchgate','/assets/brand-icons/researchgate.svg'],
