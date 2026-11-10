@@ -543,3 +543,8 @@
 .rls-certificate-hint{color:#766b55;font-size:12px}
 @media(max-width:650px){.rls-certificate-section{padding:15px 10px}.rls-certificate-actions{flex-direction:column}.rls-certificate-hint{text-align:center}}
 @media print{.rls-certificate-heading,.rls-certificate-actions{display:none!important}.rls-certificate-section{padding:0;border:0;box-shadow:none;background:#fff}.rls-membership-certificate-image{max-width:none;width:100%;box-shadow:none}}
+
+
+/* Public membership identity details displayed on the QR destination profile */
+.member-public-number,.member-public-status{margin:3px 0 0;color:#53627a;font-size:.9rem;font-weight:700}
+.member-public-number{color:#8b6825}
