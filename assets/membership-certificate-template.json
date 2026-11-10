@@ -1,6 +1,6 @@
 {
   "template_id": "rls-membership-certificate-gold-a4",
-  "version": 2,
+  "version": 3,
   "purpose": "Reusable official membership certificate template for all approved RLS Association members.",
   "source": "User-supplied reference image from 2026-11-10. Preserve its layout, ornaments, colors, Russian landmarks, flag, upper-left journal emblem, and lower-center seal placement.",
   "page": {
@@ -49,12 +49,13 @@
     "membership_start_date_source": "same effective date used by the member profile: reviewed_at when approved; otherwise created_at fallback",
     "membership_start_timezone": "Asia/Tehran",
     "member_number_source": "rls_profiles.member_number",
-    "member_number_assignment": "Database identity sequence; assigned automatically once when profile row is created; unique and never reused",
+    "member_number_assignment": "Allocate only when membership_status changes to approved, by a database-controlled global sequence; immutable after assignment; unique; never reused",
     "member_number_format": "six-digit global serial; Persian numerals on Persian certificates (000001, 000002, ...)",
     "issue_date_source": "current Asia/Tehran date at the moment the certificate is generated",
     "qr_destination": "direct member profile URL: https://rlsj.ir/community.html?member=<user_id>",
     "authenticity_method": "QR opens the member profile. The profile displays member number, approved membership status, membership group, and the same membership date. No separate validation code or lookup page is printed.",
-    "numbers": "Render Persian numerals in Persian copy; the QR contains only the direct profile URL."
+    "numbers": "Render Persian numerals in Persian copy; the QR contains only the direct profile URL.",
+    "member_number_pending": "Pending and rejected applications have no official membership number"
   },
   "print_notes": [
     "Use actual member data only; never invent dates or serial numbers.",
@@ -62,7 +63,7 @@
     "Do not print a separate validation code.",
     "The QR code must resolve directly to the member profile, not to a standalone verification page.",
     "The profile reached through QR must visibly show the member number and approved status; unavailable, private, suspended, or unapproved profiles cannot confirm membership.",
-    "Member numbers are six-digit global serials, assigned once and never recycled. Gaps are acceptable; duplicates are not.",
+    "Member numbers are six-digit global serials assigned only upon approval, then immutable and never recycled. Gaps are acceptable; duplicates are not.",
     "Do not alter the master border, palette, layout, logo, or seal position for individual members.",
     "Keep the QR code readable with a white quiet zone.",
     "Use A4 landscape and print-color-adjust: exact."
