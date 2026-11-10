@@ -72,13 +72,16 @@
   }
   async function showAdminLink(){
     const link=root.querySelector('#community-admin-link');
-    if(!link||!db)return;
+    if(!link)return;
+    link.hidden=false;
+    link.textContent=lang==='fa'?'ورود مدیریت':lang==='ru'?'Вход для администратора':'Administrator login';
+    if(!db)return;
     try{
       const {data:{session}}=await db.auth.getSession();
-      if(!session){link.hidden=true;return;}
+      if(!session)return;
       const {data:role}=await db.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
-      link.hidden=role?.role!=='admin';
-    }catch(_){link.hidden=true;}
+      if(role?.role==='admin')link.textContent=lang==='fa'?'مدیریت انجمن':lang==='ru'?'Панель управления':'Administration';
+    }catch(_){}
   }
   async function showMember(id) {
     const {data:m,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,email,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru').eq('user_id',id).maybeSingle();
