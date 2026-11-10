@@ -1,6 +1,6 @@
 {
   "template_id": "rls-membership-certificate-gold-a4",
-  "version": 1,
+  "version": 2,
   "purpose": "Reusable official membership certificate template for all approved RLS Association members.",
   "source": "User-supplied reference image from 2026-11-10. Preserve its layout, ornaments, colors, Russian landmarks, flag, upper-left journal emblem, and lower-center seal placement.",
   "page": {
@@ -34,24 +34,35 @@
     "membership_category",
     "member_number",
     "issue_date",
-    "certificate_code",
     "profile_qr"
   ],
   "data_rules": {
     "issue_only_when": "membership_status = approved",
-    "salutation_values": ["mr", "ms"],
-    "salutation_labels_fa": {"mr": "آقای", "ms": "خانم"},
-    "membership_start_date_source": "rls_profiles.reviewed_at",
+    "salutation_values": [
+      "mr",
+      "ms"
+    ],
+    "salutation_labels_fa": {
+      "mr": "آقای",
+      "ms": "خانم"
+    },
+    "membership_start_date_source": "same effective date used by the member profile: reviewed_at when approved; otherwise created_at fallback",
     "membership_start_timezone": "Asia/Tehran",
     "member_number_source": "rls_profiles.member_number",
-    "member_number_format": "6 digits, Persian numerals on the Persian certificate",
-    "certificate_code_format": "RLS- plus the six-digit member number",
-    "category_source": "rls_profiles.category",
-    "qr_destination": "https://rlsj.ir/community.html?member=<user_id>",
-    "numbers": "Render Persian numerals in Persian copy; preserve certificate code in left-to-right Latin characters."
+    "member_number_assignment": "Database identity sequence; assigned automatically once when profile row is created; unique and never reused",
+    "member_number_format": "six-digit global serial; Persian numerals on Persian certificates (000001, 000002, ...)",
+    "issue_date_source": "current Asia/Tehran date at the moment the certificate is generated",
+    "qr_destination": "direct member profile URL: https://rlsj.ir/community.html?member=<user_id>",
+    "authenticity_method": "QR opens the member profile. The profile displays member number, approved membership status, membership group, and the same membership date. No separate validation code or lookup page is printed.",
+    "numbers": "Render Persian numerals in Persian copy; the QR contains only the direct profile URL."
   },
   "print_notes": [
     "Use actual member data only; never invent dates or serial numbers.",
+    "The certificate membership date must equal the membership date shown on the member profile; use the same stored date and Asia/Tehran calendar conversion.",
+    "Do not print a separate validation code.",
+    "The QR code must resolve directly to the member profile, not to a standalone verification page.",
+    "The profile reached through QR must visibly show the member number and approved status; unavailable, private, suspended, or unapproved profiles cannot confirm membership.",
+    "Member numbers are six-digit global serials, assigned once and never recycled. Gaps are acceptable; duplicates are not.",
     "Do not alter the master border, palette, layout, logo, or seal position for individual members.",
     "Keep the QR code readable with a white quiet zone.",
     "Use A4 landscape and print-color-adjust: exact."
