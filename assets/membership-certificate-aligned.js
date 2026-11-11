@@ -99,14 +99,7 @@
       ctx.fillText(groups[member.category] || member.category || '—', 350, 826, 250);
       // The member profile uses created_at as its membership date; keep the certificate consistent with it.
       ctx.fillText(faDate(member.created_at), 350, 882, 250);
-      const score = Math.max(0, Number(member.total_points || 0));
-      const starLevel = Math.max(0, Math.min(5, Number(member.star_level || 0)));
-      ctx.textAlign = 'center';
-      ctx.direction = 'rtl';
-      ctx.font = 'bold 27px Tahoma, Arial, sans-serif';
-      ctx.fillText('امتیاز مشارکت: ' + digits(score) + '   ' + '★'.repeat(starLevel), 750, 930, 900);
-
-      // The QR frame is preprinted on the right side of the approved template.
+// The QR frame is preprinted on the right side of the approved template.
       ctx.imageSmoothingEnabled = false;
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(1265, 735, 156, 156);
