@@ -45,7 +45,7 @@
       if(p.evidence_url && p.evidence_url.startsWith(p.user_id + '/') && !p.evidence_url.includes('..')){
         // Do not create hundreds of signed URLs while rendering the member list.
         // A signed link is requested only when an administrator opens the evidence.
-        evidence='<p><button type="button" class="admin-evidence-link" data-evidence-path="'+esc(p.evidence_url)+'">ساخت پیوند امن مدرک</button></p>';
+        evidence='<p><button type="button" class="community-search-btn admin-evidence-link" data-evidence-path="'+esc(p.evidence_url)+'">ساخت پیوند امن مدرک</button></p>';
       }
       const reviewAvatarPath=p.pending_avatar_path||p.avatar_path;
       const avatarUrl=reviewAvatarPath
