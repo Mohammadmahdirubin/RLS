@@ -108,7 +108,7 @@
         '<div class="admin-actions">'+
         (status==='pending'?'<button class="approve" data-action="approve">تأیید عضویت و عکس</button><button class="reject" data-action="reject">رد درخواست</button>':'')+
         ((status==='approved'||status==='photo_pending')&&p.pending_avatar_path?'<button class="approve" data-action="approve_avatar">تأیید عکس جدید</button><button class="reject" data-action="reject_avatar">رد عکس جدید</button>':'')+
-        (status==='approved'?'<button class="suspend" data-action="suspend">تعلیق عضویت</button><button class="visibility" data-action="toggle_visibility">'+(p.is_public?'پنهان‌کردن پروفایل عمومی':'نمایش پروفایل عمومی')+'</button>':'')+
+        (status==='approved'?'<button class="approve" data-action="resend_approval_email">ارسال مجدد ایمیل تأیید عضویت</button><button class="suspend" data-action="suspend">تعلیق عضویت</button><button class="visibility" data-action="toggle_visibility">'+(p.is_public?'پنهان‌کردن پروفایل عمومی':'نمایش پروفایل عمومی')+'</button>':'')+
         (status==='suspended'?'<button class="approve" data-action="restore">فعال‌سازی دوباره عضویت</button>':'')+
         '</div><p class="admin-message" role="status"></p></article>';
     }));
@@ -242,7 +242,29 @@
       return;
     }
     const b=e.target.closest('[data-action]');if(!b)return;
-    const card=b.closest('.admin-member');moderate(card.dataset.id,b.dataset.action,card);
+    const card=b.closest('.admin-member');
+    if(b.dataset.action==='resend_approval_email'){
+      const message=card.querySelector('.admin-message');
+      b.disabled=true;
+      if(message)message.textContent='در حال ارسال ایمیل تأیید عضویت…';
+      try{
+        const {data:sessionData,error:sessionError}=await client.auth.getSession();
+        if(sessionError)throw sessionError;
+        const token=sessionData?.session?.access_token;
+        if(!token)throw new Error('نشست مدیر در دسترس نیست.');
+        const {data:notice,error:noticeError}=await client.functions.invoke('notify-membership-request',{
+          headers:{Authorization:'Bearer '+token},
+          body:{event:'membership_approved',user_id:card.dataset.id}
+        });
+        if(noticeError||notice?.error)throw noticeError||new Error(notice.error);
+        if(message)message.textContent='ایمیل تأیید عضویت با موفقیت به سرویس ارسال ایمیل تحویل داده شد.';
+      }catch(error){
+        console.warn('Manual membership approval email resend failed:',error);
+        if(message)message.textContent='ارسال ایمیل ناموفق بود. لطفاً دوباره تلاش کنید.';
+      }finally{b.disabled=false;}
+      return;
+    }
+    moderate(card.dataset.id,b.dataset.action,card);
   });
   document.getElementById('admin-logout').addEventListener('click',async()=>{
     await client.auth.signOut();await checkAdmin();
