@@ -295,7 +295,7 @@
       const choosePhoto = document.createElement('button');
       choosePhoto.type = 'button';
       choosePhoto.className = 'community-button primary';
-      choosePhoto.textContent = tr('انتخاب و بارگذاری عکس پروفایل','Choose and upload profile photo','Выбрать и загрузить фотографию профиля');
+      choosePhoto.textContent = tr('انتخاب عکس پروفایل','Choose profile photo','Выбрать фотографию профиля');
       choosePhoto.addEventListener('click', () => {
         const photoInput = document.getElementById('member-avatar');
         photoInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -311,9 +311,9 @@
       photoRequiredNote.hidden = !missingPhoto;
       const noteText = photoRequiredNote.querySelector('.member-photo-required-text');
       if (noteText) noteText.textContent = tr(
-        'عکس پروفایل این درخواست هنوز ثبت نشده است. برای تکمیل درخواست، عضو باید وارد همین حساب شود، عکس را انتخاب و بارگذاری کند. پس از ارسال عکس، درخواست برای بررسی مدیر آماده خواهد بود.',
-        'No profile photo has been submitted for this application yet. The member must sign in to this account, choose a photo and upload it. The application can be reviewed after the photo is submitted.',
-        'Фотография профиля для этой заявки ещё не загружена. Участнику необходимо войти в эту учётную запись, выбрать фотографию и загрузить её. После отправки фотография будет доступна администратору для проверки.'
+        'عکس پروفایل این درخواست هنوز ثبت نشده است. برای تکمیل درخواست، عضو باید وارد همین حساب شود، عکس را انتخاب کند و سپس دکمه «بارگذاری عکس» را بزند. پس از ارسال عکس، درخواست برای بررسی مدیر آماده خواهد بود.',
+        'No profile photo has been submitted for this application yet. The member must sign in to this account, choose a photo, then click the Upload Photo button. The application can be reviewed after the photo is submitted.',
+        'Фотография профиля для этой заявки ещё не загружена. Участнику необходимо войти в эту учётную запись, выбрать фотографию, а затем нажать кнопку загрузки. После отправки фотография будет доступна администратору для проверки.'
       );
     }
 
