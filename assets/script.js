@@ -330,15 +330,11 @@ const initRLS=()=>{
     const image=document.createElement('img');
     image.removeAttribute('srcset');
     image.removeAttribute('sizes');
-    image.src=root+'assets/header-masthead-960.webp';
-    image.width=960;
-    image.height=320;
+    image.src=root+'assets/header-masthead-1920.webp';
+    image.width=1920;
+    image.height=639;
     image.fetchPriority='high';
     image.decoding='async';
-    image.onerror=function(){
-      image.onerror=null;
-      image.src=asset('Russian Language Studies_ Books and Kremlin Panorama.png');
-    };
     image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
     image.loading='eager';
     image.decoding='async';
