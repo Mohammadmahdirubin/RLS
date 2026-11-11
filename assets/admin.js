@@ -1,4 +1,6 @@
 (function(){
+  const login=document.getElementById('admin-login'),dashboard=document.getElementById('admin-dashboard');
+  const form=document.getElementById('admin-login-form'),msg=document.getElementById('login-message'),list=document.getElementById('admin-list');
   const cfg=window.RLS_SUPABASE_CONFIG;
   if(!cfg||!window.supabase){
     if(msg) msg.textContent='سامانهٔ ورود بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را دوباره بارگذاری کنید.';
@@ -7,8 +9,6 @@
     return;
   }
   const client=window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}));
-  const login=document.getElementById('admin-login'),dashboard=document.getElementById('admin-dashboard');
-  const form=document.getElementById('admin-login-form'),msg=document.getElementById('login-message'),list=document.getElementById('admin-list');
   let status='pending',checking=false;
   const labels={student:'دانشجو',graduate:'دانش‌آموخته',faculty:'استاد و عضو هیئت علمی',researcher:'پژوهشگر مطالعات روسیه',translator:'مترجم زبان روسی',culture:'فعال ادبیات و فرهنگ روسیه',honorary:'عضو افتخاری'};
   const categories=Object.entries(labels);
