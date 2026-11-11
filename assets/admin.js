@@ -24,7 +24,7 @@
       }
       login.hidden=true;dashboard.hidden=false;
       document.getElementById('admin-identity').textContent=session.user.email||'مدیر انجمن';
-      await load();
+      await Promise.all([load(),loadPointMembers(),loadPointHistory()]);
     }finally{checking=false;}
   }
   async function load(){
@@ -69,6 +69,69 @@
         '</div><p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=html.join('');
+  }
+  const pointsForm=document.getElementById('member-points-form');
+  const pointsMember=document.getElementById('points-member-select');
+  const pointsType=document.getElementById('points-activity-type');
+  const pointsValue=document.getElementById('points-value');
+  const pointsMessage=document.getElementById('points-form-message');
+  const pointsHistory=document.getElementById('member-points-history');
+  async function loadPointMembers(){
+    if(!pointsMember)return;
+    const {data,error}=await client.from('rls_profiles').select('user_id,full_name,display_name,member_number').eq('membership_status','approved').order('created_at',{ascending:true});
+    if(error){pointsMember.innerHTML='<option value="">خطا در دریافت اعضا</option>';return;}
+    pointsMember.innerHTML='<option value="">انتخاب عضو…</option>'+(data||[]).map(p=>'<option value="'+esc(p.user_id)+'">'+esc(p.display_name||p.full_name)+' · '+esc(String(p.member_number||''))+'</option>').join('');
+  }
+  async function loadPointHistory(){
+    if(!pointsHistory)return;
+    pointsHistory.textContent='در حال دریافت سوابق…';
+    const {data,error}=await client.from('rls_member_points').select('id,user_id,activity_type,title,description,activity_date,points,evidence_url,created_at').order('activity_date',{ascending:false}).limit(100);
+    if(error){pointsHistory.textContent='دریافت سوابق امتیاز ناموفق بود: '+error.message;return;}
+    if(!data?.length){pointsHistory.textContent='هنوز امتیازی ثبت نشده است.';return;}
+    const ids=[...new Set(data.map(x=>x.user_id))];
+    const {data:profiles}=await client.from('rls_profiles').select('user_id,full_name,display_name,member_number').in('user_id',ids);
+    const people=new Map((profiles||[]).map(p=>[p.user_id,p]));
+    pointsHistory.innerHTML=data.map(p=>{
+      const member=people.get(p.user_id)||{};
+      const evidence=p.evidence_url&&/^https?:\/\//i.test(p.evidence_url)?'<a href="'+esc(p.evidence_url)+'" target="_blank" rel="noopener noreferrer">مشاهده مستند</a>':'';
+      return '<article class="admin-points-record"><div><strong>'+esc(member.display_name||member.full_name||'عضو')+'</strong><span> · '+esc(String(member.member_number||''))+'</span><h4>'+esc(p.title)+'</h4><p>'+esc(p.description||'')+'</p><small>'+esc(p.activity_date)+' · ثبت در '+esc(new Date(p.created_at).toLocaleDateString('fa-IR'))+'</small>'+(evidence?'<p>'+evidence+'</p>':'')+'</div><div><b>+'+esc(String(p.points))+'</b><span>امتیاز</span><button type="button" class="reject" data-delete-point="'+esc(p.id)+'">حذف رکورد</button></div></article>';
+    }).join('');
+  }
+  if(pointsType&&pointsValue){
+    const updatePoints=()=>{const option=pointsType.selectedOptions[0];pointsValue.value=option?.dataset.points||1;pointsValue.readOnly=pointsType.value!=='other';};
+    pointsType.addEventListener('change',updatePoints);updatePoints();
+  }
+  if(pointsForm){
+    pointsForm.addEventListener('submit',async e=>{
+      e.preventDefault();pointsMessage.textContent='در حال ثبت…';
+      const fd=new FormData(pointsForm);
+      const userId=String(fd.get('user_id')||'');
+      const title=String(fd.get('title')||'').trim();
+      const activityDate=String(fd.get('activity_date')||'');
+      const activityType=String(fd.get('activity_type')||'');
+      const points=Number(fd.get('points'));
+      const evidence=String(fd.get('evidence_url')||'').trim();
+      if(!userId||title.length<3||!activityDate||!activityType||!Number.isInteger(points)||points<1||points>40){pointsMessage.textContent='اطلاعات ناقص یا امتیاز نامعتبر است.';return;}
+      if(evidence){try{const u=new URL(evidence);if(!['http:','https:'].includes(u.protocol))throw new Error();}catch{pointsMessage.textContent='پیوند مدرک باید نشانی معتبر HTTP یا HTTPS باشد.';return;}}
+      const {error}=await client.from('rls_member_points').insert({
+        user_id:userId,activity_type:activityType,title,activity_date:activityDate,
+        description:String(fd.get('description')||'').trim()||null,points,evidence_url:evidence||null
+      });
+      if(error){pointsMessage.textContent='ثبت امتیاز ناموفق بود: '+error.message;return;}
+      pointsMessage.textContent='امتیاز با موفقیت ثبت شد و در پروفایل و گواهی عضو محاسبه می‌شود.';
+      pointsForm.reset();if(pointsType&&pointsValue){pointsType.value='meeting_attendance';pointsValue.value='2';pointsValue.readOnly=true;}
+      await Promise.all([loadPointMembers(),loadPointHistory()]);
+    });
+  }
+  if(pointsHistory){
+    pointsHistory.addEventListener('click',async e=>{
+      const button=e.target.closest('[data-delete-point]');if(!button)return;
+      if(!confirm('این رکورد امتیاز حذف شود؟ مجموع امتیاز و گواهی عضو پس از بارگذاری مجدد به‌روزرسانی می‌شود.'))return;
+      button.disabled=true;
+      const {error}=await client.from('rls_member_points').delete().eq('id',button.dataset.deletePoint);
+      if(error){button.disabled=false;alert('حذف رکورد ناموفق بود: '+error.message);return;}
+      await loadPointHistory();
+    });
   }
   async function moderate(id,action,card){
     const message=card.querySelector('.admin-message');message.textContent='در حال ثبت…';
