@@ -785,3 +785,28 @@
 }
  .member-avatar-emblem--card .community-avatar,.member-avatar-emblem--card .community-avatar-image{width:82px;height:82px}
 }
+
+
+/* Directory-card portrait zoom: 2x on hover and tap, isolated from profile layout. */
+.member-avatar-emblem--card .community-avatar-image{
+ transform:translate(-50%,-50%);
+ transform-origin:center center;
+ transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+ cursor:zoom-in;
+}
+.member-avatar-emblem--card .community-avatar-image:hover,
+.member-avatar-emblem--card .community-avatar-image.is-zoomed{
+ transform:translate(-50%,-50%) scale(2);
+ z-index:12;
+ border:3px solid #e9ad28;
+ box-shadow:0 9px 24px rgba(35,20,20,.32);
+ cursor:zoom-out;
+}
+.member-avatar-emblem--card:has(.community-avatar-image:hover) .member-emblem,
+.member-avatar-emblem--card:has(.community-avatar-image.is-zoomed) .member-emblem{opacity:0}
+.community-member:has(.member-avatar-emblem--card .community-avatar-image:hover),
+.community-member.community-member--photo-zoomed{z-index:30!important}
+.member-avatar-emblem--card:has(.community-avatar-image.is-zoomed){z-index:31}
+@media(prefers-reduced-motion:reduce){
+ .member-avatar-emblem--card .community-avatar-image{transition:none}
+}
