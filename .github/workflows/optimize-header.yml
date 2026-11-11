@@ -1,0 +1,75 @@
+name: Optimize shared site header image
+
+on:
+  push:
+    paths:
+      - ".github/trigger-header-optimization.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-header:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Convert masthead to responsive WebP
+        run: |
+          python -m pip install --quiet Pillow
+          python <<'PY'
+          from PIL import Image, ImageOps
+          from pathlib import Path
+          source = Path("Russian Language Studies_ Books and Kremlin Panorama.png")
+          if not source.exists():
+              raise SystemExit("Original masthead PNG not found")
+          image = ImageOps.exif_transpose(Image.open(source)).convert("RGB")
+          w, h = image.size
+          if w < 960:
+              raise SystemExit(f"Unexpectedly small source image: {w}x{h}")
+          for target in (960, 1920):
+              scale = min(1.0, target / w)
+              size = (round(w * scale), round(h * scale))
+              resized = image.resize(size, Image.Resampling.LANCZOS) if size != image.size else image
+              out = Path(f"assets/header-masthead-{target}.webp")
+              resized.save(out, "WEBP", quality=84, method=6)
+              print(f"{out}: {size[0]}x{size[1]}, {out.stat().st_size} bytes")
+          print(f"Original: {w}x{h}, {source.stat().st_size} bytes")
+          PY
+      - name: Switch header to responsive WebP with PNG fallback
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+          p = Path("assets/script.js")
+          text = p.read_text(encoding="utf-8")
+          old = "    image.src = asset('Russian Language Studies_ Books and Kremlin Panorama.png');"
+          new = """    image.src = asset('assets/header-masthead-960.webp');
+              image.srcset = asset('assets/header-masthead-960.webp') + ' 960w, ' + asset('assets/header-masthead-1920.webp') + ' 1920w';
+              image.sizes = '(max-width: 700px) 100vw, 100vw';
+              image.fetchPriority = 'high';
+              image.onerror = function(){ image.onerror = null; image.removeAttribute('srcset'); image.src = asset('Russian Language Studies_ Books and Kremlin Panorama.png'); };"""
+          if old not in text:
+              raise SystemExit("Expected header image assignment not found; refusing to alter header markup")
+          p.write_text(text.replace(old, new), encoding="utf-8")
+          # Refresh only the shared script cache key in HTML pages; preserve every other script and layout.
+          for html in Path(".").rglob("*.html"):
+              if ".git" in html.parts:
+                  continue
+              s = html.read_text(encoding="utf-8")
+              s2 = re.sub(r'(assets/script\.js\?v=)[^"\']+', r'\g<1>responsive-header-webp-20261111', s)
+              if s2 != s:
+                  html.write_text(s2, encoding="utf-8")
+          PY
+      - name: Commit optimized assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/header-masthead-960.webp assets/header-masthead-1920.webp assets/script.js
+          git add '*.html' '**/*.html' || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Optimize shared masthead for responsive WebP delivery"
+          git push
