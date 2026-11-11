@@ -330,7 +330,7 @@ const initRLS=()=>{
     const image=document.createElement('img');
     image.removeAttribute('srcset');
     image.removeAttribute('sizes');
-    image.src=asset('assets/header-masthead-960.webp');
+    image.src=root+'assets/header-masthead-960.webp';
     image.width=960;
     image.height=320;
     image.fetchPriority='high';
