@@ -128,16 +128,14 @@
     const silver=cat==='student', gold='#e9ad28', goldLight='#ffe49a', silverDark='#9ca8bb', silverLight='#f5f7fc';
     const main=silver?silverDark:gold, light=silver?silverLight:goldLight;
     const ribbonGold=faculty&&(level===4||level===5), ribbonFill=ribbonGold?'#b98113':'#32104f', ribbonEdge=ribbonGold?'#f4d17a':main;
-    const leaf=(x,y,angle)=>'<path d="M0 0 C-9 -9 -8 -20 0 -25 C8 -20 9 -9 0 0Z" transform="translate('+x+' '+y+') rotate('+angle+')" fill="'+main+'" stroke="'+(silver?'#dce1ec':'#9d6810')+'" stroke-width="1"/>';
-    let wreath='';
-    for(let i=0;i<9;i++){
-      const t=(i/8)*Math.PI;
-      const lx=90-61*Math.cos(t), ly=82-61*Math.sin(t);
-      const rx=90+61*Math.cos(t), ry=82-61*Math.sin(t);
-      wreath+=leaf(lx,ly,Math.round(-55+i*13))+leaf(rx,ry,Math.round(55-i*13));
-    }
+    // Fine, evenly spaced rays replace the oversized leaf shapes.
+    // The rays sit outside the portrait ring and never cross the member photo.
+    const rayCount=faculty?(28+level*8):cat==='student'?32:cat==='graduate'?42:36;
     let rays='';
-    if(faculty){const total=24+level*10;for(let i=0;i<total;i++){const angle=i*360/total;rays+='<path d="M90 18 L87 5 L90 0 L93 5 Z" transform="rotate('+angle+' 90 82)" fill="'+(i%2?goldLight:gold)+'"/>';}}
+    for(let i=0;i<rayCount;i++){
+      const angle=i*360/rayCount;
+      rays+='<path d="M90 13 L90 4" transform="rotate('+angle+' 90 82)" fill="none" stroke="'+(silver?'#dce4f0':gold)+'" stroke-width="1.8" stroke-linecap="round"/>';
+    }
     let crown='';
     const stars=faculty?Math.max(1,level):(cat==='student'||cat==='graduate')?degreeStars(m):0;
     for(let i=0;i<stars;i++){const x=90+(i-(stars-1)/2)*17,y=faculty?23:25+(Math.abs(i-(stars-1)/2)*1.5);crown+='<path d="M'+x+' '+(y-7)+' L'+(x+2.1)+' '+(y-2)+' L'+(x+7)+' '+y+' L'+(x+2.1)+' '+(y+2)+' L'+x+' '+(y+7)+' L'+(x-2.1)+' '+(y+2)+' L'+(x-7)+' '+y+' L'+(x-2.1)+' '+(y-2)+' Z" fill="'+main+'" stroke="'+light+'" stroke-width="1.2"/>';}
@@ -149,7 +147,7 @@
     const medal='<circle cx="90" cy="145" r="12" fill="#f2c64f" stroke="'+(silver?'#8794a8':'#a36b12')+'" stroke-width="2"/><circle cx="90" cy="145" r="8.5" fill="none" stroke="#fff0b5" stroke-width="1.2"/><path d="M90 138 L92 143 L97 143 L93 147 L94 152 L90 149 L86 152 L87 147 L83 143 L88 143 Z" fill="'+(silver?'#77869d':'#a66e12')+'"/>';
     const textSize=title.length>14?10:title.length>9?11:13;
     const imageRing='<circle cx="90" cy="82" r="53" fill="none" stroke="'+main+'" stroke-width="5"/><circle cx="90" cy="82" r="48" fill="none" stroke="'+light+'" stroke-width="2"/>';
-    return '<span class="member-emblem member-emblem--'+(faculty?'faculty':cat||'other')+' member-emblem--level-'+(level||0)+'" title="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 180 202" role="img" aria-label="'+esc(title)+'">'+rays+wreath+imageRing+crown+icon+ribbon+medal+'<text x="90" y="166" text-anchor="middle" dominant-baseline="middle" font-family="Tahoma,Arial,sans-serif" font-size="'+textSize+'" font-weight="800" fill="#fff7e6" stroke="'+(ribbonGold?'#87590d':'#210b35')+'" stroke-width=".5" paint-order="stroke">'+esc(title)+'</text></svg></span>';
+    return '<span class="member-emblem member-emblem--'+(faculty?'faculty':cat||'other')+' member-emblem--level-'+(level||0)+'" title="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 180 202" role="img" aria-label="'+esc(title)+'">'+rays+imageRing+crown+icon+ribbon+medal+'<text x="90" y="166" text-anchor="middle" dominant-baseline="middle" font-family="Tahoma,Arial,sans-serif" font-size="'+textSize+'" font-weight="800" fill="#fff7e6" stroke="'+(ribbonGold?'#87590d':'#210b35')+'" stroke-width=".5" paint-order="stroke">'+esc(title)+'</text></svg></span>';
   }
   let cards = [];
   let currentPage = 1;
