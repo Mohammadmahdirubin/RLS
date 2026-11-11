@@ -399,3 +399,54 @@ drop policy if exists "users read own role" on public.rls_user_roles;
 create policy "users read own role"
 on public.rls_user_roles for select to authenticated
 using (user_id = (select auth.uid()) or (select private.rls_is_admin()));
+
+
+-- Member contribution scoring and public transparency.
+-- Supporting evidence links and administrator IDs remain hidden from public views.
+create table if not exists public.rls_member_points (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.rls_profiles(user_id) on delete cascade,
+  activity_type text not null check (activity_type in (
+    'meeting_attendance','special_session_attendance','seminar_attendance',
+    'workshop_attendance','national_conference_attendance','international_conference_attendance',
+    'paper_presentation','invited_lecture','session_chair','scientific_committee',
+    'organizing_committee','peer_review','journal_article','book_authorship',
+    'book_translation','book_chapter','research_project','course_teaching',
+    'workshop_teaching','educational_content','cultural_outreach','mentoring','other'
+  )),
+  title text not null check (char_length(trim(title)) between 3 and 240),
+  description text check (description is null or char_length(description) <= 2000),
+  activity_date date not null,
+  points integer not null check (points between 1 and 40),
+  evidence_url text check (evidence_url is null or char_length(evidence_url) <= 1000),
+  created_by uuid not null default auth.uid() references auth.users(id),
+  created_at timestamptz not null default now()
+);
+create index if not exists rls_member_points_user_date_idx on public.rls_member_points(user_id, activity_date desc);
+create index if not exists rls_member_points_created_idx on public.rls_member_points(created_at desc);
+alter table public.rls_member_points enable row level security;
+drop policy if exists "public can read approved member points" on public.rls_member_points;
+create policy "public can read approved member points" on public.rls_member_points for select to anon
+using (exists (select 1 from public.rls_profiles p where p.user_id=rls_member_points.user_id and p.membership_status='approved' and p.is_public=true));
+drop policy if exists "members and admins can read visible member points" on public.rls_member_points;
+create policy "members and admins can read visible member points" on public.rls_member_points for select to authenticated
+using (user_id=(select auth.uid()) or (select private.rls_is_admin()) or exists (select 1 from public.rls_profiles p where p.user_id=rls_member_points.user_id and p.membership_status='approved' and p.is_public=true));
+drop policy if exists "admins manage member points" on public.rls_member_points;
+create policy "admins manage member points" on public.rls_member_points for all to authenticated
+using ((select private.rls_is_admin())) with check ((select private.rls_is_admin()));
+revoke all on public.rls_member_points from anon, authenticated;
+grant select (id,user_id,activity_type,title,description,activity_date,points,created_at) on public.rls_member_points to anon;
+grant select,insert,update,delete on public.rls_member_points to authenticated;
+create or replace view public.rls_public_member_points with (security_invoker=true) as
+select a.id,a.user_id,a.activity_type,a.title,a.description,a.activity_date,a.points,a.created_at
+from public.rls_member_points a join public.rls_profiles p on p.user_id=a.user_id
+where p.membership_status='approved' and p.is_public=true;
+create or replace view public.rls_public_member_scores with (security_invoker=true) as
+select p.user_id,coalesce(sum(a.points),0)::integer as total_points,
+case when coalesce(sum(a.points),0)>=300 then 5 when coalesce(sum(a.points),0)>=180 then 4 when coalesce(sum(a.points),0)>=100 then 3 when coalesce(sum(a.points),0)>=50 then 2 when coalesce(sum(a.points),0)>=20 then 1 else 0 end::integer as star_level
+from public.rls_profiles p left join public.rls_member_points a on a.user_id=p.user_id
+where p.membership_status='approved' and p.is_public=true group by p.user_id;
+grant select on public.rls_public_member_points,public.rls_public_member_scores to anon,authenticated;
+comment on table public.rls_member_points is 'Admin-verified, publicly transparent member contribution points. Supporting evidence URL is never exposed in public views.';
+comment on view public.rls_public_member_points is 'Public approved activity records without private evidence links or administrator identifiers.';
+comment on view public.rls_public_member_scores is 'Public cumulative score and five-level star rating for approved public members.';
