@@ -279,7 +279,16 @@
     } finally {
       if(timeoutId)clearTimeout(timeoutId);
     }
-    const {data,error}=result||{};
+    let {data,error}=result||{};
+    if(error||!data?.length){
+      try{
+        const staticResponse=await fetch('/data/community-members.json',{cache:'force-cache'});
+        if(staticResponse.ok){
+          const staticMembers=await staticResponse.json();
+          if(Array.isArray(staticMembers)&&staticMembers.length){data=staticMembers;error=null;}
+        }
+      }catch(_){}
+    }
     if(error){
       wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با تأخیر یا خطا روبه‌رو شد. لطفاً دوباره تلاش کنید.':lang==='ru'?'Не удалось загрузить список участников. Попробуйте ещё раз.':'The member directory could not be loaded. Please try again.')+' <button type="button" class="community-search-btn" data-retry-members>'+(lang==='fa'?'تلاش دوباره':'Retry')+'</button></div>';
       wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>load(forceDirectory),{once:true});
