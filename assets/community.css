@@ -709,3 +709,30 @@
  .member-avatar-emblem--card .community-avatar,
  .member-avatar-emblem--card .community-avatar-image{width:70px;height:70px}
 }
+
+
+/* Member detail page keeps its original rectangular portrait.
+   Decorative member emblems are reserved for the community directory cards. */
+.member-public-card .member-public-heading>.member-public-avatar,
+.member-public-card .member-public-heading>img.member-public-avatar,
+.member-public-card .member-public-heading>div.member-public-avatar{
+  position:relative;
+  left:auto;
+  top:auto;
+  transform:none;
+  width:180px;
+  height:210px;
+  min-width:180px;
+  border-radius:13px;
+  object-fit:cover;
+}
+@media(max-width:620px){
+ .member-public-card .member-public-heading>.member-public-avatar,
+ .member-public-card .member-public-heading>img.member-public-avatar,
+ .member-public-card .member-public-heading>div.member-public-avatar{
+   width:145px;
+   height:175px;
+   min-width:145px;
+   border-radius:12px;
+ }
+}
