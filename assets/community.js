@@ -130,7 +130,12 @@
     const ribbonGold=faculty&&(level===4||level===5), ribbonFill=ribbonGold?'#b98113':'#32104f', ribbonEdge=ribbonGold?'#f4d17a':main;
     const leaf=(x,y,angle)=>'<path d="M0 0 C-9 -9 -8 -20 0 -25 C8 -20 9 -9 0 0Z" transform="translate('+x+' '+y+') rotate('+angle+')" fill="'+main+'" stroke="'+(silver?'#dce1ec':'#9d6810')+'" stroke-width="1"/>';
     let wreath='';
-    for(let i=0;i<8;i++){const y=65+i*8;wreath+=leaf(30,y,-35)+leaf(150,y,35);}
+    for(let i=0;i<9;i++){
+      const t=(i/8)*Math.PI;
+      const lx=90-61*Math.cos(t), ly=82-61*Math.sin(t);
+      const rx=90+61*Math.cos(t), ry=82-61*Math.sin(t);
+      wreath+=leaf(lx,ly,Math.round(-55+i*13))+leaf(rx,ry,Math.round(55-i*13));
+    }
     let rays='';
     if(faculty){const total=24+level*10;for(let i=0;i<total;i++){const angle=i*360/total;rays+='<path d="M90 18 L87 5 L90 0 L93 5 Z" transform="rotate('+angle+' 90 82)" fill="'+(i%2?goldLight:gold)+'"/>';}}
     let crown='';
@@ -143,7 +148,7 @@
     const ribbon='<path d="M22 151 L36 143 L144 143 L158 151 L151 181 L133 177 L122 191 L110 181 L90 194 L70 181 L58 191 L47 177 L29 181 Z" fill="'+ribbonFill+'" stroke="'+ribbonEdge+'" stroke-width="3"/><path d="M31 153 L42 148 L138 148 L149 153 L144 174 L131 171 L121 183 L110 174 L90 185 L70 174 L59 183 L49 171 L36 174 Z" fill="none" stroke="'+light+'" stroke-width="1.4"/>';
     const medal='<circle cx="90" cy="145" r="12" fill="#f2c64f" stroke="'+(silver?'#8794a8':'#a36b12')+'" stroke-width="2"/><circle cx="90" cy="145" r="8.5" fill="none" stroke="#fff0b5" stroke-width="1.2"/><path d="M90 138 L92 143 L97 143 L93 147 L94 152 L90 149 L86 152 L87 147 L83 143 L88 143 Z" fill="'+(silver?'#77869d':'#a66e12')+'"/>';
     const textSize=title.length>14?10:title.length>9?11:13;
-    const imageRing='<circle cx="90" cy="82" r="53" fill="#1a2440" stroke="'+main+'" stroke-width="5"/><circle cx="90" cy="82" r="48" fill="none" stroke="'+light+'" stroke-width="2"/>';
+    const imageRing='<circle cx="90" cy="82" r="53" fill="none" stroke="'+main+'" stroke-width="5"/><circle cx="90" cy="82" r="48" fill="none" stroke="'+light+'" stroke-width="2"/>';
     return '<span class="member-emblem member-emblem--'+(faculty?'faculty':cat||'other')+' member-emblem--level-'+(level||0)+'" title="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 180 202" role="img" aria-label="'+esc(title)+'">'+rays+wreath+imageRing+crown+icon+ribbon+medal+'<text x="90" y="166" text-anchor="middle" dominant-baseline="middle" font-family="Tahoma,Arial,sans-serif" font-size="'+textSize+'" font-weight="800" fill="#fff7e6" stroke="'+(ribbonGold?'#87590d':'#210b35')+'" stroke-width=".5" paint-order="stroke">'+esc(title)+'</text></svg></span>';
   }
   let cards = [];
