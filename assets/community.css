@@ -810,3 +810,10 @@
 @media(prefers-reduced-motion:reduce){
  .member-avatar-emblem--card .community-avatar-image{transition:none}
 }
+#member-directory .community-members{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.community-member--placeholder{min-height:238px;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff 0%,#faf8f5 100%);box-shadow:none;border-style:dashed;border-color:#e6ded2;pointer-events:none}
+.community-placeholder-mark{width:76px;height:76px;border-radius:50%;background:#f1ede6;border:1px solid #e8dfd2;margin:10px auto 18px}
+.community-placeholder-line{width:62%;height:10px;border-radius:8px;background:#f0ece6;margin:8px auto}
+.community-placeholder-line.short{width:38%;height:8px}
+@media(max-width:1000px){#member-directory .community-members{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){#member-directory .community-members{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.community-member--placeholder{min-height:185px;padding:10px}.community-placeholder-mark{width:60px;height:60px}}
