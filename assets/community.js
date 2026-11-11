@@ -264,9 +264,11 @@
     // fields returned by rls_public_members (never private documents or account data). are public and are generated only from
     // fields returned by rls_public_members (never private documents or account data).
     if(window.RLSMembershipCertificate && m.membership_status === 'approved') {
-      // Keep the profile interactive; certificate assets are preloaded in parallel
-      // and the certificate is rendered in its own panel without blocking the profile.
-      window.RLSMembershipCertificate.render(detail,m);
+      try {
+        await window.RLSMembershipCertificate.render(detail,m);
+      } catch(certificateError) {
+        console.warn('Public membership certificate could not be rendered:', certificateError);
+      }
     }
   }
   async function load(forceDirectory = false) {
