@@ -703,3 +703,7 @@
  .member-contribution-activity{grid-template-columns:1fr}
  .member-contribution-activity b{justify-self:start}
 }
+
+.member-card-score{display:flex;align-items:center;justify-content:center;gap:7px;margin:8px 0;color:#bd8b2f;direction:ltr}
+.member-card-score span{font-size:16px;letter-spacing:1px}
+.member-card-score small{font-size:12px;color:#725c39;direction:rtl}
