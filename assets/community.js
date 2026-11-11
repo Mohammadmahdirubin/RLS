@@ -369,7 +369,21 @@
   });
   showAdminLink();
   db?.auth.onAuthStateChange(()=>{showAdminLink();});
-  root.querySelectorAll('[data-category-filter]').forEach(b=>b.addEventListener('click',()=>{if(category)category.value=b.dataset.categoryFilter||'';currentPage=1;filter();}));
+  // Delegated category handling: reliable on touch devices and resilient to DOM refreshes.
+  root.addEventListener('click', async event=>{
+    const button=event.target.closest('[data-category-filter]');
+    if(!button || !root.contains(button)) return;
+    event.preventDefault();
+    const selected=button.dataset.categoryFilter||'';
+    if(category) category.value=selected;
+    currentPage=1;
+    if(cards.length) filter();
+    else await load(true);
+    root.querySelector('#member-directory')?.scrollIntoView({behavior:'smooth',block:'start'});
+    root.querySelectorAll('[data-category-filter]').forEach(item=>{
+      item.setAttribute('aria-pressed',String(item.dataset.categoryFilter===selected));
+    });
+  });
   root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';currentPage=1;filter();});
 
   // Keep portrait zoom local to the image: no lightbox, original-image navigation,
