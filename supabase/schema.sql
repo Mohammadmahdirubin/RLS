@@ -409,7 +409,7 @@ create table if not exists public.rls_member_points (
   activity_type text not null check (activity_type in (
     'meeting_attendance','special_session_attendance','seminar_attendance',
     'workshop_attendance','national_conference_attendance','international_conference_attendance',
-    'paper_presentation','invited_lecture','session_chair','scientific_committee',
+    'session_paper_presentation','paper_presentation','invited_lecture','session_chair','scientific_committee',
     'organizing_committee','peer_review','journal_article','book_authorship',
     'book_translation','book_chapter','research_project','course_teaching',
     'workshop_teaching','educational_content','cultural_outreach','mentoring','other'
@@ -450,3 +450,14 @@ grant select on public.rls_public_member_points,public.rls_public_member_scores 
 comment on table public.rls_member_points is 'Admin-verified, publicly transparent member contribution points. Supporting evidence URL is never exposed in public views.';
 comment on view public.rls_public_member_points is 'Public approved activity records without private evidence links or administrator identifiers.';
 comment on view public.rls_public_member_scores is 'Public cumulative score and five-level star rating for approved public members.';
+
+-- Keep the contribution activity type constraint aligned with the public scoring policy.
+alter table public.rls_member_points drop constraint if exists rls_member_points_activity_type_check;
+alter table public.rls_member_points add constraint rls_member_points_activity_type_check check (activity_type in (
+  'meeting_attendance','special_session_attendance','seminar_attendance',
+  'workshop_attendance','national_conference_attendance','international_conference_attendance',
+  'session_paper_presentation','paper_presentation','invited_lecture','session_chair','scientific_committee',
+  'organizing_committee','peer_review','journal_article','book_authorship',
+  'book_translation','book_chapter','research_project','course_teaching',
+  'workshop_teaching','educational_content','cultural_outreach','mentoring','other'
+));
