@@ -418,7 +418,6 @@ create table if not exists public.rls_member_points (
   description text check (description is null or char_length(description) <= 2000),
   activity_date date not null,
   points integer not null check (points between 1 and 40),
-  evidence_url text check (evidence_url is null or char_length(evidence_url) <= 1000),
   created_by uuid not null default auth.uid() references auth.users(id),
   created_at timestamptz not null default now()
 );
@@ -435,8 +434,9 @@ drop policy if exists "admins manage member points" on public.rls_member_points;
 create policy "admins manage member points" on public.rls_member_points for all to authenticated
 using ((select private.rls_is_admin())) with check ((select private.rls_is_admin()));
 revoke all on public.rls_member_points from anon, authenticated;
-grant select (id,user_id,activity_type,title,description,activity_date,points,created_at) on public.rls_member_points to anon;
-grant select,insert,update,delete on public.rls_member_points to authenticated;
+grant select (id,user_id,activity_type,title,description,activity_date,points,created_at) on public.rls_member_points to anon,authenticated;
+grant insert (user_id,activity_type,title,description,activity_date,points) on public.rls_member_points to authenticated;
+grant delete on public.rls_member_points to authenticated;
 create or replace view public.rls_public_member_points with (security_invoker=true) as
 select a.id,a.user_id,a.activity_type,a.title,a.description,a.activity_date,a.points,a.created_at
 from public.rls_member_points a join public.rls_profiles p on p.user_id=a.user_id
@@ -461,3 +461,17 @@ alter table public.rls_member_points add constraint rls_member_points_activity_t
   'book_translation','book_chapter','research_project','course_teaching',
   'workshop_teaching','educational_content','cultural_outreach','mentoring','other'
 ));
+
+-- Supporting evidence is stored separately and is visible only to association administrators.
+create table if not exists public.rls_member_point_evidence (
+  point_id uuid primary key references public.rls_member_points(id) on delete cascade,
+  evidence_url text not null check (char_length(evidence_url) <= 1000),
+  created_by uuid not null default auth.uid() references auth.users(id),
+  created_at timestamptz not null default now()
+);
+alter table public.rls_member_point_evidence enable row level security;
+drop policy if exists "admins manage member point evidence" on public.rls_member_point_evidence;
+create policy "admins manage member point evidence" on public.rls_member_point_evidence for all to authenticated
+using ((select private.rls_is_admin())) with check ((select private.rls_is_admin()));
+revoke all on public.rls_member_point_evidence from anon,authenticated;
+grant select,insert,update,delete on public.rls_member_point_evidence to authenticated;
