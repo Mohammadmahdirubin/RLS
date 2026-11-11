@@ -1,0 +1,1 @@
+Trigger responsive WebP optimization for the shared masthead. The original PNG is preserved as fallback.
