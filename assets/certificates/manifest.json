@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "design": "rls-certificate-static-v1",
+  "updated_at": "2026-11-11T22:59:07.665348+00:00",
+  "certificates": {
+    "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {
+      "file": "assets/certificates/member-0d9dd4ab-2acc-471c-9ee1-7784e337b592.png",
+      "fingerprint": "981f17623a85ead225713eb790bb69bc06365c6e49e5bfb71f340e7133dbf676",
+      "membership_number": 1,
+      "qr_url": "https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592",
+      "generated_at": "2026-11-11T22:59:06.073222+00:00"
+    },
+    "b39de401-7b39-478c-88ab-50e89695e11a": {
+      "file": "assets/certificates/member-b39de401-7b39-478c-88ab-50e89695e11a.png",
+      "fingerprint": "8740bb4c1aea341214ca1c02cd882a58195df2c0dfbc810b20848448e885d016",
+      "membership_number": 2,
+      "qr_url": "https://rlsj.ir/community.html?member=b39de401-7b39-478c-88ab-50e89695e11a",
+      "generated_at": "2026-11-11T22:59:07.665291+00:00"
+    }
+  }
+}
