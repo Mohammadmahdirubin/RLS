@@ -62,7 +62,7 @@
     if(status==='certificates'){await loadCertificates();return;}
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
-      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,is_public,created_at')
+      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
       .order('created_at',{ascending:true});
     if(status==='photo_pending'){
       query=query.in('membership_status',['approved','suspended']).not('pending_avatar_path','is',null);
