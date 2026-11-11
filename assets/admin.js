@@ -1,6 +1,11 @@
 (function(){
   const cfg=window.RLS_SUPABASE_CONFIG;
-  if(!cfg||!window.supabase)return;
+  if(!cfg||!window.supabase){
+    if(msg) msg.textContent='سامانهٔ ورود بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را دوباره بارگذاری کنید.';
+    if(login) login.hidden=false;
+    if(dashboard) dashboard.hidden=true;
+    return;
+  }
   const client=window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}));
   const login=document.getElementById('admin-login'),dashboard=document.getElementById('admin-dashboard');
   const form=document.getElementById('admin-login-form'),msg=document.getElementById('login-message'),list=document.getElementById('admin-list');
@@ -25,6 +30,11 @@
       login.hidden=true;dashboard.hidden=false;
       document.getElementById('admin-identity').textContent=session.user.email||'مدیر انجمن';
       await load();
+    }catch(error){
+      console.error('RLS admin access check failed:',error);
+      if(msg)msg.textContent='ارتباط با سامانهٔ احراز هویت برقرار نشد: '+(error?.message||'خطای نامشخص')+' · صفحه را دوباره بارگذاری کنید.';
+      if(login)login.hidden=false;
+      if(dashboard)dashboard.hidden=true;
     }finally{checking=false;}
   }
   async function loadCertificates(){
