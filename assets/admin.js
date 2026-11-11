@@ -47,7 +47,7 @@
         '<div class="admin-certificate-preview"></div></article>';
     }).join('');
     data.forEach(p=>{
-      const card=list.querySelector('[data-certificate-user="'+CSS.escape(String(p.user_id))+'"]');
+      const card=list.querySelector('[data-certificate-user="'+String(p.user_id)+'"]');
       const target=card?.querySelector('.admin-certificate-preview');
       if(target&&window.RLSMembershipCertificate){
         window.RLSMembershipCertificate.render(target,{
