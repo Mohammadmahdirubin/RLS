@@ -85,15 +85,18 @@
   async function loadPointHistory(){
     if(!pointsHistory)return;
     pointsHistory.textContent='در حال دریافت سوابق…';
-    const {data,error}=await client.from('rls_member_points').select('id,user_id,activity_type,title,description,activity_date,points,evidence_url,created_at').order('activity_date',{ascending:false}).limit(100);
+    const {data,error}=await client.from('rls_member_points').select('id,user_id,activity_type,title,description,activity_date,points,created_at').order('activity_date',{ascending:false}).limit(100);
     if(error){pointsHistory.textContent='دریافت سوابق امتیاز ناموفق بود: '+error.message;return;}
     if(!data?.length){pointsHistory.textContent='هنوز امتیازی ثبت نشده است.';return;}
     const ids=[...new Set(data.map(x=>x.user_id))];
     const {data:profiles}=await client.from('rls_profiles').select('user_id,full_name,display_name,member_number').in('user_id',ids);
+    const {data:evidenceRows}=await client.from('rls_member_point_evidence').select('point_id,evidence_url').in('point_id',data.map(x=>x.id));
+    const evidenceMap=new Map((evidenceRows||[]).map(x=>[x.point_id,x.evidence_url]));
     const people=new Map((profiles||[]).map(p=>[p.user_id,p]));
     pointsHistory.innerHTML=data.map(p=>{
       const member=people.get(p.user_id)||{};
-      const evidence=p.evidence_url&&/^https?:\/\//i.test(p.evidence_url)?'<a href="'+esc(p.evidence_url)+'" target="_blank" rel="noopener noreferrer">مشاهده مستند</a>':'';
+      const evidenceUrl=evidenceMap.get(p.id)||'';
+      const evidence=evidenceUrl&&/^https?:\/\//i.test(evidenceUrl)?'<a href="'+esc(evidenceUrl)+'" target="_blank" rel="noopener noreferrer">مشاهده مستند</a>':'';
       return '<article class="admin-points-record"><div><strong>'+esc(member.display_name||member.full_name||'عضو')+'</strong><span> · '+esc(String(member.member_number||''))+'</span><h4>'+esc(p.title)+'</h4><p>'+esc(p.description||'')+'</p><small>'+esc(p.activity_date)+' · ثبت در '+esc(new Date(p.created_at).toLocaleDateString('fa-IR'))+'</small>'+(evidence?'<p>'+evidence+'</p>':'')+'</div><div><b>+'+esc(String(p.points))+'</b><span>امتیاز</span><button type="button" class="reject" data-delete-point="'+esc(p.id)+'">حذف رکورد</button></div></article>';
     }).join('');
   }
@@ -116,11 +119,18 @@
       const evidence=String(fd.get('evidence_url')||'').trim();
       if(!userId||title.length<3||!activityDate||!activityType||!Number.isInteger(points)||points<1||points>40){pointsMessage.textContent='اطلاعات ناقص یا امتیاز نامعتبر است.';return;}
       if(evidence){try{const u=new URL(evidence);if(!['http:','https:'].includes(u.protocol))throw new Error();}catch{pointsMessage.textContent='پیوند مدرک باید نشانی معتبر HTTP یا HTTPS باشد.';return;}}
-      const {error}=await client.from('rls_member_points').insert({
+      const {data:createdPoint,error}=await client.from('rls_member_points').insert({
         user_id:userId,activity_type:activityType,title,activity_date:activityDate,
-        description:String(fd.get('description')||'').trim()||null,points,evidence_url:evidence||null
-      });
-      if(error){pointsMessage.textContent='ثبت امتیاز ناموفق بود: '+error.message;return;}
+        description:String(fd.get('description')||'').trim()||null,points
+      }).select('id').single();
+      if(error||!createdPoint){pointsMessage.textContent='ثبت امتیاز ناموفق بود: '+(error?.message||'شناسه رکورد دریافت نشد.');return;}
+      if(evidence){
+        const {error:evidenceError}=await client.from('rls_member_point_evidence').insert({point_id:createdPoint.id,evidence_url:evidence});
+        if(evidenceError){
+          await client.from('rls_member_points').delete().eq('id',createdPoint.id);
+          pointsMessage.textContent='ذخیره مدرک ناموفق بود و رکورد امتیاز ثبت نشد: '+evidenceError.message;return;
+        }
+      }
       pointsMessage.textContent='امتیاز با موفقیت ثبت شد و در پروفایل و گواهی عضو محاسبه می‌شود.';
       pointsForm.reset();setActivityDate();if(pointsType&&pointsValue){pointsType.value='meeting_attendance';pointsValue.value='2';pointsValue.readOnly=true;}
       await Promise.all([loadPointMembers(),loadPointHistory()]);
