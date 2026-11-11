@@ -1139,3 +1139,25 @@
     margin:6px auto !important;
   }
 }
+
+
+/* Compact expandable about cards on phones; desktop remains unchanged. */
+.about-card-toggle{display:none}
+@media(max-width:700px){
+  .community-about-grid{grid-template-columns:1fr;gap:10px;margin-top:18px}
+  .community-about-card{position:relative;padding:15px 16px}
+  .community-about-card h3{display:inline-block;max-width:calc(100% - 48px);margin:5px 0 0;vertical-align:middle}
+  .community-about-card .community-about-number{vertical-align:middle}
+  .about-card-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    position:absolute;left:14px;top:15px;width:34px;height:34px;
+    border:1px solid var(--community-line);border-radius:50%;
+    background:var(--community-gold-soft);color:var(--community-primary);
+    font-size:23px;font-weight:500;line-height:1;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .community-about-card ul{display:none;margin-top:12px;font-size:13px;line-height:1.9}
+  .community-about-card.is-expanded ul{display:block}
+  .community-about-card.is-expanded .about-card-toggle span{transform:rotate(45deg)}
+  .about-card-toggle span{display:block;transition:transform .18s ease}
+}
