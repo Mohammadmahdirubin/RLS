@@ -273,7 +273,7 @@
         if (visibleAvatarPath && avatarEl.dataset.avatarFallbackTried !== '1') {
           avatarEl.dataset.avatarFallbackTried = '1';
           const directUrl = db.storage.from('rls-member-avatars').getPublicUrl(visibleAvatarPath).data.publicUrl;
-          avatarEl.src = directUrl + (directUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
+          avatarEl.src = directUrl;
           return;
         }
         avatarEl.hidden = true;
@@ -284,7 +284,9 @@
         avatarEl.alt = tr('عکس پروفایل ','Profile photo of ','Фотография профиля ') + name;
         avatarEl.hidden = false;
         fallbackEl.hidden = true;
-        avatarEl.src = publicUrl + (publicUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
+        avatarEl.loading = 'eager';
+        avatarEl.decoding = 'async';
+        avatarEl.src = publicUrl;
       } else {
         avatarEl.removeAttribute('src');
         avatarEl.hidden = true;
@@ -485,13 +487,49 @@
     }
   });
 
+  async function optimizeAvatarImage(file) {
+    // Create a compact, correctly oriented JPEG for faster public profile delivery.
+    // Keep small images as-is; never make an image larger or replace it with a larger encoding.
+    const objectUrl = URL.createObjectURL(file);
+    try {
+      const image = await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('تصویر انتخاب‌شده قابل خواندن نیست.'));
+        img.src = objectUrl;
+      });
+      const sourceWidth = image.naturalWidth || image.width;
+      const sourceHeight = image.naturalHeight || image.height;
+      if (!sourceWidth || !sourceHeight) return file;
+      const scale = Math.min(1, 640 / Math.max(sourceWidth, sourceHeight));
+      if (scale === 1 && file.size <= 180 * 1024) return file;
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(sourceWidth * scale));
+      canvas.height = Math.max(1, Math.round(sourceHeight * scale));
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) return file;
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.82));
+      if (!blob || blob.size >= file.size) return file;
+      return new File([blob], 'member-avatar.jpg', { type: 'image/jpeg', lastModified: Date.now() });
+    } catch (_) {
+      // If browser-side optimization is unavailable, preserve the original upload.
+      return file;
+    } finally {
+      URL.revokeObjectURL(objectUrl);
+    }
+  }
+
   async function uploadAvatar(user, file) {
     if (!file) { reportUpload(tr('ابتدا عکس را انتخاب کنید.','Choose a photo first.','Сначала выберите фотографию.')); return; }
     if (!avatarTypes.includes(file.type) || file.size > maxBytes) {
       reportUpload(tr('عکس باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.','Use a JPG, PNG or WebP image no larger than 5 MB.','Допустимы JPG, PNG или WebP размером до 5 МБ.'));
       return;
     }
-    const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+    const optimizedFile = await optimizeAvatarImage(file);
+    const ext = optimizedFile.type === 'image/png' ? 'png' : optimizedFile.type === 'image/webp' ? 'webp' : 'jpg';
     const path = user.id + '/avatar-' + Date.now() + '.' + ext;
     reportUpload(tr('در حال بارگذاری عکس پروفایل…','Uploading profile photo…','Загрузка фотографии профиля…'));
     const { data: sessionData, error: sessionError } = await db.auth.getSession();
@@ -515,7 +553,7 @@
         'Ваше членство приостановлено, поэтому база данных не разрешает загрузку новой фотографии. Сначала администратор должен проверить статус и при необходимости восстановить членство.'));
     }
     const { error: uploadError } = await db.storage.from('rls-member-avatars')
-      .upload(path, file, { contentType: file.type, upsert: false });
+      .upload(path, optimizedFile, { contentType: optimizedFile.type, cacheControl: '31536000', upsert: false });
     if (uploadError) throw uploadError;
     const { data: updatedProfile, error: updateError } = await db.from('rls_profiles')
       .update({ pending_avatar_path: path }).eq('user_id', user.id)
