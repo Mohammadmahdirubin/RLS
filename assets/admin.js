@@ -102,6 +102,9 @@
     pointsType.addEventListener('change',updatePoints);updatePoints();
   }
   if(pointsForm){
+    const activityDateField=pointsForm.querySelector('[name="activity_date"]');
+    const setActivityDate=()=>{if(activityDateField&&!activityDateField.value){const now=new Date();activityDateField.value=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);}};
+    setActivityDate();
     pointsForm.addEventListener('submit',async e=>{
       e.preventDefault();pointsMessage.textContent='در حال ثبت…';
       const fd=new FormData(pointsForm);
@@ -119,7 +122,7 @@
       });
       if(error){pointsMessage.textContent='ثبت امتیاز ناموفق بود: '+error.message;return;}
       pointsMessage.textContent='امتیاز با موفقیت ثبت شد و در پروفایل و گواهی عضو محاسبه می‌شود.';
-      pointsForm.reset();if(pointsType&&pointsValue){pointsType.value='meeting_attendance';pointsValue.value='2';pointsValue.readOnly=true;}
+      pointsForm.reset();setActivityDate();if(pointsType&&pointsValue){pointsType.value='meeting_attendance';pointsValue.value='2';pointsValue.readOnly=true;}
       await Promise.all([loadPointMembers(),loadPointHistory()]);
     });
   }
