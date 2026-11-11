@@ -1,15 +1,13 @@
-/* RLS Membership Certificate — official PNG template, generated per member */
+/* RLS Membership Certificate — private download and administrator review */
 (function () {
   'use strict';
-  const TEMPLATE_URL = 'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/Bilingual%20Russian%20Language%20Membership%20Certificate.png';
+  const TEMPLATE_URL = '/Bilingual%20Russian%20Language%20Membership%20Certificate.png?v=20261111';
   const PROFILE_BASE = 'https://rlsj.ir/community.html?member=';
-  // Reuse the template and generated QR during this page session.
   let templatePromise = null;
   const qrPromises = new Map();
   function getTemplate() {
     if (!templatePromise) {
-      templatePromise = loadImage('/Bilingual%20Russian%20Language%20Membership%20Certificate.png?v=20261111', false)
-        .catch(error => { templatePromise = null; throw error; });
+      templatePromise = loadImage(TEMPLATE_URL, false).catch(error => { templatePromise = null; throw error; });
     }
     return templatePromise;
   }
@@ -46,9 +44,7 @@
     if (!value) return '—';
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return '—';
-    return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
-      year:'numeric', month:'long', day:'numeric', timeZone:'Asia/Tehran'
-    }).format(date).replace(/\u200e/g,'');
+    return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {year:'numeric',month:'long',day:'numeric',timeZone:'Asia/Tehran'}).format(date).replace(/\u200e/g,'');
   }
   function membershipNumber(value) {
     const number = Number(value);
@@ -63,68 +59,87 @@
       image.src = src;
     });
   }
-  async function render(container, member) {
-    if (!container || !member || member.membership_status !== 'approved' || !member.member_number || !member.user_id) return;
+  async function createBlob(member) {
+    const [template, qr] = await Promise.all([getTemplate(), getQr(member.user_id)]);
+    const canvas = document.createElement('canvas');
+    canvas.width = template.naturalWidth;
+    canvas.height = template.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#102f5b';
+    ctx.textBaseline = 'middle';
+    ctx.direction = 'rtl';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 46px Tahoma, Arial, sans-serif';
+    ctx.fillText(cleanName(member.display_name || member.full_name), 746, 535, 900);
+    ctx.textAlign = 'right';
+    ctx.font = 'bold 29px Tahoma, Arial, sans-serif';
+    ctx.fillText(membershipNumber(member.member_number), 350, 770, 250);
+    ctx.fillText(groups[member.category] || member.category || '—', 350, 826, 250);
+    ctx.fillText(faDate(member.created_at), 350, 882, 250);
+    ctx.imageSmoothingEnabled = false;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(1265, 735, 156, 156);
+    ctx.drawImage(qr, 1268, 738, 150, 150);
+    return new Promise((resolve,reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('تبدیل گواهی به PNG ناموفق بود.')), 'image/png'));
+  }
+  function downloadBlob(blob, member) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'RLS-Membership-Certificate-' + String(member.member_number).padStart(6,'0') + '.png';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+  function render(container, member, options) {
+    options = options || {};
+    const adminPreview = options.adminPreview === true;
+    if (!container || !member || !['approved','suspended'].includes(member.membership_status) || !member.member_number || !member.user_id) return;
     if (container.querySelector('.rls-certificate-section')) return;
-
     const panel = document.createElement('section');
-    panel.className = 'rls-certificate-section';
-    panel.innerHTML = '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>نسخه رسمی · تصویر PNG</p></div><div class="rls-certificate-frame"><img class="rls-membership-certificate-image" alt="گواهی عضویت اختصاصی عضو" /></div><div class="rls-certificate-actions"><button type="button" class="community-button primary rls-certificate-download" disabled>در حال صدور گواهی…</button><span class="rls-certificate-hint">نسخه عمومی گواهی عضویت؛ اطلاعات آن از پرونده تأییدشده عضو درج شده است.</span></div>';
+    panel.className = 'rls-certificate-section' + (adminPreview ? ' rls-certificate-section--admin' : ' rls-certificate-section--download');
+    panel.innerHTML = '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>'+(adminPreview?'پیش‌نمایش فقط برای بررسی مدیر':'نسخه اختصاصی · فایل PNG')+'</p></div>'+
+      (adminPreview?'<div class="rls-certificate-frame" hidden><img class="rls-membership-certificate-image" alt="گواهی عضویت برای بررسی مدیر" loading="lazy" decoding="async"></div>':'')+
+      '<div class="rls-certificate-actions"><button type="button" class="community-button primary rls-certificate-download">'+(adminPreview?'نمایش گواهی برای بررسی':'دانلود گواهی عضویت (PNG)')+'</button><span class="rls-certificate-hint">'+(adminPreview?'برای جلوگیری از بارگذاری هم‌زمان تصاویر، گواهی پس از انتخاب ساخته می‌شود.':'تصویر گواهی فقط هنگام درخواست دانلود ساخته می‌شود و در صفحه نمایش داده نخواهد شد.')+'</span></div>';
     container.appendChild(panel);
-
+    const button = panel.querySelector('.rls-certificate-download');
+    const frame = panel.querySelector('.rls-certificate-frame');
     const preview = panel.querySelector('.rls-membership-certificate-image');
-    const download = panel.querySelector('.rls-certificate-download');
-    let pngUrl = '';
-
-    try {
-      const [template, qr] = await Promise.all([getTemplate(), getQr(member.user_id)]);
-
-      const canvas = document.createElement('canvas');
-      canvas.width = template.naturalWidth;
-      canvas.height = template.naturalHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
-
-      const navy = '#102f5b';
-      ctx.fillStyle = navy;
-      ctx.textBaseline = 'middle';
-      ctx.direction = 'rtl';
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 46px Tahoma, Arial, sans-serif';
-      ctx.fillText(cleanName(member.display_name || member.full_name), 746, 535, 900);
-
-      ctx.textAlign = 'right';
-      ctx.font = 'bold 29px Tahoma, Arial, sans-serif';
-      ctx.fillText(membershipNumber(member.member_number), 350, 770, 250);
-      ctx.fillText(groups[member.category] || member.category || '—', 350, 826, 250);
-      // The member profile uses created_at as its membership date; keep the certificate consistent with it.
-      ctx.fillText(faDate(member.created_at), 350, 882, 250);
-
-      // The QR frame is preprinted on the right side of the approved template.
-      ctx.imageSmoothingEnabled = false;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(1265, 735, 156, 156);
-      ctx.drawImage(qr, 1268, 738, 150, 150);
-
-      const blob = await new Promise((resolve,reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('تبدیل گواهی به PNG ناموفق بود.')), 'image/png'));
-      pngUrl = URL.createObjectURL(blob);
-      preview.src = pngUrl;
-      download.disabled = false;
-      download.textContent = 'دانلود گواهی عضویت (PNG)';
-      download.onclick = () => {
-        const link = document.createElement('a');
-        link.href = pngUrl;
-        link.download = 'RLS-Membership-Certificate-' + String(member.member_number).padStart(6,'0') + '.png';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      };
-    } catch (error) {
-      console.error('RLS membership certificate generation failed:', error);
-      download.textContent = 'تلاش دوباره برای نمایش گواهی';
-      download.disabled = false;
-      download.onclick = () => { panel.remove(); render(container, member); };
-    }
+    let blob = null, previewUrl = '';
+    button.addEventListener('click', async () => {
+      if (button.dataset.busy === '1') return;
+      if (adminPreview && blob) {
+        downloadBlob(blob, member);
+        return;
+      }
+      button.dataset.busy = '1';
+      button.disabled = true;
+      button.textContent = 'در حال آماده‌سازی گواهی…';
+      try {
+        blob = await createBlob(member);
+        if (adminPreview) {
+          previewUrl = URL.createObjectURL(blob);
+          preview.src = previewUrl;
+          frame.hidden = false;
+          button.textContent = 'دانلود همین گواهی';
+          panel.querySelector('.rls-certificate-hint').textContent = 'گواهی ساخته شد؛ برای دریافت فایل، همین دکمه را بزنید.';
+        } else {
+          downloadBlob(blob, member);
+          button.textContent = 'دانلود دوباره گواهی عضویت';
+        }
+      } catch (error) {
+        console.error('RLS membership certificate generation failed:', error);
+        button.textContent = 'تلاش دوباره';
+        panel.querySelector('.rls-certificate-hint').textContent = 'ساخت گواهی ناموفق بود. دوباره تلاش کنید.';
+        blob = null;
+      } finally {
+        button.disabled = false;
+        button.dataset.busy = '0';
+      }
+    });
+    panel.addEventListener('DOMNodeRemoved',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);},{once:true});
   }
   window.RLSMembershipCertificate = {render};
 })();
