@@ -313,7 +313,7 @@
     }).join('');
     // Fetch contribution totals after card HTML is visible, so scoring never delays the directory.
     db.from('rls_public_member_scores').select('user_id,total_points,star_level').in('user_id',data.map(m=>m.user_id)).then(({data:scoreRows,error:scoreError})=>{
-      if(error||!scoreRows)return;
+      if(scoreError||!scoreRows)return;
       scoreRows.forEach(score=>{
         if(Number(score.total_points)<=0)return;
         const card=wrap.querySelectorAll('.community-member');
