@@ -121,30 +121,30 @@
   function memberEmblem(m, profile=false) {
     const cat=m.category||'';
     const faculty=cat==='faculty';
-    const count=faculty?facultyLevel(m):degreeStars(m);
-    const color=cat==='student'?'#c7d0df':'#d8a72d';
-    const pale=cat==='student'?'#f3f6fb':'#fff0bd';
+    const level=faculty?facultyLevel(m):0;
+    const titleMap=(labels[lang]||labels.en);
+    let title=titleMap[cat]||cat;
+    if(faculty) title=({1:lang==='fa'?'مربی':lang==='ru'?'Преподаватель':'Instructor',3:lang==='fa'?'استادیار':lang==='ru'?'Доцент':'Assistant Professor',4:lang==='fa'?'دانشیار':lang==='ru'?'Ассоциированный профессор':'Associate Professor',5:lang==='fa'?'استاد':lang==='ru'?'Профессор':'Professor'})[level]||title;
+    const silver=cat==='student', gold='#e9ad28', goldLight='#ffe49a', silverDark='#9ca8bb', silverLight='#f5f7fc';
+    const main=silver?silverDark:gold, light=silver?silverLight:goldLight;
+    const ribbonGold=faculty&&(level===4||level===5), ribbonFill=ribbonGold?'#b98113':'#32104f', ribbonEdge=ribbonGold?'#f4d17a':main;
+    const leaf=(x,y,angle)=>'<path d="M0 0 C-9 -9 -8 -20 0 -25 C8 -20 9 -9 0 0Z" transform="translate('+x+' '+y+') rotate('+angle+')" fill="'+main+'" stroke="'+(silver?'#dce1ec':'#9d6810')+'" stroke-width="1"/>';
+    let wreath='';
+    for(let i=0;i<8;i++){const y=65+i*8;wreath+=leaf(30,y,-35)+leaf(150,y,35);}
     let rays='';
-    if(faculty){
-      const total=24+count*12;
-      for(let i=0;i<total;i++){
-        const angle=(360/total)*i;
-        const outer=count===1?47:count===3?50:count===4?53:56;
-        const inner=44;
-        rays+='<line x1="50" y1="'+inner+'" x2="50" y2="'+outer+'" transform="rotate('+angle+' 50 50)" stroke="#d9a52d" stroke-width="'+(count>=4?1.35:1.1)+'" stroke-linecap="round"/>';
-      }
-      return '<span class="member-emblem member-emblem--faculty member-emblem--level-'+count+'" title="'+esc((labels[lang]||labels.en).faculty)+'" aria-label="'+esc((labels[lang]||labels.en).faculty)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true">'+rays+'<circle cx="50" cy="50" r="43.5" fill="none" stroke="#d9a52d" stroke-width="2.2"/><circle cx="50" cy="50" r="40.8" fill="none" stroke="#f8df91" stroke-width="1"/><path d="M44 91 L42 99 L50 95 L58 99 L56 91 Z" fill="#d9a52d"/><path d="M50 91 L48 99 L50 97 L52 99 L50 91 Z" fill="#f8df91"/><circle cx="50" cy="87.5" r="6.5" fill="#f5cf62" stroke="#a97917" stroke-width="1.4"/><path d="M50 82.5 L51.5 86 L55 86.5 L52.5 89 L53 92 L50 90.5 L47 92 L47.5 89 L45 86.5 L48.5 86 Z" fill="#a97917"/></svg></span>';
-    }
-    let glyph='✦', title=(labels[lang]||labels.en)[cat]||cat;
-    if(cat==='student'||cat==='graduate'){
-      const stars=Array.from({length:count},(_,i)=>{const angle=(-90+(360/count)*i)*Math.PI/180;const x=50+46*Math.cos(angle);const y=50+46*Math.sin(angle);return '<text x="'+x.toFixed(2)+'" y="'+(y+4.5).toFixed(2)+'" text-anchor="middle" font-size="12" font-weight="700" stroke="'+pale+'" stroke-width="1.2" paint-order="stroke" fill="'+color+'">★</text>';}).join('');
-      return '<span class="member-emblem member-emblem--stars member-emblem--'+(cat==='student'?'silver':'gold')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="43.5" fill="none" stroke="'+color+'" stroke-width="2.5"/><circle cx="50" cy="50" r="40.5" fill="none" stroke="'+pale+'" stroke-width="1.2"/>'+stars+'</svg></span>';
-    }
-    if(cat==='researcher')glyph='⌕';
-    else if(cat==='translator')glyph='✒';
-    else if(cat==='culture')glyph='▤';
-    else if(cat==='honorary')glyph='✹';
-    return '<span class="member-emblem member-emblem--special member-emblem--'+esc(cat||'other')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="43.5" fill="none" stroke="#d8a72d" stroke-width="2.5"/><circle cx="50" cy="50" r="40.5" fill="none" stroke="#f4d98a" stroke-width="1.2"/><path d="M44 91 L42 99 L50 95 L58 99 L56 91 Z" fill="#d8a72d"/><circle cx="50" cy="87.5" r="6.5" fill="#14284b" stroke="#d8a72d" stroke-width="1.8"/><text x="50" y="91" text-anchor="middle" font-size="12" fill="#f4d98a">'+glyph+'</text></svg></span>';
+    if(faculty){const total=24+level*10;for(let i=0;i<total;i++){const angle=i*360/total;rays+='<path d="M90 18 L87 5 L90 0 L93 5 Z" transform="rotate('+angle+' 90 82)" fill="'+(i%2?goldLight:gold)+'"/>';}}
+    let crown='';
+    const stars=faculty?Math.max(1,level):silver?3:5;
+    for(let i=0;i<stars;i++){const x=90+(i-(stars-1)/2)*17,y=faculty?23:25+(Math.abs(i-(stars-1)/2)*1.5);crown+='<path d="M'+x+' '+(y-7)+' L'+(x+2.1)+' '+(y-2)+' L'+(x+7)+' '+y+' L'+(x+2.1)+' '+(y+2)+' L'+x+' '+(y+7)+' L'+(x-2.1)+' '+(y+2)+' L'+(x-7)+' '+y+' L'+(x-2.1)+' '+(y-2)+' Z" fill="'+main+'" stroke="'+light+'" stroke-width="1.2"/>';}
+    let icon='';
+    if(cat==='researcher')icon='<g fill="none" stroke="'+gold+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M52 137 Q68 129 83 137 V151 Q67 144 52 151Z"/><path d="M83 137 Q99 129 114 137 V151 Q98 144 83 151Z"/><path d="M119 130 L135 113 L139 117 L123 134Z"/><path d="M117 132 L114 140 L123 136"/></g>';
+    else if(cat==='translator'||cat==='culture')icon='<g fill="none" stroke="'+gold+'" stroke-width="3" stroke-linejoin="round"><path d="M48 133 Q65 127 82 134 V151 Q65 145 48 151Z"/><path d="M82 134 Q99 127 116 133 V151 Q99 145 82 151Z"/><path d="M82 134 V151"/></g>';
+    else if(cat==='honorary')icon='<g stroke="'+gold+'" stroke-width="2.5" fill="none"><circle cx="70" cy="140" r="12"/><path d="M65 135 L75 145 M75 135 L65 145"/><path d="M110 129 Q124 119 132 131 Q124 142 110 140Z"/><path d="M110 140 L107 148"/></g>';
+    const ribbon='<path d="M22 151 L36 143 L144 143 L158 151 L151 181 L133 177 L122 191 L110 181 L90 194 L70 181 L58 191 L47 177 L29 181 Z" fill="'+ribbonFill+'" stroke="'+ribbonEdge+'" stroke-width="3"/><path d="M31 153 L42 148 L138 148 L149 153 L144 174 L131 171 L121 183 L110 174 L90 185 L70 174 L59 183 L49 171 L36 174 Z" fill="none" stroke="'+light+'" stroke-width="1.4"/>';
+    const medal='<circle cx="90" cy="145" r="12" fill="#f2c64f" stroke="'+(silver?'#8794a8':'#a36b12')+'" stroke-width="2"/><circle cx="90" cy="145" r="8.5" fill="none" stroke="#fff0b5" stroke-width="1.2"/><path d="M90 138 L92 143 L97 143 L93 147 L94 152 L90 149 L86 152 L87 147 L83 143 L88 143 Z" fill="'+(silver?'#77869d':'#a66e12')+'"/>';
+    const textSize=title.length>14?10:title.length>9?11:13;
+    const imageRing='<circle cx="90" cy="82" r="53" fill="#1a2440" stroke="'+main+'" stroke-width="5"/><circle cx="90" cy="82" r="48" fill="none" stroke="'+light+'" stroke-width="2"/>';
+    return '<span class="member-emblem member-emblem--'+(faculty?'faculty':cat||'other')+' member-emblem--level-'+(level||0)+'" title="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 180 202" role="img" aria-label="'+esc(title)+'">'+rays+wreath+imageRing+crown+icon+ribbon+medal+'<text x="90" y="166" text-anchor="middle" dominant-baseline="middle" font-family="Tahoma,Arial,sans-serif" font-size="'+textSize+'" font-weight="800" fill="#fff7e6" stroke="'+(ribbonGold?'#87590d':'#210b35')+'" stroke-width=".5" paint-order="stroke">'+esc(title)+'</text></svg></span>';
   }
   let cards = [];
   let currentPage = 1;
