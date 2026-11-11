@@ -128,22 +128,22 @@
       const total=24+count*12;
       for(let i=0;i<total;i++){
         const angle=(360/total)*i;
-        const outer=count===1?43:count===3?46:count===4?49:52;
-        const inner=count===1?36:count===3?34:count===4?32:30;
+        const outer=count===1?47:count===3?50:count===4?53:56;
+        const inner=44;
         rays+='<line x1="50" y1="'+inner+'" x2="50" y2="'+outer+'" transform="rotate('+angle+' 50 50)" stroke="#d9a52d" stroke-width="'+(count>=4?1.35:1.1)+'" stroke-linecap="round"/>';
       }
-      return '<span class="member-emblem member-emblem--faculty member-emblem--level-'+count+'" title="'+esc((labels[lang]||labels.en).faculty)+'" aria-label="'+esc((labels[lang]||labels.en).faculty)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true">'+rays+'<circle cx="50" cy="50" r="34" fill="none" stroke="#d9a52d" stroke-width="2.2"/><circle cx="50" cy="50" r="30.5" fill="none" stroke="#f8df91" stroke-width="1"/><path d="M50 73 L44 83 L50 80 L56 83 Z" fill="#d9a52d"/><circle cx="50" cy="72" r="8" fill="#f5cf62" stroke="#a97917" stroke-width="1.4"/><path d="M50 66 L51.8 70 L56 70.5 L53 73.5 L53.7 77.5 L50 75.5 L46.3 77.5 L47 73.5 L44 70.5 L48.2 70 Z" fill="#a97917"/></svg></span>';
+      return '<span class="member-emblem member-emblem--faculty member-emblem--level-'+count+'" title="'+esc((labels[lang]||labels.en).faculty)+'" aria-label="'+esc((labels[lang]||labels.en).faculty)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true">'+rays+'<circle cx="50" cy="50" r="43.5" fill="none" stroke="#d9a52d" stroke-width="2.2"/><circle cx="50" cy="50" r="40.8" fill="none" stroke="#f8df91" stroke-width="1"/><path d="M50 73 L44 83 L50 80 L56 83 Z" fill="#d9a52d"/><circle cx="50" cy="72" r="8" fill="#f5cf62" stroke="#a97917" stroke-width="1.4"/><path d="M50 66 L51.8 70 L56 70.5 L53 73.5 L53.7 77.5 L50 75.5 L46.3 77.5 L47 73.5 L44 70.5 L48.2 70 Z" fill="#a97917"/></svg></span>';
     }
     let glyph='✦', title=(labels[lang]||labels.en)[cat]||cat;
     if(cat==='student'||cat==='graduate'){
       const stars=Array.from({length:count},(_,i)=>'<text x="'+(50+(i-(count-1)/2)*17)+'" y="56" text-anchor="middle" font-size="16" fill="'+color+'">★</text>').join('');
-      return '<span class="member-emblem member-emblem--stars member-emblem--'+(cat==='student'?'silver':'gold')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="38" fill="none" stroke="'+color+'" stroke-width="3"/><circle cx="50" cy="50" r="33" fill="none" stroke="'+pale+'" stroke-width="1.5"/>'+stars+'</svg></span>';
+      return '<span class="member-emblem member-emblem--stars member-emblem--'+(cat==='student'?'silver':'gold')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="43.5" fill="none" stroke="'+color+'" stroke-width="2.5"/><circle cx="50" cy="50" r="40.5" fill="none" stroke="'+pale+'" stroke-width="1.2"/>'+stars+'</svg></span>';
     }
     if(cat==='researcher')glyph='⌕';
     else if(cat==='translator')glyph='✒';
     else if(cat==='culture')glyph='▤';
     else if(cat==='honorary')glyph='✹';
-    return '<span class="member-emblem member-emblem--special member-emblem--'+esc(cat||'other')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="36" fill="#14284b" stroke="#d8a72d" stroke-width="4"/><circle cx="50" cy="50" r="29" fill="none" stroke="#f4d98a" stroke-width="1.5"/><text x="50" y="62" text-anchor="middle" font-size="39" fill="#f4d98a">'+glyph+'</text></svg></span>';
+    return '<span class="member-emblem member-emblem--special member-emblem--'+esc(cat||'other')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="82" r="15" fill="#14284b" stroke="#d8a72d" stroke-width="3"/><circle cx="50" cy="82" r="10.5" fill="none" stroke="#f4d98a" stroke-width="1"/><text x="50" y="88" text-anchor="middle" font-size="17" fill="#f4d98a">'+glyph+'</text></svg></span>';
   }
   let cards = [];
   let currentPage = 1;
