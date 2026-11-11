@@ -1,0 +1,52 @@
+name: Pre-generate and cache membership certificates
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/generate-membership-certificates.yml"
+      - "scripts/generate_membership_certificates.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: membership-certificates-main
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install image, QR and Persian text dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libzbar0 fonts-noto-core fonts-dejavu-core
+          python -m pip install --upgrade pip
+          python -m pip install requests pillow qrcode[pil] pyzbar arabic-reshaper python-bidi jdatetime
+
+      - name: Generate only missing or changed certificates
+        run: python scripts/generate_membership_certificates.py
+
+      - name: Commit cached member certificates
+        run: |
+          if [ -z "$(git status --porcelain -- assets/certificates)" ]; then
+            echo "All member certificates are already generated and current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/certificates/
+          git commit -m "Pre-generate and cache approved membership certificates"
+          git push
