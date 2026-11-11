@@ -111,10 +111,11 @@
   }
   function facultyLevel(m) {
     const value=[m.degree,m.specialty,m.profile_headline,m.bio].filter(Boolean).join(' ').toLowerCase();
-    if(/استاد تمام|استاد دانشگاه|full professor|professor/.test(value) && !/استادیار سابق|formerly assistant professor/.test(value)) return 5;
+    // Assistant professor, including former/previous assistant professor, and unknown ranks use level 3.
+    if(/استادیار|assistant professor|formerly assistant professor|previously assistant professor/.test(value)) return 3;
     if(/دانشیار|associate professor/.test(value)) return 4;
+    if(/استاد تمام|استاد دانشگاه|full professor|(^|\\s)professor(\\s|$)/.test(value)) return 5;
     if(/مربی|instructor|lecturer/.test(value)) return 1;
-    // Unknown or former assistant-professor rank uses the approved assistant-professor design.
     return 3;
   }
   function memberEmblem(m, profile=false) {
