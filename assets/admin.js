@@ -91,6 +91,9 @@
         '<br>محل: '+esc([p.city,p.country].filter(Boolean).join('، ')||'ثبت نشده')+' · مؤسسه: '+esc(p.institution||'ثبت نشده')+
         '<br>تحصیلات: '+esc(p.degree||'—')+' · تخصص: '+esc(p.specialty||'—')+
         '<br>معرفی: '+esc(p.bio||'—')+'<br>تاریخ درخواست: '+new Date(p.created_at).toLocaleString('fa-IR')+'</div>'+
+        '<details class="admin-profile-editor"><summary>ویرایش کامل اطلاعات عضو</summary><div class="admin-profile-fields">'+
+        [['display_name','نام نمایشی',p.display_name],['full_name','نام کامل',p.full_name],['country','کشور',p.country],['city','شهر',p.city],['institution','دانشگاه یا مؤسسه',p.institution],['degree','مدرک تحصیلی',p.degree],['specialty','حوزه تخصصی',p.specialty],['profile_headline','عنوان معرفی',p.profile_headline],['website_url','وب‌سایت',p.website_url],['orcid','ORCID',p.orcid],['researchgate_url','ResearchGate',p.researchgate_url],['google_scholar_url','Google Scholar',p.google_scholar_url],['instagram_url','Instagram',p.instagram_url],['telegram_url','Telegram',p.telegram_url],['linkedin_url','LinkedIn',p.linkedin_url],['x_url','X',p.x_url],['blog_url','وبلاگ',p.blog_url],['phone','شماره تماس',p.phone],['memberships','عضویت‌ها',p.memberships],['activities','فعالیت‌ها',p.activities],['publications','آثار و انتشارات',p.publications],['research_interests','علایق پژوهشی',p.research_interests],['languages','زبان‌ها',p.languages],['bio','زندگی‌نامه',p.bio]].map(([key,label,value])=>'<label>'+label+(key==='bio'||['memberships','activities','publications','research_interests','languages'].includes(key)?'<textarea data-profile-field="'+key+'" rows="3">'+esc(value||'')+'</textarea>':'<input data-profile-field="'+key+'" value="'+esc(value||'')+'">')+'</label>').join('')+
+        '<label><input type="checkbox" data-profile-field="is_public" '+(p.is_public?'checked':'')+'> نمایش پروفایل در فهرست عمومی</label></div><button type="button" class="approve" data-action="save_profile">ذخیره اطلاعات عضو</button></details>'+
         evidence+'<div class="admin-category-editor"><label>گروه عضویت<select data-category-select>'+categories.map(([key,label])=>'<option value="'+key+'"'+(p.category===key?' selected':'')+'>'+label+'</option>').join('')+'</select></label><button type="button" class="approve" data-action="change_category">ذخیره گروه عضویت</button></div>'+
         '<div class="admin-actions">'+
         (status==='pending'?'<button class="approve" data-action="approve">تأیید عضویت و عکس</button><button class="reject" data-action="reject">رد درخواست</button>':'')+
@@ -109,6 +112,14 @@
     const currentPath=card.dataset.avatarPath||'';
     const update={};
     let removePath='';
+    if(action==='save_profile'){
+      const fields=['display_name','full_name','country','city','institution','degree','specialty','profile_headline','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','blog_url','phone','memberships','activities','publications','research_interests','languages','bio'];
+      fields.forEach(key=>{const field=card.querySelector('[data-profile-field="'+key+'"]');if(field)update[key]=field.value.trim()||null;});
+      const publicField=card.querySelector('[data-profile-field="is_public"]');
+      if(publicField)update.is_public=publicField.checked;
+      if(!update.full_name||update.full_name.length<2){message.textContent='نام کامل باید دست‌کم دو نویسه باشد.';return;}
+      if(update.bio&&update.bio.length>3000){message.textContent='زندگی‌نامه نباید بیش از ۳۰۰۰ نویسه باشد.';return;}
+    }
     if(action==='change_category'){
       const selected=card.querySelector('[data-category-select]')?.value;
       if(!categories.some(([key])=>key===selected)){message.textContent='گروه انتخاب‌شده معتبر نیست.';return;}
