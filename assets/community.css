@@ -736,3 +736,33 @@
    border-radius:12px;
  }
 }
+
+
+/* Member profile portrait: rectangular by default, magnifies to 2x on hover
+   and remains toggle-zoomable by tap on touch screens. */
+.member-public-card .member-public-heading > img.member-public-avatar:hover,
+.member-public-card .member-public-heading > img.member-public-avatar.is-zoomed,
+.member-public-card .member-public-heading > div.member-public-avatar:hover,
+.member-public-card .member-public-heading > div.member-public-avatar.is-zoomed{
+  position:relative;
+  z-index:50;
+  transform:scale(2);
+  transform-origin:left center;
+  border-radius:13px;
+  cursor:zoom-out;
+  box-shadow:0 12px 32px rgba(25,22,20,.38);
+}
+.member-public-card .member-public-heading > img.member-public-avatar,
+.member-public-card .member-public-heading > div.member-public-avatar{
+  cursor:zoom-in;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+@media(max-width:620px){
+ .member-public-card .member-public-heading > img.member-public-avatar:hover,
+ .member-public-card .member-public-heading > img.member-public-avatar.is-zoomed,
+ .member-public-card .member-public-heading > div.member-public-avatar:hover,
+ .member-public-card .member-public-heading > div.member-public-avatar.is-zoomed{
+   transform:scale(1.65);
+   transform-origin:left center;
+ }
+}
