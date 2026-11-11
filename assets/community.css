@@ -1019,3 +1019,27 @@
  #membership-steps>ol{grid-template-columns:1fr;gap:9px}
  #membership-steps>ol>li{padding:12px 44px 12px 12px;font-size:13px}
 }
+
+
+/* Directory cards: equal height regardless of how much profile data is available. */
+#member-directory .community-members{
+  grid-auto-rows:1fr !important;
+  align-items:stretch !important;
+}
+#member-directory .community-members > .community-member{
+  align-self:stretch !important;
+  height:100% !important;
+  min-height:0;
+  box-sizing:border-box;
+}
+@media(max-width:620px){
+  #member-directory .community-members{
+    grid-auto-rows:1fr !important;
+    align-items:stretch !important;
+  }
+  #member-directory .community-members > .community-member{
+    align-self:stretch !important;
+    height:100% !important;
+    min-height:0 !important;
+  }
+}
