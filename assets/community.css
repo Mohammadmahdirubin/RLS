@@ -461,10 +461,9 @@
 
 
 /* Unique QR code on every member card, encoding that member's public profile URL. */
-.member-card-qr{display:flex;align-items:center;justify-content:center;gap:9px;margin:12px auto 2px;padding:8px 10px;width:max-content;max-width:100%;border:1px solid rgba(70,90,120,.18);border-radius:12px;background:rgba(255,255,255,.72)}
+.member-card-qr{display:flex;align-items:center;justify-content:center;margin:12px auto 2px;padding:8px;width:92px;max-width:100%;border:1px solid rgba(70,90,120,.18);border-radius:12px;background:rgba(255,255,255,.72)}
 .member-card-qr img{display:block;width:76px;height:76px;object-fit:contain;background:#fff;border-radius:6px}
-.member-card-qr span{font-size:11px;font-weight:700;line-height:1.6;color:#46546a;max-width:105px}
-@media(max-width:420px){.member-card-qr{gap:7px}.member-card-qr img{width:68px;height:68px}}
+@media(max-width:420px){.member-card-qr{width:84px;padding:7px}.member-card-qr img{width:68px;height:68px}}
 
 /* Make the QR image itself an accessible, clickable link to its member profile. */
 .member-card-qr-link{display:block;line-height:0;text-decoration:none;border-radius:6px}
