@@ -133,18 +133,18 @@
         const inner=44;
         rays+='<line x1="50" y1="'+inner+'" x2="50" y2="'+outer+'" transform="rotate('+angle+' 50 50)" stroke="#d9a52d" stroke-width="'+(count>=4?1.35:1.1)+'" stroke-linecap="round"/>';
       }
-      return '<span class="member-emblem member-emblem--faculty member-emblem--level-'+count+'" title="'+esc((labels[lang]||labels.en).faculty)+'" aria-label="'+esc((labels[lang]||labels.en).faculty)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true">'+rays+'<circle cx="50" cy="50" r="43.5" fill="none" stroke="#d9a52d" stroke-width="2.2"/><circle cx="50" cy="50" r="40.8" fill="none" stroke="#f8df91" stroke-width="1"/><path d="M50 73 L44 83 L50 80 L56 83 Z" fill="#d9a52d"/><circle cx="50" cy="72" r="8" fill="#f5cf62" stroke="#a97917" stroke-width="1.4"/><path d="M50 66 L51.8 70 L56 70.5 L53 73.5 L53.7 77.5 L50 75.5 L46.3 77.5 L47 73.5 L44 70.5 L48.2 70 Z" fill="#a97917"/></svg></span>';
+      return '<span class="member-emblem member-emblem--faculty member-emblem--level-'+count+'" title="'+esc((labels[lang]||labels.en).faculty)+'" aria-label="'+esc((labels[lang]||labels.en).faculty)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true">'+rays+'<circle cx="50" cy="50" r="43.5" fill="none" stroke="#d9a52d" stroke-width="2.2"/><circle cx="50" cy="50" r="40.8" fill="none" stroke="#f8df91" stroke-width="1"/><path d="M44 91 L42 99 L50 95 L58 99 L56 91 Z" fill="#d9a52d"/><path d="M50 91 L48 99 L50 97 L52 99 L50 91 Z" fill="#f8df91"/><circle cx="50" cy="87.5" r="6.5" fill="#f5cf62" stroke="#a97917" stroke-width="1.4"/><path d="M50 82.5 L51.5 86 L55 86.5 L52.5 89 L53 92 L50 90.5 L47 92 L47.5 89 L45 86.5 L48.5 86 Z" fill="#a97917"/></svg></span>';
     }
     let glyph='✦', title=(labels[lang]||labels.en)[cat]||cat;
     if(cat==='student'||cat==='graduate'){
-      const stars=Array.from({length:count},(_,i)=>'<text x="'+(50+(i-(count-1)/2)*17)+'" y="56" text-anchor="middle" font-size="16" fill="'+color+'">★</text>').join('');
+      const stars=Array.from({length:count},(_,i)=>{const angle=(-90+(360/count)*i)*Math.PI/180;const x=50+46*Math.cos(angle);const y=50+46*Math.sin(angle);return '<text x="'+x.toFixed(2)+'" y="'+(y+4.5).toFixed(2)+'" text-anchor="middle" font-size="12" font-weight="700" stroke="'+pale+'" stroke-width="1.2" paint-order="stroke" fill="'+color+'">★</text>';}).join('');
       return '<span class="member-emblem member-emblem--stars member-emblem--'+(cat==='student'?'silver':'gold')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="43.5" fill="none" stroke="'+color+'" stroke-width="2.5"/><circle cx="50" cy="50" r="40.5" fill="none" stroke="'+pale+'" stroke-width="1.2"/>'+stars+'</svg></span>';
     }
     if(cat==='researcher')glyph='⌕';
     else if(cat==='translator')glyph='✒';
     else if(cat==='culture')glyph='▤';
     else if(cat==='honorary')glyph='✹';
-    return '<span class="member-emblem member-emblem--special member-emblem--'+esc(cat||'other')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="82" r="15" fill="#14284b" stroke="#d8a72d" stroke-width="3"/><circle cx="50" cy="82" r="10.5" fill="none" stroke="#f4d98a" stroke-width="1"/><text x="50" y="88" text-anchor="middle" font-size="17" fill="#f4d98a">'+glyph+'</text></svg></span>';
+    return '<span class="member-emblem member-emblem--special member-emblem--'+esc(cat||'other')+'" title="'+esc(title)+'" aria-label="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 100 100" role="img" aria-hidden="true"><circle cx="50" cy="50" r="43.5" fill="none" stroke="#d8a72d" stroke-width="2.5"/><circle cx="50" cy="50" r="40.5" fill="none" stroke="#f4d98a" stroke-width="1.2"/><path d="M44 91 L42 99 L50 95 L58 99 L56 91 Z" fill="#d8a72d"/><circle cx="50" cy="87.5" r="6.5" fill="#14284b" stroke="#d8a72d" stroke-width="1.8"/><text x="50" y="91" text-anchor="middle" font-size="12" fill="#f4d98a">'+glyph+'</text></svg></span>';
   }
   let cards = [];
   let currentPage = 1;
