@@ -696,3 +696,17 @@
  .member-avatar-emblem--card{width:92px;height:92px}
  .member-avatar-emblem--card .community-avatar,.member-avatar-emblem--card .community-avatar-image{width:70px;height:70px}
 }
+
+/* FIX: keep member identity decorations on the frame, never across the face */
+.member-avatar-emblem--profile .member-public-avatar{width:174px;height:174px}
+.member-avatar-emblem--profile .member-emblem{z-index:2}
+.member-avatar-emblem--card .community-avatar,
+.member-avatar-emblem--card .community-avatar-image{width:76px;height:76px}
+.member-avatar-emblem--card .member-emblem{z-index:2}
+.member-emblem-svg{overflow:visible}
+@media(max-width:620px){
+ .member-avatar-emblem--profile{width:196px;height:196px}
+ .member-avatar-emblem--profile .member-public-avatar{width:154px;height:154px}
+ .member-avatar-emblem--card .community-avatar,
+ .member-avatar-emblem--card .community-avatar-image{width:70px;height:70px}
+}
