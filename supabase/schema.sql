@@ -421,6 +421,7 @@ create table if not exists public.rls_member_points (
   created_by uuid not null default auth.uid() references auth.users(id),
   created_at timestamptz not null default now()
 );
+alter table public.rls_member_points drop column if exists evidence_url;
 create index if not exists rls_member_points_user_date_idx on public.rls_member_points(user_id, activity_date desc);
 create index if not exists rls_member_points_created_idx on public.rls_member_points(created_at desc);
 alter table public.rls_member_points enable row level security;
