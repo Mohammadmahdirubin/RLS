@@ -890,3 +890,26 @@
   #member-directory .community-member--placeholder{min-height:115px}
   #member-directory .community-placeholder-mark{width:34px;height:34px;margin:4px auto 7px}
 }
+
+
+/* Compact, aligned four-column directory on narrow screens.
+   Prevent one populated card from stretching neighboring placeholders. */
+#member-directory .community-members{align-items:start!important;grid-auto-rows:auto}
+#member-directory .community-member{align-self:start!important;height:auto!important;min-width:0;box-sizing:border-box}
+#member-directory .community-member--placeholder{align-self:start!important;min-height:190px}
+@media(max-width:620px){
+ #member-directory .community-members{grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:start!important;gap:7px!important}
+ #member-directory .community-member{min-height:0!important;padding:7px 3px!important;border-radius:12px;overflow:hidden}
+ #member-directory .community-member-link{display:flex;flex-direction:column;align-items:center;min-width:0}
+ #member-directory .member-avatar-emblem--card{width:46px!important;height:46px!important;margin:2px auto 5px!important}
+ #member-directory .member-avatar-emblem--card .community-avatar,
+ #member-directory .member-avatar-emblem--card .community-avatar-image{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;aspect-ratio:1/1;object-fit:cover}
+ #member-directory .community-member h3{width:100%;margin:3px 0!important;font-size:10px!important;line-height:1.45;text-align:center;overflow-wrap:anywhere}
+ #member-directory .community-member p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:8px!important;line-height:1.45;margin:3px 0!important}
+ #member-directory .community-member-joined,#member-directory .community-member .member-card-links,
+ #member-directory .community-member .member-card-qr,#member-directory .community-member .member-qr-deferred{display:none!important}
+ #member-directory .community-member .member-open-profile{display:block;width:100%;box-sizing:border-box;min-height:27px;margin:5px 0 0!important;padding:4px 2px!important;font-size:8px!important;line-height:1.3;white-space:normal;text-align:center}
+ #member-directory .community-member--placeholder{min-height:112px!important;padding:7px 3px!important}
+ #member-directory .community-placeholder-mark{width:34px!important;height:34px!important;margin:5px auto 8px!important}
+ #member-directory .community-placeholder-line{height:5px!important;margin:5px auto!important}
+}
