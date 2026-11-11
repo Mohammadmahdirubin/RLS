@@ -134,7 +134,7 @@
     let rays='';
     if(faculty){const total=24+level*10;for(let i=0;i<total;i++){const angle=i*360/total;rays+='<path d="M90 18 L87 5 L90 0 L93 5 Z" transform="rotate('+angle+' 90 82)" fill="'+(i%2?goldLight:gold)+'"/>';}}
     let crown='';
-    const stars=faculty?Math.max(1,level):silver?3:5;
+    const stars=faculty?Math.max(1,level):(cat==='student'||cat==='graduate')?degreeStars(m):0;
     for(let i=0;i<stars;i++){const x=90+(i-(stars-1)/2)*17,y=faculty?23:25+(Math.abs(i-(stars-1)/2)*1.5);crown+='<path d="M'+x+' '+(y-7)+' L'+(x+2.1)+' '+(y-2)+' L'+(x+7)+' '+y+' L'+(x+2.1)+' '+(y+2)+' L'+x+' '+(y+7)+' L'+(x-2.1)+' '+(y+2)+' L'+(x-7)+' '+y+' L'+(x-2.1)+' '+(y-2)+' Z" fill="'+main+'" stroke="'+light+'" stroke-width="1.2"/>';}
     let icon='';
     if(cat==='researcher')icon='<g fill="none" stroke="'+gold+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M52 137 Q68 129 83 137 V151 Q67 144 52 151Z"/><path d="M83 137 Q99 129 114 137 V151 Q98 144 83 151Z"/><path d="M119 130 L135 113 L139 117 L123 134Z"/><path d="M117 132 L114 140 L123 136"/></g>';
