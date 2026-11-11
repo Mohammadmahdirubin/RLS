@@ -377,7 +377,8 @@
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-    img.classList.toggle('is-zoomed');
+    const zoomed=img.classList.toggle('is-zoomed');
+    img.closest('.community-member')?.classList.toggle('community-member--photo-zoomed',zoomed);
   },true);
   // Remove any stale viewer left by an older cached script.
   document.querySelectorAll('.avatar-lightbox,.image-lightbox,.community-image-overlay').forEach(node=>node.remove());
