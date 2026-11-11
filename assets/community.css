@@ -663,38 +663,6 @@
 @media(max-width:600px){.member-profile-links{justify-content:flex-start;gap:8px;padding:10px}.member-profile-link{min-height:40px;padding:5px 8px;font-size:13px}.member-profile-link img{width:27px;height:27px;flex-basis:27px}}
 
 
-/* Member contribution scoring policy */
-.rls-points-policy{scroll-margin-top:90px}
-.rls-points-intro{background:linear-gradient(135deg,#fffdf8,#f6f0e4);border:1px solid #e3d3b2;border-radius:18px;padding:clamp(18px,3vw,30px);margin-bottom:24px}
-.rls-points-intro h2{color:#102f5b;margin:6px 0 12px}
-.rls-points-intro p{line-height:2}
-.rls-points-principles{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.rls-points-principles span{border:1px solid #e2d4b8;background:#fff;border-radius:999px;padding:7px 12px;color:#694d20;font-size:13px}
-.rls-points-policy h3{color:#173a61;margin:28px 0 12px}
-.rls-points-table-wrap{overflow-x:auto;border:1px solid var(--community-line);border-radius:12px;background:#fff}
-.rls-points-table{width:100%;border-collapse:collapse;min-width:760px;font-size:14px;line-height:1.8}
-.rls-points-table th{background:#102f5b;color:#fff;font-weight:700}
-.rls-points-table th,.rls-points-table td{padding:11px 12px;border-bottom:1px solid #e9e2d9;text-align:right;vertical-align:top}
-.rls-points-table tbody tr:nth-child(even){background:#fbf8f1}
-.rls-points-table td:nth-child(3){font-weight:800;color:#9b7024;text-align:center;white-space:nowrap}
-.rls-star-levels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
-.rls-star-levels>div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:1px solid #e7dcc7;background:#fffdf8;border-radius:12px;padding:14px 8px}
-.rls-star-levels strong{color:#bd8b2f;font-size:23px;letter-spacing:1px;direction:ltr}
-.rls-star-levels b{font-size:13px;color:#45343a}
-.rls-star-levels span{font-size:12px;color:#756a6c}
-.rls-points-rules{padding-right:22px;line-height:2.05}
-.rls-points-rules li{padding:3px 0}
-.rls-points-certificate-note{background:#f6f0e4;border-right:4px solid #bd9650;padding:14px 16px;border-radius:8px;line-height:2}
-.member-contribution-summary{margin-top:24px;padding:20px;border:1px solid #e4d4b4;border-radius:16px;background:#fffdf8}
-.member-contribution-summary h2{margin-top:0;color:#173a61}
-.member-contribution-score{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.member-contribution-score strong{font-size:30px;color:#a87927}
-.member-contribution-stars{color:#bd8b2f;font-size:24px;letter-spacing:2px;direction:ltr}
-.member-contribution-activities{display:grid;gap:10px;margin-top:14px}
-.member-contribution-activity{display:grid;grid-template-columns:1fr auto;gap:5px 12px;padding:12px;border:1px solid #eee5d7;border-radius:10px;background:#fff}
-.member-contribution-activity small{color:#756a6c}
-.member-contribution-activity b{color:#9b7024;white-space:nowrap}
-.member-contribution-empty{color:#756a6c;font-size:14px}
 @media(max-width:720px){
  .rls-star-levels{grid-template-columns:repeat(2,minmax(0,1fr))}
  .rls-star-levels>div:last-child{grid-column:1/-1}
