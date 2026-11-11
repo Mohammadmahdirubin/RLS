@@ -675,3 +675,24 @@
 .member-card-score{display:flex;align-items:center;justify-content:center;gap:7px;margin:8px 0;color:#bd8b2f;direction:ltr}
 .member-card-score span{font-size:16px;letter-spacing:1px}
 .member-card-score small{font-size:12px;color:#725c39;direction:rtl}
+
+
+/* RLS member identity emblems: academic sunbursts and distinct discipline seals */
+.member-avatar-emblem{position:relative;display:grid;place-items:center;flex:0 0 auto;isolation:isolate}
+.member-avatar-emblem--card{width:100px;height:100px;margin:0 auto 8px}
+.member-avatar-emblem--card .community-avatar,
+.member-avatar-emblem--card .community-avatar-image{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;margin:0;z-index:1;border-radius:50%;object-fit:cover}
+.member-avatar-emblem--card .member-emblem{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.member-avatar-emblem--profile{width:220px;height:220px;margin:0 auto 8px}
+.member-avatar-emblem--profile .member-public-avatar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:190px;height:190px;margin:0;z-index:1;border-radius:50%;object-fit:cover}
+.member-avatar-emblem--profile .member-emblem{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.member-emblem-svg{display:block;width:100%;height:100%;overflow:visible}
+.member-emblem--special .member-emblem-svg{filter:drop-shadow(0 2px 3px rgba(25,20,10,.2))}
+.member-public-heading{align-items:center}
+.member-public-heading>div:first-child{flex:0 0 auto}
+@media(max-width:620px){
+ .member-avatar-emblem--profile{width:196px;height:196px}
+ .member-avatar-emblem--profile .member-public-avatar{width:168px;height:168px}
+ .member-avatar-emblem--card{width:92px;height:92px}
+ .member-avatar-emblem--card .community-avatar,.member-avatar-emblem--card .community-avatar-image{width:70px;height:70px}
+}
