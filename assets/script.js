@@ -328,16 +328,15 @@ const initRLS=()=>{
     bannerLink.href=langUrls[lang];
     bannerLink.setAttribute('aria-label',lang==='ru'?'Исследования по русскому языку':lang==='en'?'Russian Language Studies':'دوفصلنامه مطالعات زبان روسی');
     const image=document.createElement('img');
+    image.removeAttribute('srcset');
+    image.removeAttribute('sizes');
     image.src=asset('assets/header-masthead-960.webp');
-    image.srcset=asset('assets/header-masthead-960.webp')+' 960w, '+asset('assets/header-masthead-1920.webp')+' 1920w';
-    image.sizes='100vw';
-    image.width=2048;
-    image.height=682;
+    image.width=960;
+    image.height=320;
     image.fetchPriority='high';
+    image.decoding='async';
     image.onerror=function(){
       image.onerror=null;
-      image.removeAttribute('srcset');
-      image.removeAttribute('sizes');
       image.src=asset('Russian Language Studies_ Books and Kremlin Panorama.png');
     };
     image.alt=lang==='ru'?'Исследования по русскому языку':'Russian Language Studies Journal';
