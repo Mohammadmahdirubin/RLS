@@ -24,7 +24,7 @@
       }
       login.hidden=true;dashboard.hidden=false;
       document.getElementById('admin-identity').textContent=session.user.email||'مدیر انجمن';
-      await Promise.all([load(),loadPointMembers(),loadPointHistory()]);
+      await load();
     }finally{checking=false;}
   }
   async function load(){
@@ -43,16 +43,15 @@
     const html=await Promise.all(data.map(async p=>{
       let evidence='';
       if(p.evidence_url && p.evidence_url.startsWith(p.user_id + '/') && !p.evidence_url.includes('..')){
-        const {data:signed,error:signedError}=await client.storage.from('rls-members-private').createSignedUrl(p.evidence_url,300);
-        evidence=!signedError&&signed?.signedUrl
-          ?'<p><a href="'+esc(signed.signedUrl)+'" target="_blank" rel="noopener noreferrer">مشاهده مدرک (پیوند موقت ۵ دقیقه‌ای)</a></p>'
-          :'<p class="admin-meta">مدرک ثبت شده، اما ایجاد پیوند امن ناموفق بود.</p>';
+        // Do not create hundreds of signed URLs while rendering the member list.
+        // A signed link is requested only when an administrator opens the evidence.
+        evidence='<p><button type="button" class="admin-evidence-link" data-evidence-path="'+esc(p.evidence_url)+'">ساخت پیوند امن مدرک</button></p>';
       }
       const reviewAvatarPath=p.pending_avatar_path||p.avatar_path;
       const avatarUrl=reviewAvatarPath
         ?client.storage.from('rls-member-avatars').getPublicUrl(reviewAvatarPath).data.publicUrl:'';
       const photo=avatarUrl
-        ?'<div class="admin-photo-review"><img src="'+esc(avatarUrl)+'" alt="عکس پروفایل '+esc(p.full_name)+'"><span>'+(p.pending_avatar_path?'عکس جدید در انتظار تأیید':'عکس پروفایل')+'</span></div>'
+        ?'<div class="admin-photo-review"><img src="'+esc(avatarUrl)+'" alt="عکس پروفایل '+esc(p.full_name)+'" width="104" height="104" loading="lazy" decoding="async"><span>'+(p.pending_avatar_path?'عکس جدید در انتظار تأیید':'عکس پروفایل')+'</span></div>'
         :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است.</p>';
       return '<article class="admin-member" data-id="'+esc(p.user_id)+'" data-avatar-path="'+esc(p.avatar_path||'')+'" data-pending-avatar="'+esc(p.pending_avatar_path||'')+'"><h3>'+esc(p.full_name)+'</h3>'+
         photo+
@@ -138,7 +137,32 @@
     document.querySelectorAll('[data-status]').forEach(x=>x.classList.toggle('active',x===b));
     load();
   }));
-  list.addEventListener('click',e=>{
+  list.addEventListener('click',async e=>{
+    const evidenceButton=e.target.closest('[data-evidence-path]');
+    if(evidenceButton){
+      e.preventDefault();
+      if(evidenceButton.dataset.loading==='1')return;
+      evidenceButton.dataset.loading='1';
+      evidenceButton.disabled=true;
+      evidenceButton.textContent='در حال ساخت پیوند امن…';
+      try{
+        const path=evidenceButton.dataset.evidencePath||'';
+        const {data:signed,error}=await client.storage.from('rls-members-private').createSignedUrl(path,300);
+        if(error||!signed?.signedUrl)throw error||new Error('Signed URL unavailable');
+        const link=document.createElement('a');
+        link.href=signed.signedUrl;
+        link.target='_blank';
+        link.rel='noopener noreferrer';
+        link.textContent='باز کردن مدرک (پیوند موقت ۵ دقیقه‌ای)';
+        evidenceButton.replaceWith(link);
+      }catch(error){
+        evidenceButton.disabled=false;
+        evidenceButton.dataset.loading='0';
+        evidenceButton.textContent='تلاش دوباره برای پیوند مدرک';
+        console.warn('Could not create a private evidence link:',error);
+      }
+      return;
+    }
     const b=e.target.closest('[data-action]');if(!b)return;
     const card=b.closest('.admin-member');moderate(card.dataset.id,b.dataset.action,card);
   });
