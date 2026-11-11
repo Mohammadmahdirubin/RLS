@@ -978,3 +978,164 @@
     height:5px !important; margin:5px auto !important;
   }
 }
+
+
+/* Mobile: restore full member-card information in a clean two-column layout. */
+@media (max-width: 620px) {
+  #member-directory .community-members {
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows:auto !important;
+    align-items:start !important;
+    gap:12px !important;
+  }
+  #member-directory .community-members > .community-member {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    box-sizing:border-box !important;
+    overflow:visible !important;
+    padding:12px 8px !important;
+    margin:0 !important;
+    border-radius:13px !important;
+  }
+  #member-directory .community-member > .member-card-links {
+    display:flex !important;
+    flex:0 0 auto !important;
+    width:100% !important;
+    min-height:25px !important;
+    height:auto !important;
+    margin:0 0 7px !important;
+    gap:4px !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+  }
+  #member-directory .community-member .member-social-icon {
+    display:inline-flex !important;
+    min-width:23px !important;
+    height:23px !important;
+    padding:0 4px !important;
+    font-size:9px !important;
+  }
+  #member-directory .community-member > .community-member-link {
+    display:flex !important;
+    flex:0 0 auto !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    gap:4px !important;
+    overflow:visible !important;
+  }
+  #member-directory .community-member .member-avatar-emblem--card {
+    flex:0 0 68px !important;
+    width:68px !important;
+    height:68px !important;
+    min-height:68px !important;
+    margin:2px auto 5px !important;
+  }
+  #member-directory .community-member .member-avatar-emblem--card .community-avatar,
+  #member-directory .community-member .member-avatar-emblem--card .community-avatar-image {
+    width:56px !important;
+    height:56px !important;
+    min-width:56px !important;
+    min-height:56px !important;
+    max-width:56px !important;
+    max-height:56px !important;
+  }
+  #member-directory .community-member h3 {
+    display:block !important;
+    width:100% !important;
+    max-height:none !important;
+    margin:3px 0 !important;
+    overflow-wrap:anywhere !important;
+    font-size:12px !important;
+    line-height:1.5 !important;
+    text-align:center !important;
+  }
+  #member-directory .community-member .member-category {
+    display:inline-flex !important;
+    max-width:100% !important;
+    margin:3px 0 !important;
+    padding:3px 6px !important;
+    font-size:9px !important;
+    line-height:1.5 !important;
+    white-space:normal !important;
+  }
+  #member-directory .community-member > .community-member-link > p {
+    display:block !important;
+    width:100% !important;
+    max-height:none !important;
+    margin:4px 0 !important;
+    overflow:visible !important;
+    font-size:10px !important;
+    line-height:1.7 !important;
+    overflow-wrap:anywhere !important;
+  }
+  #member-directory .community-member .community-member-joined {
+    display:block !important;
+    width:100% !important;
+    margin:5px 0 0 !important;
+    font-size:9px !important;
+    line-height:1.6 !important;
+    text-align:center !important;
+  }
+  #member-directory .community-member > .member-open-profile {
+    display:inline-flex !important;
+    flex:0 0 auto !important;
+    width:100% !important;
+    min-height:31px !important;
+    height:auto !important;
+    margin:8px 0 0 !important;
+    padding:6px 4px !important;
+    box-sizing:border-box !important;
+    font-size:10px !important;
+    line-height:1.4 !important;
+    white-space:normal !important;
+    text-align:center !important;
+  }
+  #member-directory .community-member .member-qr-deferred,
+  #member-directory .community-member .member-card-qr {
+    display:flex !important;
+    flex:0 0 auto !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:auto !important;
+    max-width:100% !important;
+    margin:8px auto 0 !important;
+  }
+  #member-directory .community-member .member-card-qr {
+    padding:6px !important;
+  }
+  #member-directory .community-member .member-card-qr img {
+    display:block !important;
+    width:64px !important;
+    height:64px !important;
+  }
+  #member-directory .community-member--placeholder {
+    display:flex !important;
+    height:auto !important;
+    min-height:190px !important;
+    max-height:none !important;
+    align-self:start !important;
+    justify-content:center !important;
+    padding:12px 8px !important;
+  }
+  #member-directory .community-member--placeholder .community-placeholder-mark {
+    width:48px !important;
+    height:48px !important;
+    margin:8px auto 10px !important;
+  }
+  #member-directory .community-member--placeholder .community-placeholder-line {
+    height:6px !important;
+    margin:6px auto !important;
+  }
+}
