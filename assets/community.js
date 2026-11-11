@@ -260,7 +260,7 @@
       meeting_attendance:'شرکت در جلسه انجمن',special_session_attendance:'شرکت در نشست تخصصی',
       seminar_attendance:'شرکت در سمینار انجمن',workshop_attendance:'شرکت در کارگاه انجمن',
       national_conference_attendance:'شرکت در همایش ملی',international_conference_attendance:'شرکت در کنفرانس بین‌المللی',
-      paper_presentation:'ارائه مقاله',invited_lecture:'سخنرانی مدعو یا کلیدی',session_chair:'مدیریت جلسه یا پنل',
+      session_paper_presentation:'ارائه مقاله در نشست یا سمینار انجمن',paper_presentation:'ارائه مقاله در همایش یا کنفرانس',invited_lecture:'سخنرانی مدعو یا کلیدی',session_chair:'مدیریت جلسه یا پنل',
       scientific_committee:'همکاری در کمیته علمی',organizing_committee:'همکاری اجرایی در رویداد',
       peer_review:'داوری علمی',journal_article:'انتشار مقاله علمی',book_authorship:'تألیف کتاب',
       book_translation:'ترجمه کتاب',book_chapter:'تألیف فصل کتاب',research_project:'طرح پژوهشی',
