@@ -240,7 +240,40 @@
     detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m,true)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path)+'" alt="'+name+'" loading="eager" fetchpriority="high" decoding="async" width="190" height="190">':'<div class="member-public-avatar member-profile-avatar-fallback">'+esc(initials(m.display_name))+'</div>')+'<div><h1>'+name+'</h1><span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span><p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':key==='orcid'&&orcidUrl(value)?'<a href="'+esc(orcidUrl(value))+'" target="_blank" rel="noopener noreferrer">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'</article>';
     const detailAvatar=detail.querySelector('img[data-avatar-path]');
     if(detailAvatar)attachAvatarFallback(detailAvatar,detailAvatar.dataset.avatarPath);
+    // Publicly visible, administrator-verified contribution score and activity history.
+    let scoreRow=null, activityRows=[];
+    try {
+      const [scoreResult,activityResult]=await Promise.all([
+        db.from('rls_public_member_scores').select('total_points,star_level').eq('user_id',id).maybeSingle(),
+        db.from('rls_public_member_points').select('id,activity_type,title,description,activity_date,points').eq('user_id',id).order('activity_date',{ascending:false}).limit(40)
+      ]);
+      if(scoreResult.error)throw scoreResult.error;
+      if(activityResult.error)throw activityResult.error;
+      scoreRow=scoreResult.data||{total_points:0,star_level:0};
+      activityRows=activityResult.data||[];
+    } catch(pointsError) {
+      console.warn('Member contribution score could not be loaded:',pointsError);
+    }
+    m.total_points=Number(scoreRow?.total_points||0);
+    m.star_level=Number(scoreRow?.star_level||0);
+    const activityLabels={
+      meeting_attendance:'شرکت در جلسه انجمن',special_session_attendance:'شرکت در نشست تخصصی',
+      seminar_attendance:'شرکت در سمینار انجمن',workshop_attendance:'شرکت در کارگاه انجمن',
+      national_conference_attendance:'شرکت در همایش ملی',international_conference_attendance:'شرکت در کنفرانس بین‌المللی',
+      paper_presentation:'ارائه مقاله',invited_lecture:'سخنرانی مدعو یا کلیدی',session_chair:'مدیریت جلسه یا پنل',
+      scientific_committee:'همکاری در کمیته علمی',organizing_committee:'همکاری اجرایی در رویداد',
+      peer_review:'داوری علمی',journal_article:'انتشار مقاله علمی',book_authorship:'تألیف کتاب',
+      book_translation:'ترجمه کتاب',book_chapter:'تألیف فصل کتاب',research_project:'طرح پژوهشی',
+      course_teaching:'تدریس دوره آموزشی',workshop_teaching:'مدرس کارگاه',educational_content:'تولید محتوای آموزشی',
+      cultural_outreach:'فعالیت فرهنگی و ترویجی',mentoring:'همراهی و راهنمایی علمی',other:'فعالیت تأییدشده'
+    };
+    const starText='★'.repeat(m.star_level)+'☆'.repeat(5-m.star_level);
+    const pointsPanel=document.createElement('section');
+    pointsPanel.className='member-contribution-summary';
+    pointsPanel.innerHTML='<h2>امتیازها و افتخارات مشارکت</h2><div class="member-contribution-score"><strong>'+esc(String(m.total_points))+' امتیاز</strong><span class="member-contribution-stars" aria-label="'+esc(String(m.star_level))+' از پنج ستاره">'+starText+'</span><span>'+esc(m.star_level?({1:'عضو فعال',2:'عضو برجسته',3:'عضو ممتاز',4:'عضو پیشرو',5:'عضو ممتاز و اثرگذار'}[m.star_level]):'هنوز به حدنصاب نخستین ستاره نرسیده است')+'</span></div><p><a href="'+esc(location.pathname.replace(/[^/]*$/,'')+'#member-points')+'">مشاهده آیین‌نامه و جدول کامل امتیازدهی</a></p><div class="member-contribution-activities">'+(activityRows.length?activityRows.map(a=>'<article class="member-contribution-activity"><div><strong>'+esc(a.title)+'</strong><small> · '+esc(activityLabels[a.activity_type]||a.activity_type)+' · '+esc(new Date(a.activity_date+'T12:00:00').toLocaleDateString('fa-IR'))+'</small>'+(a.description?'<div>'+esc(a.description)+'</div>':'')+'</div><b>+'+esc(String(a.points))+' امتیاز</b></article>').join(''):'<p class="member-contribution-empty">هنوز فعالیت امتیازآور تأییدشده‌ای برای این عضو ثبت نشده است.</p>')+'</div>';
+    detail.querySelector('.member-public-card')?.appendChild(pointsPanel);
     // Approved membership certificates are public and are generated only from
+    // fields returned by rls_public_members (never private documents or account data). are public and are generated only from
     // fields returned by rls_public_members (never private documents or account data).
     if(window.RLSMembershipCertificate && m.membership_status === 'approved') {
       try {
