@@ -94,7 +94,7 @@
         ?client.storage.from('rls-member-avatars').getPublicUrl(reviewAvatarPath).data.publicUrl:'';
       const photo=avatarUrl
         ?'<div class="admin-photo-review"><img src="'+esc(avatarUrl)+'" alt="عکس پروفایل '+esc(p.full_name)+'" width="104" height="104" loading="lazy" decoding="async"><span>'+(p.pending_avatar_path?'عکس جدید در انتظار تأیید':'عکس پروفایل')+'</span></div>'
-        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است.</p>';
+        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است. برای تکمیل درخواست، متقاضی باید با ایمیل ثبت‌نامی وارد <a href="member-account.html">درگاه اعضا</a> شود و عکس خود را بارگذاری کند.</p>';
       return '<article class="admin-member" data-id="'+esc(p.user_id)+'" data-avatar-path="'+esc(p.avatar_path||'')+'" data-pending-avatar="'+esc(p.pending_avatar_path||'')+'"><h3>'+esc(p.full_name)+'</h3>'+
         photo+
         '<div class="admin-meta">گروه: '+esc(labels[p.category]||p.category)+' · ایمیل: '+esc(p.email)+
