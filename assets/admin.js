@@ -27,7 +27,39 @@
       await load();
     }finally{checking=false;}
   }
+  async function loadCertificates(){
+    list.textContent='در حال دریافت فهرست گواهی‌ها…';
+    const {data,error}=await client.from('rls_profiles')
+      .select('user_id,full_name,display_name,category,email,created_at,membership_status,member_number')
+      .in('membership_status',['approved','suspended'])
+      .not('member_number','is',null)
+      .order('member_number',{ascending:true});
+    if(error){list.textContent='خطا در دریافت فهرست گواهی‌ها: '+error.message;return;}
+    if(!data?.length){list.textContent='هنوز گواهی صادرشده‌ای برای بررسی وجود ندارد.';return;}
+    list.innerHTML=data.map(p=>{
+      const name=p.display_name||p.full_name||'عضو انجمن';
+      const number=String(p.member_number||'').padStart(6,'0');
+      const state=p.membership_status==='suspended'?' · عضویت تعلیق‌شده':' · عضویت فعال';
+      return '<article class="admin-member admin-certificate-member" data-certificate-user="'+esc(p.user_id)+'">'+
+        '<h3>'+esc(name)+'</h3>'+
+        '<div class="admin-meta">شماره عضویت: '+esc(number)+' · گروه: '+esc(labels[p.category]||p.category||'—')+state+
+        '<br>ایمیل: '+esc(p.email||'—')+' · تاریخ عضویت: '+(p.created_at?new Date(p.created_at).toLocaleDateString('fa-IR'):'—')+'</div>'+
+        '<div class="admin-certificate-preview"></div></article>';
+    }).join('');
+    data.forEach(p=>{
+      const card=list.querySelector('[data-certificate-user="'+CSS.escape(String(p.user_id))+'"]');
+      const target=card?.querySelector('.admin-certificate-preview');
+      if(target&&window.RLSMembershipCertificate){
+        window.RLSMembershipCertificate.render(target,{
+          user_id:String(p.user_id),display_name:p.display_name||p.full_name,
+          full_name:p.full_name,category:p.category,created_at:p.created_at,
+          member_number:p.member_number,membership_status:p.membership_status
+        },{adminPreview:true});
+      }
+    });
+  }
   async function load(){
+    if(status==='certificates'){await loadCertificates();return;}
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
       .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,is_public,created_at')
