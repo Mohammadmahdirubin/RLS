@@ -28,6 +28,26 @@
   const say = (el, value) => { if (el) el.textContent = value; };
   const clean = value => String(value || '').trim();
 
+  async function sendMembershipNotice(event) {
+    try {
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+      const token = sessionData?.session?.access_token;
+      if (!token) throw new Error('نشست معتبر برای ارسال اعلان پیدا نشد.');
+      const { data, error } = await db.functions.invoke('notify-membership-request', {
+        headers: { Authorization: 'Bearer ' + token },
+        body: { event }
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      return true;
+    } catch (error) {
+      console.warn('Membership email notification failed:', error);
+      return false;
+    }
+  }
+
+
   const avatarQueueDbName = 'rls-membership-pending';
   function openAvatarQueue() {
     return new Promise((resolve, reject) => {
@@ -478,8 +498,11 @@
       if (!updated) throw new Error(tr('پروفایل خوانده می‌شود، اما پایگاه داده اجازه ثبت تغییرات را نمی‌دهد. لطفاً یک‌بار خارج شوید و دوباره وارد شوید؛ اگر خطا تکرار شد، جزئیات نشست ورود را بررسی می‌کنیم.',
         'The profile is readable, but the database did not accept the update. Sign out and sign in once; if the issue continues, we will inspect the active session details.',
         'Профиль доступен для чтения, но база данных не приняла изменения. Выйдите и войдите снова; если ошибка повторится, проверим параметры сеанса.'));
+      const noticeSent = await sendMembershipNotice('member_profile_updated');
       renderMemberProfile(updated, user);
-      say(profileMsg, tr('اطلاعات پروفایل با موفقیت ذخیره شد.','Profile information saved successfully.','Данные профиля успешно сохранены.'));
+      say(profileMsg, noticeSent
+        ? tr('اطلاعات پروفایل با موفقیت ذخیره شد.','Profile information saved successfully.','Данные профиля успешно сохранены.')
+        : tr('اطلاعات ذخیره شد، اما ارسال اعلان ایمیلی به مدیر انجام نشد.','Profile saved, but the administrator email notification could not be sent.','Профиль сохранён, но уведомление администратору не отправлено.'));
     } catch (error) {
       say(profileMsg, tr('ذخیره اطلاعات ناموفق بود: ','Could not save profile: ','Не удалось сохранить профиль: ') + (error?.message || String(error)));
     } finally {
@@ -568,6 +591,7 @@
     if (oldProfile.pending_avatar_path) {
       await db.storage.from('rls-member-avatars').remove([oldProfile.pending_avatar_path]);
     }
+    await sendMembershipNotice('member_photo_submitted');
     const photoInput = document.getElementById('member-avatar');
     if (photoInput) photoInput.value = '';
     const refreshedProfile = updatedProfile;
@@ -596,6 +620,7 @@
       await db.storage.from('rls-members-private').remove([path]);
       throw updateError;
     }
+    await sendMembershipNotice('member_evidence_submitted');
     reportUpload(tr('مدرک با موفقیت و به‌صورت خصوصی بارگذاری شد.',
       'Document uploaded and stored privately.','Документ загружен в закрытое хранилище.'));
   }
