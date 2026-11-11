@@ -72,7 +72,7 @@
     if(status==='certificates'){await loadCertificates();return;}
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
-      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
+      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
       .order('created_at',{ascending:true});
     if(status==='photo_pending'){
       query=query.in('membership_status',['approved','suspended']).not('pending_avatar_path','is',null);
@@ -110,9 +110,21 @@
         ((status==='approved'||status==='photo_pending')&&p.pending_avatar_path?'<button class="approve" data-action="approve_avatar">تأیید عکس جدید</button><button class="reject" data-action="reject_avatar">رد عکس جدید</button>':'')+
         (status==='approved'?'<button class="approve" data-action="resend_approval_email">ارسال مجدد ایمیل تأیید عضویت</button><button class="suspend" data-action="suspend">تعلیق عضویت</button><button class="visibility" data-action="toggle_visibility">'+(p.is_public?'پنهان‌کردن پروفایل عمومی':'نمایش پروفایل عمومی')+'</button>':'')+
         (status==='suspended'?'<button class="approve" data-action="restore">فعال‌سازی دوباره عضویت</button>':'')+
-        '</div><p class="admin-message" role="status"></p></article>';
+        '</div>'+(status==='approved'?'<div class="admin-certificate-preview"></div>':'')+'<p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=html.join('');
+    if(status==='approved'&&window.RLSMembershipCertificate){
+      data.forEach(p=>{
+        if(!p.member_number)return;
+        const card=list.querySelector('[data-id="'+String(p.user_id)+'"]');
+        const target=card?.querySelector('.admin-certificate-preview');
+        if(target)window.RLSMembershipCertificate.render(target,{
+          user_id:String(p.user_id),display_name:p.display_name||p.full_name,
+          full_name:p.full_name,category:p.category,created_at:p.created_at,
+          member_number:p.member_number,membership_status:p.membership_status
+        },{adminPreview:true});
+      });
+    }
   }
   async function moderate(id,action,card){
     const message=card.querySelector('.admin-message');message.textContent='در حال ثبت…';
@@ -193,6 +205,10 @@
         notificationFailed=true;
         console.warn('Membership status email notification failed:',notificationError);
       }
+    }
+    if(action==='approve'){
+      status='approved';
+      document.querySelectorAll('[data-status]').forEach(x=>x.classList.toggle('active',x.dataset.status==='approved'));
     }
     await load();
     if(notificationFailed){
