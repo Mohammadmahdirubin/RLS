@@ -399,5 +399,13 @@
   },true);
   // Remove any stale viewer left by an older cached script.
   document.querySelectorAll('.avatar-lightbox,.image-lightbox,.community-image-overlay').forEach(node=>node.remove());
+
+  // Expand/collapse the three community information cards on mobile.
+  root.querySelectorAll('.about-card-toggle').forEach(button=>button.addEventListener('click',()=>{
+    const card=button.closest('.community-about-card');
+    const expanded=card.classList.toggle('is-expanded');
+    button.setAttribute('aria-expanded',String(expanded));
+    button.setAttribute('aria-label',expanded?'بستن جزئیات':'نمایش جزئیات');
+  }));
   load();
 })();
