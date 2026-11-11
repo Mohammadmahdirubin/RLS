@@ -283,6 +283,40 @@
       }
     }
 
+    // Make the missing-photo requirement explicit for existing applicants who registered
+    // before the photo upload completed (for example, after email confirmation on another device).
+    let photoRequiredNote = document.getElementById('member-photo-required-note');
+    if (!photoRequiredNote && sessionBox) {
+      photoRequiredNote = document.createElement('div');
+      photoRequiredNote.id = 'member-photo-required-note';
+      photoRequiredNote.className = 'community-note member-photo-required-note';
+      const noteText = document.createElement('p');
+      noteText.className = 'member-photo-required-text';
+      const choosePhoto = document.createElement('button');
+      choosePhoto.type = 'button';
+      choosePhoto.className = 'community-button primary';
+      choosePhoto.textContent = tr('انتخاب و بارگذاری عکس پروفایل','Choose and upload profile photo','Выбрать и загрузить фотографию профиля');
+      choosePhoto.addEventListener('click', () => {
+        const photoInput = document.getElementById('member-avatar');
+        photoInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        photoInput?.click();
+      });
+      photoRequiredNote.append(noteText, choosePhoto);
+      const summary = sessionBox.querySelector('.member-profile-summary');
+      if (summary) sessionBox.insertBefore(photoRequiredNote, summary);
+      else sessionBox.prepend(photoRequiredNote);
+    }
+    if (photoRequiredNote) {
+      const missingPhoto = !profile.avatar_path && !profile.pending_avatar_path;
+      photoRequiredNote.hidden = !missingPhoto;
+      const noteText = photoRequiredNote.querySelector('.member-photo-required-text');
+      if (noteText) noteText.textContent = tr(
+        'عکس پروفایل این درخواست هنوز ثبت نشده است. برای تکمیل درخواست، عضو باید وارد همین حساب شود، عکس را انتخاب و بارگذاری کند. پس از ارسال عکس، درخواست برای بررسی مدیر آماده خواهد بود.',
+        'No profile photo has been submitted for this application yet. The member must sign in to this account, choose a photo and upload it. The application can be reviewed after the photo is submitted.',
+        'Фотография профиля для этой заявки ещё не загружена. Участнику необходимо войти в эту учётную запись, выбрать фотографию и загрузить её. После отправки фотография будет доступна администратору для проверки.'
+      );
+    }
+
     if (avatarEl && fallbackEl) {
       const initials = String(name).trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('').toLocaleUpperCase();
       fallbackEl.textContent = initials || 'RLS';
