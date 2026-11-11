@@ -110,7 +110,7 @@
     let blob = null, previewUrl = '';
     button.addEventListener('click', async () => {
       if (button.dataset.busy === '1') return;
-      if (adminPreview && blob) {
+      if (blob) {
         downloadBlob(blob, member);
         return;
       }
