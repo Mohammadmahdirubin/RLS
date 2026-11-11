@@ -176,7 +176,32 @@
       const {error:removeError}=await client.storage.from('rls-member-avatars').remove([removePath]);
       if(removeError)console.warn('Old avatar cleanup failed:',removeError.message);
     }
+    const notificationEvents={approve:'membership_approved',reject:'membership_rejected',suspend:'membership_suspended',restore:'membership_restored'};
+    let notificationFailed=false;
+    if(notificationEvents[action]){
+      try{
+        const {data:sessionData,error:sessionError}=await client.auth.getSession();
+        if(sessionError)throw sessionError;
+        const token=sessionData?.session?.access_token;
+        if(!token)throw new Error('Admin session unavailable');
+        const {data:notice,error:noticeError}=await client.functions.invoke('notify-membership-request',{
+          headers:{Authorization:'Bearer '+token},
+          body:{event:notificationEvents[action],user_id:id}
+        });
+        if(noticeError||notice?.error)throw noticeError||new Error(notice.error);
+      }catch(notificationError){
+        notificationFailed=true;
+        console.warn('Membership status email notification failed:',notificationError);
+      }
+    }
     await load();
+    if(notificationFailed){
+      const note=document.createElement('p');
+      note.className='admin-message';
+      note.setAttribute('role','status');
+      note.textContent='تغییر وضعیت ثبت شد، اما ایمیل اطلاع‌رسانی به عضو ارسال نشد.';
+      list.prepend(note);
+    }
   }
   form.addEventListener('submit',async e=>{
     e.preventDefault();msg.textContent='در حال ورود…';
