@@ -1,1 +1,1 @@
-Trigger responsive WebP optimization for the shared masthead. The original PNG is preserved as fallback.
+Trigger responsive WebP optimization for the shared masthead. Original PNG remains the fallback. Retry 2026-11-11T18:22+03:30.
