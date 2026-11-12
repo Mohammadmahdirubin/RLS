@@ -744,12 +744,41 @@
       data = result.data;
     } catch (error) {
       const raw = String(error?.message || error || '');
-      const rateLimited = /rate.?limit|too many requests|after \d+ seconds|email.*limit/i.test(raw);
-      say(regMsg, rateLimited
-        ? tr('ارسال ایمیل تأیید موقتاً محدود شده است. لطفاً حداقل ۶۰ ثانیه صبر کنید و فقط یک‌بار دوباره تلاش کنید. اگر حساب قبلاً ساخته شده، به‌جای ثبت‌نام مجدد وارد شوید.',
-            'Confirmation email sending is temporarily rate-limited. Wait at least 60 seconds and retry once. If your account was already created, sign in instead of registering again.',
-            'Отправка письма подтверждения временно ограничена. Подождите не менее 60 секунд и повторите попытку один раз. Если учётная запись уже создана, войдите вместо повторной регистрации.')
-        : tr('ثبت‌نام ناموفق بود: ','Registration failed: ','Ошибка регистрации: ') + raw);
+      // Auth/email failures must not discard a valid membership application.
+      try {
+        const fallback = new FormData();
+        fallback.append('application', JSON.stringify({
+          email: applicationEmail,
+          full_name: metadata.full_name,
+          salutation,
+          category,
+          profile_data: metadata
+        }));
+        fallback.append('avatar', avatarFile, avatarFile.name || 'profile-photo');
+        if (file && file.size) fallback.append('evidence', file, file.name || 'supporting-document');
+        const response = await fetch(cfg.url.replace(/\/$/, '') + '/functions/v1/submit-membership-application', {
+          method: 'POST',
+          headers: { apikey: cfg.publishableKey },
+          body: fallback
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result?.ok) throw new Error(result?.error || 'Application intake is unavailable.');
+        await removeQueuedAvatar(applicationEmail).catch(() => {});
+        register.reset();
+        say(regMsg, tr(
+          'به‌دلیل خطا در سرویس حساب یا ایمیل، درخواست شما از مسیر مستقل ذخیره شد و اکنون در صف بررسی مدیر انجمن است. برای تأیید درخواست نیازی به دریافت ایمیل نیست.',
+          'Your account or email service returned an error, but your application was safely stored through the independent review queue. No confirmation email is needed for administrator review.',
+          'Из-за ошибки сервиса учётных записей или почты заявка сохранена через независимую очередь и ожидает проверки администратора. Письмо подтверждения для рассмотрения не требуется.'
+        ));
+      } catch (fallbackError) {
+        console.error('Independent membership application fallback failed:', fallbackError);
+        const reason = fallbackError?.message || String(fallbackError);
+        say(regMsg, tr(
+          'ثبت درخواست در مسیر مستقل هم انجام نشد: ',
+          'The independent application queue could not save your request: ',
+          'Не удалось сохранить заявку через независимую очередь: '
+        ) + reason + ' · ' + tr('لطفاً دوباره تلاش کنید.','Please try again.','Повторите попытку.'));
+      }
       releaseSubmit();
       return;
     }
