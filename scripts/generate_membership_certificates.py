@@ -22,7 +22,7 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-static-v1"
+DESIGN_VERSION = "rls-certificate-full-name-v2"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
@@ -51,7 +51,7 @@ def fetch_members() -> list[dict]:
         "Accept": "application/json",
     }
     params = {
-        "select": "user_id,display_name,category,created_at,member_number,membership_status",
+        "select": "user_id,full_name,category,created_at,member_number,membership_status",
         "membership_status": "eq.approved",
         "member_number": "not.is.null",
         "order": "member_number.asc",
@@ -105,7 +105,7 @@ def source_fingerprint(member: dict) -> str:
     relevant = {
         "design": DESIGN_VERSION,
         "user_id": str(member["user_id"]),
-        "display_name": str(member.get("display_name") or ""),
+        "full_name": str(member.get("full_name") or ""),
         "category": str(member.get("category") or ""),
         "created_at": str(member.get("created_at") or ""),
         "member_number": str(member.get("member_number") or ""),
@@ -128,9 +128,9 @@ def build_certificate(member: dict, output: Path) -> str:
     draw = ImageDraw.Draw(certificate)
     scale = certificate.width / 1500.0
 
-    name = str(member.get("display_name") or "").strip()
+    name = str(member.get("full_name") or "").strip()
     if not name:
-        raise ValueError(f"Missing public display_name for {user_id}")
+        raise ValueError(f"Missing full_name for {user_id}")
 
     name_font = ImageFont.truetype(find_font(True), max(1, round(46 * scale)))
     detail_font = ImageFont.truetype(find_font(True), max(1, round(29 * scale)))
