@@ -13,6 +13,38 @@
   const labels={student:'دانشجو',graduate:'دانش‌آموخته',faculty:'استاد و عضو هیئت علمی',researcher:'پژوهشگر مطالعات روسیه',translator:'مترجم زبان روسی',culture:'فعال ادبیات و فرهنگ روسیه',honorary:'عضو افتخاری'};
   const categories=Object.entries(labels);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const adminSearch=document.getElementById('admin-member-search');
+  const adminSearchCount=document.getElementById('admin-search-count');
+  function normalizeAdminSearch(value){
+    return String(value||'').toLocaleLowerCase('fa-IR')
+      .replace(/[يى]/g,'ی').replace(/ك/g,'ک')
+      .replace(/[\u064B-\u065F\u0670]/g,'').replace(/\s+/g,' ').trim();
+  }
+  function applyAdminSearch(){
+    if(!adminSearch||!list)return;
+    const query=normalizeAdminSearch(adminSearch.value);
+    const cards=[...list.querySelectorAll(':scope > .admin-member')];
+    let visible=0;
+    cards.forEach(card=>{
+      const match=!query||normalizeAdminSearch(card.textContent).includes(query);
+      card.hidden=!match;
+      if(match)visible++;
+    });
+    if(adminSearchCount){
+      if(!cards.length)adminSearchCount.textContent='';
+      else if(!query)adminSearchCount.textContent='نمایش '+cards.length+' مورد';
+      else adminSearchCount.textContent=visible
+        ?visible+' نتیجه از '+cards.length+' مورد'
+        :'نتیجه‌ای برای «'+adminSearch.value.trim()+'» پیدا نشد.';
+    }
+  }
+  if(adminSearch)adminSearch.addEventListener('input',applyAdminSearch);
+  const clearAdminSearch=document.getElementById('admin-member-search-clear');
+  if(clearAdminSearch)clearAdminSearch.addEventListener('click',()=>{
+    if(adminSearch)adminSearch.value='';
+    applyAdminSearch();
+    adminSearch?.focus();
+  });
   async function checkAdmin(){
     if(checking)return;checking=true;
     try{
@@ -56,6 +88,7 @@
         '<br>ایمیل: '+esc(p.email||'—')+' · تاریخ عضویت: '+(p.created_at?new Date(p.created_at).toLocaleDateString('fa-IR'):'—')+'</div>'+
         '<div class="admin-certificate-preview"></div></article>';
     }).join('');
+    applyAdminSearch();
     data.forEach(p=>{
       const card=list.querySelector('[data-certificate-user="'+String(p.user_id)+'"]');
       const target=card?.querySelector('.admin-certificate-preview');
@@ -98,6 +131,7 @@
         '<p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=cards.join('');
+    applyAdminSearch();
   }
   async function moderateApplication(id, action, card){
     const message=card.querySelector('.admin-message');
@@ -174,6 +208,7 @@
         '</div>'+(status==='approved'?'<div class="admin-certificate-preview"></div>':'')+'<p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=html.join('');
+    applyAdminSearch();
     if(status==='approved'&&window.RLSMembershipCertificate){
       data.forEach(p=>{
         if(!p.member_number)return;
