@@ -1,6 +1,6 @@
 {
   "template_id": "rls-membership-certificate-gold-a4",
-  "version": 5,
+  "version": 6,
   "purpose": "Reusable official membership certificate template for all approved RLS Association members.",
   "source": "User-supplied reference image from 2026-11-10. Preserve its layout, ornaments, colors, Russian landmarks, flag, upper-left journal emblem, and lower-center seal placement.",
   "page": {
@@ -38,7 +38,7 @@
   ],
   "data_rules": {
     "issue_only_when": "membership_status = approved",
-    "printed_name_source": "rls_profiles.full_name — always print the member’s registered first and last name; never substitute display_name.",
+    "printed_name_source": "rls_profiles.full_name only. The registration form has no display_name field; never read, fall back to, or substitute display_name.",
     "salutation_values": [
       "mr",
       "ms"
@@ -68,6 +68,7 @@
     "Member numbers use one global database sequence, are six digits, immutable, unique, and never recycled.",
     "Keep the master design, palette, layout, association emblem, and Word-document journal-seal placement identical across members.",
     "Keep the QR code readable with a white quiet zone.",
-    "Use A4 landscape (297 × 210 mm), 300 DPI, and print-color-adjust: exact."
+    "Use A4 landscape (297 × 210 mm), 300 DPI, and print-color-adjust: exact.",
+    "The registration form must not collect a display name. All certificates print only rls_profiles.full_name."
   ]
 }
