@@ -738,35 +738,18 @@
 }
 
 
-/* Public profile portrait opens above the entire page when clicked.
-   Fixed positioning prevents the card or its content from covering the top of the image. */
-.member-public-card .member-public-heading > img.member-public-avatar.is-zoomed{
-  position:fixed!important;
-  z-index:99999!important;
-  top:50vh!important;
-  left:50vw!important;
-  right:auto!important;
-  bottom:auto!important;
-  width:auto!important;
-  height:auto!important;
-  min-width:0!important;
-  max-width:min(88vw,520px)!important;
-  max-height:84vh!important;
-  object-fit:contain!important;
-  transform:translate(-50%,-50%)!important;
-  transform-origin:center center!important;
-  border-radius:13px;
-  cursor:zoom-out;
-  background:#fff;
-  box-shadow:0 18px 54px rgba(20,15,18,.55);
-}
-.member-public-card .member-public-heading > img.member-public-avatar,
-.member-public-card .member-public-heading > div.member-public-avatar{
+/* Public profile portrait: restore the original local 2x zoom behavior. */
+.member-public-card .member-public-heading > img.member-public-avatar{
   cursor:zoom-in;
   transition:transform .2s ease,box-shadow .2s ease;
 }
 .member-public-card .member-public-heading > img.member-public-avatar.is-zoomed{
-  transition:transform .2s ease,box-shadow .2s ease;
+  position:relative!important;
+  z-index:20!important;
+  transform:scale(2)!important;
+  transform-origin:left center!important;
+  cursor:zoom-out;
+  box-shadow:0 10px 28px rgba(45,22,25,.35);
 }
 
 
@@ -807,8 +790,22 @@
 .member-avatar-emblem--card:has(.community-avatar-image:hover) .member-emblem,
 .member-avatar-emblem--card:has(.community-avatar-image.is-zoomed) .member-emblem{opacity:0}
 .community-member:has(.member-avatar-emblem--card .community-avatar-image:hover),
-.community-member.community-member--photo-zoomed{z-index:30!important}
-.member-avatar-emblem--card:has(.community-avatar-image.is-zoomed){z-index:31}
+.community-member.community-member--photo-zoomed{
+  position:relative!important;
+  z-index:9999!important;
+  overflow:visible!important;
+}
+.member-avatar-emblem--card:has(.community-avatar-image.is-zoomed){
+  position:relative!important;
+  z-index:10000!important;
+  overflow:visible!important;
+}
+.member-avatar-emblem--card .community-avatar-image.is-zoomed{
+  position:absolute!important;
+  z-index:10001!important;
+  transform:translate(-50%,-50%) scale(2)!important;
+  transform-origin:center center!important;
+}
 @media(prefers-reduced-motion:reduce){
  .member-avatar-emblem--card .community-avatar-image{transition:none}
 }
