@@ -21,6 +21,16 @@
     culture:{symbol:'🏛️',tone:'culture'},
     honorary:{symbol:'🏅',tone:'honorary'}
   };
+  const categoryAliases = {
+    student:'student', 'دانشجو':'student', graduate:'graduate', 'دانش‌آموخته':'graduate', 'دانش آموخته':'graduate',
+    faculty:'faculty', 'استاد و عضو هیئت علمی':'faculty', 'استاد':'faculty', researcher:'researcher', 'پژوهشگر':'researcher',
+    translator:'translator', 'مترجم':'translator', culture:'culture', 'ادبیات و فرهنگ':'culture', 'فعال حوزه ادبیات و فرهنگ':'culture',
+    honorary:'honorary', 'عضو افتخاری':'honorary'
+  };
+  function categoryKey(value) {
+    const raw=String(value||'').trim().toLocaleLowerCase().replace(/[ي]/g,'ی').replace(/[ك]/g,'ک');
+    return categoryAliases[raw] || raw;
+  }
   const categoryBadge = key => {
     const meta=categoryMeta[key]||{symbol:'✦',tone:'other'};
     return '<span class="member-category member-category--'+meta.tone+'"><span class="member-category-symbol" aria-hidden="true">'+meta.symbol+'</span>'+esc((labels[lang]||labels.en)[key]||key||'')+'</span>';
@@ -154,7 +164,8 @@
   }
   function filter() {
     const q=(search?.value||'').trim().toLocaleLowerCase();
-    const matched=cards.filter(card=>(!category?.value||category.value===card.dataset.category)&&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q)));
+    const selectedCategory=categoryKey(category?.value||'');
+    const matched=cards.filter(card=>(!selectedCategory||selectedCategory===categoryKey(card.dataset.category))&&(!q||(card.dataset.search||'').toLocaleLowerCase().includes(q)));
     const totalPages=Math.max(1,Math.ceil(matched.length/PAGE_SIZE));
     if(currentPage>totalPages)currentPage=totalPages;
     const visible=new Set(matched.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE));
@@ -170,7 +181,7 @@
           : 'No members match this category or search.';
     }
     renderPagination(totalPages);
-    root.querySelectorAll('[data-category-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.categoryFilter===(category?.value||''))));
+    root.querySelectorAll('[data-category-filter]').forEach(b=>b.setAttribute('aria-pressed',String(categoryKey(b.dataset.categoryFilter)===categoryKey(category?.value||''))));
   }
   function avatarUrl(path){
     if(!path)return '';
@@ -306,7 +317,7 @@
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     data=[...data].sort(compareMembershipOrder);
     wrap.innerHTML=data.map(m=>{
-      const displayName=stripSalutation(localized(m,'display_name')||localized(m,'full_name')),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const name=esc(displayName||'RLS Member'),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
+      m.category=categoryKey(m.category); const displayName=stripSalutation(localized(m,'display_name')||localized(m,'full_name')),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const name=esc(displayName||'RLS Member'),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
       const profileHref=memberProfileUrl(m.user_id);
       return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-member-id="'+esc(m.user_id)+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'"><div class="member-card-layout"><a class="community-member-link" href="'+profileHref+'"><div class="member-card-main"><div class="member-avatar-emblem member-avatar-emblem--card"><div class="community-avatar community-avatar-placeholder" data-avatar-placeholder="1" data-avatar-path="'+esc(m.avatar_path||'')+'">'+esc(initials(m.display_name))+'</div>'+memberEmblem(m,false)+'</div><div class="member-card-identity"><h3>'+name+'</h3>'+categoryBadge(m.category)+'</div></div><p class="member-card-description">'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span></a><aside class="member-card-socials" aria-label="Social and academic links">'+profileLinks(m)+'</aside></div><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a><div class="member-qr-deferred" data-qr-user="'+esc(m.user_id)+'" data-qr-name="'+esc(displayName||'RLS Member')+'"></div></article>';
     }).join('');
@@ -384,14 +395,14 @@
     const button=event.target.closest('[data-category-filter]');
     if(!button || !root.contains(button)) return;
     event.preventDefault();
-    const selected=button.dataset.categoryFilter||'';
+    const selected=categoryKey(button.dataset.categoryFilter||'');
     if(category) category.value=selected;
     currentPage=1;
     if(cards.length) filter();
     else await load(true);
     root.querySelector('#member-directory')?.scrollIntoView({behavior:'smooth',block:'start'});
     root.querySelectorAll('[data-category-filter]').forEach(item=>{
-      item.setAttribute('aria-pressed',String(item.dataset.categoryFilter===selected));
+      item.setAttribute('aria-pressed',String(categoryKey(item.dataset.categoryFilter)===selected));
     });
   });
   root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';currentPage=1;filter();});
