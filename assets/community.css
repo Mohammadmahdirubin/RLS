@@ -1379,3 +1379,9 @@
     font-size:9px !important;
   }
 }
+
+/* Academic degree stars are shown in the text column, keeping the portrait layout untouched. */
+.member-degree-rating{display:flex;align-items:center;justify-content:flex-start;gap:9px;flex-wrap:wrap;margin:10px 0 12px;padding:7px 11px;width:max-content;max-width:100%;border:1px solid #ead9ad;border-radius:9px;background:rgba(255,250,235,.92)}
+.member-degree-stars{color:#bd8b2f;font-size:21px;letter-spacing:3px;line-height:1;direction:ltr;white-space:nowrap;text-shadow:0 1px 0 rgba(120,83,20,.12)}
+.member-degree-label{color:#735a32;font-size:12px;font-weight:800;line-height:1.6}
+@media(max-width:620px){.member-degree-rating{margin:8px 0 10px;padding:6px 9px}.member-degree-stars{font-size:19px}}
