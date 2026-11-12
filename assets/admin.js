@@ -70,10 +70,10 @@
   async function loadApplications(){
     list.textContent='در حال دریافت درخواست‌های مستقل…';
     const {data,error}=await client.from('rls_membership_applications')
-      .select('id,email,full_name,salutation,category,profile_data,avatar_path,evidence_path,status,created_at')
-      .eq('status','pending').order('created_at',{ascending:true});
+      .select('id,email,full_name,salutation,category,profile_data,avatar_path,evidence_path,status,created_at,reviewed_at,review_note')
+      .order('created_at',{ascending:false});
     if(error){list.textContent='خطا در دریافت درخواست‌های مستقل: '+error.message;return;}
-    if(!data?.length){list.textContent='در حال حاضر درخواست مستقلی در انتظار بررسی نیست.';return;}
+    if(!data?.length){list.textContent='هنوز درخواستی ثبت نشده است.';return;}
     const cards=await Promise.all(data.map(async p=>{
       let photo='<p class="admin-meta admin-photo-missing">عکس پروفایل هنوز ارسال نشده است؛ بارگذاری آن اختیاری است و می‌تواند بعداً انجام شود.</p>';
       if(p.avatar_path){
@@ -87,13 +87,13 @@
       }
       const d=p.profile_data||{};
       const extra=[['کشور',d.country],['شهر',d.city],['مؤسسه',d.institution],['تحصیلات',d.degree],['تخصص',d.specialty],['معرفی',d.bio],['وب‌سایت',d.website_url],['ORCID',d.orcid],['ایمیل دیگر ثبت‌شده در گزارش خطا',d.alternate_registration_email]].filter(x=>x[1]);
-      return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3>'+photo+
+      const stateLabel=p.status==='pending'?'در انتظار بررسی':p.status==='approved'?'تأییدشده':p.status==='rejected'?'ردشده':p.status;\n      return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3><p class="admin-meta"><b>وضعیت درخواست: '+esc(stateLabel)+'</b></p>'+photo+
         '<div class="admin-meta">ایمیل: '+esc(p.email)+' · گروه: '+esc(labels[p.category]||p.category)+
         '<br>تاریخ ثبت: '+new Date(p.created_at).toLocaleString('fa-IR')+
         (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
         evidence+
         '<p class="admin-meta">این درخواست مستقل از ساخت حساب و ارسال ایمیل ذخیره شده است. تأیید در این بخش، تأیید خودِ درخواست عضویت است؛ ایجاد حساب ورود پس از رفع اختلال سرویس احراز هویت انجام می‌شود.</p>'+
-        '<div class="admin-actions"><button class="approve" data-action="application_approve">تأیید درخواست عضویت</button><button class="reject" data-action="application_reject">رد درخواست</button></div>'+
+        (p.status==='pending'?'<div class="admin-actions"><button class="approve" data-action="application_approve">تأیید درخواست عضویت</button><button class="reject" data-action="application_reject">رد درخواست</button></div>':'')+
         '<p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=cards.join('');
