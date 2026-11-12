@@ -391,7 +391,21 @@
     wrap.appendChild(emptyState);
     filter();
   }
-  search?.addEventListener('input',()=>{currentPage=1;filter();});category?.addEventListener('change',()=>{currentPage=1;filter();});
+  // Capture search and select changes at document level so other page scripts
+  // cannot accidentally swallow the events before the directory receives them.
+  document.addEventListener('input',event=>{
+    if(event.target?.id!=='member-search')return;
+    currentPage=1;
+    filter();
+  },true);
+  document.addEventListener('change',event=>{
+    if(event.target?.id!=='member-category')return;
+    currentPage=1;
+    filter();
+    root.querySelectorAll('[data-category-filter]').forEach(item=>{
+      item.setAttribute('aria-pressed',String(categoryKey(item.dataset.categoryFilter)===categoryKey(category?.value||'')));
+    });
+  },true);
   // Make the hero's "View members" action work even when a public profile
   // has hidden the directory sections or the URL contains ?member=...
   root.querySelector('.community-actions a[href="#member-directory"]')?.addEventListener('click', async event => {
@@ -407,28 +421,34 @@
   });
   showAdminLink();
   db?.auth.onAuthStateChange(()=>{showAdminLink();});
-  // Delegated category handling: reliable on touch devices and resilient to DOM refreshes.
-  root.addEventListener('click', async event=>{
-    const button=event.target.closest('[data-category-filter]');
-    if(!button || !root.contains(button)) return;
+  // Use capture-phase delegation: category cards remain responsive even if
+  // another script or nested element stops bubbling. Do not launch a second
+  // database request when the initial directory load is still in progress.
+  document.addEventListener('click',event=>{
+    const button=event.target instanceof Element ? event.target.closest('[data-category-filter]') : null;
+    if(!button || !root.contains(button))return;
     event.preventDefault();
     const selected=categoryKey(button.dataset.categoryFilter||'');
-    if(category) category.value=selected;
+    if(category)category.value=selected;
     currentPage=1;
-    if(cards.length) filter();
-    else await load(true);
-    root.querySelector('#member-directory')?.scrollIntoView({behavior:'smooth',block:'start'});
+    if(cards.length || resultCount)filter();
     root.querySelectorAll('[data-category-filter]').forEach(item=>{
       item.setAttribute('aria-pressed',String(categoryKey(item.dataset.categoryFilter)===selected));
     });
-  });
-  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{
+    root.querySelector('#member-directory')?.scrollIntoView({behavior:'smooth',block:'start'});
+  },true);
+  document.addEventListener('click',event=>{
+    const clear=event.target instanceof Element ? event.target.closest('[data-clear-filters]') : null;
+    if(!clear || !root.contains(clear))return;
+    event.preventDefault();
     if(search)search.value='';
     if(category)category.value='';
     currentPage=1;
     filter();
-    root.querySelectorAll('[data-category-filter]').forEach(item=>item.setAttribute('aria-pressed',String(!item.dataset.categoryFilter)));
-  });
+    root.querySelectorAll('[data-category-filter]').forEach(item=>{
+      item.setAttribute('aria-pressed',String(!item.dataset.categoryFilter));
+    });
+  },true);
 
   // Keep portrait zoom local to the image: no lightbox, original-image navigation,
   // or full-screen overlay. Capture clicks before the surrounding profile link.
