@@ -1,6 +1,6 @@
 {
   "template_id": "rls-membership-certificate-gold-a4",
-  "version": 4,
+  "version": 5,
   "purpose": "Reusable official membership certificate template for all approved RLS Association members.",
   "source": "User-supplied reference image from 2026-11-10. Preserve its layout, ornaments, colors, Russian landmarks, flag, upper-left journal emblem, and lower-center seal placement.",
   "page": {
@@ -28,7 +28,6 @@
     "lower_center": "fixed journal seal extracted from the supplied Word document"
   },
   "dynamic_fields": [
-    "salutation",
     "full_name",
     "membership_start_date",
     "membership_category",
