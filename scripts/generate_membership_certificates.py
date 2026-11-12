@@ -61,7 +61,8 @@ def fetch_members() -> list[dict]:
     while True:
         page_headers = {**headers, "Range": f"{start}-{start + 499}"}
         response = requests.get(endpoint, headers=page_headers, params=params, timeout=25)
-        response.raise_for_status()
+        if not response.ok:
+            raise RuntimeError(f"Supabase member query failed (HTTP {response.status_code}): {response.text[:800]}")
         batch = response.json()
         if not isinstance(batch, list):
             raise RuntimeError("Supabase returned an unexpected member-list response.")
