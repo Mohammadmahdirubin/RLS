@@ -609,22 +609,21 @@
         'Your membership is currently suspended, so the database does not allow a new profile photo. The administrator must review and, if appropriate, reactivate your membership first.',
         'Ваше членство приостановлено, поэтому база данных не разрешает загрузку новой фотографии. Сначала администратор должен проверить статус и при необходимости восстановить членство.'));
     }
-    const { error: uploadError } = await db.storage.from('rls-member-avatars')
-      .upload(path, optimizedFile, { contentType: optimizedFile.type, cacheControl: '31536000', upsert: false });
-    if (uploadError) throw uploadError;
-    const { data: updatedProfile, error: updateError } = await db.from('rls_profiles')
-      .update({ pending_avatar_path: path }).eq('user_id', user.id)
-      .select(ownProfileFields).maybeSingle();
-    if (updateError || !updatedProfile) {
-      await db.storage.from('rls-member-avatars').remove([path]);
-      if (updateError) throw updateError;
-      throw new Error(tr('تغییر عکس ثبت نشد؛ احتمالاً وضعیت عضویت یا مجوزهای پروفایل اجازهٔ ویرایش نمی‌دهد. عکس قبلی حفظ شده است.',
-        'The photo change was not saved. Your membership status or profile permissions may prevent editing. Your previous photo has been preserved.',
-        'Изменение фотографии не сохранено. Возможно, статус членства или права профиля запрещают редактирование. Предыдущая фотография сохранена.'));
+    // Upload through a JWT-verified Edge Function. This keeps the Storage service key
+    // server-side and avoids client Storage RLS failures for pending members.
+    const avatarForm = new FormData();
+    avatarForm.append('file', optimizedFile, 'member-avatar.' + ext);
+    const { data: avatarResult, error: avatarFunctionError } = await db.functions.invoke('upload-member-avatar', {
+      body: avatarForm,
+      headers: { Authorization: 'Bearer ' + sessionData.session.access_token }
+    });
+    if (avatarFunctionError) throw avatarFunctionError;
+    if (!avatarResult?.ok || !avatarResult?.profile) {
+      throw new Error(avatarResult?.error || tr('بارگذاری عکس انجام نشد. دوباره تلاش کنید.',
+        'The photo could not be uploaded. Please try again.',
+        'Не удалось загрузить фотографию. Повторите попытку.'));
     }
-    if (oldProfile.pending_avatar_path) {
-      await db.storage.from('rls-member-avatars').remove([oldProfile.pending_avatar_path]);
-    }
+    const updatedProfile = avatarResult.profile;
     await sendMembershipNotice('member_photo_submitted');
     const photoInput = document.getElementById('member-avatar');
     if (photoInput) photoInput.value = '';
