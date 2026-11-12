@@ -1385,3 +1385,33 @@
 #member-directory .community-pagination[hidden]{
   display:none!important;
 }
+
+/* FIX: keep enlarged directory portraits above every card layer and outside clipped wrappers. */
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image:hover),
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image.is-zoomed){
+  position:relative!important;
+  z-index:100000!important;
+  overflow:visible!important;
+}
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image:hover) > .member-card-layout,
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image.is-zoomed) > .member-card-layout,
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image:hover) .community-member-link,
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image.is-zoomed) .community-member-link,
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image:hover) .member-card-main,
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image.is-zoomed) .member-card-main{
+  position:relative!important;
+  z-index:100001!important;
+  overflow:visible!important;
+}
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image:hover) .member-avatar-emblem--card,
+#member-directory .community-member:has(.member-avatar-emblem--card .community-avatar-image.is-zoomed) .member-avatar-emblem--card{
+  position:relative!important;
+  z-index:100002!important;
+  overflow:visible!important;
+}
+#member-directory .community-member .member-avatar-emblem--card .community-avatar-image.is-zoomed{
+  position:absolute!important;
+  z-index:100003!important;
+  transform:translate(-50%,-50%) scale(2)!important;
+  transform-origin:center center!important;
+}
