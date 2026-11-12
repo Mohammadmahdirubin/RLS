@@ -661,6 +661,7 @@
 
   register.addEventListener('submit', async event => {
     event.preventDefault();
+    if (register.dataset.submitting === '1') return;
     say(regMsg, tr('در حال ثبت‌نام…','Creating your account…','Создание учётной записи…'));
     const fd = new FormData(register);
     const category = clean(fd.get('category'));
@@ -685,10 +686,19 @@
         'The file must be an accepted PDF/image and no larger than 5 MB.','Файл должен быть PDF или изображением размером до 5 МБ.'));
       return;
     }
+    const submitButton = register.querySelector('button[type="submit"]');
+    const originalSubmitLabel = submitButton?.textContent || '';
+    register.dataset.submitting = '1';
+    if (submitButton) { submitButton.disabled = true; submitButton.textContent = tr('در حال ثبت‌نام…','Submitting…','Отправка…'); }
+    const releaseSubmit = () => {
+      delete register.dataset.submitting;
+      if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalSubmitLabel; }
+    };
     try {
       // Keep the required photo locally while the user confirms their email.
       await queueAvatar(applicationEmail, avatarFile);
     } catch (queueError) {
+      releaseSubmit();
       say(regMsg, tr('ذخیره موقت عکس برای تکمیل ثبت‌نام ممکن نشد: ',
         'The selected photo could not be retained until email confirmation: ',
         'Не удалось временно сохранить фотографию для завершения регистрации: ') + (queueError?.message || String(queueError)));
@@ -721,15 +731,28 @@
       languages_en: clean(fd.get('languages_en')), languages_ru: clean(fd.get('languages_ru'))
     };
     if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { if (!metadata[key + '_' + lang]) metadata[key + '_' + lang] = metadata[key]; });
-    const { data, error } = await db.auth.signUp({
-      email: applicationEmail, password: String(fd.get('password') || ''),
-      options: {
-        data: metadata,
-        // Return confirmed users to the same live community page, not localhost.
-        emailRedirectTo: window.location.origin + window.location.pathname
-      }
-    });
-    if (error) { say(regMsg, tr('ثبت‌نام ناموفق بود: ','Registration failed: ','Ошибка регистрации: ') + error.message); return; }
+    let data;
+    try {
+      const result = await db.auth.signUp({
+        email: applicationEmail, password: String(fd.get('password') || ''),
+        options: {
+          data: metadata,
+          emailRedirectTo: window.location.origin + window.location.pathname
+        }
+      });
+      if (result.error) throw result.error;
+      data = result.data;
+    } catch (error) {
+      const raw = String(error?.message || error || '');
+      const rateLimited = /rate.?limit|too many requests|after \d+ seconds|email.*limit/i.test(raw);
+      say(regMsg, rateLimited
+        ? tr('ارسال ایمیل تأیید موقتاً محدود شده است. لطفاً حداقل ۶۰ ثانیه صبر کنید و فقط یک‌بار دوباره تلاش کنید. اگر حساب قبلاً ساخته شده، به‌جای ثبت‌نام مجدد وارد شوید.',
+            'Confirmation email sending is temporarily rate-limited. Wait at least 60 seconds and retry once. If your account was already created, sign in instead of registering again.',
+            'Отправка письма подтверждения временно ограничена. Подождите не менее 60 секунд и повторите попытку один раз. Если учётная запись уже создана, войдите вместо повторной регистрации.')
+        : tr('ثبت‌نام ناموفق بود: ','Registration failed: ','Ошибка регистрации: ') + raw);
+      releaseSubmit();
+      return;
+    }
     if (data.session && data.user) {
       try {
         await ensureProfile(data.user);
@@ -745,10 +768,12 @@
         say(regMsg, tr('حساب ساخته شد، اما تکمیل درخواست ناموفق بود: ',
           'Account created, but application setup failed: ','Учётная запись создана, но заявку не удалось завершить: ') + err.message);
       }
+      releaseSubmit();
     } else {
       say(regMsg, tr('حساب ساخته شد و عکس شما در این مرورگر نگهداری شده است. ایمیل را تأیید کنید، سپس با همان مرورگر و همان ایمیل وارد شوید تا عکس برای بررسی مدیر ارسال شود. اگر تأیید ایمیل در همین صفحه باز شد، پس از بازگشت وارد شوید.',
         'Your account was created and the photo has been retained in this browser. Confirm your email, then sign in here with the same email so the photo can be sent for administrator review.',
         'Учётная запись создана, фотография сохранена в этом браузере. Подтвердите адрес и войдите здесь с тем же адресом, чтобы отправить фотографию администратору на проверку.'));
+      releaseSubmit();
     }
   });
 
