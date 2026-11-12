@@ -1378,3 +1378,10 @@
     font-size:9px !important;
   }
 }
+
+/* Ensure the native hidden state always wins over card display rules. */
+#member-directory .community-member[hidden],
+#member-directory .community-empty[hidden],
+#member-directory .community-pagination[hidden]{
+  display:none!important;
+}
