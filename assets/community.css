@@ -431,14 +431,14 @@
 /* Membership-group identity colors: each member card and its group emblem share a distinct pastel palette. */
 .community-member--student{background:#f2eaff;border-color:#d8c5f4}
 .community-member--graduate{background:#e1f8f4;border-color:#a9e3d8}
-.community-member--faculty{background:#e8f7e8;border-color:#b8dfb8}
+.community-member--faculty{background:#cfe6ca;border-color:#8fbd88}
 .community-member--researcher{background:#e8f2ff;border-color:#bfd5f5}
 .community-member--translator{background:#fff7d9;border-color:#eadb9b}
 .community-member--culture{background:#ffeded;border-color:#efc1c1}
 .community-member--honorary{background:#fff0df;border-color:#e8c99e}
 .community-member--student .member-category--student{background:#e5d5fb;border-color:#c8a9ed;color:#58358a}
 .community-member--graduate .member-category--graduate{background:#c9f0e9;border-color:#8bd4c6;color:#17695d}
-.community-member--faculty .member-category--faculty{background:#d1efd1;border-color:#9bd19b;color:#28652c}
+.community-member--faculty .member-category--faculty{background:#afd5a9;border-color:#80b77a;color:#214f25}
 .community-member--researcher .member-category--researcher{background:#d3e5ff;border-color:#a5c7f1;color:#24558f}
 .community-member--translator .member-category--translator{background:#fff0b8;border-color:#e5d17a;color:#785b12}
 .community-member--culture .member-category--culture{background:#ffdada;border-color:#eab0b0;color:#8b3535}
@@ -450,7 +450,7 @@
 /* Match category filter icons to the membership badges used on member cards. */
 .community-category[data-category-filter="student"] .symbol{background:#f2eaff;color:#58358a;font-weight:850;border:1px solid #d8c5f4}
 .community-category[data-category-filter="graduate"] .symbol{background:#e1f8f4;color:#17695d;font-weight:850;border:1px solid #a9e3d8}
-.community-category[data-category-filter="faculty"] .symbol{background:#e8f7e8;color:#28652c;font-weight:850;border:1px solid #b8dfb8}
+.community-category[data-category-filter="faculty"] .symbol{background:#cfe6ca;color:#214f25;font-weight:850;border:1px solid #8fbd88}
 .community-category[data-category-filter="researcher"] .symbol{background:#e8f2ff;color:#24558f;font-weight:850;border:1px solid #bfd5f5}
 .community-category[data-category-filter="translator"] .symbol{background:#fff7d9;color:#785b12;font-weight:850;border:1px solid #eadb9b}
 .community-category[data-category-filter="culture"] .symbol{background:#ffeded;color:#8b3535;font-weight:850;border:1px solid #efc1c1}
@@ -496,7 +496,7 @@
 }
 .member-public-card--student{--member-profile-bg:#f2eaff;--member-profile-border:#d8c5f4;--member-profile-accent:#58358a;--member-profile-badge-bg:#e5d5fb;--member-profile-badge-border:#c8a9ed}
 .member-public-card--graduate{--member-profile-bg:#e1f8f4;--member-profile-border:#a9e3d8;--member-profile-accent:#17695d;--member-profile-badge-bg:#c9f0e9;--member-profile-badge-border:#8bd4c6}
-.member-public-card--faculty{--member-profile-bg:#e8f7e8;--member-profile-border:#b8dfb8;--member-profile-accent:#28652c;--member-profile-badge-bg:#d1efd1;--member-profile-badge-border:#9bd19b}
+.member-public-card--faculty{--member-profile-bg:#cfe6ca;--member-profile-border:#8fbd88;--member-profile-accent:#214f25;--member-profile-badge-bg:#afd5a9;--member-profile-badge-border:#80b77a}
 .member-public-card--researcher{--member-profile-bg:#e8f2ff;--member-profile-border:#bfd5f5;--member-profile-accent:#24558f;--member-profile-badge-bg:#d3e5ff;--member-profile-badge-border:#a5c7f1}
 .member-public-card--translator{--member-profile-bg:#fff7d9;--member-profile-border:#eadb9b;--member-profile-accent:#785b12;--member-profile-badge-bg:#fff0b8;--member-profile-badge-border:#e5d17a}
 .member-public-card--culture{--member-profile-bg:#ffeded;--member-profile-border:#efc1c1;--member-profile-accent:#8b3535;--member-profile-badge-bg:#ffdada;--member-profile-badge-border:#eab0b0}
