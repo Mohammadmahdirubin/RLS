@@ -297,7 +297,9 @@ select
   salutation,
   reviewed_at,
   member_number,
-  membership_status
+  membership_status,
+  blog_url,
+  full_name
 from public.rls_profiles
 where membership_status = 'approved' and is_public = true;
 
