@@ -121,11 +121,19 @@
   const localized = (m,key) => lang==='fa' ? (m[key] || '') : (m[key+'_'+lang] || '');
   const stripSalutation = value => String(value || '').replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i,'').trim();
   const initials = name => String(name || 'RLS').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
+  // Degree stars are independent of member category and reflect the highest
+  // completed qualification recorded in the degree field (including graduates).
   function degreeStars(m) {
-    const value=String(m.degree||'').toLowerCase().replace(/[ي]/g,'ی').replace(/[ك]/g,'ک');
-    if(/دکتری|دکترا|ph\.?d|doctor/.test(value)) return 3;
-    if(/کارشناسی ارشد|ارشد|master|ma\b|msc\b/.test(value)) return 2;
-    if(/کارشناسی|لیسانس|bachelor|ba\b|bsc\b/.test(value)) return 1;
+    const value=String(m.degree||'')
+      .toLowerCase()
+      .replace(/[ي]/g,'ی').replace(/[ك]/g,'ک')
+      .replace(/[\u200c\u200f\u200e]/g,' ')
+      .replace(/[–—-]/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+    if(/دکتری|دکترا|دکترای|ph\.?d\.?|doctorate|doctoral|doctor of/.test(value)) return 3;
+    if(/کارشناسی ارشد|فوق لیسانس|ارشد|master|ma\b|msc\b|m\.sc\b/.test(value)) return 2;
+    if(/کارشناسی|لیسانس|bachelor|ba\b|bsc\b|b\.sc\b/.test(value)) return 1;
     return 0;
   }
   function degreeBadge(m) {
