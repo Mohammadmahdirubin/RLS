@@ -1043,3 +1043,77 @@
     min-height:0 !important;
   }
 }
+
+
+/* Member directory cards: align portrait and text rows; place social links after QR. */
+#member-directory .community-member{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+}
+#member-directory .community-member > .community-member-link{
+  display:flex;
+  flex:0 0 auto;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  width:100%;
+  height:auto;
+}
+#member-directory .community-member .member-avatar-emblem--card{
+  flex:0 0 112px;
+  width:112px;
+  height:112px;
+  margin:2px auto 8px;
+}
+#member-directory .community-member h3{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:42px;
+  margin:3px 0;
+}
+#member-directory .community-member .member-category{
+  min-height:25px;
+  max-width:100%;
+  box-sizing:border-box;
+}
+#member-directory .community-member > .community-member-link > p{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  width:100%;
+  min-height:48px;
+  margin:5px 0;
+}
+#member-directory .community-member .community-member-joined{
+  min-height:32px;
+}
+#member-directory .community-member > .member-qr-deferred,
+#member-directory .community-member > .member-card-qr{
+  flex:0 0 auto;
+  margin:8px auto 0;
+}
+#member-directory .community-member > .member-card-links{
+  order:10;
+  flex:0 0 auto;
+  width:100%;
+  min-height:27px;
+  margin:9px 0 0;
+  justify-content:center;
+}
+@media(max-width:620px){
+  #member-directory .community-member .member-avatar-emblem--card{
+    flex-basis:68px;
+    width:68px;
+    height:68px;
+    min-height:68px;
+    margin:2px auto 5px;
+  }
+  #member-directory .community-member h3{min-height:36px}
+  #member-directory .community-member > .community-member-link > p{min-height:48px}
+  #member-directory .community-member .community-member-joined{min-height:30px}
+  #member-directory .community-member > .member-card-links{margin-top:8px}
+}
