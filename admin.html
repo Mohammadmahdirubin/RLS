@@ -1,10 +1,33 @@
 <!doctype html>
-<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css"><link rel="stylesheet" href="assets/admin.css?v=manual-photo-upload-20261112"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css"><link rel="stylesheet" href="assets/admin.css?v=events-management-20261112"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head>
 <body class="community-page"><header class="site-header"><div class="container header-inner"><a class="brand" href="community.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>پنل مدیریت انجمن</small></span></a><a href="community.html">بازگشت به انجمن</a></div></header>
 <main class="container admin-wrap"><section class="admin-heading"><p class="eyebrow">RLS · ADMINISTRATION</p><h1>پنل مدیریت انجمن</h1><p>بررسی درخواست‌های عضویت و مدیریت انتشار پروفایل اعضا</p></section>
 <section id="admin-login" class="admin-panel"><h2>ورود مدیر</h2><form id="admin-login-form"><label>ایمیل<input name="email" type="email" autocomplete="username" required></label><label>رمز عبور<input name="password" type="password" autocomplete="current-password" required></label><button class="community-search-btn" type="submit">ورود به پنل</button><p id="login-message" role="status"></p></form></section>
 <section id="admin-dashboard" class="admin-panel" hidden><div class="admin-toolbar"><div><h2>مدیریت اعضا و درخواست‌های عضویت</h2><p id="admin-identity"></p></div><button id="admin-logout" class="community-search-btn" type="button">خروج</button></div><div class="admin-filters"><button type="button" data-status="pending" class="active">در انتظار بررسی</button><button type="button" data-status="applications">درخواست‌های مستقل ثبت‌نام</button><button type="button" data-status="approved">تأییدشده</button><button type="button" data-status="photo_pending">عکس‌های جدید در انتظار تأیید</button><button type="button" data-status="rejected">ردشده</button><button type="button" data-status="suspended">تعلیق‌شده</button><button type="button" data-status="certificates">گواهی‌های عضویت</button></div><div id="admin-list" class="admin-list" aria-live="polite">در حال دریافت اطلاعات…</div>
+<section id="admin-events-panel" class="admin-panel admin-events-panel" hidden>
+<h2>مدیریت اطلاع‌رسانی و رویدادها</h2>
+<p>ثبت وبینار، سمینار، همایش، کارگاه و دوره؛ انتشار در صفحه انجمن و ارسال ایمیل به اعضای تأییدشده</p>
+<form id="admin-event-form" class="admin-event-form">
+<input type="hidden" name="event_id">
+<div class="admin-event-fields">
+<label>عنوان برنامه<input name="title" maxlength="200" required placeholder="عنوان وبینار یا دوره"></label>
+<label>نوع برنامه<select name="event_type"><option value="webinar">وبینار</option><option value="seminar">سمینار / نشست</option><option value="conference">همایش</option><option value="workshop">کارگاه</option><option value="course">دوره آموزشی</option><option value="other">سایر اطلاعیه‌ها</option></select></label>
+<label>تاریخ برگزاری<input name="event_date" type="date"></label>
+<label>ساعت برگزاری<input name="event_time" maxlength="40" placeholder="مثلاً ۱۷:۰۰"></label>
+<label>محل یا بستر برگزاری<input name="location" maxlength="250" placeholder="آنلاین / دانشگاه / شهر"></label>
+<label>لینک ثبت‌نام یا اطلاعات بیشتر<input name="registration_url" type="url" maxlength="1000" placeholder="https://"></label>
+<label class="admin-event-poster">تصویر پوستر<input name="poster" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG، PNG یا WebP؛ حداکثر ۱۰ مگابایت</small></label>
+<label class="admin-event-description">توضیحات برنامه<textarea name="description" rows="5" maxlength="12000" required></textarea></label>
+</div>
+<div class="admin-event-actions">
+<button type="submit" data-event-submit="draft">ذخیره پیش‌نویس</button>
+<button type="submit" data-event-submit="publish">انتشار در صفحه انجمن</button>
+<button type="submit" data-event-submit="email">انتشار و ارسال ایمیل به اعضا</button>
+<button type="button" id="admin-event-reset">پاک‌کردن فرم</button>
+</div><p id="admin-event-message" role="status" aria-live="polite"></p>
+</form><h3>فهرست اطلاعیه‌ها و رویدادها</h3><div id="admin-event-list">در حال دریافت رویدادها…</div>
+</section>
 </section></section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-20261112"></script><script defer src="assets/admin.js?v=approved-profile-promotion-20261112"></script></body></html>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-20261112"></script><script defer src="assets/admin.js?v=approved-profile-promotion-20261112"></script><script defer src="assets/admin-events.js?v=events-management-20261112"></script></body></html>
