@@ -71,7 +71,7 @@
     ctx.direction = 'rtl';
     ctx.textAlign = 'center';
     ctx.font = 'bold 46px Tahoma, Arial, sans-serif';
-    ctx.fillText(cleanName(member.display_name || member.full_name), 746, 535, 900);
+    ctx.fillText(cleanName(member.full_name), 746, 535, 900);
     ctx.textAlign = 'right';
     ctx.font = 'bold 29px Tahoma, Arial, sans-serif';
     ctx.fillText(membershipNumber(member.member_number), 350, 770, 250);
