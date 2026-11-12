@@ -147,6 +147,8 @@
     return '<span class="member-emblem member-emblem--simple" title="'+esc(title)+'"><svg class="member-emblem-svg" viewBox="0 0 120 120" role="img" aria-label="'+esc(title)+'"><circle cx="60" cy="60" r="53" fill="none" stroke="#e9ad28" stroke-width="5"/></svg></span>';
   }
   let cards = [];
+  let placeholders = [];
+  let resultCount = null;
   let currentPage = 1;
   const PAGE_SIZE = 16;
   let pagination = null;
@@ -175,7 +177,15 @@
     if(currentPage>totalPages)currentPage=totalPages;
     const visible=new Set(matched.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE));
     cards.forEach(card=>{card.hidden=!visible.has(card);});
+    // Empty layout slots are presentation-only: never include them in member counts
+    // or category/search results. Show them only in the unfiltered first-page view.
+    const showPlaceholders=!selectedCategory&&!q&&currentPage===1&&matched.length<PAGE_SIZE;
+    const placeholderSlots=Math.max(0,PAGE_SIZE-matched.length);
+    placeholders.forEach((card,index)=>{card.hidden=!showPlaceholders||index>=placeholderSlots;});
     const shown=matched.length;
+    if(resultCount){
+      resultCount.textContent=lang==='fa'?'تعداد اعضا: '+shown:lang==='ru'?'Участников: '+shown:'Members: '+shown;
+    }
     const empty=wrap.querySelector('.member-filter-empty');
     if(empty) {
       empty.hidden=shown>0;
@@ -305,15 +315,8 @@
       if(timeoutId)clearTimeout(timeoutId);
     }
     let {data,error}=result||{};
-    if(error||!data?.length){
-      try{
-        const staticResponse=await fetch('/data/community-members.json',{cache:'force-cache'});
-        if(staticResponse.ok){
-          const staticMembers=await staticResponse.json();
-          if(Array.isArray(staticMembers)&&staticMembers.length){data=staticMembers;error=null;}
-        }
-      }catch(_){}
-    }
+    // Do not replace a valid empty database response (or a failed live request)
+    // with an outdated one-member JSON snapshot. Live database data is authoritative.
     if(error){
       wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با تأخیر یا خطا روبه‌رو شد. لطفاً دوباره تلاش کنید.':lang==='ru'?'Не удалось загрузить список участников. Попробуйте ещё раз.':'The member directory could not be loaded. Please try again.')+' <button type="button" class="community-search-btn" data-retry-members>'+(lang==='fa'?'تلاش دوباره':'Retry')+'</button></div>';
       wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>load(forceDirectory),{once:true});
@@ -328,8 +331,17 @@
     }).join('');
     const missingSlots=Math.max(0,16-data.length);
     if(missingSlots){wrap.insertAdjacentHTML('beforeend',Array.from({length:missingSlots},(_,i)=>'<article class="community-member community-member--placeholder" aria-hidden="true" data-placeholder-slot="'+(data.length+i+1)+'"><div class="community-placeholder-mark"></div><div class="community-placeholder-line"></div><div class="community-placeholder-line short"></div></article>').join(''));}
-    // Cards and text become visible immediately; portraits and QR codes are hydrated later.
-    cards=[...wrap.querySelectorAll('.community-member')];
+    // Only real member records participate in filtering and counting. Placeholder
+    // cards are kept separately and are never treated as members.
+    cards=[...wrap.querySelectorAll('.community-member[data-member-id]')];
+    placeholders=[...wrap.querySelectorAll('.community-member--placeholder')];
+    const tools=root.querySelector('.community-tools');
+    if(!resultCount){
+      resultCount=document.createElement('span');
+      resultCount.className='community-results-count';
+      resultCount.setAttribute('aria-live','polite');
+      tools?.insertBefore(resultCount,tools.querySelector('[data-clear-filters]'));
+    }
     const hydrateCard = card => {
       const avatar=card.querySelector('[data-avatar-placeholder="1"]');
       if(avatar && avatar.dataset.avatarPath){
@@ -410,7 +422,13 @@
       item.setAttribute('aria-pressed',String(categoryKey(item.dataset.categoryFilter)===selected));
     });
   });
-  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{if(search)search.value='';if(category)category.value='';currentPage=1;filter();});
+  root.querySelector('[data-clear-filters]')?.addEventListener('click',()=>{
+    if(search)search.value='';
+    if(category)category.value='';
+    currentPage=1;
+    filter();
+    root.querySelectorAll('[data-category-filter]').forEach(item=>item.setAttribute('aria-pressed',String(!item.dataset.categoryFilter)));
+  });
 
   // Keep portrait zoom local to the image: no lightbox, original-image navigation,
   // or full-screen overlay. Capture clicks before the surrounding profile link.
