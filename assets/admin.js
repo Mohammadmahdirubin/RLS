@@ -71,7 +71,7 @@
     list.textContent='در حال دریافت درخواست‌های مستقل…';
     const {data,error}=await client.from('rls_membership_applications')
       .select('id,email,full_name,salutation,category,profile_data,avatar_path,evidence_path,status,created_at,reviewed_at,review_note')
-      .order('created_at',{ascending:false});
+      .eq('status','pending').order('created_at',{ascending:false});
     if(error){list.textContent='خطا در دریافت درخواست‌های مستقل: '+error.message;return;}
     if(!data?.length){list.textContent='هنوز درخواستی ثبت نشده است.';return;}
     const cards=await Promise.all(data.map(async p=>{
@@ -93,7 +93,7 @@
         '<br>تاریخ ثبت: '+new Date(p.created_at).toLocaleString('fa-IR')+
         (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
         evidence+
-        '<p class="admin-meta">این درخواست مستقل از ساخت حساب و ارسال ایمیل ذخیره شده است. تأیید در این بخش، تأیید خودِ درخواست عضویت است؛ ایجاد حساب ورود پس از رفع اختلال سرویس احراز هویت انجام می‌شود.</p>'+
+        '<p class="admin-meta">با تأیید این درخواست، پروفایل عضو در فهرست عمومی اعضای تأییدشده ایجاد می‌شود. عکس پروفایل اختیاری است و در صورت نبود عکس، پروفایل بدون عکس نمایش داده خواهد شد.</p>'+
         (p.status==='pending'?'<div class="admin-actions"><button class="approve" data-action="application_approve">تأیید درخواست عضویت</button><button class="reject" data-action="application_reject">رد درخواست</button></div>':'')+
         '<p class="admin-message" role="status"></p></article>';
     }));
@@ -104,12 +104,27 @@
      message.textContent='در حال ثبت تصمیم مدیر…';
     const {data:{user}}=await client.auth.getUser();
     if(!user){message.textContent='نشست مدیر منقضی شده است.';return;}
-    const status=action==='application_approve'?'approved':'rejected';
-    const {error}=await client.from('rls_membership_applications').update({
-      status,reviewed_by:user.id,reviewed_at:new Date().toISOString(),
-      review_note:status==='approved'?'درخواست توسط مدیر تأیید شد.':'درخواست توسط مدیر رد شد.'
-    }).eq('id',id).eq('status','pending');
-    if(error){message.textContent='ثبت تصمیم ناموفق بود: '+error.message;return;}
+    if(action==='application_approve'){
+      const {data:sessionData,error:sessionError}=await client.auth.getSession();
+      if(sessionError||!sessionData?.session?.access_token){
+        message.textContent='نشست مدیر معتبر نیست؛ دوباره وارد شوید.';
+        return;
+      }
+      const {data:result,error}=await client.functions.invoke('admin-approve-membership-application',{
+        headers:{Authorization:'Bearer '+sessionData.session.access_token},
+        body:{application_id:id}
+      });
+      if(error||!result?.ok){
+        message.textContent='تأیید و ایجاد پروفایل ناموفق بود: '+(result?.error||error?.message||'خطای نامشخص');
+        return;
+      }
+    }else{
+      const {error}=await client.from('rls_membership_applications').update({
+        status:'rejected',reviewed_by:user.id,reviewed_at:new Date().toISOString(),
+        review_note:'درخواست توسط مدیر رد شد.'
+      }).eq('id',id).eq('status','pending');
+      if(error){message.textContent='ثبت تصمیم ناموفق بود: '+error.message;return;}
+    }
     await load();
   }
   async function load(){
