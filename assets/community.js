@@ -235,7 +235,7 @@
   }
   const DEFAULT_MEMBER_AVATARS={
     mr:'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/black-and-white-business-man-logo-vector.jpg',
-    ms:'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/images%20(4).jpeg'
+    ms:'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/Women-logo.jpg'
   };
   function defaultAvatarUrl(salutation){
     return DEFAULT_MEMBER_AVATARS[String(salutation||'').toLowerCase()]||'';
