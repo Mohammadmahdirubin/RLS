@@ -164,8 +164,7 @@
         const card=list.querySelector('[data-id="'+String(p.user_id)+'"]');
         const target=card?.querySelector('.admin-certificate-preview');
         if(target)window.RLSMembershipCertificate.render(target,{
-          user_id:String(p.user_id),display_name:p.display_name||p.full_name,
-          full_name:p.full_name,category:p.category,created_at:p.created_at,
+          user_id:String(p.user_id),full_name:p.full_name,category:p.category,created_at:p.created_at,
           member_number:p.member_number,membership_status:p.membership_status
         },{adminPreview:true});
       });
