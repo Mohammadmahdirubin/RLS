@@ -766,9 +766,9 @@
         await removeQueuedAvatar(applicationEmail).catch(() => {});
         register.reset();
         say(regMsg, tr(
-          'به‌دلیل خطا در سرویس حساب یا ایمیل، درخواست شما از مسیر مستقل ذخیره شد و اکنون در صف بررسی مدیر انجمن است. برای تأیید درخواست نیازی به دریافت ایمیل نیست.',
-          'Your account or email service returned an error, but your application was safely stored through the independent review queue. No confirmation email is needed for administrator review.',
-          'Из-за ошибки сервиса учётных записей или почты заявка сохранена через независимую очередь и ожидает проверки администратора. Письмо подтверждения для рассмотрения не требуется.'
+          'به‌دلیل خطا در سرویس حساب یا ایمیل، درخواست شما از مسیر مستقل ذخیره شد و اکنون در صف بررسی مدیر انجمن است. برای بررسی و تأیید درخواست نیازی به ایمیل نیست؛ ایجاد حساب ورود و دسترسی به پنل اعضا پس از رفع اختلال انجام می‌شود.',
+          'Your account or email service returned an error, but your application was safely stored through the independent review queue. No confirmation email is needed for review; member-account access can be set up after the service is restored.',
+          'Из-за ошибки сервиса учётных записей или почты заявка сохранена через независимую очередь и ожидает проверки администратора. Для рассмотрения письмо не требуется; доступ к личному кабинету будет настроен после восстановления сервиса.'
         ));
       } catch (fallbackError) {
         console.error('Independent membership application fallback failed:', fallbackError);
