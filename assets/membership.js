@@ -694,15 +694,11 @@
       delete register.dataset.submitting;
       if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalSubmitLabel; }
     };
+    // Local photo retention is only a convenience; server-side application storage is authoritative.
     try {
-      // Keep the required photo locally while the user confirms their email.
       await queueAvatar(applicationEmail, avatarFile);
     } catch (queueError) {
-      releaseSubmit();
-      say(regMsg, tr('ذخیره موقت عکس برای تکمیل ثبت‌نام ممکن نشد: ',
-        'The selected photo could not be retained until email confirmation: ',
-        'Не удалось временно сохранить фотографию для завершения регистрации: ') + (queueError?.message || String(queueError)));
-      return;
+      console.warn('Local photo queue unavailable; continuing with server-side registration:', queueError);
     }
     const metadata = {
       full_name: clean(fd.get('full_name')), salutation, display_name: clean(fd.get('display_name')),
@@ -781,7 +777,7 @@
         await ensureProfile(data.user);
         if (file && file.size) await uploadEvidence(data.user, file);
         await uploadAvatar(data.user, avatarFile);
-        await removeQueuedAvatar(applicationEmail);
+        await removeQueuedAvatar(applicationEmail).catch(() => {});
         say(regMsg, tr('درخواست شما ثبت شد و در انتظار بررسی مدیر است.',
           'Your application was submitted and is awaiting administrator review.',
           'Заявка отправлена и ожидает проверки администратора.'));
