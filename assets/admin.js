@@ -188,7 +188,7 @@
         ?client.storage.from('rls-member-avatars').getPublicUrl(reviewAvatarPath).data.publicUrl:'';
       const photo=avatarUrl
         ?'<div class="admin-photo-review"><img src="'+esc(avatarUrl)+'" alt="عکس پروفایل '+esc(p.full_name)+'" width="104" height="104" loading="lazy" decoding="async"><span>'+(p.pending_avatar_path?'عکس جدید در انتظار تأیید':'عکس پروفایل')+'</span></div>'
-        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است؛ مدیر می‌تواند آن را از همین بخش بارگذاری کند یا عضو بعداً از پنل خود ارسال کند.</p>'+(p.membership_status==='approved'?'<button type="button" class="approve admin-recover-avatar" data-action="recover_application_avatar" style="margin:8px 0;padding:10px 14px">بازیابی عکس اولیه راحله براری از درخواست عضویت</button>':'');
+        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است؛ مدیر می‌تواند آن را از همین بخش بارگذاری کند یا عضو بعداً از پنل خود ارسال کند.</p>';
       const photoUploader='<div class="admin-photo-upload"><label>بارگذاری دستی عکس برای این عضو<input type="file" accept="image/jpeg,image/png,image/webp" data-admin-avatar-file></label><button type="button" class="approve" data-action="upload_member_avatar">بارگذاری عکس</button><small>JPG، PNG یا WebP؛ حداکثر ۵ مگابایت. عکس پس از بارگذاری در انتظار تأیید مدیر خواهد بود.</small></div>';
       return '<article class="admin-member" data-id="'+esc(p.user_id)+'" data-email="'+esc(p.email||'')+'" data-avatar-path="'+esc(p.avatar_path||'')+'" data-pending-avatar="'+esc(p.pending_avatar_path||'')+'"><h3>'+esc(p.full_name)+'</h3>'+
         photo+photoUploader+
@@ -203,7 +203,7 @@
         '<div class="admin-actions">'+
         (status==='pending'?'<button class="approve" data-action="approve">تأیید عضویت و عکس</button><button class="reject" data-action="reject">رد درخواست</button>':'')+
         ((status==='approved'||status==='photo_pending')&&p.pending_avatar_path?'<button class="approve" data-action="approve_avatar">تأیید عکس جدید</button><button class="reject" data-action="reject_avatar">رد عکس جدید</button>':'')+
-        (status==='approved'&&!p.avatar_path?'<button class="approve" data-action="recover_application_avatar">بازیابی عکس درخواست اولیه</button>':'')+
+        (status==='approved'&&!p.avatar_path?'<button class="approve" data-action="recover_application_avatar">بازیابی عکس از درخواست اولیه</button>':'')+
         (status==='approved'?'<button class="approve" data-action="resend_approval_email">ارسال مجدد ایمیل تأیید عضویت</button><button class="suspend" data-action="suspend">تعلیق عضویت</button><button class="visibility" data-action="toggle_visibility">'+(p.is_public?'پنهان‌کردن پروفایل عمومی':'نمایش پروفایل عمومی')+'</button>':'')+
         (status==='suspended'?'<button class="approve" data-action="restore">فعال‌سازی دوباره عضویت</button>':'')+
         '</div>'+(status==='approved'?'<div class="admin-certificate-preview"></div>':'')+'<p class="admin-message" role="status"></p></article>';
@@ -426,7 +426,7 @@
         if(sessionError)throw sessionError;
         const token=sessionData?.session?.access_token;
         if(!token)throw new Error('نشست مدیر در دسترس نیست؛ دوباره وارد شوید.');
-        const {data:result,error}=await client.functions.invoke('admin-approve-membership-application',{
+        const {data:result,error}=await client.functions.invoke('admin-recover-member-avatar',{
           headers:{Authorization:'Bearer '+token},body:{application_id:app.id}
         });
         if(error||!result?.ok)throw error||new Error(result?.error||'بازیابی عکس ناموفق بود.');
