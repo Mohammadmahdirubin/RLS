@@ -28,6 +28,7 @@
     "lower_center": "fixed journal seal extracted from the supplied Word document"
   },
   "dynamic_fields": [
+    "salutation",
     "full_name",
     "membership_start_date",
     "membership_category",
@@ -37,6 +38,7 @@
   ],
   "data_rules": {
     "issue_only_when": "membership_status = approved",
+    "printed_name_source": "rls_profiles.full_name — always print the member’s registered first and last name; never substitute display_name.",
     "salutation_values": [
       "mr",
       "ms"
