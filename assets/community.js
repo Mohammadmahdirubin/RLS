@@ -27,7 +27,7 @@
     return String(value||'').normalize('NFKC').trim().toLocaleLowerCase()
       .replace(/[يى]/g,'ی').replace(/[ك]/g,'ک')
       .replace(/[\u200c\u200d\u200e\u200f\u0640]/g,'')
-      .replace(/[ًٌٍَُِّْ]/g,'').replace(/[\\s_-]+/g,' ');
+      .replace(/[ًٌٍَُِّْ]/g,'').replace(/[\s_-]+/g,' ');
   }
   const categoryAliases = Object.create(null);
   [
