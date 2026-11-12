@@ -2,7 +2,42 @@
   const root = document.querySelector('[data-community]');
   if (!root) return;
   const cfg = window.RLS_SUPABASE_CONFIG;
-  const db = cfg && window.supabase ? (window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }))) : null;
+  let db = cfg && window.supabase
+    ? (window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } })))
+    : null;
+  let authListenerBound = false;
+  function loadScriptOnce(src) {
+    return new Promise((resolve,reject)=>{
+      const existing=document.querySelector('script[data-rls-supabase-fallback]');
+      if(existing){
+        if(window.supabase){resolve();return;}
+        existing.addEventListener('load',resolve,{once:true});
+        existing.addEventListener('error',reject,{once:true});
+        return;
+      }
+      const script=document.createElement('script');
+      script.src=src;
+      script.async=true;
+      script.dataset.rlsSupabaseFallback='1';
+      script.onload=resolve;
+      script.onerror=()=>reject(new Error('Supabase library could not be loaded'));
+      document.head.appendChild(script);
+    });
+  }
+  async function ensureDatabase() {
+    if(!window.supabase){
+      await loadScriptOnce('https://unpkg.com/@supabase/supabase-js@2');
+    }
+    if(!cfg || !window.supabase) throw new Error('Database client configuration is unavailable');
+    if(!db){
+      db=window.RLS_SUPABASE_CLIENT || window.supabase.createClient(
+        cfg.url,cfg.publishableKey,
+        {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+      );
+      window.RLS_SUPABASE_CLIENT=db;
+    }
+    return db;
+  }
   const search = root.querySelector('#member-search');
   const category = root.querySelector('#member-category');
   const wrap = root.querySelector('.community-members');
@@ -306,7 +341,9 @@
     let result;
     let timeoutId;
     try {
-      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,profile_headline,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,website_url,blog_url,orcid,researchgate_url,instagram_url,telegram_url,linkedin_url,x_url,salutation,member_number').order('member_number',{ascending:true,nullsFirst:false}).order('created_at',{ascending:true}).limit(500);
+      // Read the public view's available columns instead of hard-coding a
+      // fragile column list/order clause that can break after schema updates.
+      const request=db.from('rls_public_members').select('*').limit(500);
       const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
       result=await Promise.race([request,timeout]);
     } catch(requestError) {
@@ -319,7 +356,7 @@
     // with an outdated one-member JSON snapshot. Live database data is authoritative.
     if(error){
       wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با تأخیر یا خطا روبه‌رو شد. لطفاً دوباره تلاش کنید.':lang==='ru'?'Не удалось загрузить список участников. Попробуйте ещё раз.':'The member directory could not be loaded. Please try again.')+' <button type="button" class="community-search-btn" data-retry-members>'+(lang==='fa'?'تلاش دوباره':'Retry')+'</button></div>';
-      wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>load(forceDirectory),{once:true});
+      wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>boot(forceDirectory),{once:true});
       return;
     }
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
@@ -419,8 +456,22 @@
     if (directory) directory.setAttribute('tabindex', '-1');
     directory?.focus({ preventScroll: true });
   });
-  showAdminLink();
-  db?.auth.onAuthStateChange(()=>{showAdminLink();});
+  async function boot(forceDirectory=false) {
+    const retryMessage=lang==='fa'?'راه‌اندازی فهرست اعضا ناموفق بود. اتصال را دوباره امتحان کنید.':lang==='ru'?'Не удалось запустить каталог участников. Повторите подключение.':'Could not initialize the member directory. Please retry.';
+    try {
+      await ensureDatabase();
+      if(!authListenerBound){
+        db.auth.onAuthStateChange(()=>{showAdminLink();});
+        authListenerBound=true;
+      }
+      showAdminLink();
+      await load(forceDirectory);
+    } catch(error) {
+      console.error('[RLS community] directory initialization failed:',error);
+      wrap.innerHTML='<div class="community-empty">'+esc(retryMessage)+' <button type="button" class="community-search-btn" data-retry-members>'+(lang==='fa'?'تلاش دوباره':'Retry')+'</button></div>';
+      wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>boot(forceDirectory),{once:true});
+    }
+  }
   // Use capture-phase delegation: category cards remain responsive even if
   // another script or nested element stops bubbling. Do not launch a second
   // database request when the initial directory load is still in progress.
@@ -471,5 +522,5 @@
     button.setAttribute('aria-expanded',String(expanded));
     button.setAttribute('aria-label',expanded?'بستن جزئیات':'نمایش جزئیات');
   }));
-  load();
+  boot();
 })();
