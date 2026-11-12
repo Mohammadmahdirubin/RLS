@@ -13,3 +13,15 @@
 .admin-event-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-event-fields label{display:grid;gap:6px;font-size:14px;color:#334b66}.admin-event-fields input,.admin-event-fields select,.admin-event-fields textarea{width:100%;box-sizing:border-box;border:1px solid #ccd6e1;border-radius:8px;padding:10px;font:inherit;background:#fff;min-width:0}.admin-event-description{grid-column:1/-1}.admin-event-poster small{font-size:12px;color:#64748b}
 .admin-event-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}.admin-event-actions button{border:0;border-radius:8px;padding:10px 14px;background:#e9f1fb;color:#174d7c;font:inherit;cursor:pointer}.admin-event-actions button[data-event-submit="publish"]{background:#315d42;color:white}.admin-event-actions button[data-event-submit="email"]{background:#642536;color:white}.admin-event-actions button:disabled{opacity:.55;cursor:wait}.admin-event-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;margin:8px 0;border:1px solid #dce3eb;border-radius:9px;background:#fff}.admin-event-row p{margin:5px 0 0;color:#64748b;font-size:13px}.admin-event-row-actions{display:flex;gap:7px;flex-wrap:wrap}.admin-event-row-actions button{border:0;border-radius:7px;padding:8px 11px;background:#e9f1fb;color:#174d7c;font:inherit;cursor:pointer}
 @media(max-width:650px){.admin-event-fields{grid-template-columns:1fr}.admin-event-description{grid-column:auto}.admin-event-row{align-items:flex-start;flex-direction:column}}
+
+
+/* Search field for the member and membership-request management lists */
+.admin-search-bar{margin:16px 0 18px;padding:14px 16px;border:1px solid #dce3eb;border-radius:12px;background:#f8fafc}
+.admin-search-bar>label{display:block;margin-bottom:8px;color:#263b52;font-size:14px;font-weight:800}
+.admin-search-controls{display:flex;align-items:center;gap:8px}
+.admin-search-controls input{flex:1;min-width:0;box-sizing:border-box;padding:11px 13px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#172b42;font:inherit}
+.admin-search-controls input:focus{outline:2px solid #9bb7d2;outline-offset:1px;border-color:#52799e}
+.admin-search-controls button{flex:0 0 auto;white-space:nowrap}
+#admin-search-count{min-height:20px;margin:7px 2px 0;color:#64748b;font-size:12px}
+#admin-list>.admin-member[hidden]{display:none!important}
+@media(max-width:560px){.admin-search-controls{align-items:stretch;flex-direction:column}.admin-search-controls button{width:100%}.admin-search-bar{padding:12px}}
