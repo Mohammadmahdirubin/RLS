@@ -401,6 +401,7 @@
         const img=document.createElement('img');
         const memberPhoto=avatar.dataset.avatarPath||'';
         const genderFallback=defaultAvatarUrl(avatar.dataset.avatarSalutation);
+        if(!memberPhoto&&!genderFallback)return;
         img.className='community-avatar-image'; img.alt=card.querySelector('h3')?.textContent||'Member';
         img.width=76; img.height=76; img.loading='lazy'; img.decoding='async';
         img.src=memberPhoto?avatarUrl(memberPhoto,112):genderFallback;
