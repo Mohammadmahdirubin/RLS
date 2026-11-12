@@ -738,33 +738,35 @@
 }
 
 
-/* Member profile portrait: rectangular by default, magnifies to 2x on hover
-   and remains toggle-zoomable by tap on touch screens. */
-.member-public-card .member-public-heading > img.member-public-avatar:hover,
-.member-public-card .member-public-heading > img.member-public-avatar.is-zoomed,
-.member-public-card .member-public-heading > div.member-public-avatar:hover,
-.member-public-card .member-public-heading > div.member-public-avatar.is-zoomed{
-  position:relative;
-  z-index:50;
-  transform:scale(2);
-  transform-origin:left center;
+/* Public profile portrait opens above the entire page when clicked.
+   Fixed positioning prevents the card or its content from covering the top of the image. */
+.member-public-card .member-public-heading > img.member-public-avatar.is-zoomed{
+  position:fixed!important;
+  z-index:99999!important;
+  top:50vh!important;
+  left:50vw!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  max-width:min(88vw,520px)!important;
+  max-height:84vh!important;
+  object-fit:contain!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center center!important;
   border-radius:13px;
   cursor:zoom-out;
-  box-shadow:0 12px 32px rgba(25,22,20,.38);
+  background:#fff;
+  box-shadow:0 18px 54px rgba(20,15,18,.55);
 }
 .member-public-card .member-public-heading > img.member-public-avatar,
 .member-public-card .member-public-heading > div.member-public-avatar{
   cursor:zoom-in;
   transition:transform .2s ease,box-shadow .2s ease;
 }
-@media(max-width:620px){
- .member-public-card .member-public-heading > img.member-public-avatar:hover,
- .member-public-card .member-public-heading > img.member-public-avatar.is-zoomed,
- .member-public-card .member-public-heading > div.member-public-avatar:hover,
- .member-public-card .member-public-heading > div.member-public-avatar.is-zoomed{
-   transform:scale(1.65);
-   transform-origin:left center;
- }
+.member-public-card .member-public-heading > img.member-public-avatar.is-zoomed{
+  transition:transform .2s ease,box-shadow .2s ease;
 }
 
 
