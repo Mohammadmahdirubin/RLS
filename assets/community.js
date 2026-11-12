@@ -16,19 +16,31 @@
     student:{symbol:'🎓',tone:'student'},
     graduate:{symbol:'📜',tone:'graduate'},
     faculty:{symbol:'👩‍🏫',tone:'faculty'},
-    researcher:{symbol:'👓',tone:'researcher'},
+    researcher:{symbol:'🔬',tone:'researcher'},
     translator:{symbol:'📚',tone:'translator'},
     culture:{symbol:'🏛️',tone:'culture'},
     honorary:{symbol:'🏅',tone:'honorary'}
   };
-  const categoryAliases = {
-    student:'student', 'دانشجو':'student', graduate:'graduate', 'دانش‌آموخته':'graduate', 'دانش آموخته':'graduate',
-    faculty:'faculty', 'استاد و عضو هیئت علمی':'faculty', 'استاد':'faculty', researcher:'researcher', 'پژوهشگر':'researcher',
-    translator:'translator', 'مترجم':'translator', culture:'culture', 'ادبیات و فرهنگ':'culture', 'فعال حوزه ادبیات و فرهنگ':'culture',
-    honorary:'honorary', 'عضو افتخاری':'honorary'
-  };
+  // Normalize stored category values as well as the visible filter labels.
+  // This covers Persian half-spaces, Arabic/Persian letter variants and legacy labels.
+  function normalizeCategoryText(value) {
+    return String(value||'').normalize('NFKC').trim().toLocaleLowerCase()
+      .replace(/[يى]/g,'ی').replace(/[ك]/g,'ک')
+      .replace(/[\u200c\u200d\u200e\u200f\u0640]/g,'')
+      .replace(/[ًٌٍَُِّْ]/g,'').replace(/[\\s_-]+/g,' ');
+  }
+  const categoryAliases = Object.create(null);
+  [
+    ['student','student','دانشجو'],
+    ['graduate','graduate','دانش‌آموخته','دانش آموخته','فارغ‌التحصیل','فارغ التحصیل'],
+    ['faculty','faculty','استاد','استاد و عضو هیئت علمی','عضو هیئت علمی','اعضای هیئت علمی'],
+    ['researcher','researcher','پژوهشگر','پژوهشگر مطالعات روسیه','پژوهشگر روسیه'],
+    ['translator','translator','مترجم','مترجم زبان روسی','مترجم روسی'],
+    ['culture','culture','ادبیات و فرهنگ','فعال حوزه ادبیات و فرهنگ','فعالان ادبیات و فرهنگ روسیه','فعال ادبیات و فرهنگ روسیه'],
+    ['honorary','honorary','عضو افتخاری','اعضای افتخاری','عضوهای افتخاری']
+  ].forEach(([key,...aliases])=>aliases.forEach(alias=>{categoryAliases[normalizeCategoryText(alias)]=key;}));
   function categoryKey(value) {
-    const raw=String(value||'').trim().toLocaleLowerCase().replace(/[ي]/g,'ی').replace(/[ك]/g,'ک');
+    const raw=normalizeCategoryText(value);
     return categoryAliases[raw] || raw;
   }
   const categoryBadge = key => {
