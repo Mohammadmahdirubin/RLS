@@ -731,6 +731,26 @@
       languages_en: clean(fd.get('languages_en')), languages_ru: clean(fd.get('languages_ru'))
     };
     if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { if (!metadata[key + '_' + lang]) metadata[key + '_' + lang] = metadata[key]; });
+    const saveIndependentApplication = async () => {
+      const fallback = new FormData();
+      fallback.append('application', JSON.stringify({
+        email: applicationEmail, full_name: metadata.full_name, salutation, category, profile_data: metadata
+      }));
+      fallback.append('avatar', avatarFile, avatarFile.name || 'profile-photo');
+      if (file && file.size) fallback.append('evidence', file, file.name || 'supporting-document');
+      const response = await fetch(cfg.url.replace(/\/$/, '') + '/functions/v1/submit-membership-application', {
+        method: 'POST', headers: { apikey: cfg.publishableKey }, body: fallback
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result?.ok) throw new Error(result?.error || 'Application intake is unavailable.');
+      await removeQueuedAvatar(applicationEmail).catch(() => {});
+      register.reset();
+    };
+    const independentSuccessMessage = tr(
+      'درخواست شما مستقل از ایمیل و تأیید حساب ذخیره شد و اکنون در صف بررسی مدیر انجمن است. برای بررسی و تأیید درخواست نیازی به ایمیل نیست؛ ایجاد حساب ورود و دسترسی به پنل اعضا بعداً انجام می‌شود.',
+      'Your application was stored independently of email delivery and account confirmation, and is now awaiting administrator review. No email is needed for review; member-account access can be set up later.',
+      'Заявка сохранена независимо от доставки письма и подтверждения учётной записи и ожидает проверки администратора. Для рассмотрения письмо не требуется; доступ к личному кабинету можно настроить позже.'
+    );
     let data;
     try {
       const result = await db.auth.signUp({
@@ -744,40 +764,14 @@
       data = result.data;
     } catch (error) {
       const raw = String(error?.message || error || '');
-      // Auth/email failures must not discard a valid membership application.
       try {
-        const fallback = new FormData();
-        fallback.append('application', JSON.stringify({
-          email: applicationEmail,
-          full_name: metadata.full_name,
-          salutation,
-          category,
-          profile_data: metadata
-        }));
-        fallback.append('avatar', avatarFile, avatarFile.name || 'profile-photo');
-        if (file && file.size) fallback.append('evidence', file, file.name || 'supporting-document');
-        const response = await fetch(cfg.url.replace(/\/$/, '') + '/functions/v1/submit-membership-application', {
-          method: 'POST',
-          headers: { apikey: cfg.publishableKey },
-          body: fallback
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result?.ok) throw new Error(result?.error || 'Application intake is unavailable.');
-        await removeQueuedAvatar(applicationEmail).catch(() => {});
-        register.reset();
-        say(regMsg, tr(
-          'به‌دلیل خطا در سرویس حساب یا ایمیل، درخواست شما از مسیر مستقل ذخیره شد و اکنون در صف بررسی مدیر انجمن است. برای بررسی و تأیید درخواست نیازی به ایمیل نیست؛ ایجاد حساب ورود و دسترسی به پنل اعضا پس از رفع اختلال انجام می‌شود.',
-          'Your account or email service returned an error, but your application was safely stored through the independent review queue. No confirmation email is needed for review; member-account access can be set up after the service is restored.',
-          'Из-за ошибки сервиса учётных записей или почты заявка сохранена через независимую очередь и ожидает проверки администратора. Для рассмотрения письмо не требуется; доступ к личному кабинету будет настроен после восстановления сервиса.'
-        ));
+        await saveIndependentApplication();
+        say(regMsg, independentSuccessMessage);
       } catch (fallbackError) {
         console.error('Independent membership application fallback failed:', fallbackError);
-        const reason = fallbackError?.message || String(fallbackError);
-        say(regMsg, tr(
-          'ثبت درخواست در مسیر مستقل هم انجام نشد: ',
-          'The independent application queue could not save your request: ',
-          'Не удалось сохранить заявку через независимую очередь: '
-        ) + reason + ' · ' + tr('لطفاً دوباره تلاش کنید.','Please try again.','Повторите попытку.'));
+        say(regMsg, tr('ثبت درخواست در مسیر مستقل هم انجام نشد: ','The independent application queue could not save your request: ','Не удалось сохранить заявку через независимую очередь: ') +
+          (fallbackError?.message || String(fallbackError)) + ' · ' +
+          tr('خطای اولیه: ','Original error: ','Исходная ошибка: ') + raw);
       }
       releaseSubmit();
       return;
@@ -799,9 +793,16 @@
       }
       releaseSubmit();
     } else {
-      say(regMsg, tr('حساب ساخته شد و عکس شما در این مرورگر نگهداری شده است. ایمیل را تأیید کنید، سپس با همان مرورگر و همان ایمیل وارد شوید تا عکس برای بررسی مدیر ارسال شود. اگر تأیید ایمیل در همین صفحه باز شد، پس از بازگشت وارد شوید.',
-        'Your account was created and the photo has been retained in this browser. Confirm your email, then sign in here with the same email so the photo can be sent for administrator review.',
-        'Учётная запись создана, фотография сохранена в этом браузере. Подтвердите адрес и войдите здесь с тем же адресом, чтобы отправить фотографию администратору на проверку.'));
+      // Supabase may return a user but with no session while waiting for email confirmation.
+      // Store the application now so the administrator can review it without that email.
+      try {
+        await saveIndependentApplication();
+        say(regMsg, independentSuccessMessage);
+      } catch (fallbackError) {
+        console.error('Independent membership application could not be stored:', fallbackError);
+        say(regMsg, tr('حساب ایجاد شد، اما ذخیره درخواست مستقل ناموفق بود: ','The account was created, but the independent application could not be stored: ','Учётная запись создана, но независимую заявку сохранить не удалось: ') +
+          (fallbackError?.message || String(fallbackError)));
+      }
       releaseSubmit();
     }
   });
