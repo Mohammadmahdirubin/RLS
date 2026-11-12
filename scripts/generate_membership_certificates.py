@@ -22,7 +22,7 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-full-name-v2"
+DESIGN_VERSION = "rls-certificate-full-name-v3"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
