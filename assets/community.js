@@ -51,6 +51,15 @@
     const id=raw.replace(/^https?:\/\/(?:www\.)?orcid\.org\//i,'').replace(/^orcid\.org\//i,'').replace(/\/$/,'').trim();
     return /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i.test(id) ? 'https://orcid.org/'+id : '';
   }
+  function compareMembershipOrder(a,b) {
+    const an=String(a?.member_number||'').trim(),bn=String(b?.member_number||'').trim();
+    if(an&&bn){const byNumber=an.localeCompare(bn,undefined,{numeric:true,sensitivity:'base'});if(byNumber)return byNumber;}
+    else if(an||bn)return an?-1:1;
+    const ad=Date.parse(a?.created_at||''),bd=Date.parse(b?.created_at||'');
+    if(Number.isFinite(ad)&&Number.isFinite(bd)&&ad!==bd)return ad-bd;
+    if(Number.isFinite(ad)!==Number.isFinite(bd))return Number.isFinite(ad)?-1:1;
+    return 0;
+  }
   function formatJoinDate(value) {
     if(!value)return '—';
     const date=new Date(value);
@@ -271,7 +280,7 @@
     let result;
     let timeoutId;
     try {
-      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,profile_headline,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,website_url,blog_url,orcid,researchgate_url,instagram_url,telegram_url,linkedin_url,x_url,salutation,member_number').order('display_name',{ascending:true}).limit(500);
+      const request=db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,profile_headline,avatar_path,created_at,display_name_en,display_name_ru,profile_headline,profile_headline_en,profile_headline_ru,specialty_en,specialty_ru,website_url,blog_url,orcid,researchgate_url,instagram_url,telegram_url,linkedin_url,x_url,salutation,member_number').order('member_number',{ascending:true,nullsFirst:false}).order('created_at',{ascending:true}).limit(500);
       const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
       result=await Promise.race([request,timeout]);
     } catch(requestError) {
@@ -295,6 +304,7 @@
       return;
     }
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
+    data=[...data].sort(compareMembershipOrder);
     wrap.innerHTML=data.map(m=>{
       const displayName=stripSalutation(localized(m,'display_name')||localized(m,'full_name')),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const name=esc(displayName||'RLS Member'),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
       const profileHref=memberProfileUrl(m.user_id);
