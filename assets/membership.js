@@ -747,7 +747,23 @@
       'Your application was stored independently of email delivery and account confirmation, and is now awaiting administrator review. No email is needed for review; member-account access can be set up later.',
       'Заявка сохранена независимо от доставки письма и подтверждения учётной записи и ожидает проверки администратора. Для рассмотрения письмо не требуется; доступ к личному кабинету можно настроить позже.'
     );
-    let data;
+    // Save the application first. Account creation and email delivery are optional
+    // and must never prevent the applicant's form, photo, and documents from being received.
+    try {
+      await saveIndependentApplication();
+    } catch (intakeError) {
+      console.error('Independent membership application could not be stored:', intakeError);
+      say(regMsg, tr('ثبت درخواست انجام نشد؛ اطلاعات فرم پاک نشده است. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید: ',
+        'Your application could not be saved; the form has been kept. Please retry or contact support: ',
+        'Не удалось сохранить заявку; данные формы сохранены. Повторите попытку или обратитесь в поддержку: ') +
+        (intakeError?.message || String(intakeError)));
+      releaseSubmit();
+      return;
+    }
+
+    // The application is safely queued at this point. Try to create/sign in the
+    // member account, but never turn an account/email/upload error into a failed application.
+    let accountUser = null;
     try {
       const result = await db.auth.signUp({
         email: applicationEmail, password: String(fd.get('password') || ''),
@@ -757,50 +773,23 @@
         }
       });
       if (result.error) throw result.error;
-      data = result.data;
-    } catch (error) {
-      const raw = String(error?.message || error || '');
-      try {
-        await saveIndependentApplication();
-        say(regMsg, independentSuccessMessage);
-      } catch (fallbackError) {
-        console.error('Independent membership application fallback failed:', fallbackError);
-        say(regMsg, tr('ثبت درخواست در مسیر مستقل هم انجام نشد: ','The independent application queue could not save your request: ','Не удалось сохранить заявку через независимую очередь: ') +
-          (fallbackError?.message || String(fallbackError)) + ' · ' +
-          tr('خطای اولیه: ','Original error: ','Исходная ошибка: ') + raw);
+      accountUser = result.data?.user || null;
+      if (result.data?.session && accountUser) {
+        try {
+          await ensureProfile(accountUser);
+          if (file && file.size) await uploadEvidence(accountUser, file);
+          await uploadAvatar(accountUser, avatarFile);
+          await showSession(accountUser);
+        } catch (profileError) {
+          console.warn('Application is saved; optional member-account setup needs follow-up:', profileError);
+        }
       }
-      releaseSubmit();
-      return;
+    } catch (accountError) {
+      console.warn('Application is saved; account creation/email step did not complete:', accountError);
     }
-    if (data.session && data.user) {
-      try {
-        await ensureProfile(data.user);
-        if (file && file.size) await uploadEvidence(data.user, file);
-        await uploadAvatar(data.user, avatarFile);
-        await removeQueuedAvatar(applicationEmail).catch(() => {});
-        say(regMsg, tr('درخواست شما ثبت شد و در انتظار بررسی مدیر است.',
-          'Your application was submitted and is awaiting administrator review.',
-          'Заявка отправлена и ожидает проверки администратора.'));
-        register.reset();
-        await showSession(data.user);
-      } catch (err) {
-        say(regMsg, tr('حساب ساخته شد، اما تکمیل درخواست ناموفق بود: ',
-          'Account created, but application setup failed: ','Учётная запись создана, но заявку не удалось завершить: ') + err.message);
-      }
-      releaseSubmit();
-    } else {
-      // Supabase may return a user but with no session while waiting for email confirmation.
-      // Store the application now so the administrator can review it without that email.
-      try {
-        await saveIndependentApplication();
-        say(regMsg, independentSuccessMessage);
-      } catch (fallbackError) {
-        console.error('Independent membership application could not be stored:', fallbackError);
-        say(regMsg, tr('حساب ایجاد شد، اما ذخیره درخواست مستقل ناموفق بود: ','The account was created, but the independent application could not be stored: ','Учётная запись создана, но независимую заявку сохранить не удалось: ') +
-          (fallbackError?.message || String(fallbackError)));
-      }
-      releaseSubmit();
-    }
+
+    say(regMsg, independentSuccessMessage);
+    releaseSubmit();
   });
 
   login.addEventListener('submit', async event => {
