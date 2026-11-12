@@ -76,8 +76,7 @@
     if(error){list.textContent='خطا در دریافت درخواست‌های مستقل: '+error.message;return;}
     if(!data?.length){list.textContent='در حال حاضر درخواست مستقلی در انتظار بررسی نیست.';return;}
     const cards=await Promise.all(data.map(async p=>{
-      const photoMissing=!p.avatar_path;
-      let photo='<p class="admin-meta admin-photo-missing">عکس پروفایل در اطلاعات ذخیره‌شده پیدا نشد؛ تأیید عضویت تا دریافت عکس مجاز نیست.</p>';
+      let photo='<p class="admin-meta admin-photo-missing">عکس پروفایل هنوز ارسال نشده است؛ بارگذاری آن اختیاری است و می‌تواند بعداً انجام شود.</p>';
       if(p.avatar_path){
         const {data:signed}=await client.storage.from('rls-membership-applications').createSignedUrl(p.avatar_path,300);
         if(signed?.signedUrl)photo='<div class="admin-photo-review"><img src="'+esc(signed.signedUrl)+'" alt="عکس '+esc(p.full_name)+'" width="120" height="120" loading="lazy" decoding="async"><span>عکس ارسالی متقاضی</span></div>';
@@ -95,18 +94,14 @@
         (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
         evidence+
         '<p class="admin-meta">این درخواست مستقل از ساخت حساب و ارسال ایمیل ذخیره شده است. تأیید در این بخش، تأیید خودِ درخواست عضویت است؛ ایجاد حساب ورود پس از رفع اختلال سرویس احراز هویت انجام می‌شود.</p>'+
-        '<div class="admin-actions"><button class="approve" data-action="application_approve" '+(photoMissing?'disabled title="ابتدا باید عکس پروفایل دریافت شود"':'')+'>'+(photoMissing?'تأیید پس از دریافت عکس':'تأیید درخواست عضویت')+'</button><button class="reject" data-action="application_reject">رد درخواست</button></div>'+
+        '<div class="admin-actions"><button class="approve" data-action="application_approve">تأیید درخواست عضویت</button><button class="reject" data-action="application_reject">رد درخواست</button></div>'+
         '<p class="admin-message" role="status"></p></article>';
     }));
     list.innerHTML=cards.join('');
   }
   async function moderateApplication(id, action, card){
     const message=card.querySelector('.admin-message');
-    if(action==='application_approve' && card.querySelector('[data-action="application_approve"]')?.disabled){
-      message.textContent='برای تأیید عضویت، ابتدا باید عکس پروفایل متقاضی دریافت شود.';
-      return;
-    }
-    message.textContent='در حال ثبت تصمیم مدیر…';
+     message.textContent='در حال ثبت تصمیم مدیر…';
     const {data:{user}}=await client.auth.getUser();
     if(!user){message.textContent='نشست مدیر منقضی شده است.';return;}
     const status=action==='application_approve'?'approved':'rejected';
@@ -144,9 +139,10 @@
         ?client.storage.from('rls-member-avatars').getPublicUrl(reviewAvatarPath).data.publicUrl:'';
       const photo=avatarUrl
         ?'<div class="admin-photo-review"><img src="'+esc(avatarUrl)+'" alt="عکس پروفایل '+esc(p.full_name)+'" width="104" height="104" loading="lazy" decoding="async"><span>'+(p.pending_avatar_path?'عکس جدید در انتظار تأیید':'عکس پروفایل')+'</span></div>'
-        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است. برای تکمیل درخواست، متقاضی باید با ایمیل ثبت‌نامی وارد <a href="member-account.html">درگاه اعضا</a> شود و عکس خود را بارگذاری کند.</p>';
+        :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است؛ مدیر می‌تواند آن را از همین بخش بارگذاری کند یا عضو بعداً از پنل خود ارسال کند.</p>';
+      const photoUploader='<div class="admin-photo-upload"><label>بارگذاری دستی عکس برای این عضو<input type="file" accept="image/jpeg,image/png,image/webp" data-admin-avatar-file></label><button type="button" class="approve" data-action="upload_member_avatar">بارگذاری عکس</button><small>JPG، PNG یا WebP؛ حداکثر ۵ مگابایت. عکس پس از بارگذاری در انتظار تأیید مدیر خواهد بود.</small></div>';
       return '<article class="admin-member" data-id="'+esc(p.user_id)+'" data-avatar-path="'+esc(p.avatar_path||'')+'" data-pending-avatar="'+esc(p.pending_avatar_path||'')+'"><h3>'+esc(p.full_name)+'</h3>'+
-        photo+
+        photo+photoUploader+
         '<div class="admin-meta">گروه: '+esc(labels[p.category]||p.category)+' · ایمیل: '+esc(p.email)+
         '<br>محل: '+esc([p.city,p.country].filter(Boolean).join('، ')||'ثبت نشده')+' · مؤسسه: '+esc(p.institution||'ثبت نشده')+
         '<br>تحصیلات: '+esc(p.degree||'—')+' · تخصص: '+esc(p.specialty||'—')+
@@ -208,10 +204,15 @@
     }
     if(action==='approve'){
       const selectedPath=pendingPath||currentPath;
-      if(!selectedPath){message.textContent='تا پیش از ثبت عکس پروفایل، درخواست قابل تأیید نیست.';return;}
       Object.assign(update,{membership_status:'approved',is_public:true,review_note:null,
-        avatar_path:selectedPath,pending_avatar_path:null,reviewed_by:user.id,reviewed_at:new Date().toISOString()});
-      if(currentPath&&currentPath!==selectedPath)removePath=currentPath;
+        reviewed_by:user.id,reviewed_at:new Date().toISOString()});
+      if(selectedPath){
+        Object.assign(update,{avatar_path:selectedPath,pending_avatar_path:null});
+        if(currentPath&&currentPath!==selectedPath)removePath=currentPath;
+      }else{
+        update.avatar_path=null;
+        update.pending_avatar_path=null;
+      }
     }
     if(action==='reject'){
       Object.assign(update,{membership_status:'rejected',is_public:false,review_note:'درخواست پس از بررسی تأیید نشد.',
@@ -309,6 +310,38 @@
     }
     const b=e.target.closest('[data-action]');if(!b)return;
     const card=b.closest('.admin-member');
+    if(b.dataset.action==='upload_member_avatar'){
+      const message=card?.querySelector('.admin-message');
+      const input=card?.querySelector('[data-admin-avatar-file]');
+      const file=input?.files?.[0];
+      if(!file){if(message)message.textContent='ابتدا عکس موردنظر را انتخاب کنید.';return;}
+      if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5*1024*1024){
+        if(message)message.textContent='فایل باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.';return;
+      }
+      b.disabled=true;
+      if(message)message.textContent='در حال بارگذاری عکس برای این عضو…';
+      try{
+        const {data:sessionData,error:sessionError}=await client.auth.getSession();
+        if(sessionError)throw sessionError;
+        const token=sessionData?.session?.access_token;
+        if(!token)throw new Error('نشست مدیر در دسترس نیست؛ دوباره وارد شوید.');
+        const body=new FormData();
+        body.append('user_id',card.dataset.id);
+        body.append('file',file,file.name||'member-avatar');
+        const {data:result,error}=await client.functions.invoke('admin-upload-member-avatar',{
+          headers:{Authorization:'Bearer '+token},body
+        });
+        if(error||!result?.ok)throw error||new Error(result?.error||'بارگذاری عکس ناموفق بود.');
+        await load();
+        const updatedCard=list.querySelector('[data-id="'+String(card.dataset.id)+'"]');
+        const updatedMessage=updatedCard?.querySelector('.admin-message');
+        if(updatedMessage)updatedMessage.textContent='عکس با موفقیت بارگذاری شد و در انتظار تأیید نهایی است.';
+      }catch(error){
+        console.error('Administrator member photo upload failed:',error);
+        if(message)message.textContent='بارگذاری عکس ناموفق بود: '+(error?.message||'خطای نامشخص');
+      }finally{b.disabled=false;}
+      return;
+    }
     if(b.dataset.action==='resend_approval_email'){
       const message=card.querySelector('.admin-message');
       b.disabled=true;
