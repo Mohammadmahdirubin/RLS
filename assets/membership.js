@@ -670,14 +670,12 @@
     const applicationEmail = clean(fd.get('email'));
     if (!['mr','ms'].includes(salutation)) { say(regMsg, tr('انتخاب عنوان آقا یا خانم الزامی است.','Please select Mr or Ms.','Выберите обращение Mr или Ms.')); return; }
     if (!allowed.includes(category)) { say(regMsg, tr('گروه عضویت معتبر نیست.','Select a valid membership category.','Выберите допустимую категорию.')); return; }
-    if (!avatarFile || !avatarFile.size) {
-      say(regMsg, tr('انتخاب عکس پروفایل برای ثبت‌نام الزامی است.','A profile photo is required to register.','Для регистрации необходимо загрузить фотографию профиля.'));
-      return;
-    }
-    if (!avatarTypes.includes(avatarFile.type) || avatarFile.size > maxBytes) {
-      say(regMsg, tr('عکس باید JPG، PNG یا WebP و حداکثر ۵ مگابایت باشد.',
-        'Choose a JPG, PNG or WebP photo no larger than 5 MB.',
-        'Выберите фотографию JPG, PNG или WebP размером до 5 МБ.'));
+    // Profile photos are optional at registration and can be added later from the member portal.
+    const hasAvatar = avatarFile instanceof File && avatarFile.size > 0;
+    if (hasAvatar && (!avatarTypes.includes(avatarFile.type) || avatarFile.size > maxBytes)) {
+      say(regMsg, tr('در صورت ارسال عکس، فرمت آن باید JPG، PNG یا WebP و حجم آن حداکثر ۵ مگابایت باشد.',
+        'If you upload a photo, use JPG, PNG or WebP no larger than 5 MB.',
+        'Если вы загружаете фотографию, используйте JPG, PNG или WebP размером до 5 МБ.'));
       return;
     }
     if (file && file.size && (file.size > maxBytes || !types.includes(file.type))) {
@@ -695,7 +693,7 @@
     };
     // Local photo retention is only a convenience; server-side application storage is authoritative.
     try {
-      await queueAvatar(applicationEmail, avatarFile);
+      if (hasAvatar) await queueAvatar(applicationEmail, avatarFile);
     } catch (queueError) {
       console.warn('Local photo queue unavailable; continuing with server-side registration:', queueError);
     }
@@ -731,7 +729,7 @@
       fallback.append('application', JSON.stringify({
         email: applicationEmail, full_name: metadata.full_name, salutation, category, profile_data: metadata
       }));
-      fallback.append('avatar', avatarFile, avatarFile.name || 'profile-photo');
+      if (hasAvatar) fallback.append('avatar', avatarFile, avatarFile.name || 'profile-photo');
       if (file && file.size) fallback.append('evidence', file, file.name || 'supporting-document');
       const response = await fetch(cfg.url.replace(/\/$/, '') + '/functions/v1/submit-membership-application', {
         method: 'POST', headers: { apikey: cfg.publishableKey }, body: fallback
@@ -777,7 +775,7 @@
         try {
           await ensureProfile(accountUser);
           if (file && file.size) await uploadEvidence(accountUser, file);
-          await uploadAvatar(accountUser, avatarFile);
+          if (hasAvatar) await uploadAvatar(accountUser, avatarFile);
           await showSession(accountUser);
         } catch (profileError) {
           console.warn('Application is saved; optional member-account setup needs follow-up:', profileError);
