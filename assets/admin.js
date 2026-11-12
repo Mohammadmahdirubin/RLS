@@ -68,8 +68,53 @@
       }
     });
   }
+  async function loadApplications(){
+    list.textContent='در حال دریافت درخواست‌های مستقل…';
+    const {data,error}=await client.from('rls_membership_applications')
+      .select('id,email,full_name,salutation,category,profile_data,avatar_path,evidence_path,status,created_at')
+      .eq('status','pending').order('created_at',{ascending:true});
+    if(error){list.textContent='خطا در دریافت درخواست‌های مستقل: '+error.message;return;}
+    if(!data?.length){list.textContent='در حال حاضر درخواست مستقلی در انتظار بررسی نیست.';return;}
+    const cards=await Promise.all(data.map(async p=>{
+      let photo='<p class="admin-meta">پیش‌نمایش عکس در دسترس نیست.</p>';
+      if(p.avatar_path){
+        const {data:signed}=await client.storage.from('rls-membership-applications').createSignedUrl(p.avatar_path,300);
+        if(signed?.signedUrl)photo='<div class="admin-photo-review"><img src="'+esc(signed.signedUrl)+'" alt="عکس '+esc(p.full_name)+'" width="120" height="120" loading="lazy" decoding="async"><span>عکس ارسالی متقاضی</span></div>';
+      }
+      let evidence='';
+      if(p.evidence_path){
+        const {data:signed}=await client.storage.from('rls-membership-applications').createSignedUrl(p.evidence_path,300);
+        if(signed?.signedUrl)evidence='<p><a href="'+esc(signed.signedUrl)+'" target="_blank" rel="noopener noreferrer">مشاهده مدرک پیوست</a></p>';
+      }
+      const d=p.profile_data||{};
+      const extra=[['کشور',d.country],['شهر',d.city],['مؤسسه',d.institution],['تحصیلات',d.degree],['تخصص',d.specialty],['معرفی',d.bio],['وب‌سایت',d.website_url],['ORCID',d.orcid]].filter(x=>x[1]);
+      return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3>'+photo+
+        '<div class="admin-meta">ایمیل: '+esc(p.email)+' · گروه: '+esc(labels[p.category]||p.category)+
+        '<br>تاریخ ثبت: '+new Date(p.created_at).toLocaleString('fa-IR')+
+        (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
+        evidence+
+        '<p class="admin-meta">این درخواست مستقل از ساخت حساب و ارسال ایمیل ذخیره شده است. تأیید در این بخش، تأیید خودِ درخواست عضویت است؛ ایجاد حساب ورود پس از رفع اختلال سرویس احراز هویت انجام می‌شود.</p>'+
+        '<div class="admin-actions"><button class="approve" data-action="application_approve">تأیید درخواست عضویت</button><button class="reject" data-action="application_reject">رد درخواست</button></div>'+
+        '<p class="admin-message" role="status"></p></article>';
+    }));
+    list.innerHTML=cards.join('');
+  }
+  async function moderateApplication(id, action, card){
+    const message=card.querySelector('.admin-message');
+    message.textContent='در حال ثبت تصمیم مدیر…';
+    const {data:{user}}=await client.auth.getUser();
+    if(!user){message.textContent='نشست مدیر منقضی شده است.';return;}
+    const status=action==='application_approve'?'approved':'rejected';
+    const {error}=await client.from('rls_membership_applications').update({
+      status,reviewed_by:user.id,reviewed_at:new Date().toISOString(),
+      review_note:status==='approved'?'درخواست توسط مدیر تأیید شد.':'درخواست توسط مدیر رد شد.'
+    }).eq('id',id).eq('status','pending');
+    if(error){message.textContent='ثبت تصمیم ناموفق بود: '+error.message;return;}
+    await load();
+  }
   async function load(){
     if(status==='certificates'){await loadCertificates();return;}
+    if(status==='applications'){await loadApplications();return;}
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
       .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
@@ -278,6 +323,10 @@
         console.warn('Manual membership approval email resend failed:',error);
         if(message)message.textContent='ارسال ایمیل ناموفق بود. لطفاً دوباره تلاش کنید.';
       }finally{b.disabled=false;}
+      return;
+    }
+    if(b.dataset.action==='application_approve'||b.dataset.action==='application_reject'){
+      moderateApplication(card.dataset.applicationId,b.dataset.action,card);
       return;
     }
     moderate(card.dataset.id,b.dataset.action,card);
