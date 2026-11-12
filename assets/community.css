@@ -1415,3 +1415,17 @@
   transform:translate(-50%,-50%) scale(2)!important;
   transform-origin:center center!important;
 }
+
+/* Community announcements and events */
+.community-events{max-width:1104px;margin:24px auto 34px;padding:26px clamp(16px,3vw,30px);background:var(--community-surface);border:1px solid var(--community-line);border-radius:18px;box-shadow:var(--community-shadow)}
+.community-events-heading{max-width:850px}.community-events-heading h2{margin:5px 0 10px;font-size:clamp(22px,3vw,30px);color:var(--community-primary-dark)}.community-events-heading>p:last-child{line-height:2;color:var(--community-muted);margin:0}
+.community-events-nav{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0 18px;padding-bottom:14px;border-bottom:1px solid var(--community-line)}
+.community-events-nav button{border:1px solid var(--community-line);background:#fff;border-radius:999px;padding:9px 18px;color:var(--community-text);font:inherit;cursor:pointer}.community-events-nav button.active{background:var(--community-primary);border-color:var(--community-primary);color:#fff}
+.community-event-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.community-event-card{min-width:0;display:flex;flex-direction:column;border:1px solid var(--community-line);border-radius:14px;overflow:hidden;background:#fff}
+.community-event-poster{display:block;background:#f0ece7;max-height:340px;overflow:hidden;text-align:center}.community-event-poster img{display:block;width:100%;height:300px;object-fit:contain}
+.community-event-no-poster{height:125px;display:grid;place-items:center;background:linear-gradient(135deg,#f5ecee,#eee6d9);font-size:30px;font-weight:800;color:var(--community-primary)}
+.community-event-content{padding:16px;display:flex;flex-direction:column;gap:9px;flex:1}.community-event-type{align-self:flex-start;border-radius:20px;background:var(--community-gold-soft);color:#74551f;padding:4px 10px;font-size:12px}.community-event-content h3{margin:0;font-size:18px;color:var(--community-primary-dark)}.community-event-description{margin:0;line-height:1.9;color:var(--community-text);white-space:normal;overflow-wrap:anywhere}
+.community-event-meta{display:flex;flex-wrap:wrap;gap:8px 14px;color:var(--community-muted);font-size:13px;margin-top:auto;padding-top:8px}.community-event-link{align-self:flex-start;color:var(--community-primary);font-weight:700;text-decoration:none;margin-top:6px}.community-event-archived{font-size:12px;color:#6d625d;background:#f0eeeb;padding:4px 9px;border-radius:20px;align-self:flex-start}
+.community-events-empty,.community-events-loading{grid-column:1/-1;padding:22px;border:1px dashed var(--community-line);border-radius:12px;color:var(--community-muted);line-height:1.9}
+@media(max-width:680px){.community-event-grid{grid-template-columns:1fr}.community-event-poster img{height:260px}.community-events{padding:20px 14px}}
