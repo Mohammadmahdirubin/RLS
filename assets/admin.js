@@ -47,7 +47,7 @@
     if(error){list.textContent='خطا در دریافت فهرست گواهی‌ها: '+error.message;return;}
     if(!data?.length){list.textContent='هنوز گواهی صادرشده‌ای برای بررسی وجود ندارد.';return;}
     list.innerHTML=data.map(p=>{
-      const name=p.display_name||p.full_name||'عضو انجمن';
+      const name=p.full_name||'عضو انجمن';
       const number=String(p.member_number||'').padStart(6,'0');
       const state=p.membership_status==='suspended'?' · عضویت تعلیق‌شده':' · عضویت فعال';
       return '<article class="admin-member admin-certificate-member" data-certificate-user="'+esc(p.user_id)+'">'+
@@ -61,8 +61,7 @@
       const target=card?.querySelector('.admin-certificate-preview');
       if(target&&window.RLSMembershipCertificate){
         window.RLSMembershipCertificate.render(target,{
-          user_id:String(p.user_id),display_name:p.display_name||p.full_name,
-          full_name:p.full_name,category:p.category,created_at:p.created_at,
+          user_id:String(p.user_id),full_name:p.full_name,category:p.category,created_at:p.created_at,
           member_number:p.member_number,membership_status:p.membership_status
         },{adminPreview:true});
       }
