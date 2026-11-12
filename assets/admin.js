@@ -87,7 +87,8 @@
       }
       const d=p.profile_data||{};
       const extra=[['کشور',d.country],['شهر',d.city],['مؤسسه',d.institution],['تحصیلات',d.degree],['تخصص',d.specialty],['معرفی',d.bio],['وب‌سایت',d.website_url],['ORCID',d.orcid],['ایمیل دیگر ثبت‌شده در گزارش خطا',d.alternate_registration_email]].filter(x=>x[1]);
-      const stateLabel=p.status==='pending'?'در انتظار بررسی':p.status==='approved'?'تأییدشده':p.status==='rejected'?'ردشده':p.status;\n      return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3><p class="admin-meta"><b>وضعیت درخواست: '+esc(stateLabel)+'</b></p>'+photo+
+      const stateLabel=p.status==='pending'?'در انتظار بررسی':p.status==='approved'?'تأییدشده':p.status==='rejected'?'ردشده':p.status;
+      return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3><p class="admin-meta"><b>وضعیت درخواست: '+esc(stateLabel)+'</b></p>'+photo+
         '<div class="admin-meta">ایمیل: '+esc(p.email)+' · گروه: '+esc(labels[p.category]||p.category)+
         '<br>تاریخ ثبت: '+new Date(p.created_at).toLocaleString('fa-IR')+
         (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
