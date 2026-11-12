@@ -249,8 +249,7 @@
           certificatePanel.dataset.certificateOwner = String(user.id);
           window.RLSMembershipCertificate.render(certificatePanel, {
             user_id: String(user.id),
-            display_name: name,
-            full_name: name,
+            full_name: profile.full_name,
             category: profile.category,
             created_at: profile.created_at || user.created_at,
             member_number: profile.member_number,
