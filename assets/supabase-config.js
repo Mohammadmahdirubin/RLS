@@ -4,9 +4,12 @@ window.RLS_SUPABASE_CONFIG = {
   publishableKey: "sb_publishable_Z7vF3QwD-dHaUDSV8a7zbg_rs4BAJ3F"
 };
 
-// One shared client prevents competing Auth instances from losing the active session.
-window.RLS_SUPABASE_CLIENT = window.supabase.createClient(
-  window.RLS_SUPABASE_CONFIG.url,
-  window.RLS_SUPABASE_CONFIG.publishableKey,
-  { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
-);
+// Initialize when the CDN library is available. The community directory has
+// its own fallback loader in case the primary CDN is temporarily unavailable.
+if (window.supabase && window.RLS_SUPABASE_CONFIG) {
+  window.RLS_SUPABASE_CLIENT = window.supabase.createClient(
+    window.RLS_SUPABASE_CONFIG.url,
+    window.RLS_SUPABASE_CONFIG.publishableKey,
+    { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+  );
+}
