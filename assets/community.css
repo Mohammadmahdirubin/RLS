@@ -60,7 +60,7 @@
 .community-about-intro .community-about-kicker{margin:0 0 7px;color:#98763a;font-size:11px;font-weight:850;letter-spacing:.12em}
 .community-about-intro h2{margin:0 0 12px;color:var(--community-primary-dark);font-size:27px;font-weight:850}
 .community-about-intro>p:not(.community-about-kicker){max-width:850px;margin:10px auto;color:#5f5556;font-size:15px;line-height:2.15;text-align:justify}
-.community-about-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin-top:26px}
+.community-about-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px;margin-top:26px}
 .community-about-card{
   min-width:0;padding:23px 22px;background:var(--community-surface);
   border:1px solid var(--community-line);border-top:3px solid #d4c3b6;border-radius:12px;
