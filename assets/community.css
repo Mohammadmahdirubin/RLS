@@ -2063,3 +2063,72 @@
  #association-council .council-profile-right .council-profile-rank{font-size:clamp(10px,1.9vw,14px)!important}
  #association-council .council-profile-left .council-founder-badge{font-size:clamp(11px,2vw,16px)!important}
 }
+
+
+/* Four compact ornate council cards in one row */
+#association-council .council-profile-grid{
+ display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;
+ width:100%!important;max-width:100%!important;margin:0 auto!important;align-items:stretch!important;
+}
+#association-council .council-profile-card{
+ display:block!important;width:100%!important;min-width:0!important;min-height:0!important;height:auto!important;
+ padding:0!important;overflow:visible!important;background:transparent!important;box-shadow:none!important;
+}
+#association-council .council-profile-frame{
+ position:relative!important;display:block!important;width:100%!important;height:auto!important;min-height:0!important;
+ aspect-ratio:1503 / 1064!important;padding:0!important;overflow:hidden!important;box-sizing:border-box!important;
+ background-image:url('/frame_fixed.png?v=20261113b')!important;background-position:center!important;
+ background-repeat:no-repeat!important;background-size:100% 100%!important;
+}
+#association-council .council-profile-layout{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;min-height:0!important}
+#association-council .council-profile-left{
+ position:absolute!important;left:7.1%!important;top:17.5%!important;width:36.5%!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;gap:0!important;
+}
+#association-council .council-profile-left .council-profile-portrait{
+ display:block!important;width:100%!important;height:auto!important;aspect-ratio:1/1!important;margin:0!important;
+ border:0!important;outline:0!important;border-radius:50%!important;overflow:hidden!important;
+ background:transparent!important;box-shadow:none!important;
+}
+#association-council .council-profile-left .council-profile-portrait img{
+ display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;
+ object-position:center 24%!important;border-radius:50%!important;
+}
+#association-council .council-profile-left .council-founder-badge{
+ display:flex!important;align-items:center!important;justify-content:center!important;width:88%!important;height:10%!important;
+ min-width:0!important;margin:2% 0 0!important;padding:0!important;border:0!important;border-radius:0!important;
+ background:transparent!important;color:#172d50!important;box-shadow:none!important;
+ font-size:clamp(9px,1vw,15px)!important;font-weight:900!important;line-height:1.2!important;white-space:nowrap!important;
+}
+#association-council .council-profile-right{
+ position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;
+ text-align:center!important;direction:rtl!important;
+}
+#association-council .council-profile-right .council-profile-name{
+ position:absolute!important;top:26%!important;right:46%!important;width:49%!important;margin:0!important;
+ color:#172d50!important;font-size:clamp(10px,1.28vw,18px)!important;font-weight:900!important;
+ line-height:1.5!important;text-align:center!important;
+}
+#association-council .council-profile-divider{
+ display:block!important;position:absolute!important;top:40%!important;right:47%!important;width:47%!important;height:2px!important;
+ margin:0!important;background:linear-gradient(90deg,transparent,#b88a24 12%,#e2b63e 50%,#b88a24 88%,transparent)!important;
+}
+#association-council .council-profile-role-row{position:absolute!important;inset:0!important;display:block!important}
+#association-council .council-profile-right .council-profile-rank{
+ position:absolute!important;top:48%!important;right:47%!important;width:30%!important;color:#172d50!important;
+ font-size:clamp(8px,.92vw,13px)!important;font-weight:800!important;line-height:1.5!important;text-align:center!important;
+}
+#association-council .council-profile-university-logo{
+ position:absolute!important;top:44%!important;right:5.7%!important;width:15%!important;height:auto!important;aspect-ratio:1/1!important;
+ margin:0!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;overflow:hidden!important;
+}
+#association-council .council-profile-university-logo img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}
+#association-council .council-profile-empty .council-profile-portrait,
+#association-council .council-profile-empty .council-profile-university-logo{background:rgba(255,255,255,.22)!important}
+#association-council .council-profile-empty .council-profile-left .council-founder-badge{visibility:hidden!important}
+@media(max-width:760px){
+ #association-council .council-profile-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important}
+ #association-council .council-profile-right .council-profile-name{font-size:clamp(7px,1.28vw,11px)!important}
+ #association-council .council-profile-right .council-profile-rank{font-size:clamp(6px,.92vw,8px)!important}
+ #association-council .council-profile-left .council-founder-badge{font-size:clamp(6px,1vw,9px)!important}
+}
