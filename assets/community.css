@@ -1619,3 +1619,119 @@
 }
 @media(max-width:760px){.council-profile-grid .council-profile-frame{min-height:195px}}
 @media(max-width:390px){.council-profile-grid .council-profile-frame{min-height:179px}}
+
+
+/* Founder card content hierarchy: portrait left, university seal right. */
+.council-profile-frame{
+  justify-content:flex-start!important;
+  gap:6px!important;
+  padding:13px 12px 11px!important;
+  text-align:center;
+}
+.council-profile-symbols{
+  direction:ltr;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:76%;
+  max-width:170px;
+  margin:0 auto 1px;
+  flex:0 0 auto;
+}
+.council-profile-portrait,
+.council-profile-university-logo{
+  width:64px;
+  height:64px;
+  flex:0 0 64px;
+  box-sizing:border-box;
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid #c5a66a;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.council-profile-portrait img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+}
+.council-profile-university-logo img{
+  display:block;
+  width:78%;
+  height:78%;
+  object-fit:contain;
+}
+.council-profile-card .council-founder-badge{
+  align-self:center;
+  margin:0;
+  flex:0 0 auto;
+}
+.council-profile-card .council-profile-name{
+  width:100%;
+  margin:0;
+  padding:0 2px;
+  font-size:clamp(11px,1.05vw,14px);
+  line-height:1.55;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+.council-profile-divider{
+  width:82%;
+  height:1px;
+  min-height:1px;
+  margin:1px auto 2px;
+  background:linear-gradient(to right,transparent,#b89a69 15%,#b89a69 85%,transparent);
+  flex:0 0 auto;
+}
+.council-profile-details{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:4px;
+  min-width:0;
+}
+.council-profile-card .council-profile-rank{
+  width:100%;
+  margin:0;
+  font-size:clamp(9px,.88vw,11px);
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+.council-profile-affiliation{
+  width:100%;
+  color:#604c43;
+  font-size:clamp(8px,.78vw,10px);
+  font-weight:650;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+.council-profile-card .council-profile-orcid{
+  display:block;
+  max-width:100%;
+  font-size:8px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+@media(max-width:760px){
+  .council-profile-frame{padding:11px 8px 9px!important;gap:5px!important}
+  .council-profile-symbols{width:82%;gap:8px}
+  .council-profile-portrait,.council-profile-university-logo{width:56px;height:56px;flex-basis:56px}
+  .council-profile-card .council-profile-name{font-size:11px}
+  .council-profile-affiliation{font-size:8px}
+}
+@media(max-width:390px){
+  .council-profile-symbols{width:88%;gap:6px}
+  .council-profile-portrait,.council-profile-university-logo{width:49px;height:49px;flex-basis:49px}
+  .council-profile-card .council-founder-badge{font-size:8px;padding:2px 6px}
+  .council-profile-card .council-profile-name{font-size:10px}
+  .council-profile-card .council-profile-rank{font-size:8px}
+  .council-profile-affiliation{font-size:7px}
+}
