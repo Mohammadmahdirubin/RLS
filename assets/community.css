@@ -2237,3 +2237,50 @@
  #association-council .council-profile-card .council-profile-rank{font-size:clamp(5px,1vw,7px)!important}
  #association-council .council-profile-card .council-profile-university-logo{width:14%!important;right:6%!important}
 }
+
+/* Final mobile card correction: separate rank text from the seal and keep the seal inside its printed ring */
+#association-council .council-profile-card .council-profile-rank{
+  top:47%!important;
+  right:20%!important;
+  width:28%!important;
+  z-index:5!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow-wrap:normal!important;
+  line-height:1.5!important;
+}
+#association-council .council-profile-card .council-profile-university-logo{
+  top:43%!important;
+  right:5.5%!important;
+  width:15%!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  z-index:6!important;
+}
+#association-council .council-profile-card .council-profile-university-logo img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:50%!important;
+}
+@media(max-width:760px){
+  #association-council .council-profile-card .council-profile-rank{
+    right:20%!important;width:28%!important;
+    font-size:clamp(6px,1vw,8px)!important;
+  }
+  #association-council .council-profile-card .council-profile-university-logo{
+    top:43%!important;right:5.5%!important;width:15%!important;
+  }
+}
