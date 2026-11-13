@@ -1524,7 +1524,14 @@
 
 
 /* Association board portrait */
-.council-photo{display:block;object-fit:cover;}
+.council-photo{
+  display:block;
+  object-fit:contain;
+  object-position:center center;
+  padding:4px;
+  box-sizing:border-box;
+  background:#f4f0eb;
+}
 
 
 /* Association council — founder designation and University of Tehran affiliation */
