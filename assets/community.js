@@ -609,7 +609,6 @@
     heading.setAttribute('role','button');
     heading.setAttribute('tabindex','0');
     heading.setAttribute('aria-expanded','false');
-    heading.addEventListener('click',toggleCard);
     heading.addEventListener('keydown',event=>{
       if(event.key==='Enter'||event.key===' '){
         event.preventDefault();
@@ -617,5 +616,19 @@
       }
     });
   });
+  // Delegate title clicks from the section root so taps on the heading text
+  // always toggle the card, including on mobile browsers.
+  root.addEventListener('click',event=>{
+    const heading=event.target.closest('.community-about-card h3');
+    if(!heading||!root.contains(heading))return;
+    const card=heading.closest('.community-about-card');
+    const button=card&&card.querySelector('.about-card-toggle');
+    if(!card||!button)return;
+    event.preventDefault();
+    const expanded=card.classList.toggle('is-expanded');
+    button.setAttribute('aria-expanded',String(expanded));
+    heading.setAttribute('aria-expanded',String(expanded));
+    button.setAttribute('aria-label',expanded?'بستن جزئیات':'نمایش جزئیات');
+  },true);
   boot();
 })();
