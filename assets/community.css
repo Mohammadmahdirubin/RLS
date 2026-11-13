@@ -2696,3 +2696,70 @@
   border-radius:50%!important;
   clip-path:circle(50%)!important;
 }
+
+
+/* Match the exact 1503 × 1064 council-card artwork supplied as the reference.
+   The portrait and seal are aligned to the printed circular openings. */
+#association-council .council-profile-card .council-profile-frame{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:1503 / 1064!important;
+  background-size:100% 100%!important;
+  background-position:center!important;
+}
+#association-council .council-profile-card .council-profile-left{
+  left:6.8%!important;
+  top:18.2%!important;
+  width:35.8%!important;
+}
+#association-council .council-profile-card .council-profile-left .council-profile-portrait{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  clip-path:circle(50%)!important;
+  background:#c9d9e9!important;
+}
+#association-council .council-profile-card .council-profile-left .council-profile-portrait img{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center 24%!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+}
+#association-council .council-profile-card .council-profile-left .council-founder-badge{
+  width:88%!important;
+  margin:1.5% 0 0!important;
+}
+#association-council .council-profile-card .council-profile-university-logo-filled{
+  top:42.7%!important;
+  right:7.2%!important;
+  width:14.3%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background:transparent!important;
+}
+#association-council .council-profile-card .council-profile-university-logo-filled img{
+  position:absolute!important;
+  inset:8%!important;
+  width:84%!important;
+  height:84%!important;
+  max-width:84%!important;
+  max-height:84%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+}
