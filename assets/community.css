@@ -2975,3 +2975,10 @@
 .membership-steps-content ol{margin:0;padding:0 22px 0 0;line-height:2.1}
 .membership-steps-content li{padding:4px 0;color:var(--community-text)}
 
+
+
+/* On mobile, the section title is also a direct accordion control. */
+@media(max-width:700px){
+  .community-about-card h3[role="button"]{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .community-about-card h3[role="button"]:focus-visible{outline:2px solid rgba(189,150,80,.7);outline-offset:4px;border-radius:4px}
+}
