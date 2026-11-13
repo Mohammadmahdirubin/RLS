@@ -2653,7 +2653,7 @@
   outline:0!important;
   border-radius:50%!important;
   clip-path:circle(50%)!important;
-  background-color:#c9d9e9!important;
+  background:transparent!important;
   isolation:isolate!important;
 }
 #association-council .council-profile-left .council-profile-portrait img{
