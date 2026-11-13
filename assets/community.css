@@ -2893,3 +2893,41 @@
 .community-member--translator{background:#fff1c5;border-color:#e5d17a}
 .community-member--culture{background:#fbe0e0;border-color:#eab0b0}
 .community-member--honorary{background:#fbe7d1;border-color:#e5bd8d}
+
+/* Enforce membership category colors on rendered directory cards */
+#member-directory .community-members > .community-member.community-member--student{
+  background:#eadcfb!important;
+  background-color:#eadcfb!important;
+  border-color:#c8a9ed!important;
+}
+#member-directory .community-members > .community-member.community-member--graduate{
+  background:#ccefe8!important;
+  background-color:#ccefe8!important;
+  border-color:#91d7ca!important;
+}
+#member-directory .community-members > .community-member.community-member--faculty{
+  background:#beddb8!important;
+  background-color:#beddb8!important;
+  border-color:#8fbd88!important;
+}
+#member-directory .community-members > .community-member.community-member--researcher{
+  background:#d7e7fb!important;
+  background-color:#d7e7fb!important;
+  border-color:#abc9ef!important;
+}
+#member-directory .community-members > .community-member.community-member--translator{
+  background:#fff1c5!important;
+  background-color:#fff1c5!important;
+  border-color:#e5d17a!important;
+}
+#member-directory .community-members > .community-member.community-member--culture{
+  background:#fbe0e0!important;
+  background-color:#fbe0e0!important;
+  border-color:#eab0b0!important;
+}
+#member-directory .community-members > .community-member.community-member--honorary{
+  background:#fbe7d1!important;
+  background-color:#fbe7d1!important;
+  border-color:#e5bd8d!important;
+}
+
