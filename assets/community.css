@@ -1604,3 +1604,18 @@
     box-shadow:0 5px 18px rgba(0,0,0,.28);
   }
 }
+
+
+/* Force-load the decorative WebP frame; keep all card surfaces transparent. */
+.council-profile-grid .council-profile-frame{
+  background:url('/frame_fixed.webp?v=20261113b') center center / 100% 100% no-repeat!important;
+  background-color:transparent!important;
+  min-height:216px;
+}
+.council-profile-grid .council-profile-card{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+@media(max-width:760px){.council-profile-grid .council-profile-frame{min-height:195px}}
+@media(max-width:390px){.council-profile-grid .council-profile-frame{min-height:179px}}
