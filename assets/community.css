@@ -1542,3 +1542,11 @@
 .council-affiliation{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--community-muted);font-size:11px;font-weight:750;line-height:1.7}
 .council-affiliation img{display:block;width:21px;height:21px;object-fit:contain;flex:0 0 21px}
 @media(max-width:390px){.council-portrait-row{gap:6px}.council-founder-badge{padding:3px 6px;font-size:9px}.council-affiliation{font-size:10px}.council-affiliation img{width:19px;height:19px;flex-basis:19px}}
+
+
+/* Single featured Association Board profile card */
+.council-grid-featured{grid-template-columns:minmax(0,1fr);justify-items:center}
+.council-member-art{width:100%;max-width:980px;min-height:0;padding:0;overflow:hidden;border:0;background:transparent;box-shadow:none}
+.council-member-art:hover{border-color:transparent;box-shadow:none;transform:none}
+.council-card-art{display:block;width:100%;height:auto;max-width:980px;margin:0 auto;border:0;border-radius:10px;object-fit:contain;box-shadow:0 8px 24px rgba(58,30,35,.09)}
+@media(max-width:600px){.council-member-art{padding:0}.council-card-art{border-radius:7px}}
