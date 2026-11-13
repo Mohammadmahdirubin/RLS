@@ -2876,3 +2876,9 @@
   border:0!important;
   border-radius:0!important;
 }
+
+
+/* Slightly darken the four council card artworks for Chrome consistency. */
+#association-council .council-profile-card-art{
+  filter:brightness(.8);
+}
