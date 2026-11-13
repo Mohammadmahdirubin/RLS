@@ -2517,3 +2517,52 @@
     font-size: clamp(6px, 1.65vw, 8px) !important;
   }
 }
+
+
+/* University logo: fill the complete white circular inset, edge to edge.
+   The circular holder is the exact clipping boundary; the image fills it. */
+#association-council .council-profile-card .council-profile-university-logo{
+  position:absolute!important;
+  top:41%!important;
+  right:4.4%!important;
+  left:auto!important;
+  width:19%!important;
+  max-width:120px!important;
+  min-width:0!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  margin:0!important;
+  display:block!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background:#fff!important;
+  box-shadow:none!important;
+  z-index:8!important;
+}
+#association-council .council-profile-card .council-profile-university-logo img{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:50%!important;
+}
+@media(max-width:760px){
+  #association-council .council-profile-card .council-profile-university-logo{
+    top:42%!important;
+    right:3.5%!important;
+    width:21%!important;
+    max-width:76px!important;
+  }
+}
