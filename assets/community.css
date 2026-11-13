@@ -1500,3 +1500,24 @@
 #member-directory .community-member > .member-card-layout{
   overflow:visible !important;
 }
+
+
+/* Allow a directory row to grow when a member has a particularly long name. */
+#member-directory .community-members{
+  grid-auto-rows:auto !important;
+  align-items:stretch !important;
+}
+#member-directory .community-members > .community-member{
+  height:auto !important;
+  min-height:0 !important;
+  overflow:visible !important;
+}
+@media(max-width:620px){
+  #member-directory .community-members{
+    grid-auto-rows:auto !important;
+  }
+  #member-directory .community-members > .community-member{
+    height:auto !important;
+    overflow:visible !important;
+  }
+}
