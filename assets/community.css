@@ -2931,3 +2931,47 @@
   border-color:#e5bd8d!important;
 }
 
+/* Collapsible membership review steps, closed by default */
+.membership-steps-accordion{
+  border:1px solid var(--community-line);
+  border-radius:12px;
+  background:var(--community-surface);
+  box-shadow:0 5px 16px rgba(58,30,35,.04);
+  overflow:hidden;
+}
+.membership-steps-accordion>summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:17px 20px;
+  color:var(--community-primary-dark);
+  font-size:18px;
+  font-weight:850;
+  line-height:1.7;
+  cursor:pointer;
+  list-style:none;
+}
+.membership-steps-accordion>summary::-webkit-details-marker{display:none}
+.membership-steps-toggle{
+  display:grid;
+  place-items:center;
+  flex:0 0 30px;
+  width:30px;
+  height:30px;
+  border:1px solid #d8c49d;
+  border-radius:50%;
+  background:var(--community-gold-soft);
+  color:var(--community-primary);
+}
+.membership-steps-toggle::before{
+  content:"+";
+  font-size:22px;
+  font-weight:500;
+  line-height:1;
+}
+.membership-steps-accordion[open] .membership-steps-toggle::before{content:"−"}
+.membership-steps-content{padding:0 22px 20px}
+.membership-steps-content ol{margin:0;padding:0 22px 0 0;line-height:2.1}
+.membership-steps-content li{padding:4px 0;color:var(--community-text)}
+
