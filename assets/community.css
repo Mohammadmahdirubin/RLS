@@ -1444,3 +1444,26 @@
 .community-events-nav a{display:inline-flex;align-items:center;border:1px solid var(--community-line);background:#fff;border-radius:999px;padding:9px 18px;color:var(--community-text);font:inherit;text-decoration:none}
 .community-events-nav a.active{background:var(--community-primary);border-color:var(--community-primary);color:#fff}
 @media(max-width:760px){.community-event-shortcuts{grid-template-columns:1fr;gap:10px;margin:16px auto 26px}.community-event-shortcuts>a{padding:13px 14px}.community-event-shortcut-icon{flex-basis:38px;width:38px;height:38px}}
+
+
+/* Public member profile view counter */
+.member-profile-views{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:fit-content;
+  max-width:100%;
+  margin:22px auto 4px;
+  padding:9px 16px;
+  border:1px solid var(--community-line);
+  border-radius:999px;
+  background:var(--community-paper);
+  color:var(--community-muted);
+  font-size:13px;
+  font-weight:700;
+  text-align:center;
+  direction:rtl;
+}
+.member-profile-views::before{content:"◉";font-size:15px;color:var(--community-gold)}
+.member-profile-views[data-counter-state="error"]{font-weight:500;color:var(--community-muted)}
