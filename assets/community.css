@@ -1544,9 +1544,12 @@
 @media(max-width:390px){.council-portrait-row{gap:6px}.council-founder-badge{padding:3px 6px;font-size:9px}.council-affiliation{font-size:10px}.council-affiliation img{width:19px;height:19px;flex-basis:19px}}
 
 
-/* Single featured Association Board profile card */
-.council-grid-featured{grid-template-columns:minmax(0,1fr);justify-items:center}
-.council-member-art{width:100%;max-width:980px;min-height:0;padding:0;overflow:hidden;border:0;background:transparent;box-shadow:none}
-.council-member-art:hover{border-color:transparent;box-shadow:none;transform:none}
-.council-card-art{display:block;width:100%;height:auto;max-width:980px;margin:0 auto;border:0;border-radius:10px;object-fit:contain;box-shadow:0 8px 24px rgba(58,30,35,.09)}
-@media(max-width:600px){.council-member-art{padding:0}.council-card-art{border-radius:7px}}
+
+
+/* Association Board: four compact cards in one row */
+.council-grid-featured{grid-template-columns:repeat(4,minmax(0,1fr));justify-items:stretch;gap:15px}
+.council-member-art{width:auto;max-width:none;min-width:0;min-height:174px;padding:18px 12px;overflow:hidden;border:1px solid var(--community-line);border-radius:13px;background:var(--community-surface);box-shadow:0 5px 16px rgba(58,30,35,.045)}
+.council-member-art:hover{border-color:#c9aa72;box-shadow:0 12px 25px rgba(58,30,35,.11);transform:none}
+.council-card-art{display:block;width:auto;height:auto;max-width:100%;max-height:174px;margin:0 auto;border:0;border-radius:3px;object-fit:contain;box-shadow:none}
+@media(max-width:760px){.council-grid-featured{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:390px){.council-grid-featured{gap:10px}.council-member-art{min-height:158px;padding:14px 8px}.council-card-art{max-height:158px}}
