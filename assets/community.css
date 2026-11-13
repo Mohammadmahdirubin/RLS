@@ -2878,11 +2878,6 @@
 }
 
 
-/* Slightly darken the four council card artworks for Chrome consistency. */
-#association-council .council-profile-card-art{
-  filter:brightness(.8);
-}
-
 
 /* Match the outer council section background to the community page paper tone */
 #association-council{background:var(--community-paper)!important;}
