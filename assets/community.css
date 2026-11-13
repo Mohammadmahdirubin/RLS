@@ -2763,3 +2763,28 @@
   border-radius:50%!important;
   clip-path:circle(50%)!important;
 }
+
+
+/* Council member names: always one line on desktop and mobile. */
+#association-council .council-profile-card .council-profile-name{
+  white-space:nowrap!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  width:58%!important;
+  max-width:58%!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  font-size:clamp(6px,1vw,12px)!important;
+  line-height:1.25!important;
+  letter-spacing:-.035em!important;
+}
+@media(max-width:760px){
+  #association-council .council-profile-card .council-profile-name{
+    white-space:nowrap!important;
+    width:58%!important;
+    max-width:58%!important;
+    font-size:clamp(5px,1.35vw,8px)!important;
+    line-height:1.2!important;
+    letter-spacing:-.045em!important;
+  }
+}
