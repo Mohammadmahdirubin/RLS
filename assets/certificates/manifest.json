@@ -1,8 +1,15 @@
 {
   "schema": 1,
   "design": "rls-certificate-full-name-v3",
-  "updated_at": "2026-11-13T00:17:49.558877+00:00",
+  "updated_at": "2026-11-13T06:52:39.324538+00:00",
   "certificates": {
+    "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {
+      "file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.png",
+      "fingerprint": "a5f51382c3cd87a95a526e24a2f5e3e98f5552b4fc382938d514d280f4deb573",
+      "membership_number": 17,
+      "qr_url": "https://rlsj.ir/community.html?member=0a7588ef-945d-4b2b-be50-61eb8fad22c6",
+      "generated_at": "2026-11-13T06:52:37.978420+00:00"
+    },
     "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {
       "file": "assets/certificates/member-0d9dd4ab-2acc-471c-9ee1-7784e337b592.png",
       "fingerprint": "d6040e49832d1dbbcc34b7366ffaf277b16eba2ee809a1234b658b7fc08b0396",
@@ -30,6 +37,13 @@
       "membership_number": 12,
       "qr_url": "https://rlsj.ir/community.html?member=42101e7d-59b2-46b3-97c6-12ce97c29e5b",
       "generated_at": "2026-11-13T00:17:48.565400+00:00"
+    },
+    "50e4d0c4-072c-4786-bd96-9cf4158b160a": {
+      "file": "assets/certificates/member-50e4d0c4-072c-4786-bd96-9cf4158b160a.png",
+      "fingerprint": "3fb34323136aa7a971eab6b343d68dc9885ed7224af0d188d4a25df3df519df0",
+      "membership_number": 20,
+      "qr_url": "https://rlsj.ir/community.html?member=50e4d0c4-072c-4786-bd96-9cf4158b160a",
+      "generated_at": "2026-11-13T06:52:39.324494+00:00"
     },
     "5a337db8-87c8-40a0-9c39-06cba5c978e9": {
       "file": "assets/certificates/member-5a337db8-87c8-40a0-9c39-06cba5c978e9.png",
@@ -75,10 +89,10 @@
     },
     "d1db816a-b33a-4ec8-b103-21331c8f86b5": {
       "file": "assets/certificates/member-d1db816a-b33a-4ec8-b103-21331c8f86b5.png",
-      "fingerprint": "5cac1f68d371acdead4cdd475f543e4419f978e298c8619a2663af66f7fa881b",
+      "fingerprint": "e58259f6efbc4433b3cb9b7954c475358853fd7c29dfaba9b4be259c9392f6ac",
       "membership_number": 5,
       "qr_url": "https://rlsj.ir/community.html?member=d1db816a-b33a-4ec8-b103-21331c8f86b5",
-      "generated_at": "2026-11-13T00:17:43.679687+00:00"
+      "generated_at": "2026-11-13T06:52:36.623624+00:00"
     }
   }
 }
