@@ -2300,3 +2300,74 @@
   #association-council .council-profile-card .council-profile-name{font-size:clamp(9px,2.2vw,13px)!important}
   #association-council .council-profile-card .council-profile-rank{font-size:clamp(7px,1.8vw,11px)!important}
 }
+
+/* Mobile final layout and typography: two cards per row; single-line name; contained seal */
+@media (max-width: 760px) {
+  #association-council .council-profile-grid.council-grid-featured {
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-flow:row!important;
+    column-gap:8px!important;
+    row-gap:12px!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  #association-council .council-profile-grid.council-grid-featured > article.council-profile-card {
+    grid-column:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+  #association-council .council-profile-card .council-profile-name {
+    top:25%!important;
+    right:4%!important;
+    left:auto!important;
+    width:58%!important;
+    max-width:58%!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+    overflow-wrap:normal!important;
+    font-size:clamp(8px,2vw,13px)!important;
+    line-height:1.3!important;
+    text-align:center!important;
+  }
+  #association-council .council-profile-card .council-profile-rank {
+    top:47%!important;
+    right:20%!important;
+    width:48%!important;
+    max-width:48%!important;
+    font-size:clamp(7px,1.7vw,11px)!important;
+    line-height:1.35!important;
+    text-align:center!important;
+  }
+  #association-council .council-profile-card .council-profile-university-logo {
+    top:47%!important;
+    right:5%!important;
+    left:auto!important;
+    width:clamp(26px,9%,42px)!important;
+    min-width:0!important;
+    max-width:42px!important;
+    height:auto!important;
+    aspect-ratio:1/1!important;
+    padding:0!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:hidden!important;
+    border-radius:50%!important;
+    clip-path:circle(50%)!important;
+  }
+  #association-council .council-profile-card .council-profile-university-logo img {
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    object-fit:contain!important;
+    object-position:center!important;
+    border-radius:50%!important;
+  }
+}
