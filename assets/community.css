@@ -1467,3 +1467,36 @@
 }
 .member-profile-views::before{content:"◉";font-size:15px;color:var(--community-gold)}
 .member-profile-views[data-counter-state="error"]{font-weight:500;color:var(--community-muted)}
+
+
+/* FIX: show complete member names; let the identity row grow with wrapped text. */
+#member-directory .community-member .member-card-identity{
+  min-height:0 !important;
+  height:auto !important;
+  overflow:visible !important;
+}
+#member-directory .community-member .member-card-identity h3{
+  display:block !important;
+  width:100% !important;
+  min-height:38px !important;
+  max-height:none !important;
+  height:auto !important;
+  margin:0 !important;
+  overflow:visible !important;
+  -webkit-box-orient:initial !important;
+  -webkit-line-clamp:unset !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+  line-height:1.55 !important;
+  text-align:center !important;
+}
+#member-directory .community-member .member-card-main{
+  min-height:0 !important;
+  height:auto !important;
+  overflow:visible !important;
+}
+#member-directory .community-member .community-member-link,
+#member-directory .community-member > .member-card-layout{
+  overflow:visible !important;
+}
