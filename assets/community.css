@@ -2994,3 +2994,29 @@
   .community-about-card h3[role="button"]{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .community-about-card h3[role="button"]:focus-visible{outline:2px solid rgba(189,150,80,.7);outline-offset:4px;border-radius:4px}
 }
+
+/* Community information cards: expanded by default on desktop and tablet;
+   accordion interaction is reserved for mobile screens only. */
+@media (min-width:701px){
+  .community-about-card ul,
+  .community-about-card.is-expanded ul{
+    display:block!important;
+  }
+  .community-about-card .about-card-toggle{
+    display:none!important;
+  }
+  .community-about-card h3[role="button"]{
+    cursor:default!important;
+  }
+}
+@media (max-width:700px){
+  .community-about-card ul{
+    display:none!important;
+  }
+  .community-about-card.is-expanded ul{
+    display:block!important;
+  }
+  .community-about-card .about-card-toggle{
+    display:inline-flex!important;
+  }
+}
