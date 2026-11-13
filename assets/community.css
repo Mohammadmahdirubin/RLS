@@ -1558,7 +1558,7 @@
 /* Four framed association board cards with compact founder profile content. */
 .council-profile-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
 .council-profile-card{min-width:0;min-height:230px;padding:7px;box-sizing:border-box;background:transparent!important;border:0!important;box-shadow:none!important;overflow:hidden}
-.council-profile-frame{width:100%;height:100%;min-height:216px;box-sizing:border-box;padding:14px 9px 10px;background-image:url('/frame_fixed.webp');background-position:center;background-repeat:no-repeat;background-size:100% 100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center}
+.council-profile-frame{width:100%;height:100%;min-height:216px;box-sizing:border-box;padding:14px 9px 10px;background-image:url('/frame_fixed.png');background-position:center;background-repeat:no-repeat;background-size:100% 100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center}
 .council-profile-portrait{width:68px;height:68px;flex:0 0 68px;border-radius:50%;overflow:hidden;border:2px solid #c5a66a;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .council-profile-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
 .council-profile-name{font-size:clamp(10px,1.1vw,14px);font-weight:800;line-height:1.5;color:#542b35}
@@ -1608,7 +1608,7 @@
 
 /* Force-load the decorative WebP frame; keep all card surfaces transparent. */
 .council-profile-grid .council-profile-frame{
-  background:url('/frame_fixed.webp?v=20261113b') center center / 100% 100% no-repeat!important;
+  background:url('/frame_fixed.png?v=20261113b') center center / 100% 100% no-repeat!important;
   background-color:transparent!important;
   min-height:216px;
 }
