@@ -2010,3 +2010,56 @@
   #association-council .council-profile-university-logo{width:48px!important;height:48px!important;border-width:2px!important}
   #association-council .council-profile-right .council-profile-affiliation{font-size:11px!important;line-height:1.7!important}
 }
+
+
+/* Founder card: preserve the supplied 1503:1064 frame ratio so the portrait aperture stays circular. */
+#association-council .council-profile-grid{display:block!important;max-width:1120px!important;margin-inline:auto!important}
+#association-council .council-profile-card{display:block!important;width:100%!important;min-height:0!important;height:auto!important;padding:0!important;overflow:visible!important}
+#association-council .council-profile-frame{
+ position:relative!important;display:block!important;width:100%!important;height:auto!important;min-height:0!important;
+ aspect-ratio:1503 / 1064!important;box-sizing:border-box!important;padding:0!important;overflow:hidden!important;
+ background-image:url('/frame_fixed.png?v=20261113b')!important;background-position:center!important;
+ background-repeat:no-repeat!important;background-size:100% 100%!important;
+}
+#association-council .council-profile-layout{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;min-height:0!important}
+#association-council .council-profile-left{
+ position:absolute!important;left:7.2%!important;top:17.5%!important;width:36%!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;gap:1.2%!important;
+}
+#association-council .council-profile-left .council-profile-portrait{
+ width:100%!important;height:auto!important;aspect-ratio:1/1!important;flex:0 0 auto!important;
+ box-sizing:border-box!important;border:0!important;outline:0!important;border-radius:50%!important;
+ overflow:hidden!important;background:transparent!important;box-shadow:none!important;
+}
+#association-council .council-profile-left .council-profile-portrait img{
+ display:block!important;width:100%!important;height:100%!important;aspect-ratio:1/1!important;
+ object-fit:cover!important;object-position:center 24%!important;border-radius:50%!important;
+}
+#association-council .council-profile-left .council-founder-badge{
+ width:92%!important;min-width:0!important;margin-top:1%!important;padding:2.2% 3%!important;
+ border:0!important;border-radius:0!important;background:transparent!important;color:#172d50!important;
+ box-shadow:none!important;font-size:clamp(15px,2.1vw,27px)!important;line-height:1.3!important;white-space:nowrap!important;
+}
+#association-council .council-profile-right{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important}
+#association-council .council-profile-right .council-profile-name{
+ position:absolute!important;top:26%!important;right:11%!important;width:48%!important;margin:0!important;
+ color:#172d50!important;font-size:clamp(22px,3.5vw,43px)!important;font-weight:900!important;
+ line-height:1.45!important;text-align:center!important;
+}
+#association-council .council-profile-divider{display:none!important}
+#association-council .council-profile-role-row{position:absolute!important;inset:0!important;display:block!important}
+#association-council .council-profile-right .council-profile-rank{
+ position:absolute!important;top:44%!important;right:24%!important;width:31%!important;color:#172d50!important;
+ font-size:clamp(13px,1.9vw,23px)!important;font-weight:750!important;line-height:1.5!important;text-align:center!important;
+}
+#association-council .council-profile-university-logo{
+ position:absolute!important;top:43%!important;right:5.8%!important;width:15%!important;height:auto!important;
+ aspect-ratio:1/1!important;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;
+}
+#association-council .council-profile-university-logo img{width:100%!important;height:100%!important;object-fit:contain!important}
+#association-council .council-profile-affiliation{display:none!important}
+@media(max-width:600px){
+ #association-council .council-profile-right .council-profile-name{font-size:clamp(17px,3.5vw,23px)!important}
+ #association-council .council-profile-right .council-profile-rank{font-size:clamp(10px,1.9vw,14px)!important}
+ #association-council .council-profile-left .council-founder-badge{font-size:clamp(11px,2vw,16px)!important}
+}
