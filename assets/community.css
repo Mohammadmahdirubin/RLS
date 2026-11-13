@@ -2882,3 +2882,7 @@
 #association-council .council-profile-card-art{
   filter:brightness(.8);
 }
+
+
+/* 2026-11-13: darken all council card artwork by 20% for Chrome consistency */
+#association-council .council-profile-card-art{filter:brightness(.8)!important;}
