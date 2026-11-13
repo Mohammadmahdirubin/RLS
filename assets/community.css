@@ -2284,3 +2284,19 @@
     top:43%!important;right:5.5%!important;width:15%!important;
   }
 }
+
+/* Mobile council layout: exactly two cards per row */
+@media(max-width:760px){
+  #association-council .council-profile-grid.council-grid-featured{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  #association-council .council-profile-grid.council-grid-featured>.council-profile-card{
+    width:100%!important;min-width:0!important;
+  }
+  #association-council .council-profile-card .council-profile-name{font-size:clamp(9px,2.2vw,13px)!important}
+  #association-council .council-profile-card .council-profile-rank{font-size:clamp(7px,1.8vw,11px)!important}
+}
