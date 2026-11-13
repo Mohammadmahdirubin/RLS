@@ -126,12 +126,13 @@
     catch(_){return date.toISOString().slice(0,10);}
   }
   function memberProfileUrl(id) {
-    return 'https://rlsj.ir/community.html?member='+encodeURIComponent(String(id||''));
+    const page=lang==='fa'?'/community.html':lang==='ru'?'/ru/community.html':'/en/community.html';
+    return location.origin+page+'?member='+encodeURIComponent(String(id||''));
   }
   function profileLinks(m, detailed=false) {
     const links=[
 
-      ['وبلاگ RussianLan',m.blog_url,'blogger','/assets/brand-icons/blogger.svg'],
+      [(lang==='fa'?'وبلاگ RussianLan':lang==='ru'?'Блог RussianLan':'RussianLan Blog'),m.blog_url,'blogger','/assets/brand-icons/blogger.svg'],
       ['ORCID',orcidUrl(m.orcid),'orcid','/assets/brand-icons/orcid.svg'],
       ['ResearchGate',m.researchgate_url,'researchgate','/assets/brand-icons/researchgate.svg'],
       ['Google Scholar',m.google_scholar_url,'scholar','/assets/brand-icons/google-scholar.svg'],
@@ -165,7 +166,45 @@
     const padded = String(number).padStart(6, '0');
     return lang === 'fa' ? padded.replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]) : padded;
   }
-  const localized = (m,key) => lang==='fa' ? (m[key] || '') : (m[key+'_'+lang] || '');
+  const memberTranslations = {
+    en: {
+      "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {display_name:"Mohammad Mahdi Rubin",full_name:"Mohammad Mahdi Rubin",profile_headline:"Russian language researcher and translator",specialty:"Russian language",institution:"Tehran",country:"Iran"},
+      "b39de401-7b39-478c-88ab-50e89695e11a": {display_name:"Homa Alishah",full_name:"Homa Sedgh Alishah",specialty:"Russian language",institution:"Alzahra University",city:"Tehran",country:"Iran"},
+      "7a959afc-c71d-4d3b-a287-e0d3f3262d9f": {display_name:"Mezrub",full_name:"Amirhossein Fazelmanesh",profile_headline:"M.A. student in Russian language teaching | Russian and English translator | Media editor, writer and AI instructor",specialty:"Russian language teaching",institution:"Allameh Tabataba'i University",city:"Tehran",country:"Iran"},
+      "1301d37a-faf9-41cc-8f30-317f7dc56b45": {display_name:"Mehrnoush Firoozi",full_name:"Mehrnoush Firoozi",institution:"Alzahra University",city:"Tehran",country:"Iran"},
+      "97731024-a0d7-4290-a617-b868f8ef9f71": {display_name:"Aliira",full_name:"Ali Pourheydar",specialty:"Philosophy",institution:"University of Qom",city:"Amol",country:"Iran"},
+      "8ba94f95-0545-4ade-8638-eddc7a699365": {display_name:"Lida Sharifzadeh Kermani",full_name:"Lida Sharifzadeh Kermani",specialty:"Russian language teaching and translation",city:"Tehran",country:"Iran"},
+      "5a337db8-87c8-40a0-9c39-06cba5c978e9": {display_name:"Elay Mousavi",full_name:"Seyede Elay Mousavi Ghasemi",specialty:"Russian language and literature",institution:"Allameh Tabataba'i University",city:"Tehran",country:"Iran"},
+      "14c1d68e-45ec-4120-b7ba-fcfd03520830": {display_name:"Samaneh Kazemi",full_name:"Samaneh Kazemi",specialty:"Russian language teaching and translation",institution:"Saint Petersburg State University",city:"Karaj",country:"Iran"},
+      "42101e7d-59b2-46b3-97c6-12ce97c29e5b": {display_name:"Raheleh Barari",full_name:"Raheleh Barari",specialty:"Official translation",institution:"University of Tehran",city:"Tehran",country:"Iran"},
+      "611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27": {display_name:"Amirali Aghamohammadi",full_name:"Amirali Aghamohammadi",specialty:"Engineering",institution:"RUDN University",city:"Karaj",country:"Iran"},
+      "50e4d0c4-072c-4786-bd96-9cf4158b160a": {display_name:"Mehdi Dehghan",full_name:"Mehdi Dehghan",specialty:"Translation",institution:"Islamic Azad University, North Tehran Branch",city:"Tehran",country:"Iran"},
+      "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {display_name:"Mohammad Tahmasbi Borna",full_name:"Mohammad Tahmasbi Borna",specialty:"Russian Revolution studies · Russian studies",degree:"PhD",city:"Tehran",country:"Iran"},
+      "d1db816a-b33a-4ec8-b103-21331c8f86b5": {display_name:"Zahra Maleki",full_name:"Zahra Maleki",specialty:"Food science and engineering (biotechnology) · Political science (international relations)",institution:"Islamic Azad University, North Tehran Branch",city:"Tehran",country:"Iran"},
+      "94b8dd8a-d708-4809-8179-1ce995f31e4a": {display_name:"Hamed Hossein Motaji Kojouri",full_name:"Hamed Hossein Motaji Kojouri",specialty:"Diplomatic protocol · Event management · Russian studies",institution:"University of Tehran, Faculty of World Studies, Department of European Studies",city:"Tehran",country:"Iran"}
+    },
+    ru: {
+      "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {display_name:"Мохаммад Махди Рубин",full_name:"Мохаммад Махди Рубин",profile_headline:"Исследователь и переводчик русского языка",specialty:"Русский язык",institution:"Тегеран",country:"Иран"},
+      "b39de401-7b39-478c-88ab-50e89695e11a": {display_name:"Хома Алишах",full_name:"Хома Седг Алишах",specialty:"Русский язык",institution:"Университет Аль-Захра",city:"Тегеран",country:"Иран"},
+      "7a959afc-c71d-4d3b-a287-e0d3f3262d9f": {display_name:"Мезраб",full_name:"Амирхоссейн Фазельманеш",profile_headline:"Магистрант по преподаванию русского языка | Переводчик с русского и английского языков | Редактор СМИ, автор и преподаватель ИИ",specialty:"Преподавание русского языка",institution:"Университет Алламе Табатабаи",city:"Тегеран",country:"Иран"},
+      "1301d37a-faf9-41cc-8f30-317f7dc56b45": {display_name:"Мехрнуш Фирузи",full_name:"Мехрнуш Фирузи",institution:"Университет Аль-Захра",city:"Тегеран",country:"Иран"},
+      "97731024-a0d7-4290-a617-b868f8ef9f71": {display_name:"Алиира",full_name:"Али Пурхейдар",specialty:"Философия",institution:"Кумский университет",city:"Амоль",country:"Иран"},
+      "8ba94f95-0545-4ade-8638-eddc7a699365": {display_name:"Лида Шарифзаде Кермани",full_name:"Лида Шарифзаде Кермани",specialty:"Преподавание и перевод русского языка",city:"Тегеран",country:"Иран"},
+      "5a337db8-87c8-40a0-9c39-06cba5c978e9": {display_name:"Элай Мусави",full_name:"Сейеде Элай Мусави Гасеми",specialty:"Русский язык и литература",institution:"Университет Алламе Табатабаи",city:"Тегеран",country:"Иран"},
+      "14c1d68e-45ec-4120-b7ba-fcfd03520830": {display_name:"Самане Каземи",full_name:"Самане Каземи",specialty:"Преподавание и перевод русского языка",institution:"Санкт-Петербургский государственный университет",city:"Кередж",country:"Иран"},
+      "42101e7d-59b2-46b3-97c6-12ce97c29e5b": {display_name:"Рахеле Барари",full_name:"Рахеле Барари",specialty:"Официальный перевод",institution:"Тегеранский университет",city:"Тегеран",country:"Иран"},
+      "611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27": {display_name:"Амирали Агамохаммади",full_name:"Амирали Агамохаммади",specialty:"Инженерное дело",institution:"Университет РУДН"},
+      "50e4d0c4-072c-4786-bd96-9cf4158b160a": {display_name:"Мехди Дехган",full_name:"Мехди Дехган",specialty:"Перевод",institution:"Исламский университет Азад, Северный Тегеранский филиал",city:"Тегеран",country:"Иран"},
+      "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {display_name:"Мохаммад Тахмасби Борна",full_name:"Мохаммад Тахмасби Борна",specialty:"Исследования русской революции · россиеведение",degree:"Докторская степень",city:"Тегеран",country:"Иран"},
+      "d1db816a-b33a-4ec8-b103-21331c8f86b5": {display_name:"Захра Малеки",full_name:"Захра Малеки",specialty:"Пищевая инженерия и биотехнология · политология и международные отношения",institution:"Исламский университет Азад, Северный Тегеранский филиал",city:"Тегеран",country:"Иран"},
+      "94b8dd8a-d708-4809-8179-1ce995f31e4a": {display_name:"Хамед Хосейн Мотаджи Коджури",full_name:"Хамед Хосейн Мотаджи Коджури",specialty:"Дипломатический протокол · организация мероприятий · россиеведение",institution:"Тегеранский университет, факультет мировых исследований, кафедра европейских исследований",city:"Тегеран",country:"Иран"}
+    }
+  };
+  const localized = (m,key) => {
+    if(lang==='fa') return m[key] || '';
+    const override=memberTranslations[lang]?.[m.user_id]?.[key];
+    return override || m[key+'_'+lang] || m[key] || '';
+  };
   const stripSalutation = value => String(value || '').replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i,'').trim();
   const initials = name => String(name || 'RLS').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
   function facultyLevel(m) {
