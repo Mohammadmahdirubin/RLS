@@ -1521,3 +1521,7 @@
     overflow:visible !important;
   }
 }
+
+
+/* Association board portrait */
+.council-photo{display:block;object-fit:cover;}
