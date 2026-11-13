@@ -2850,3 +2850,29 @@
   border:0!important;
   border-radius:0!important;
 }
+
+
+/* Empty council positions: display the supplied blank royal card artwork. */
+#association-council .council-profile-blank-card{
+  display:block!important;
+  padding:0!important;
+  overflow:hidden!important;
+  aspect-ratio:3 / 2!important;
+  height:auto!important;
+  min-height:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#association-council .council-profile-blank-card .council-profile-card-art{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:3 / 2!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+}
