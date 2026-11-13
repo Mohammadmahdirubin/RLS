@@ -2823,3 +2823,30 @@
     top:44.1%!important;
   }
 }
+
+
+/* Founder card: use the supplied finished royal card artwork as one
+   proportional image; disable the previous layered portrait/logo/text layout. */
+#association-council .council-profile-image-card{
+  display:block!important;
+  padding:0!important;
+  overflow:hidden!important;
+  aspect-ratio:3 / 2!important;
+  height:auto!important;
+  min-height:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#association-council .council-profile-image-card .council-profile-card-art{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:3 / 2!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+}
