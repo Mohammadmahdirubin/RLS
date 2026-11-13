@@ -1553,3 +1553,20 @@
 .council-card-art{display:block;width:auto;height:auto;max-width:100%;max-height:174px;margin:0 auto;border:0;border-radius:3px;object-fit:contain;box-shadow:none}
 @media(max-width:760px){.council-grid-featured{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:390px){.council-grid-featured{gap:10px}.council-member-art{min-height:158px;padding:14px 8px}.council-card-art{max-height:158px}}
+
+
+/* Four framed association board cards with compact founder profile content. */
+.council-profile-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+.council-profile-card{min-width:0;min-height:230px;padding:7px;box-sizing:border-box;background:transparent!important;border:0!important;box-shadow:none!important;overflow:hidden}
+.council-profile-frame{width:100%;height:100%;min-height:216px;box-sizing:border-box;padding:14px 9px 10px;background-image:url('/frame_fixed.webp');background-position:center;background-repeat:no-repeat;background-size:100% 100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;text-align:center}
+.council-profile-portrait{width:68px;height:68px;flex:0 0 68px;border-radius:50%;overflow:hidden;border:2px solid #c5a66a;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.council-profile-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+.council-profile-name{font-size:clamp(10px,1.1vw,14px);font-weight:800;line-height:1.5;color:#542b35}
+.council-founder-badge{font-size:clamp(8px,.8vw,10px);padding:3px 7px;white-space:normal;text-align:center}
+.council-profile-rank{font-size:clamp(8px,.85vw,10px);font-weight:700;line-height:1.45;color:#604c43}
+.council-profile-card .council-affiliation{font-size:clamp(7px,.78vw,9px);line-height:1.4;gap:4px}
+.council-profile-card .council-affiliation img{width:20px;height:20px;flex-basis:20px}
+.council-profile-orcid{font-size:8px;line-height:1.3;color:#6b4c36;text-decoration:none;direction:ltr;overflow-wrap:anywhere}
+.council-profile-empty .council-profile-frame{min-height:216px}
+@media(max-width:760px){.council-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.council-profile-card{min-height:205px;padding:5px}.council-profile-frame,.council-profile-empty .council-profile-frame{min-height:195px;padding:11px 7px 8px}.council-profile-portrait{width:58px;height:58px;flex-basis:58px}}
+@media(max-width:390px){.council-profile-card{min-height:185px;padding:3px}.council-profile-frame,.council-profile-empty .council-profile-frame{min-height:179px;padding:9px 5px 6px}.council-profile-portrait{width:50px;height:50px;flex-basis:50px}.council-profile-name{font-size:10px}.council-profile-rank{font-size:8px}.council-profile-card .council-affiliation{font-size:7px}.council-profile-card .council-affiliation img{width:17px;height:17px;flex-basis:17px}}
