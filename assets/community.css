@@ -2886,3 +2886,9 @@
 
 /* 2026-11-13: darken only the public member-directory card surfaces by 20% */
 #member-directory .community-members > .community-member{background-color:color-mix(in srgb,var(--community-surface) 80%,#000 20%)!important;}
+
+
+/* Match the outer council section background to the community page paper tone */
+#association-council{background:var(--community-paper)!important;}
+#association-council .council-profile-grid,
+#association-council .council-profile-card{background:transparent!important;}
