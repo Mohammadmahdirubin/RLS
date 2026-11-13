@@ -2884,5 +2884,5 @@
 }
 
 
-/* 2026-11-13: darken all council card artwork by 20% for Chrome consistency */
-#association-council .council-profile-card-art{filter:brightness(.8)!important;}
+/* 2026-11-13: darken only the public member-directory card surfaces by 20% */
+#member-directory .community-members > .community-member{background-color:color-mix(in srgb,var(--community-surface) 80%,#000 20%)!important;}
