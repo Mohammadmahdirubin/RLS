@@ -2788,3 +2788,38 @@
     letter-spacing:-.045em!important;
   }
 }
+
+
+/* Seal sizing correction: keep the university mark comfortably inside the
+   printed beaded aperture on both desktop and mobile. Preserve its center
+   while reducing the visible seal; never scale it beyond the circular holder. */
+#association-council .council-profile-card .council-profile-university-logo-filled{
+  width:11.5%!important;
+  right:10%!important;
+  top:44.1%!important;
+  aspect-ratio:1/1!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background:transparent!important;
+}
+#association-council .council-profile-card .council-profile-university-logo-filled img{
+  position:absolute!important;
+  inset:5%!important;
+  width:90%!important;
+  height:90%!important;
+  max-width:90%!important;
+  max-height:90%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+}
+@media(max-width:760px){
+  #association-council .council-profile-card .council-profile-university-logo-filled{
+    width:11.5%!important;
+    right:10%!important;
+    top:44.1%!important;
+  }
+}
