@@ -1,0 +1,22 @@
+/* Two member cards per row in the administration lists. */
+#admin-list.admin-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  align-items:start;
+}
+#admin-list.admin-list>.admin-member{
+  min-width:0;
+  width:100%;
+  box-sizing:border-box;
+  margin:0;
+}
+#admin-list.admin-list>.admin-member[hidden]{
+  display:none!important;
+}
+@media(max-width:760px){
+  #admin-list.admin-list{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+}
