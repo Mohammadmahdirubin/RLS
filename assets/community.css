@@ -2436,3 +2436,35 @@
     box-shadow:0 12px 28px rgba(48,20,25,.28)!important;
   }
 }
+
+/* Final alignment: keep rank on one line and center the university mark in its ring */
+#association-council .council-profile-card .council-profile-rank{
+  position:absolute!important;top:47%!important;right:22%!important;left:auto!important;
+  width:66%!important;max-width:66%!important;white-space:nowrap!important;
+  word-break:keep-all!important;overflow-wrap:normal!important;text-align:center!important;
+  font-size:clamp(9px,1.15vw,15px)!important;line-height:1.2!important;
+}
+#association-council .council-profile-card .council-profile-university-logo{
+  position:absolute!important;top:41%!important;right:4.4%!important;left:auto!important;
+  width:19%!important;max-width:120px!important;min-width:0!important;height:auto!important;
+  aspect-ratio:1/1!important;padding:0!important;margin:0!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  overflow:hidden!important;border:0!important;border-radius:50%!important;
+  clip-path:circle(50%)!important;background:transparent!important;box-shadow:none!important;z-index:6!important;
+}
+#association-council .council-profile-card .council-profile-university-logo img{
+  display:block!important;width:90%!important;height:90%!important;max-width:90%!important;max-height:90%!important;
+  object-fit:contain!important;object-position:center!important;margin:auto!important;border:0!important;border-radius:50%!important;
+}
+@media(max-width:760px){
+  #association-council .council-profile-card .council-profile-rank{
+    top:47%!important;right:21%!important;width:69%!important;max-width:69%!important;
+    font-size:clamp(7px,2.05vw,10px)!important;white-space:nowrap!important;line-height:1.15!important;
+  }
+  #association-council .council-profile-card .council-profile-university-logo{
+    top:42%!important;right:3.5%!important;width:21%!important;max-width:76px!important;
+  }
+  #association-council .council-profile-card .council-profile-university-logo img{
+    width:90%!important;height:90%!important;max-width:90%!important;max-height:90%!important;
+  }
+}
