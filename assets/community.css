@@ -1570,3 +1570,37 @@
 .council-profile-empty .council-profile-frame{min-height:216px}
 @media(max-width:760px){.council-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.council-profile-card{min-height:205px;padding:5px}.council-profile-frame,.council-profile-empty .council-profile-frame{min-height:195px;padding:11px 7px 8px}.council-profile-portrait{width:58px;height:58px;flex-basis:58px}}
 @media(max-width:390px){.council-profile-card{min-height:185px;padding:3px}.council-profile-frame,.council-profile-empty .council-profile-frame{min-height:179px;padding:9px 5px 6px}.council-profile-portrait{width:50px;height:50px;flex-basis:50px}.council-profile-name{font-size:10px}.council-profile-rank{font-size:8px}.council-profile-card .council-affiliation{font-size:7px}.council-profile-card .council-affiliation img{width:17px;height:17px;flex-basis:17px}}
+
+
+/* Final refinements: show only the decorative frame and zoom the full circular portrait. */
+.council-profile-card,
+.council-profile-frame,
+.council-profile-grid .council-member{
+  background-color:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+.council-profile-card{overflow:visible!important;position:relative}
+.council-profile-frame{overflow:visible;position:relative}
+.council-profile-portrait{
+  position:relative;
+  z-index:2;
+  overflow:hidden;
+  border-radius:50%;
+  transform:translateZ(0);
+  transform-origin:center center;
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+.council-profile-portrait:hover{
+  transform:scale(2);
+  z-index:50;
+  box-shadow:0 5px 18px rgba(0,0,0,.28);
+}
+.council-profile-portrait img{border-radius:50%}
+@media(hover:none){
+  .council-profile-portrait:active{
+    transform:scale(2);
+    z-index:50;
+    box-shadow:0 5px 18px rgba(0,0,0,.28);
+  }
+}
