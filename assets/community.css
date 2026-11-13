@@ -2638,3 +2638,61 @@
     box-shadow:0 12px 28px rgba(48,20,25,.28)!important;
   }
 }
+
+
+/* Portrait: keep every pixel inside the circular photo window and use the
+   same pale blue as the source photo wherever the source has transparent gaps. */
+#association-council .council-profile-left .council-profile-portrait{
+  position:relative!important;
+  display:block!important;
+  overflow:hidden!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background-color:#c9d9e9!important;
+  isolation:isolate!important;
+}
+#association-council .council-profile-left .council-profile-portrait img{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center 24%!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+}
+
+/* Enlarge the university seal slightly so it fills the printed circular
+   aperture without crossing its edge. */
+#association-council .council-profile-university-logo-filled{
+  width:17%!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  right:4.8%!important;
+  top:42.2%!important;
+  overflow:hidden!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background:transparent!important;
+}
+#association-council .council-profile-university-logo-filled img{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+}
