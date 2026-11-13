@@ -594,12 +594,28 @@
   // Remove any stale viewer left by an older cached script.
   document.querySelectorAll('.avatar-lightbox,.image-lightbox,.community-image-overlay').forEach(node=>node.remove());
 
-  // Expand/collapse the three community information cards on mobile.
-  root.querySelectorAll('.about-card-toggle').forEach(button=>button.addEventListener('click',()=>{
-    const card=button.closest('.community-about-card');
-    const expanded=card.classList.toggle('is-expanded');
-    button.setAttribute('aria-expanded',String(expanded));
-    button.setAttribute('aria-label',expanded?'بستن جزئیات':'نمایش جزئیات');
-  }));
+  // Expand/collapse community information cards by tapping either the title or the plus button.
+  root.querySelectorAll('.community-about-card').forEach(card=>{
+    const button=card.querySelector('.about-card-toggle');
+    const heading=card.querySelector('h3');
+    if(!button||!heading)return;
+    function toggleCard(){
+      const expanded=card.classList.toggle('is-expanded');
+      button.setAttribute('aria-expanded',String(expanded));
+      heading.setAttribute('aria-expanded',String(expanded));
+      button.setAttribute('aria-label',expanded?'بستن جزئیات':'نمایش جزئیات');
+    }
+    button.addEventListener('click',toggleCard);
+    heading.setAttribute('role','button');
+    heading.setAttribute('tabindex','0');
+    heading.setAttribute('aria-expanded','false');
+    heading.addEventListener('click',toggleCard);
+    heading.addEventListener('keydown',event=>{
+      if(event.key==='Enter'||event.key===' '){
+        event.preventDefault();
+        toggleCard();
+      }
+    });
+  });
   boot();
 })();
