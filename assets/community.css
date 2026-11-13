@@ -2371,3 +2371,48 @@
     border-radius:50%!important;
   }
 }
+
+/* Seal containment: keep the Tehran University mark smaller than its printed circular frame */
+#association-council .council-profile-card .council-profile-university-logo{
+  position:absolute!important;
+  top:46%!important;
+  right:7.2%!important;
+  left:auto!important;
+  width:9%!important;
+  max-width:64px!important;
+  min-width:0!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  margin:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:50%!important;
+  clip-path:circle(50%)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  z-index:6!important;
+}
+#association-council .council-profile-card .council-profile-university-logo img{
+  display:block!important;
+  width:82%!important;
+  height:82%!important;
+  max-width:82%!important;
+  max-height:82%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border:0!important;
+  border-radius:50%!important;
+}
+@media(max-width:760px){
+  #association-council .council-profile-card .council-profile-university-logo{
+    width:9%!important;
+    max-width:38px!important;
+    top:46%!important;
+    right:7.2%!important;
+  }
+}
