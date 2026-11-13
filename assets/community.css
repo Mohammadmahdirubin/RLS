@@ -2491,3 +2491,29 @@
     z-index: 7 !important;
   }
 }
+
+
+/* All screen sizes: place the university title fully in the right text panel,
+   below the divider and below the seal; never across the portrait area. */
+#association-council .council-profile-card .council-profile-rank {
+  position: absolute !important;
+  top: 62% !important;
+  right: 4% !important;
+  left: auto !important;
+  width: 45% !important;
+  max-width: 45% !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  text-align: center !important;
+  font-size: clamp(7px, 1.05vw, 12px) !important;
+  line-height: 1.2 !important;
+  z-index: 7 !important;
+}
+@media (max-width: 760px) {
+  #association-council .council-profile-card .council-profile-rank {
+    font-size: clamp(6px, 1.65vw, 8px) !important;
+  }
+}
