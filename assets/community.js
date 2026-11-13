@@ -398,7 +398,7 @@
         const count=Number(data);
         if(!Number.isSafeInteger(count)||count<0)throw new Error('Invalid profile view count');
         const label=lang==='fa'?'بازدید از این پروفایل':lang==='ru'?'Просмотров профиля':'Profile views';
-        viewsNode.textContent=label+' · '+new Intl.NumberFormat(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US').format(count);
+        viewsNode.textContent=label+' | '+new Intl.NumberFormat(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US').format(count);
         viewsNode.setAttribute('data-counter-state','ready');
       }).catch(()=>{
         viewsNode.textContent=lang==='fa'?'شمارنده بازدید در دسترس نیست':lang==='ru'?'Счётчик просмотров недоступен':'View counter unavailable';
