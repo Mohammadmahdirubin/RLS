@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css"><link rel="stylesheet" href="assets/admin.css?v=member-admin-search-20261112"><link rel="stylesheet" href="assets/admin-layout.css?v=two-members-per-row-20261113"><link rel="stylesheet" href="assets/admin-sections.css?v=admin-tabs-isolation-20261114"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css"><link rel="stylesheet" href="assets/admin.css?v=member-admin-search-20261112"><link rel="stylesheet" href="assets/admin-layout.css?v=two-members-per-row-20261113"><link rel="stylesheet" href="assets/admin-sections.css?v=admin-dashboard-history-archive-20261114"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head>
 <body class="community-page"><header class="site-header"><div class="container header-inner"><a class="brand" href="community.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>پنل مدیریت انجمن</small></span></a><a href="community.html">بازگشت به انجمن</a></div></header>
@@ -8,15 +8,34 @@
 <section id="admin-dashboard" class="admin-panel" hidden>
 <div class="admin-toolbar"><div><h2>مدیریت انجمن</h2><p id="admin-identity"></p></div><button id="admin-logout" class="community-search-btn" type="button">خروج</button></div>
 <nav class="admin-section-menu" aria-label="بخش‌های مدیریت">
-<button type="button" class="admin-section-tab active" data-admin-section="members" aria-expanded="true">مدیریت اعضا و درخواست‌های عضویت</button>
+<button type="button" class="admin-section-tab active" data-admin-section="overview" aria-expanded="true">داشبورد و آمار</button>
+<button type="button" class="admin-section-tab" data-admin-section="members" aria-expanded="false">مدیریت اعضا و درخواست‌های عضویت</button>
+<button type="button" class="admin-section-tab" data-admin-section="history" aria-expanded="false">سوابق اعضا</button>
+<button type="button" class="admin-section-tab" data-admin-section="email-archive" aria-expanded="false">آرشیو ایمیل‌ها</button>
 <button type="button" class="admin-section-tab" data-admin-section="events" aria-expanded="false">مدیریت اطلاع‌رسانی و رویدادها</button>
 <button type="button" class="admin-section-tab" data-admin-section="broadcast" aria-expanded="false">ارسال پیام همگانی به کاربران</button>
 </nav>
+<section id="admin-overview-panel" class="admin-section-content">
+<div class="admin-section-intro"><h2>داشبورد مدیریتی انجمن</h2><p>نمای کلی از وضعیت عضویت‌ها، درخواست‌ها و فعالیت‌های انجمن</p></div>
+<div id="admin-overview-message" class="admin-overview-message" role="status">در حال دریافت آمار…</div>
+<div id="admin-overview-stats" class="admin-stat-grid" aria-live="polite"></div>
+<div class="admin-overview-columns"><section class="admin-overview-card"><h3>روند ثبت‌نام شش ماه اخیر</h3><div id="admin-signup-chart" class="admin-signup-chart"></div></section><section class="admin-overview-card"><h3>آخرین اعضای ثبت‌نام‌شده</h3><div id="admin-recent-members" class="admin-recent-members"></div></section></div>
+</section>
 <section id="admin-members-section" class="admin-section-content">
 <div class="admin-section-intro"><h2>مدیریت اعضا و درخواست‌های عضویت</h2><p>بررسی درخواست‌ها، مدیریت اعضا، عکس‌ها و گواهی‌های عضویت</p></div>
 <div class="admin-filters"><button type="button" data-status="pending" class="active">در انتظار بررسی</button><button type="button" data-status="applications">درخواست‌های مستقل ثبت‌نام</button><button type="button" data-status="approved">تأییدشده</button><button type="button" data-status="photo_pending">عکس‌های جدید در انتظار تأیید</button><button type="button" data-status="rejected">ردشده</button><button type="button" data-status="suspended">تعلیق‌شده</button><button type="button" data-status="certificates">گواهی‌های عضویت</button></div>
 <div class="admin-search-bar"><label for="admin-member-search">جست‌وجو در اعضا و درخواست‌ها</label><div class="admin-search-controls"><input id="admin-member-search" type="search" placeholder="نام، نام خانوادگی، ایمیل، دانشگاه، شهر، تخصص یا شماره عضویت…" autocomplete="off"><button id="admin-member-search-clear" type="button" class="community-search-btn">پاک‌کردن</button></div><p id="admin-search-count" role="status" aria-live="polite"></p></div>
 <div id="admin-list" class="admin-list" aria-live="polite">در حال دریافت اطلاعات…</div>
+</section>
+<section id="admin-history-panel" class="admin-section-content" hidden>
+<div class="admin-section-intro"><h2>سوابق و تغییرات اعضا</h2><p>تاریخچه تغییر اطلاعات پروفایل، تغییر وضعیت عضویت و بررسی درخواست‌ها؛ سوابق از زمان فعال‌سازی این قابلیت ثبت می‌شوند.</p></div>
+<div class="admin-search-bar"><label for="admin-history-search">جست‌وجو در سوابق اعضا</label><div class="admin-search-controls"><input id="admin-history-search" type="search" placeholder="نام، ایمیل، نوع عملیات یا شماره عضویت…" autocomplete="off"><button id="admin-history-refresh" class="community-search-btn" type="button">به‌روزرسانی</button></div></div>
+<div id="admin-history-list" class="admin-history-list" aria-live="polite">در حال دریافت سوابق…</div>
+</section>
+<section id="admin-email-archive-panel" class="admin-section-content" hidden>
+<div class="admin-section-intro"><h2>آرشیو پیام‌های ارسالی</h2><p>سوابق پیام‌های همگانی، تعداد ارسال‌های موفق و ناموفق و فهرست گیرندگان هر پیام</p></div>
+<div class="admin-archive-toolbar"><button id="admin-email-archive-refresh" class="community-search-btn" type="button">به‌روزرسانی آرشیو</button></div>
+<div id="admin-email-archive-list" class="admin-email-archive-list" aria-live="polite">در حال دریافت آرشیو…</div>
 </section>
 <section id="admin-events-panel" class="admin-panel admin-events-panel admin-section-content" hidden>
 <div class="admin-section-intro"><h2>مدیریت اطلاع‌رسانی و رویدادها</h2><p>ثبت وبینار، سمینار، همایش، کارگاه و دوره؛ انتشار در صفحه انجمن و ارسال ایمیل به اعضای تأییدشده</p></div>
@@ -48,4 +67,4 @@
 </form>
 </section>
 </section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-v3-20261112"></script><script defer src="assets/admin.js?v=approved-newest-first-20261113"></script><script defer src="assets/admin-events.js?v=event-delete-20261114"></script><script defer src="assets/admin-sections.js?v=admin-tabs-isolation-20261114"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-20261114"></script></body></html>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-v3-20261112"></script><script defer src="assets/admin.js?v=approved-newest-first-20261113"></script><script defer src="assets/admin-events.js?v=event-delete-20261114"></script><script defer src="assets/admin-sections.js?v=admin-tabs-isolation-20261114"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-20261114"><script defer src="assets/admin-enhancements.js?v=admin-dashboard-history-archive-20261114"></script></script></body></html>
