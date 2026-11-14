@@ -3320,3 +3320,18 @@
     filter:saturate(1.06) brightness(1.02);
   }
 }
+
+
+/* Subtle press feedback for member cards on touch screens. */
+@media(hover:none) and (pointer:coarse){
+  #member-directory .community-members > article.community-member:active{
+    z-index:30!important;
+    transform:scale(1.045)!important;
+    box-shadow:
+      0 5px 10px rgba(48,35,42,.11),
+      0 14px 25px rgba(48,35,42,.16),
+      inset 0 1px 0 rgba(255,255,255,.98)!important;
+    filter:saturate(1.04) brightness(1.015);
+    transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;
+  }
+}
