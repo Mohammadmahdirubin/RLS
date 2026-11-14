@@ -93,8 +93,8 @@
   };
   const words = {
     fa:{back:'بازگشت به فهرست اعضا',headline:'معرفی کوتاه',bio:'زندگی‌نامه و سوابق',country:'کشور',city:'شهر',institution:'دانشگاه یا مؤسسه',degree:'مدرک تحصیلی',specialty:'حوزه تخصصی',memberships:'عضویت‌ها و وابستگی‌ها',activities:'فعالیت‌های علمی، آموزشی و فرهنگی',publications:'آثار، مقاله‌ها و ترجمه‌ها',research_interests:'علایق و زمینه‌های پژوهشی',languages:'زبان‌ها و مهارت‌ها',articles_count:'تعداد مقاله‌ها',books_count:'تعداد کتاب‌ها',member_number:'شماره عضویت',membership_status:'وضعیت عضویت',website_url:'وب‌سایت',orcid:'شناسه ORCID',email:'ایمیل',phone:'شماره تماس',empty:'این عضو هنوز اطلاعات تکمیلی عمومی ثبت نکرده است.'},
-    en:{back:'Back to member directory',headline:'Short introduction',bio:'Biography and experience',country:'Country',city:'City',institution:'Institution',degree:'Degree',specialty:'Specialty',memberships:'Memberships and affiliations',activities:'Academic, educational and cultural activities',publications:'Publications, articles and translations',research_interests:'Research interests',languages:'Languages and skills',articles_count:'Articles',books_count:'Books',member_number:'Membership number',membership_status:'Membership status',website_url:'Website',orcid:'ORCID iD',email:'Email',phone:'Phone',empty:'This member has not added further public profile information yet.'},
-    ru:{back:'Вернуться к списку участников',headline:'Краткое представление',bio:'Биография и опыт',country:'Страна',city:'Город',institution:'Университет или организация',degree:'Образование',specialty:'Специализация',memberships:'Членство и объединения',activities:'Научная, образовательная и культурная деятельность',publications:'Публикации, статьи и переводы',research_interests:'Научные интересы',languages:'Языки и навыки',articles_count:'Статьи',books_count:'Книги',member_number:'Номер участника',membership_status:'Статус членства',website_url:'Веб-сайт',orcid:'ORCID',email:'Электронная почта',phone:'Телефон',empty:'Участник пока не добавил дополнительную общедоступную информацию.'}
+    en:{back:'Back to member directory',headline:'Short introduction',profile_headline:'Short introduction',bio:'Biography and experience',country:'Country',city:'City',institution:'Institution',degree:'Degree',specialty:'Specialty',memberships:'Memberships and affiliations',activities:'Academic, educational and cultural activities',publications:'Publications, articles and translations',research_interests:'Research interests',languages:'Languages and skills',articles_count:'Articles',books_count:'Books',member_number:'Membership number',membership_status:'Membership status',website_url:'Website',orcid:'ORCID iD',email:'Email',phone:'Phone',empty:'This member has not added further public profile information yet.'},
+    ru:{back:'Вернуться к списку участников',headline:'Краткое представление',profile_headline:'Краткое представление',bio:'Биография и опыт',country:'Страна',city:'Город',institution:'Университет или организация',degree:'Образование',specialty:'Специализация',memberships:'Членство и объединения',activities:'Научная, образовательная и культурная деятельность',publications:'Публикации, статьи и переводы',research_interests:'Научные интересы',languages:'Языки и навыки',articles_count:'Статьи',books_count:'Книги',member_number:'Номер участника',membership_status:'Статус членства',website_url:'Веб-сайт',orcid:'ORCID',email:'Электронная почта',phone:'Телефон',empty:'Участник пока не добавил дополнительную общедоступную информацию.'}
   };
   const w = words[lang] || words.en;
 
@@ -177,7 +177,7 @@
   }
   const memberTranslations = {
     en: {
-      "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {display_name:"Mohammad Mahdi Rubin",full_name:"Mohammad Mahdi Rubin",profile_headline:"Russian language researcher and translator",specialty:"Russian language",institution:"Tehran",country:"Iran"},
+      "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {display_name:"Mohammad Mahdi Rubin",full_name:"Mohammad Mahdi Rubin",profile_headline:"Russian language researcher and translator",bio:"Author and translator of 25 Russian-language teaching books",country:"Iran",city:"Tehran",institution:"Tehran",degree:"M.A.",specialty:"Russian language",memberships:"Member of the Iranian Book House\nMember of the Saray-e Ahl-e Qalam Writers’ Association\nMember of the German Cognitive Linguistics Association (DGKL/GCLA)\nMember of the Association for Diversity in Linguistics e.V. (Germany)\nMember of the Council of Experts and Reviewers of Cuadernos de Rusística Española, University of Granada, Spain",publications:"25 books · 4 articles"},
       "b39de401-7b39-478c-88ab-50e89695e11a": {display_name:"Homa Alishah",full_name:"Homa Sedgh Alishah",specialty:"Russian language",institution:"Alzahra University",city:"Tehran",country:"Iran"},
       "7a959afc-c71d-4d3b-a287-e0d3f3262d9f": {display_name:"Mezrub",full_name:"Amirhossein Fazelmanesh",profile_headline:"M.A. student in Russian language teaching | Russian and English translator | Media editor, writer and AI instructor",specialty:"Russian language teaching",institution:"Allameh Tabataba'i University",city:"Tehran",country:"Iran"},
       "1301d37a-faf9-41cc-8f30-317f7dc56b45": {display_name:"Mehrnoush Firoozi",full_name:"Mehrnoush Firoozi",institution:"Alzahra University",city:"Tehran",country:"Iran"},
@@ -193,7 +193,7 @@
       "94b8dd8a-d708-4809-8179-1ce995f31e4a": {display_name:"Hamed Hossein Motaji Kojouri",full_name:"Hamed Hossein Motaji Kojouri",specialty:"Diplomatic protocol · Event management · Russian studies",institution:"University of Tehran, Faculty of World Studies, Department of European Studies",city:"Tehran",country:"Iran"}
     },
     ru: {
-      "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {display_name:"Мохаммад Махди Рубин",full_name:"Мохаммад Махди Рубин",profile_headline:"Исследователь и переводчик русского языка",specialty:"Русский язык",institution:"Тегеран",country:"Иран"},
+      "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {display_name:"Мохаммад Махди Рубин",full_name:"Мохаммад Махди Рубин",profile_headline:"Исследователь и переводчик русского языка",bio:"Автор и переводчик 25 учебных книг по русскому языку",country:"Иран",city:"Тегеран",institution:"Тегеран",degree:"Магистр",specialty:"Русский язык",memberships:"Член Иранского книжного дома\nЧлен Ассоциации писателей «Сарай-е Ахл-е Калам»\nЧлен Немецкой ассоциации когнитивной лингвистики (DGKL/GCLA)\nЧлен Ассоциации за разнообразие в лингвистике (Association for Diversity in Linguistics e.V., Германия)\nЧлен Совета экспертов и рецензентов журнала Cuadernos de Rusística Española Университета Гранады, Испания",publications:"25 книг · 4 статьи"},
       "b39de401-7b39-478c-88ab-50e89695e11a": {display_name:"Хома Алишах",full_name:"Хома Седг Алишах",specialty:"Русский язык",institution:"Университет Аль-Захра",city:"Тегеран",country:"Иран"},
       "7a959afc-c71d-4d3b-a287-e0d3f3262d9f": {display_name:"Мезраб",full_name:"Амирхоссейн Фазельманеш",profile_headline:"Магистрант по преподаванию русского языка | Переводчик с русского и английского языков | Редактор СМИ, автор и преподаватель ИИ",specialty:"Преподавание русского языка",institution:"Университет Алламе Табатабаи",city:"Тегеран",country:"Иран"},
       "1301d37a-faf9-41cc-8f30-317f7dc56b45": {display_name:"Мехрнуш Фирузи",full_name:"Мехрнуш Фирузи",institution:"Университет Аль-Захра",city:"Тегеран",country:"Иран"},
@@ -212,7 +212,13 @@
   const localized = (m,key) => {
     if(lang==='fa') return m[key] || '';
     const override=memberTranslations[lang]?.[m.user_id]?.[key];
-    return override || m[key+'_'+lang] || m[key] || '';
+    const translated=m[key+'_'+lang];
+    if(override) return override;
+    if(translated) return translated;
+    const original=String(m[key]||'').trim();
+    // Never leak Persian/Arabic-script profile text into English or Russian pages.
+    // Use the source value only when it is already written in a non-Persian script.
+    return original && !/[\\u0600-\\u06FF]/.test(original) ? original : '';
   };
   const stripSalutation = value => String(value || '').replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i,'').trim();
   const initials = name => String(name || 'RLS').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
