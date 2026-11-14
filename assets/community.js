@@ -620,6 +620,18 @@
     const zoomed=img.classList.toggle('is-zoomed');
     img.closest('.community-member')?.classList.toggle('community-member--photo-zoomed',zoomed);
   },true);
+  // A member card is not a single link. Only the explicit profile button
+  // and separately displayed social/academic links may navigate.
+  document.addEventListener('click', event => {
+    const card = event.target instanceof Element ? event.target.closest('#member-directory .community-member[data-member-id]') : null;
+    if (!card) return;
+    const allowedLink = event.target.closest('a.member-open-profile, .member-card-socials a');
+    if (allowedLink) return;
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+  }, true);
+
   // Remove any stale viewer left by an older cached script.
   document.querySelectorAll('.avatar-lightbox,.image-lightbox,.community-image-overlay').forEach(node=>node.remove());
 
