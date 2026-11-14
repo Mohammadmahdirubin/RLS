@@ -1,4 +1,4 @@
-name: Convert editorial photos to lossless WebP
+name: Optimize editorial photos to WebP
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --upgrade Pillow
 
-      - name: Convert selected PNGs without loss
+      - name: Convert selected PNGs to optimized WebP
         shell: bash
         run: |
           python - <<'PY'
@@ -34,7 +34,7 @@ jobs:
           names = ["دکتر بیگی.png", "مهناز نوروزی.png"]
           out = Path("webp-review")
           out.mkdir(exist_ok=True)
-          lines = ["Lossless WebP conversion report", "Original PNG files were not modified.", ""]
+          lines = ["Optimized WebP conversion report (quality 80)", "Original PNG files were not modified.", ""]
 
           for name in names:
               src = Path(name)
@@ -46,7 +46,7 @@ jobs:
                   dims = f"{im.width}x{im.height}"
                   mode = im.mode
                   target = out / (src.stem + ".webp")
-                  im.save(target, "WEBP", lossless=True, quality=100, method=6, exact=True)
+                  im.save(target, "WEBP", lossless=False, quality=80, method=6, exact=True)
 
               original = src.stat().st_size
               converted = target.stat().st_size
@@ -64,7 +64,7 @@ jobs:
       - name: Upload review files
         uses: actions/upload-artifact@v4
         with:
-          name: editorial-photos-lossless-webp
+          name: editorial-photos-optimized-webp
           path: webp-review/
           if-no-files-found: error
           retention-days: 14
@@ -76,5 +76,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- "دکتر بیگی.webp" "مهناز نوروزی.webp"
-          git commit -m "Add lossless WebP editorial portraits"
+          git commit -m "Add optimized WebP editorial portraits"
           git push
