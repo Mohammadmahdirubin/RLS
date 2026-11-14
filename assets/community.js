@@ -19,8 +19,17 @@
       script.src=src;
       script.async=true;
       script.dataset.rlsSupabaseFallback='1';
-      script.onload=resolve;
-      script.onerror=()=>reject(new Error('Supabase library could not be loaded'));
+      let settled=false;
+      const finish=(error)=>{
+        if(settled)return;
+        settled=true;
+        clearTimeout(timeout);
+        if(error){script.remove();reject(error);}
+        else resolve();
+      };
+      const timeout=setTimeout(()=>finish(new Error('Supabase library load timed out')),10000);
+      script.onload=()=>finish();
+      script.onerror=()=>finish(new Error('Supabase library could not be loaded'));
       document.head.appendChild(script);
     });
   }
