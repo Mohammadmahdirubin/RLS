@@ -15,3 +15,26 @@
 #admin-dashboard > .admin-section-content[hidden],
 #admin-dashboard > .admin-section-content[aria-hidden="true"]{display:none!important}
 #admin-dashboard > .admin-section-content:not([hidden]):not([aria-hidden="true"]){display:block}
+
+/* Administrative overview, member history and email archive */
+.admin-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.admin-stat-card{padding:16px;border:1px solid #e0e6ed;border-radius:12px;background:linear-gradient(145deg,#fff,#fafbfd)}
+.admin-stat-card span{display:block;color:#64748b;font-size:13px}.admin-stat-card strong{display:block;margin-top:8px;color:#243d57;font-size:28px;font-variant-numeric:tabular-nums}
+.admin-overview-columns{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:16px}.admin-overview-card{min-width:0;padding:16px;border:1px solid #e0e6ed;border-radius:12px;background:#fff}
+.admin-overview-card h3{margin:0 0 14px;color:#243d57;font-size:16px}.admin-signup-chart{display:grid;gap:11px}
+.admin-chart-row{display:grid;grid-template-columns:88px minmax(0,1fr) 32px;align-items:center;gap:9px;font-size:12px;color:#64748b}
+.admin-chart-track{height:12px;border-radius:20px;background:#edf1f5;overflow:hidden}.admin-chart-fill{height:100%;border-radius:20px;background:#9a7942;min-width:0}
+.admin-recent-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf1f5}.admin-recent-item:last-child{border-bottom:0}
+.admin-recent-item strong{display:block;color:#2d435b;font-size:13px}.admin-recent-item small{color:#718096;font-size:11px}
+.admin-history-item,.admin-email-campaign{margin:10px 0;padding:14px;border:1px solid #e0e6ed;border-radius:11px;background:#fff}
+.admin-history-head,.admin-campaign-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.admin-history-head strong,.admin-campaign-head strong{color:#263f59}
+.admin-history-meta,.admin-campaign-meta{margin-top:5px;color:#64748b;font-size:12px;line-height:1.9}
+.admin-history-changes{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.admin-history-change{padding:5px 8px;border-radius:7px;background:#f4f6f8;color:#43566a;font-size:12px}
+.admin-history-values{margin-top:9px;padding:9px 11px;border-right:3px solid #b18b4d;background:#faf8f3;border-radius:7px;font-size:12px;line-height:1.9;color:#4b5563}
+.admin-archive-toolbar{display:flex;justify-content:flex-end;margin-bottom:12px}.admin-campaign-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-campaign-actions button{border:1px solid #d4dde7;border-radius:8px;padding:7px 11px;background:#f8fafc;color:#29445f;font:inherit;cursor:pointer}
+.admin-campaign-details{margin-top:12px;padding-top:12px;border-top:1px solid #e7edf3}
+.admin-recipient-table{width:100%;border-collapse:collapse;font-size:12px}.admin-recipient-table th,.admin-recipient-table td{padding:8px;text-align:right;border-bottom:1px solid #edf1f5;vertical-align:top}
+.admin-recipient-status{font-weight:800}.admin-recipient-status.sent{color:#28734a}.admin-recipient-status.failed{color:#a13e3e}.admin-recipient-status.pending{color:#9a6b22}
+@media(max-width:850px){.admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-overview-columns{grid-template-columns:1fr}}
+@media(max-width:520px){.admin-stat-card strong{font-size:23px}.admin-stat-card{padding:12px}.admin-chart-row{grid-template-columns:70px minmax(0,1fr) 24px}}
