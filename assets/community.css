@@ -3255,3 +3255,37 @@
 @media(prefers-reduced-motion:reduce){
   #member-directory .community-members>.community-member{transition:none}
 }
+
+
+/* Restore the four pastel mission cards explicitly; this styling is independent
+   of the member-directory card effects above. */
+.community-about-grid > article.community-about-card:nth-child(1){
+  background-color:#fdf0ed!important;
+  border-color:#efd0c8!important;
+  border-top-color:#d99b8d!important;
+}
+.community-about-grid > article.community-about-card:nth-child(2){
+  background-color:#edf4fc!important;
+  border-color:#d0dfef!important;
+  border-top-color:#91b4d8!important;
+}
+.community-about-grid > article.community-about-card:nth-child(3){
+  background-color:#eef5eb!important;
+  border-color:#d2e2ca!important;
+  border-top-color:#9dbd8e!important;
+}
+.community-about-grid > article.community-about-card:nth-child(4){
+  background-color:#f3effa!important;
+  border-color:#ded2ef!important;
+  border-top-color:#b29bd5!important;
+}
+.community-about-grid > article.community-about-card:nth-child(1) .community-about-number{background:#f7dfd8!important;color:#75463d!important}
+.community-about-grid > article.community-about-card:nth-child(2) .community-about-number{background:#dceafa!important;color:#345879!important}
+.community-about-grid > article.community-about-card:nth-child(3) .community-about-number{background:#dfeeda!important;color:#45653d!important}
+.community-about-grid > article.community-about-card:nth-child(4) .community-about-number{background:#e8def6!important;color:#5d477c!important}
+@media(hover:hover) and (pointer:fine){
+  .community-about-grid > article.community-about-card:nth-child(1):hover{background-color:#fbe9e4!important}
+  .community-about-grid > article.community-about-card:nth-child(2):hover{background-color:#e5effa!important}
+  .community-about-grid > article.community-about-card:nth-child(3):hover{background-color:#e7f1e2!important}
+  .community-about-grid > article.community-about-card:nth-child(4):hover{background-color:#eee7f7!important}
+}
