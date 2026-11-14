@@ -10,3 +10,8 @@
 .admin-section-intro p{margin:0;color:#64748b;font-size:13px;line-height:1.9}
 .admin-events-panel{margin-top:10px}
 @media(max-width:600px){.admin-section-menu{display:grid;grid-template-columns:1fr}.admin-section-tab{width:100%;text-align:right}.admin-section-content{padding:13px}}
+
+/* Keep admin sections mutually exclusive even when other admin styles set display. */
+#admin-dashboard > .admin-section-content[hidden],
+#admin-dashboard > .admin-section-content[aria-hidden="true"]{display:none!important}
+#admin-dashboard > .admin-section-content:not([hidden]):not([aria-hidden="true"]){display:block}
