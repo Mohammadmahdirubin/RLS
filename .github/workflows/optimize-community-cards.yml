@@ -1,0 +1,189 @@
+name: Optimize association council cards
+
+on:
+  push:
+    paths:
+      - ".github/trigger-community-card-optimization.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: community-council-card-optimization
+  cancel-in-progress: true
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+
+      - name: Re-encode only the four council-card assets
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps, ImageChops, ImageStat
+          import os
+
+          page = Path("community.html")
+          html = page.read_text(encoding="utf-8")
+          assets = [
+              Path("rls-council-card-under-1mb.webp"),
+              Path("rls-council-card-blank.webp"),
+          ]
+          expected = {
+              "/rls-council-card-under-1mb.webp": 1,
+              "/rls-council-card-blank.webp": 3,
+          }
+          for src, count in expected.items():
+              actual = html.count(src)
+              if actual != count:
+                  raise SystemExit(f"Unexpected reference count for {src}: {actual}, expected {count}")
+
+          report = []
+          changed = []
+          max_dimensions = (900, 900)
+          quality_levels = (90, 88, 86, 84, 82)
+          max_mean_error = 2.5
+          min_saving_ratio = 0.04
+
+          for path in assets:
+              if not path.is_file():
+                  raise SystemExit(f"Missing source card image: {path}")
+              before_bytes = path.stat().st_size
+
+              with Image.open(path) as opened:
+                  image = ImageOps.exif_transpose(opened)
+                  image.load()
+                  original_size = image.size
+                  if image.mode in ("RGBA", "LA") or "transparency" in image.info:
+                      original = image.convert("RGBA")
+                  else:
+                      original = image.convert("RGB")
+
+                  optimized_base = original.copy()
+                  optimized_base.thumbnail(max_dimensions, Image.Resampling.LANCZOS)
+
+                  icc_profile = image.info.get("icc_profile")
+                  best = None
+                  best_stats = None
+
+                  for quality in quality_levels:
+                      temp = path.with_name(path.stem + f".q{quality}.tmp.webp")
+                      save_args = {
+                          "format": "WEBP",
+                          "quality": quality,
+                          "method": 6,
+                          "exact": True,
+                      }
+                      if icc_profile:
+                          save_args["icc_profile"] = icc_profile
+                      optimized_base.save(temp, **save_args)
+
+                      with Image.open(temp) as candidate_file:
+                          candidate = candidate_file.convert(original.mode)
+                          reference = optimized_base
+                          diff = ImageChops.difference(reference, candidate).convert("RGB")
+                          mean_error = sum(ImageStat.Stat(diff).mean) / 3
+                          candidate_bytes = temp.stat().st_size
+
+                      saving_ratio = 1 - candidate_bytes / before_bytes
+                      qualifies = (
+                          saving_ratio >= min_saving_ratio
+                          and mean_error <= max_mean_error
+                      )
+                      if qualifies:
+                          best = temp
+                          best_stats = (quality, candidate_bytes, mean_error, candidate_file.size if False else optimized_base.size)
+                          break
+                      temp.unlink(missing_ok=True)
+
+                  if best is None:
+                      report.append(
+                          f"{path.name}: unchanged; {before_bytes:,} bytes; "
+                          f"original dimensions {original_size[0]}x{original_size[1]}"
+                      )
+                      continue
+
+                  os.replace(best, path)
+                  after_bytes = path.stat().st_size
+                  quality, _, mean_error, final_dimensions = best_stats
+                  saving = before_bytes - after_bytes
+                  changed.append(path.as_posix())
+                  report.append(
+                      f"{path.name}: {before_bytes:,} -> {after_bytes:,} bytes; "
+                      f"saved {saving:,} bytes ({saving / before_bytes:.1%}); "
+                      f"dimensions {original_size[0]}x{original_size[1]} -> "
+                      f"{final_dimensions[0]}x{final_dimensions[1]}; "
+                      f"WebP quality {quality}; mean pixel error {mean_error:.3f}"
+                  )
+
+          for line in report:
+              print(line)
+          print(f"Optimized assets: {len(changed)} of {len(assets)}")
+          print(f"Total bytes saved: {sum(int(line.split('saved ')[1].split(' bytes')[0].replace(',', '')) for line in report if 'saved ' in line):,}")
+
+          Path("community-card-image-optimization.txt").write_text(
+              "\n".join(report) + "\n", encoding="utf-8"
+          )
+          PY
+
+      - name: Validate unchanged card markup and image dimensions
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import re
+          html = Path("community.html").read_text(encoding="utf-8")
+          section = html.split('id="association-council"', 1)[1].split("</section>", 1)[0]
+          tags = re.findall(r"<img\\b[^>]*>", section, flags=re.I)
+          if len(tags) != 4:
+              raise SystemExit(f"Expected exactly four council card images, found {len(tags)}")
+          expected = {
+              "/rls-council-card-under-1mb.webp": 1,
+              "/rls-council-card-blank.webp": 3,
+          }
+          for src, count in expected.items():
+              if section.count(src) != count:
+                  raise SystemExit(f"Card reference changed: {src}")
+              path = Path(src.lstrip("/"))
+              with Image.open(path) as image:
+                  if image.format != "WEBP" or image.width <= 0 or image.height <= 0:
+                      raise SystemExit(f"Invalid optimized image: {path}")
+                  print(f"{path}: {image.width}x{image.height}, {path.stat().st_size:,} bytes")
+          print("Four card references, their layout markup and both WebP assets validated.")
+          PY
+
+      - name: Commit optimized card images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- rls-council-card-under-1mb.webp rls-council-card-blank.webp
+          if git diff --cached --quiet; then
+            echo "No smaller high-fidelity WebP files were produced; originals remain unchanged."
+            exit 0
+          fi
+          git commit -m "Optimize association council card images"
+          git pull --rebase origin main
+          git push
+
+      - name: Upload optimization report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: community-council-card-optimization
+          path: community-card-image-optimization.txt
+          if-no-files-found: ignore
+          retention-days: 14
