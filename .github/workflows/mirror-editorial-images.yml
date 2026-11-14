@@ -1,0 +1,71 @@
+name: Mirror editorial-board images locally
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/mirror-editorial-images.yml'
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download original image files without modification
+        run: |
+          set -euo pipefail
+          mkdir -p assets/editorial-external
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/university-bojnord.jpg "https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Bojnord.jpg"
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/university-isfahan.png "https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Isfahan_Logo.png"
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/tarbiat-modares.png "https://commons.wikimedia.org/wiki/Special:Redirect/file/Tarbiat_Modares_University.png"
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/jnu-logo.png "https://www.jnu.ac.in/main/img/webtheme-logo.png"
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/linguanet-photo.jpg "https://linguanet.ru/upload/medialibrary/912/gltjz0lzorpx58819ohi0vcz33b1yep4.jpg"
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/alzahra-logo.svg "https://commons.wikimedia.org/wiki/Special:Redirect/file/AlzahraUniversityLogo.svg"
+          curl -fLsS --retry 3 -A "Mozilla/5.0 RLS image mirror" -o assets/editorial-external/cc-by-4.0.png "https://licensebuttons.net/l/by/4.0/88x31.png"
+          for f in assets/editorial-external/*; do
+            test -s "$f"
+            test "$(wc -c < "$f")" -gt 500
+            file "$f"
+            wc -c "$f"
+          done
+      - name: Replace external references in all language versions
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          replacements = {
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Bojnord.jpg': '/assets/editorial-external/university-bojnord.jpg',
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/University_of_Isfahan_Logo.png': '/assets/editorial-external/university-isfahan.png',
+            'https://commons.wikimedia.org/wiki/Special:FilePath/University_of_Isfahan_Logo.png': '/assets/editorial-external/university-isfahan.png',
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/Tarbiat_Modares_University.png': '/assets/editorial-external/tarbiat-modares.png',
+            'https://www.jnu.ac.in/main/img/webtheme-logo.png': '/assets/editorial-external/jnu-logo.png',
+            'https://rlsj.ir/%DA%AF%D9%88%D%D8%B1%D9%88%D9%88%D9%8A%D8%86%DA%86.jpg': '/گورویچ.jpg',
+            'https://rlsj.ir/%DA%AF%D9%88%D8%B1%D9%88%D9%88%D9%8A%D9%86%DA%86.jpg': '/گورویچ.jpg',
+            'https://rlsj.ir/%DA%AF%D9%88%D8%B1%D9%88%D9%88%D9%8A%D9%86%DA%86.jpg': '/گورویچ.jpg',
+            'https://rlsj.ir/گورویچ.jpg': '/گورویچ.jpg',
+            'https://linguanet.ru/upload/medialibrary/912/gltjz0lzorpx58819ohi0vcz33b1yep4.jpg': '/assets/editorial-external/linguanet-photo.jpg',
+            'https://commons.wikimedia.org/wiki/Special:Redirect/file/AlzahraUniversityLogo.svg': '/assets/editorial-external/alzahra-logo.svg',
+            'https://licensebuttons.net/l/by/4.0/88x31.png': '/assets/editorial-external/cc-by-4.0.png',
+          }
+          pages = ['editorial-board.html', 'en/editorial-board.html', 'ru/editorial-board.html']
+          for name in pages:
+            p = Path(name)
+            s = p.read_text(encoding='utf-8')
+            before = s
+            for old, new in replacements.items():
+              s = s.replace(old, new)
+            p.write_text(s, encoding='utf-8')
+            remaining = [u for u in replacements if u in s]
+            print(name, 'changed=', before != s, 'remaining_external=', remaining)
+          PY
+      - name: Commit and push mirrored assets
+        run: |
+          set -e
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add assets/editorial-external editorial-board.html en/editorial-board.html ru/editorial-board.html
+          git status --short
+          git commit -m "Mirror editorial board images to local repository" || echo "No changes to commit"
+          git pull --rebase origin main
+          git push
