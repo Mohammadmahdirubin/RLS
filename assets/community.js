@@ -408,6 +408,25 @@
 // Certificates are not rendered on public profiles. Members can download
     // their own certificate from the authenticated member account page.
   }
+  function updateCommunityStats(rows,totalCount) {
+    const stats=root.querySelector('#community-statistics');
+    if(!stats)return;
+    const list=Array.isArray(rows)?rows:[];
+    const uniqueCount=key=>new Set(list.map(item=>String(item?.[key]||'').trim().toLocaleLowerCase()).filter(Boolean)).size;
+    const values={
+      members:Number.isFinite(totalCount)?totalCount:list.length,
+      institutions:uniqueCount('institution'),
+      countries:uniqueCount('country'),
+      fields:new Set(list.map(item=>categoryKey(item?.category)).filter(Boolean)).size
+    };
+    const locale=lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US';
+    Object.entries(values).forEach(([key,value])=>{
+      const node=stats.querySelector('[data-community-stat="'+key+'"]');
+      if(node)node.textContent=new Intl.NumberFormat(locale).format(value);
+    });
+    stats.dataset.loaded='true';
+  }
+
   async function load(forceDirectory = false) {
     if(!db){wrap.innerHTML='<div class="community-empty">Member directory is temporarily unavailable.</div>';return;}
     const memberId=new URLSearchParams(location.search).get('member');
@@ -418,7 +437,7 @@
     try {
       // Read the public view's available columns instead of hard-coding a
       // fragile column list/order clause that can break after schema updates.
-      const request=db.from('rls_public_members').select('*').limit(500);
+      const request=db.from('rls_public_members').select('*',{count:'exact'}).limit(500);
       const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
       result=await Promise.race([request,timeout]);
     } catch(requestError) {
@@ -426,7 +445,7 @@
     } finally {
       if(timeoutId)clearTimeout(timeoutId);
     }
-    let {data,error}=result||{};
+    let {data,error,count}=result||{};
     // Do not replace a valid empty database response (or a failed live request)
     // with an outdated one-member JSON snapshot. Live database data is authoritative.
     if(error){
@@ -434,6 +453,7 @@
       wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>boot(forceDirectory),{once:true});
       return;
     }
+    updateCommunityStats(data||[],Number.isFinite(count)?count:(data||[]).length);
     if(!data||!data.length){wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'پروفایل اعضا پس از تأیید انجمن نمایش داده می‌شود.':lang==='ru'?'Профили появятся после утверждения заявок.':'Approved member profiles will appear here.')+'</div>';return;}
     data=[...data].sort(compareMembershipOrder);
     wrap.innerHTML=data.map(m=>{
