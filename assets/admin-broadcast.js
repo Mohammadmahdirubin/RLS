@@ -10,7 +10,7 @@
  const send=document.getElementById('admin-broadcast-send');
  const fileInput=form.elements.attachments;
  const maxFileSize=5*1024*1024;
- const allowedExtensions=/\\.(pdf|docx?|xlsx?|pptx?|txt|csv|jpe?g|png|webp)$/i;
+ const allowedExtensions=/\.(pdf|docx?|xlsx?|pptx?|txt|csv|jpe?g|png|webp)$/i;
  let authorized=false;
  function say(text){message.textContent=text;}
  async function checkAccess(){
