@@ -3040,3 +3040,124 @@
 .membership-steps-content .community-actions{margin-top:16px}
 @media(max-width:760px){.membership-entry-actions{display:grid!important;grid-template-columns:1fr 1fr!important}.membership-entry-actions .membership-entry-apply,.membership-entry-actions .membership-entry-login{min-width:0;width:100%;box-sizing:border-box}.membership-entry-actions .community-admin-link{grid-column:1/-1}.community-results-count{width:100%;justify-content:center}}
 @media(max-width:420px){.membership-entry-actions{grid-template-columns:1fr!important}.membership-entry-actions .community-admin-link{grid-column:auto}}
+
+
+/* Live association statistics */
+.community-stats{
+  margin:18px auto 24px;
+  padding:22px 24px 18px;
+  border:1px solid var(--community-line);
+  border-radius:16px;
+  background:linear-gradient(115deg,#fffefa 0%,#f8f2e8 100%);
+  box-shadow:0 7px 22px rgba(58,30,35,.045)
+}
+.community-stats h2{
+  margin:0 0 5px;
+  color:var(--community-primary-dark);
+  font-size:20px;
+  font-weight:850
+}
+.community-stats-intro{
+  margin:0 0 17px;
+  color:var(--community-muted);
+  font-size:13px;
+  line-height:1.8
+}
+.community-stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px
+}
+.community-stat-card{
+  display:flex;
+  min-width:0;
+  min-height:112px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:13px 10px;
+  border:1px solid #eadfce;
+  border-radius:12px;
+  background:rgba(255,255,255,.82);
+  text-align:center
+}
+.community-stat-icon{font-size:19px;line-height:1.2}
+.community-stat-card strong{
+  color:var(--community-primary);
+  font-size:26px;
+  font-weight:900;
+  line-height:1.25;
+  font-variant-numeric:tabular-nums
+}
+.community-stat-card>span:last-child{
+  color:var(--community-muted);
+  font-size:11px;
+  font-weight:700;
+  line-height:1.6
+}
+.community-stats-note{
+  margin:12px 0 0;
+  color:var(--community-muted);
+  font-size:10px;
+  line-height:1.7
+}
+
+/* Clearer hierarchy and consistent rhythm for mission and purpose cards */
+.community-about-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-height:100%;
+  border-top:3px solid var(--community-gold);
+  transition:box-shadow .18s ease,border-color .18s ease
+}
+.community-about-card:hover{
+  border-color:#d8c49d;
+  border-top-color:var(--community-primary);
+  box-shadow:0 9px 23px rgba(58,30,35,.07)
+}
+.community-about-card h3{
+  min-height:48px;
+  padding-inline-end:2px;
+  padding-inline-start:38px;
+  line-height:1.75
+}
+.community-about-card ul{flex:1}
+.community-about-card li::marker{color:#b38b43}
+.community-about-card .about-card-toggle{
+  z-index:1;
+  width:34px;
+  height:34px;
+  border-color:#ddc99f;
+  background:#fbf4e6
+}
+.community-about-card .about-card-toggle:focus-visible{
+  outline:2px solid var(--community-gold);
+  outline-offset:3px
+}
+.community-vision{
+  background:linear-gradient(110deg,#f5f0e8 0%,#eee7dc 100%);
+  box-shadow:0 5px 16px rgba(58,30,35,.035)
+}
+@media(max-width:900px){
+  .community-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .community-stats{margin:14px 13px 20px;padding:18px 14px 14px}
+  .community-stats h2{font-size:19px}
+  .community-stats-grid{gap:9px}
+  .community-stat-card{min-height:100px;padding:10px 7px}
+  .community-stat-card strong{font-size:23px}
+  .community-stat-card>span:last-child{font-size:10px}
+  .community-about-card{min-height:0}
+  .community-about-card h3{min-height:0;padding-inline-start:42px;margin:7px 0 4px}
+}
+@media(max-width:360px){
+  .community-stats-grid{grid-template-columns:1fr 1fr}
+  .community-stat-card{min-height:92px}
+}
+@media(prefers-reduced-motion:reduce){
+  .community-about-card{transition:none}
+}
