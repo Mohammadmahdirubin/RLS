@@ -18,7 +18,7 @@
   const {data,error}=await db.from('rls_events').select('*').order('created_at',{ascending:false});
   if(error){list.textContent='دریافت رویدادها ناموفق بود: '+error.message;return;}
   events=data||[];if(!events.length){list.innerHTML='<p>هنوز اطلاعیه‌ای ثبت نشده است.</p>';return;}
-  list.innerHTML=events.map(e=>'<article class="admin-event-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(labels[e.event_type]||e.event_type)+' · '+dateText(e.event_date)+' · '+esc(e.status)+'</p></div><div class="admin-event-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.status==='archived'?'<button type="button" data-restore>بازگردانی</button>':'<button type="button" data-archive>انتقال به آرشیو</button>')+'</div></article>').join('');
+  list.innerHTML=events.map(e=>'<article class="admin-event-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(labels[e.event_type]||e.event_type)+' · '+dateText(e.event_date)+' · '+esc(e.status)+'</p></div><div class="admin-event-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.status==='archived'?'<button type="button" data-restore>بازگردانی</button>':'<button type="button" data-archive>انتقال به آرشیو</button>')+'<button type="button" data-delete style="background:#fff0f0;color:#a32121">حذف</button></div></article>').join('');
  }
  function reset(){form.reset();form.elements.event_id.value='';form.dataset.action='draft';msg.textContent='فرم برای ثبت اطلاعیه جدید آماده است.';}
  async function save(action){
@@ -58,6 +58,17 @@
  list.addEventListener('click',async e=>{
   const row=e.target.closest('.admin-event-row');if(!row)return;const event=events.find(x=>x.id===row.dataset.id);if(!event)return;
   if(e.target.closest('[data-edit]')){form.elements.event_id.value=event.id;form.elements.title.value=event.title;form.elements.event_type.value=event.event_type;form.elements.event_date.value=event.event_date||'';form.elements.event_time.value=event.event_time||'';form.elements.location.value=event.location||'';form.elements.registration_url.value=event.registration_url||'';form.elements.description.value=event.description;msg.textContent='در حال ویرایش: '+event.title;form.scrollIntoView({behavior:'smooth',block:'start'});return;}
+  if(e.target.closest('[data-delete]')){
+   if(!confirm('آیا از حذف دائمی «'+event.title+'» مطمئن هستید؟ این عملیات قابل بازگشت نیست. گزارش‌های ایمیل مرتبط نیز حذف خواهند شد.'))return;
+   const deleteButton=e.target.closest('[data-delete]');deleteButton.disabled=true;msg.textContent='در حال حذف اطلاعیه…';
+   const {data:deleted,error}=await db.from('rls_events').delete().eq('id',event.id).select('id').maybeSingle();
+   if(error){deleteButton.disabled=false;msg.textContent='حذف ناموفق بود: '+error.message;return;}
+   if(!deleted){deleteButton.disabled=false;msg.textContent='اطلاعیه حذف نشد؛ دسترسی مدیر یا مجوز حذف را بررسی کنید.';return;}
+   let posterWarning='';
+   if(event.poster_path){const {error:posterError}=await db.storage.from('rls-event-posters').remove([event.poster_path]);if(posterError){console.warn('Event poster cleanup failed:',posterError);posterWarning=' فایل پوستر در فضای ذخیره‌سازی باقی مانده و نیازمند پاک‌سازی است.';}}
+   if(form.elements.event_id.value===event.id)reset();
+   msg.textContent='اطلاعیه «'+event.title+'» با موفقیت حذف شد.'+posterWarning;await load();return;
+  }
   const status=e.target.closest('[data-archive]')?'archived':e.target.closest('[data-restore]')?'published':null;
   if(status){const {error}=await db.from('rls_events').update({status,updated_at:new Date().toISOString()}).eq('id',event.id);if(error){msg.textContent='تغییر وضعیت ناموفق بود: '+error.message;return;}msg.textContent=status==='archived'?'به آرشیو منتقل شد.':'دوباره منتشر شد.';await load();}
  });
