@@ -3335,3 +3335,14 @@
     transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;
   }
 }
+
+
+/* Samarkand State University mark: enlarge only this logo within its existing
+   circular holder so the artwork fills the available area without changing
+   the size or position of other university marks. */
+#association-council .council-profile-university-logo-filled img[src*="Samarkand.jpg"]{
+  transform:scale(1.38)!important;
+  transform-origin:center center!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
