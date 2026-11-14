@@ -10,6 +10,7 @@
 <nav class="admin-section-menu" aria-label="بخش‌های مدیریت">
 <button type="button" class="admin-section-tab active" data-admin-section="members" aria-expanded="true">مدیریت اعضا و درخواست‌های عضویت</button>
 <button type="button" class="admin-section-tab" data-admin-section="events" aria-expanded="false">مدیریت اطلاع‌رسانی و رویدادها</button>
+<button type="button" class="admin-section-tab" data-admin-section="broadcast" aria-expanded="false">ارسال پیام همگانی به کاربران</button>
 </nav>
 <section id="admin-members-section" class="admin-section-content">
 <div class="admin-section-intro"><h2>مدیریت اعضا و درخواست‌های عضویت</h2><p>بررسی درخواست‌ها، مدیریت اعضا، عکس‌ها و گواهی‌های عضویت</p></div>
@@ -34,5 +35,17 @@
 <div class="admin-event-actions"><button type="submit" data-event-submit="draft">ذخیره پیش‌نویس</button><button type="submit" data-event-submit="publish">انتشار در صفحه انجمن</button><button type="submit" data-event-submit="email">انتشار و ارسال ایمیل به اعضا</button><button type="button" id="admin-event-reset">پاک‌کردن فرم</button></div><p id="admin-event-message" role="status" aria-live="polite"></p>
 </form><h3>فهرست اطلاعیه‌ها و رویدادها</h3><div id="admin-event-list">در حال دریافت رویدادها…</div>
 </section>
+<section id="admin-broadcast-panel" class="admin-section-content" hidden>
+<div class="admin-section-intro"><h2>ارسال پیام همگانی به کاربران</h2><p>ارسال ایمیل جداگانه به همه ثبت‌نام‌کنندگان انجمن، شامل متقاضیان و اعضای تأییدشده؛ حداکثر دو فایل پیوست.</p></div>
+<form id="admin-broadcast-form" class="admin-event-form">
+<div class="admin-event-fields">
+<label>موضوع ایمیل<input name="subject" type="text" maxlength="180" required placeholder="موضوع پیام"></label>
+<label class="admin-event-description">متن پیام<textarea name="message" rows="9" maxlength="20000" required placeholder="متن پیام خود را بنویسید…"></textarea></label>
+<label class="admin-event-poster">فایل‌های پیوست<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png,.webp"><small>حداکثر ۲ فایل؛ هر فایل حداکثر ۵ مگابایت. فایل‌های PDF، Office، متنی و تصویر پذیرفته می‌شوند.</small></label>
+</div>
+<div class="admin-event-actions"><button type="submit" id="admin-broadcast-send">ارسال ایمیل به همه کاربران</button><button type="reset" id="admin-broadcast-reset">پاک‌کردن فرم</button></div>
+<p id="admin-broadcast-message" role="status" aria-live="polite"></p>
+</form>
+</section>
 </section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-v3-20261112"></script><script defer src="assets/admin.js?v=approved-newest-first-20261113"></script><script defer src="assets/admin-events.js?v=event-delete-20261114"></script><script defer src="assets/admin-sections.js?v=accordion-admin-20261114"></script></body></html>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-v3-20261112"></script><script defer src="assets/admin.js?v=approved-newest-first-20261113"></script><script defer src="assets/admin-events.js?v=event-delete-20261114"></script><script defer src="assets/admin-sections.js?v=admin-broadcast-20261114"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-20261114"></script></body></html>
