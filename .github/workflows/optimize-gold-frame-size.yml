@@ -1,0 +1,67 @@
+name: Optimize gold photo frame size
+
+on:
+  push:
+    paths:
+      - ".github/workflows/optimize-gold-frame-size.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compress only the gold frame
+        run: |
+          python -m pip install --upgrade Pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source = Path("frame-gold.png")
+          target = Path("frame-gold.webp")
+          page = Path("editorial-board.html")
+          original = source.stat().st_size
+          limit = int(original * 0.30)
+
+          with Image.open(source) as im:
+              rgba = im.convert("RGBA")
+              chosen = None
+              for quality in range(95, 19, -1):
+                  temp = Path("frame-gold-candidate.webp")
+                  rgba.save(temp, "WEBP", quality=quality, method=6, alpha_quality=100, exact=True)
+                  size = temp.stat().st_size
+                  if size <= limit:
+                      chosen = (quality, size)
+                      temp.replace(target)
+                      break
+                  temp.unlink(missing_ok=True)
+
+          if chosen is None:
+              raise SystemExit(f"Could not reach 70% reduction; target is {limit} bytes.")
+
+          html = page.read_text(encoding="utf-8")
+          old = 'url("/frame-gold.png")'
+          new = 'url("/frame-gold.webp")'
+          if html.count(old) != 1:
+              raise SystemExit("Expected exactly one Persian editorial frame reference.")
+          page.write_text(html.replace(old, new), encoding="utf-8")
+
+          print(f"Original PNG: {original} bytes")
+          print(f"Optimized WebP: {chosen[1]} bytes")
+          print(f"Quality: {chosen[0]}")
+          print(f"Size reduction: {(1 - chosen[1] / original) * 100:.2f}%")
+          PY
+      - name: Commit optimized frame
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frame-gold.webp editorial-board.html
+          git commit -m "Reduce gold editorial frame file size by 70 percent"
+          git push
