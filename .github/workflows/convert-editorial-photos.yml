@@ -1,20 +1,27 @@
-name: Optimize editorial photos to WebP
+name: Optimize all editorial board images
 
 on:
   push:
     paths:
+      - "editorial-board.html"
       - ".github/workflows/convert-editorial-photos.yml"
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: editorial-board-image-optimization
+  cancel-in-progress: true
+
 jobs:
-  convert:
+  optimize:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -24,58 +31,127 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --upgrade Pillow
 
-      - name: Convert selected PNGs to optimized WebP
+      - name: Convert remaining editorial board photos and logos
         shell: bash
         run: |
-          python - <<'PY'
-          from PIL import Image
+          python <<'PY'
           from pathlib import Path
+          from urllib.parse import urlsplit, unquote, quote, urlunsplit
+          from html import unescape
+          from PIL import Image, ImageOps
+          import re
 
-          names = ["دکتر بیگی.png", "مهناز نوروزی.png"]
-          out = Path("webp-review")
-          out.mkdir(exist_ok=True)
-          lines = ["Optimized WebP conversion report (quality 80)", "Original PNG files were not modified.", ""]
+          page = Path("editorial-board.html")
+          source_html = page.read_text(encoding="utf-8")
+          converted = []
+          report = []
+          total_before = 0
+          total_after = 0
 
-          for name in names:
-              src = Path(name)
-              if not src.is_file():
-                  raise SystemExit(f"Missing source image: {name}")
+          def rewrite_image(match):
+              nonlocal_dummy = None
+              tag = match.group(0)
+              attr = re.search(r"""\bsrc=(["'])(.*?)\1""", tag, re.I)
+              if not attr:
+                  return tag
+              raw_src = unescape(attr.group(2))
+              parsed = urlsplit(raw_src)
+              if parsed.scheme or parsed.netloc or not parsed.path:
+                  return tag
 
-              with Image.open(src) as im:
-                  im.load()
-                  dims = f"{im.width}x{im.height}"
-                  mode = im.mode
-                  target = out / (src.stem + ".webp")
-                  im.save(target, "WEBP", lossless=False, quality=80, method=6, exact=True)
+              rel = unquote(parsed.path).lstrip("/")
+              source = Path(rel)
+              if source.suffix.lower() not in {".jpg", ".jpeg", ".png"}:
+                  return tag
+              if not source.is_file():
+                  raise SystemExit(f"Missing local source image: {source}")
 
-              original = src.stat().st_size
-              converted = target.stat().st_size
-              delta = (1 - converted / original) * 100
-              lines.append(
-                  f"{name}: {original:,} bytes -> {target.name}: {converted:,} bytes | "
-                  f"{dims} | mode={mode} | size change={delta:+.2f}%"
-              )
+              target = source.with_suffix(".webp")
+              if source == target:
+                  return tag
 
-          report = "\n".join(lines) + "\n"
-          (out / "conversion-report.txt").write_text(report, encoding="utf-8")
-          print(report)
+              with Image.open(source) as opened:
+                  image = ImageOps.exif_transpose(opened)
+                  image.load()
+                  original_bytes = source.stat().st_size
+                  target.parent.mkdir(parents=True, exist_ok=True)
+
+                  # Preserve alpha channels and use high-quality WebP for photographs and logos.
+                  if "A" in image.getbands():
+                      image = image.convert("RGBA")
+                  elif image.mode not in ("RGB", "L"):
+                      image = image.convert("RGB")
+                  image.save(target, "WEBP", quality=88, method=6, exact=True)
+
+              optimized_bytes = target.stat().st_size
+              before = total_before + 0
+              report.append((source.as_posix(), target.as_posix(), original_bytes, optimized_bytes))
+              converted.append(target.as_posix())
+
+              new_path = "/" + quote(target.as_posix(), safe="/")
+              new_url = urlunsplit(("", "", new_path, parsed.query, parsed.fragment))
+              return tag[:attr.start(2)] + new_url + tag[attr.end(2):]
+
+          updated_html = re.sub(r"<img\b[^>]*>", rewrite_image, source_html, flags=re.I)
+          page.write_text(updated_html, encoding="utf-8")
+
+          for source, target, before, after in report:
+              total_before += before
+              total_after += after
+              print(f"{source}: {before:,} -> {target}: {after:,} bytes")
+          print(f"Converted assets: {len(converted)}")
+          print(f"Bytes saved: {total_before - total_after:,}")
+          Path("editorial-image-optimization.txt").write_text(
+              "\n".join(f"{a} -> {b}: {c} -> {d}" for a,b,c,d in report) + "\n",
+              encoding="utf-8"
+          )
+          if not converted:
+              print("All raster editorial board images already use WebP.")
           PY
 
-      - name: Upload review files
-        uses: actions/upload-artifact@v4
-        with:
-          name: editorial-photos-optimized-webp
-          path: webp-review/
-          if-no-files-found: error
-          retention-days: 14
+      - name: Validate all image references
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from urllib.parse import unquote
+          from html import unescape
+          import re
+          html = Path("editorial-board.html").read_text(encoding="utf-8")
+          missing = []
+          for tag in re.findall(r"<img\\b[^>]*>", html, flags=re.I):
+              m = re.search(r"""\\bsrc=(["'])(.*?)\\1""", tag, re.I)
+              if not m:
+                  continue
+              src = unescape(m.group(2))
+              if src.startswith(("http://", "https://", "data:", "blob:")):
+                  continue
+              path = unquote(src.split("?",1)[0].split("#",1)[0].lstrip("/"))
+              if not Path(path).is_file():
+                  missing.append(src)
+          if missing:
+              raise SystemExit("Broken image references: " + ", ".join(missing))
+          print("All editorial board image references exist locally.")
+          PY
 
-      - name: Commit WebP files without touching originals
+      - name: Commit optimized files and updated references
         shell: bash
         run: |
-          cp webp-review/*.webp .
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- "دکتر بیگی.webp" "مهناز نوروزی.webp"
-          git commit -m "Add optimized WebP editorial portraits"
+          git config user.email "41898282+users.noreply.github.com"
+          git add -A -- editorial-board.html '*.webp'
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git commit -m "Optimize remaining editorial board images"
           git pull --rebase origin main
           git push
+
+      - name: Upload optimization report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-image-optimization-report
+          path: editorial-image-optimization.txt
+          if-no-files-found: ignore
+          retention-days: 14
