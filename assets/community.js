@@ -439,6 +439,8 @@
   async function load(forceDirectory = false) {
     if(!db){wrap.innerHTML='<div class="community-empty">Member directory is temporarily unavailable.</div>';return;}
     const memberId=new URLSearchParams(location.search).get('member');
+    const statistics=root.querySelector('#community-statistics');
+    if(statistics){statistics.hidden=Boolean(memberId && !forceDirectory);statistics.style.display=memberId && !forceDirectory?'none':'';}
     if(memberId && !forceDirectory){await showMember(memberId);return;}
     wrap.innerHTML=Array.from({length:16},(_,i)=>'<article class="community-member community-member--placeholder" aria-hidden="true" data-placeholder-slot="'+(i+1)+'"><div class="community-placeholder-mark"></div><div class="community-placeholder-line"></div><div class="community-placeholder-line short"></div></article>').join('');
     let result;
