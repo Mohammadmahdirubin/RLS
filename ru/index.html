@@ -153,6 +153,47 @@ body:lang(ru){font-family:"Segoe UI",Arial,Tahoma,sans-serif;font-size:14.5px}
 <link rel="alternate" hreflang="en" href="https://rlsj.ir/en/index.html">
 <link rel="alternate" hreflang="ru" href="https://rlsj.ir/ru/index.html">
 <link rel="alternate" hreflang="x-default" href="https://rlsj.ir/index.html">
+
+<style id="ru-mobile-hero-overlap-fix">
+/* Prevent the Russian homepage title from colliding with the official-information card */
+@media (max-width:900px){
+  html[lang="ru"] .hero-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:24px!important;
+    align-items:start!important;
+  }
+  html[lang="ru"] .hero-grid>div:first-child{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    transform:none!important;
+    text-align:center!important;
+  }
+  html[lang="ru"] .hero h1{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    word-break:normal!important;
+    font-size:clamp(25px,5vw,38px)!important;
+    line-height:1.35!important;
+    text-align:center!important;
+  }
+  html[lang="ru"] .hero .lead{
+    width:100%!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+  html[lang="ru"] .hero .journal-card{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark">RLS</span><span><strong>Исследования по русскому языку</strong><small>Russian Language Studies</small></span></a><button class="menu-btn" aria-label="Открыть меню">☰</button><nav class="main-nav"></nav></div></header>
