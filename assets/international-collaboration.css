@@ -124,3 +124,55 @@
   .rls-collab-item .rls-collab-title{font-size:13px;line-height:1.5}
   .rls-collab-item .rls-collab-text{font-size:12px;line-height:1.7}
 }
+
+
+/* Unified collaboration section across Persian, English and Russian homepages */
+.rls-collab-panel{
+  direction:rtl;
+  grid-auto-flow:row;
+}
+.rls-collab-item{
+  direction:rtl;
+  text-align:right;
+  box-sizing:border-box;
+}
+.rls-collab-item .rls-collab-logo{
+  order:0;
+  flex-shrink:0;
+}
+.rls-collab-item .rls-collab-body{
+  direction:rtl;
+  text-align:right;
+}
+.rls-collab-item .rls-collab-kicker,
+.rls-collab-item .rls-collab-title,
+.rls-collab-item .rls-collab-text{
+  text-align:right;
+}
+html[lang="en"] .rls-collab-item .rls-collab-body,
+html[lang="ru"] .rls-collab-item .rls-collab-body{
+  direction:ltr;
+  text-align:left;
+}
+html[lang="en"] .rls-collab-item .rls-collab-kicker,
+html[lang="en"] .rls-collab-item .rls-collab-title,
+html[lang="en"] .rls-collab-item .rls-collab-text,
+html[lang="ru"] .rls-collab-item .rls-collab-kicker,
+html[lang="ru"] .rls-collab-item .rls-collab-title,
+html[lang="ru"] .rls-collab-item .rls-collab-text{
+  text-align:left;
+}
+html[lang="en"] section[aria-label="Journal collaborations"] > .section-head,
+html[lang="ru"] section[aria-label="Сотрудничество с журналами"] > .section-head{
+  direction:rtl;
+  text-align:right;
+}
+html[lang="en"] section[aria-label="Journal collaborations"] > .section-head > div,
+html[lang="ru"] section[aria-label="Сотрудничество с журналами"] > .section-head > div{
+  text-align:right;
+}
+@media(max-width:700px){
+  .rls-collab-panel{direction:rtl}
+  .rls-collab-item{direction:rtl;align-items:center}
+  .rls-collab-item .rls-collab-logo{order:0}
+}
