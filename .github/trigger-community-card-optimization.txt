@@ -1,0 +1,1 @@
+Trigger one-time high-fidelity optimization of the two WebP images used by the four association council cards. Preserve dimensions/layout and keep source assets unless a smaller high-fidelity result is produced.
