@@ -148,7 +148,7 @@ jobs:
           import re
           html = Path("community.html").read_text(encoding="utf-8")
           section = html.split('id="association-council"', 1)[1].split("</section>", 1)[0]
-          tags = re.findall(r"<img\\b[^>]*>", section, flags=re.I)
+          tags = re.findall(r"<img\b[^>]*>", section, flags=re.I)
           if len(tags) != 4:
               raise SystemExit(f"Expected exactly four council card images, found {len(tags)}")
           expected = {
