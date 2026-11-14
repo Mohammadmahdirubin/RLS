@@ -50,10 +50,12 @@ jobs:
           total_after = 0
           THRESHOLD = 75 * 1024
           QUALITY = 82
+          BACKSLASH = chr(92)
 
           def target_dimensions(tag):
               def attr(name, fallback):
-                  m = re.search(rf"""\\b{name}=["'](\\d+)""", tag, re.I)
+                  pattern = name + r"""=["']([0-9]+)"""
+                  m = re.search(pattern, tag, re.I)
                   return int(m.group(1)) if m else fallback
               width, height = attr("width", 170), attr("height", 200)
               # 4x CSS dimensions retain detail for desktop hover and high-DPI screens.
@@ -74,7 +76,8 @@ jobs:
 
           def rewrite_image(match):
               tag = match.group(0)
-              attr = re.search(r"""\\bsrc=(["'])(.*?)\\1""", tag, re.I)
+              src_pattern = r"""src=(["'])(.*?)""" + BACKSLASH + "1"
+              attr = re.search(src_pattern, tag, re.I)
               if not attr:
                   return tag
               raw_src = unescape(attr.group(2))
@@ -123,7 +126,7 @@ jobs:
                   if temp.exists():
                       temp.unlink()
 
-          updated_html = re.sub(r"<img\\b[^>]*>", rewrite_image, source_html, flags=re.I)
+          updated_html = re.sub(r"<img[^>]*>", rewrite_image, source_html, flags=re.I)
           page.write_text(updated_html, encoding="utf-8")
 
           for source, target, before, after in report:
@@ -133,10 +136,10 @@ jobs:
           print(f"Optimized assets: {len(changed)}")
           print(f"Bytes saved: {total_before - total_after:,}")
           Path("editorial-image-optimization.txt").write_text(
-              "\\n".join(
+              chr(10).join(
                   [f"{a} -> {b}: {c} -> {d}" for a,b,c,d in report]
                   + [f"TOTAL: {total_before} -> {total_after}; SAVED: {total_before-total_after}"]
-              ) + "\\n",
+              ) + chr(10),
               encoding="utf-8"
           )
           if not changed:
