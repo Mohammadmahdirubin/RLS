@@ -1,6 +1,6 @@
 (function(){
  const tabs=[...document.querySelectorAll('[data-admin-section]')];
- const panels={members:document.getElementById('admin-members-section'),events:document.getElementById('admin-events-panel')};
+ const panels={members:document.getElementById('admin-members-section'),events:document.getElementById('admin-events-panel'),broadcast:document.getElementById('admin-broadcast-panel')};
  if(!tabs.length)return;
  function activate(name){
   tabs.forEach(tab=>{
