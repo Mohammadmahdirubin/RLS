@@ -68,16 +68,6 @@ transform-origin:center center;
 position:relative;
 z-index:1
 }
-.board-photo:hover{
-z-index:20
-}
-.board-photo:hover img{
-object-fit:contain !important;
-object-position:center;
-background:#fff;
-transform:scale(3);
-z-index:20
-}
 .board-profile>div:nth-child(2){
 background:#cfeecf !important;
 padding:4px 8px 12px;
@@ -246,14 +236,27 @@ align-items:stretch
 </style>
 <style>.selected-positions{width:100%;box-sizing:border-box;margin:16px 0 22px;padding:20px 24px;border:1px solid #cfdde6;border-radius:12px;background:linear-gradient(135deg,#f8fbfd,#eef6fa);box-shadow:0 6px 18px rgba(30,70,90,.08)}.selected-positions>strong{display:block;margin-bottom:14px;font-size:1.08rem}.selected-positions .membership-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin:0;padding:0;list-style:none}.selected-positions .membership-list li{margin:0;padding:8px 12px;border-inline-start:3px solid var(--accent);line-height:1.75;background:rgba(255,255,255,.55);border-radius:6px}@media(max-width:760px){.selected-positions{padding:16px}.selected-positions .membership-list{grid-template-columns:1fr}}</style>
 <style>.profile-fields .membership-card,.profile-fields .degree-card{box-sizing:border-box;min-height:72px;display:flex;flex-direction:column;justify-content:center;width:100%;margin:0;padding:14px 18px;border:1px solid #cfdde6;border-radius:10px;background:linear-gradient(135deg,#f8fbfd,#eef6fa);box-shadow:0 5px 16px rgba(30,70,90,.06);line-height:1.8}.profile-fields .membership-card>strong,.profile-fields .degree-card>strong{display:block;margin-bottom:5px;color:var(--accent2);font-size:12px}.profile-fields .membership-card>div,.profile-fields .degree-card>div{font-size:13px}
-/* Gold frame applied to every editorial-board profile photo */
+/* Stable profile-photo rendering; original image files remain untouched */
+.board-profile{
+  position:relative;
+  z-index:0;
+  overflow:visible;
+  content-visibility:visible;
+  contain:none;
+}
+.board-profile:hover,
+.board-profile:focus-within{z-index:1000}
+.board-profile .photo-logo-wrap{overflow:visible}
 .board-profile .board-photo{
   position:relative;
   overflow:visible;
   isolation:isolate;
   box-sizing:border-box;
+  transform:none;
+  transition:none;
 }
 .board-profile .board-photo img{
+  display:block;
   width:100% !important;
   height:100% !important;
   object-fit:cover !important;
@@ -273,29 +276,26 @@ align-items:stretch
   pointer-events:none;
   z-index:3;
 }
-.board-profile .board-photo::after{
-  content:none;
-}
-/* The frame and portrait zoom together, at 2x on desktop and mobile */
-.board-profile .board-photo:hover,
-.board-profile .board-photo:active{
-  z-index:30;
+.board-profile .board-photo::after{content:none}
+/* Desktop hover zoom only; no touch-scale that can stick on mobile */
+.board-profile .board-photo:hover{
+  z-index:1001;
   transform:scale(2);
   transform-origin:center center;
 }
-.board-profile .board-photo:hover img,
-.board-profile .board-photo:active img{
-  transform:none !important;
-  object-fit:cover !important;
-  background:transparent !important;
-}
-@media (max-width:700px){
-  .board-profile .board-photo:hover,
-  .board-profile .board-photo:active{
-    transform:scale(2);
+@media (hover:none), (max-width:700px){
+  .board-profile .board-photo:hover{
+    transform:none;
   }
 }
+.board-photo img,
+.university-logo-box img{display:block}
+
 </style>
+<link rel="dns-prefetch" href="//commons.wikimedia.org">
+<link rel="dns-prefetch" href="//www.jnu.ac.in">
+<link rel="dns-prefetch" href="//linguanet.ru">
+<link rel="dns-prefetch" href="//licensebuttons.net">
 </head>
 
 <body>
@@ -342,7 +342,7 @@ align-items:stretch
 
 <h2 class="board-section-title">Owner and Managing Director</h2>
 <article class="board-profile owner-profile">
-<div class="photo-logo-wrap"><div class="board-photo"><img src="../1789329812647.jpg" alt="Mohammadmahdi Rubin" loading="lazy" decoding="async"></div><div class="university-logo-box" title="University of Tehran"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="https://rlsj.ir/tehran-logo.png" alt="University of Tehran logo" loading="lazy" decoding="async"></a></div></div>
+<div class="photo-logo-wrap"><div class="board-photo"><img src="../1789329812647.jpg" alt="Mohammadmahdi Rubin" decoding="async" loading="eager" fetchpriority="high"></div><div class="university-logo-box" title="University of Tehran"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="/tehran-logo.png" alt="University of Tehran logo" loading="lazy" decoding="async"></a></div></div>
 <div>
 <h3>Mohammadmahdi Rubin</h3>
 <div class="board-role">Owner and Managing Director</div>
@@ -368,11 +368,11 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../parvaneh-radandish.jpg" alt="Dr. Parvaneh Radandish" loading="lazy" decoding="async">
+<img src="../parvaneh-radandish.jpg" alt="Dr. Parvaneh Radandish" decoding="async" loading="eager" fetchpriority="high">
 </div>
 <div class="university-logo-box" title="University of Tehran">
 <a href="https://ut.ac.ir/" target="_blank" rel="noopener">
-<img src="https://rlsj.ir/tehran-logo.png" alt="University of Tehran" loading="lazy" decoding="async">
+<img src="/tehran-logo.png" alt="University of Tehran" loading="lazy" decoding="async">
 </a>
 </div>
 </div>
@@ -515,7 +515,7 @@ align-items:stretch
 <div class="photo-logo-wrap">
 <div class="board-photo"><img src="../دکتر بیگی.png" alt="Dr. Mohsen Beigi" loading="lazy" decoding="async"></div>
 <div class="university-logo-box" title="University of Tehran">
-<a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="https://rlsj.ir/tehran-logo.png" alt="University of Tehran logo" loading="lazy" decoding="async"></a>
+<a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="/tehran-logo.png" alt="University of Tehran logo" loading="lazy" decoding="async"></a>
 </div></div>
 <div><h3>Dr. Mohsen Beigi</h3><div class="board-role">Editorial Board Member</div>
 <div class="profile-fields"><div><strong>Academic degree</strong>PhD in Russian Language</div>
@@ -596,7 +596,7 @@ align-items:stretch
 </div>
 <div class="university-logo-box" title="University of Tehran">
 <a href="https://ut.ac.ir/" target="_blank" rel="noopener">
-<img src="https://rlsj.ir/tehran-logo.png" alt="University of Tehran" loading="lazy" decoding="async">
+<img src="/tehran-logo.png" alt="University of Tehran" loading="lazy" decoding="async">
 </a>
 </div>
 </div>
@@ -621,7 +621,7 @@ align-items:stretch
 
 <article class="board-profile" id="ardalan-nosrati">
 <div class="photo-logo-wrap">
-<div class="board-photo"><img src="https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/Nosrati%20Ardalan.JPG" alt="Dr. Ardalan Nosrati" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top" decoding="async"></div>
+<div class="board-photo"><img src="../Nosrati%20Ardalan.JPG" alt="Dr. Ardalan Nosrati" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top" decoding="async"></div>
 <div class="university-logo-box" title="University of Isfahan">
 <a href="https://ui.ac.ir/" target="_blank" rel="noopener" aria-label="University of Isfahan website">
 <img src="https://commons.wikimedia.org/wiki/Special:FilePath/University_of_Isfahan_Logo.png" alt="Official University of Isfahan logo" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box" decoding="async">
@@ -1004,7 +1004,7 @@ align-items:stretch
 
 <div class="university-logo-box" title="University of Indonesia">
 <a href="https://www.ui.ac.id/" target="_blank" rel="noopener">
-<img src="https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/indinesia%20logo.png" alt="Universitas Indonesia" loading="lazy" decoding="async">
+<img src="../indinesia%20logo.png" alt="Universitas Indonesia" loading="lazy" decoding="async">
 </a>
 </div>
 </div>
@@ -1160,7 +1160,7 @@ align-items:stretch
 </div>
 <div class="university-logo-box" title="University of Tehran">
 <a href="https://ut.ac.ir/" target="_blank" rel="noopener">
-<img src="https://rlsj.ir/tehran-logo.png" alt="University of Tehran logo" loading="lazy" decoding="async">
+<img src="/tehran-logo.png" alt="University of Tehran logo" loading="lazy" decoding="async">
 </a>
 </div></div>
 <div>
