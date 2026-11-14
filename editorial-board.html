@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="هیئت تحریریه | مطالعات زبان روسی">
 <meta name="twitter:description" content="معرفی اعضای هیئت تحریریه و ساختار علمی دوفصلنامه مطالعات زبان روسی.">
-<link rel="stylesheet" href="../assets/style.css?v=20261029navfix">
+<link rel="stylesheet" href="/assets/style.css?v=20261029navfix">
 
 <style>
 .board-intro{max-width:900px;margin:0 auto 28px;line-height:1.9}
@@ -307,6 +307,23 @@ align-items:stretch
 <link rel="dns-prefetch" href="//commons.wikimedia.org">
 <link rel="dns-prefetch" href="//www.jnu.ac.in">
 <link rel="dns-prefetch" href="//linguanet.ru">
+<link rel="preload" as="image" href="/frame-gold.webp" fetchpriority="low">
+<script>
+(function () {
+  document.addEventListener('error', function (event) {
+    var img = event.target;
+    if (!img || img.tagName !== 'IMG' || img.dataset.rlsFallbackTried) return;
+    try {
+      var imageUrl = new URL(img.currentSrc || img.src, window.location.href);
+      if (imageUrl.origin !== window.location.origin) return;
+      img.dataset.rlsFallbackTried = '1';
+      img.src = 'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main' + imageUrl.pathname;
+    } catch (error) {
+      img.dataset.rlsFallbackTried = '1';
+    }
+  }, true);
+})();
+</script>
 </head>
 
 <body>
@@ -355,9 +372,9 @@ align-items:stretch
 <article class="board-profile owner-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../1789329812647.jpg" alt="محمدمهدی روبین" decoding="async" loading="eager" fetchpriority="high">
+<img src="/1789329812647.webp" alt="محمدمهدی روبین" decoding="async" loading="eager" fetchpriority="high">
 </div>
-<div class="university-logo-box" title="دانشگاه تهران"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="/tehran-logo.png" alt="لوگوی دانشگاه تهران" loading="eager" decoding="async"></a></div>
+<div class="university-logo-box" title="دانشگاه تهران"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="/tehran-logo.png" alt="لوگوی دانشگاه تهران" loading="eager" decoding="async" fetchpriority="low"></a></div>
 </div>
 <div>
 <h3>محمدمهدی روبین</h3>
@@ -368,7 +385,7 @@ align-items:stretch
 <div><strong>حوزه تخصصی</strong>آموزش زبان روسی · ترجمه · برنامه‌ریزی آموزشی · زبان‌شناسی</div>
 <div><strong>سوابق علمی منتخب</strong>۲۵ کتاب · ۴ مقاله</div>
 <div><strong>ایمیل</strong><a href="mailto:mm.rubin@ut.ac.ir">mm.rubin@ut.ac.ir</a></div>
-<div style="grid-column:1/-1"><strong>عضویت‌ها</strong><ul class="membership-list"><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/ir.svg" width="20" height="15" alt="IR" loading="eager" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو خانه کتاب و ادبیات ایران</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/ir.svg" width="20" height="15" alt="IR" loading="eager" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو انجمن نویسندگان سرای اهل قلم</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/de.svg" width="20" height="15" alt="DE" loading="eager" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو انجمن زبان‌شناسی شناختی آلمان (DGKL/GCLA)</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/de.svg" width="20" height="15" alt="DE" loading="eager" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو انجمن تنوع در زبان‌شناسی آلمان (Association for Diversity in Linguistics e.V.)</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/es.svg" width="20" height="15" alt="ES" loading="eager" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو شورای کارشناسان و داوران نشریه CRE دانشگاه گرانادا، اسپانیا</li></ul></div>
+<div style="grid-column:1/-1"><strong>عضویت‌ها</strong><ul class="membership-list"><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/ir.svg" width="20" height="15" alt="IR" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو خانه کتاب و ادبیات ایران</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/ir.svg" width="20" height="15" alt="IR" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو انجمن نویسندگان سرای اهل قلم</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/de.svg" width="20" height="15" alt="DE" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو انجمن زبان‌شناسی شناختی آلمان (DGKL/GCLA)</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/de.svg" width="20" height="15" alt="DE" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو انجمن تنوع در زبان‌شناسی آلمان (Association for Diversity in Linguistics e.V.)</li><li><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/es.svg" width="20" height="15" alt="ES" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو شورای کارشناسان و داوران نشریه CRE دانشگاه گرانادا، اسپانیا</li></ul></div>
 </div>
 <div class="board-links">
 <a href="https://orcid.org/0009-0004-8475-2804" target="_blank" rel="noopener">ORCID</a>
@@ -389,11 +406,11 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../parvaneh-radandish.jpg" alt="دکتر پروانه راداندیش" decoding="async" loading="eager" fetchpriority="high">
+<img src="/parvaneh-radandish.webp" alt="دکتر پروانه راداندیش" decoding="async" loading="lazy" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه تهران">
 <a href="https://ut.ac.ir/" target="_blank" rel="noopener">
-<img src="/tehran-logo.png" alt="دانشگاه تهران" loading="eager" decoding="async">
+<img src="/tehran-logo.png" alt="دانشگاه تهران" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -420,12 +437,12 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../مهناز نوروزی.webp" alt="دکتر مهناز نوروزی" loading="eager" decoding="async">
+<img src="/%D9%85%D9%87%D9%86%D8%A7%D8%B2%20%D9%86%D9%88%D8%B1%D9%88%D8%B2%DB%8C.webp" alt="دکتر مهناز نوروزی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه گنبد کاووس">
 <a href="https://gonbad.ac.ir/" target="_blank" rel="noopener">
-<img src="../گنبد کاووس.png" alt="لوگوی دانشگاه گنبد کاووس" loading="eager" decoding="async">
+<img src="/%DA%AF%D9%86%D8%A8%D8%AF%20%DA%A9%D8%A7%D9%88%D9%88%D8%B3.webp" alt="لوگوی دانشگاه گنبد کاووس" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -436,7 +453,7 @@ align-items:stretch
 <p class="board-meta">دانشیار دانشگاه گنبد کاووس، ایران.</p>
 
 <div class="profile-fields"><div><strong>مدرک علمی</strong>دکترای علوم فیلولوژی</div>
-<div><strong>عضویت‌ها</strong><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/es.svg" width="20" height="15" alt="ES" loading="eager" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو شورای کارشناسان و داوران نشریه CRE دانشگاه گرانادا، اسپانیا</div>
+<div><strong>عضویت‌ها</strong><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/es.svg" width="20" height="15" alt="ES" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو شورای کارشناسان و داوران نشریه CRE دانشگاه گرانادا، اسپانیا</div>
 <div><strong>وابستگی سازمانی</strong>دانشگاه گنبد کاووس · ایران</div>
 <div><strong>حوزه‌های پژوهشی</strong>ادبیات روسی و معاصر؛ مطالعات ترجمه؛ ادبیات زنان؛ مطالعات جنسیت؛ ادبیات تطبیقی و نقد ادبی</div>
 <div><strong>اطلاعات پژوهشی منتخب</strong>پژوهش در زمینه ادبیات زنان، ادبیات معاصر فارسی و روسی، آموزش زبان روسی، مطالعات فرهنگی و مطالعات ترجمه.</div>
@@ -455,11 +472,11 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../faculty.jpg" alt="دکتر کوثر سلیمی عبدالملکی" loading="eager" decoding="async">
+<img src="/faculty.webp" alt="دکتر کوثر سلیمی عبدالملکی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه بجنورد">
 <a href="https://ub.ac.ir/" target="_blank" rel="noopener">
-<img src="/assets/editorial-external/university-bojnord.jpg" alt="دانشگاه بجنورد" loading="eager" decoding="async">
+<img src="/assets/editorial-external/university-bojnord.jpg" alt="دانشگاه بجنورد" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -487,10 +504,10 @@ align-items:stretch
 <article class="board-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../شهرام نباتی.jpg" alt="دکتر شهرام نباتی" loading="lazy" decoding="async">
+<img src="/%D8%B4%D9%87%D8%B1%D8%A7%D9%85%20%D9%86%D8%A8%D8%A7%D8%AA%DB%8C.jpg" alt="دکتر شهرام نباتی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه گیلان">
-<a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="../guilan-logo.png" alt="لوگوی دانشگاه گیلان" loading="lazy" decoding="async"></a>
+<a href="https://guilan.ac.ir/" target="_blank" rel="noopener"><img src="/guilan-logo.webp" alt="لوگوی دانشگاه گیلان" loading="lazy" decoding="async" fetchpriority="low"></a>
 </div>
 </div>
 <div>
@@ -501,7 +518,7 @@ align-items:stretch
 <div><strong>وابستگی سازمانی</strong>دانشگاه گیلان · ایران</div>
 <div><strong>حوزه تخصصی</strong><br>زبان روسی · آموزش زبان روسی</div>
 <div><strong>دستاوردهای پژوهشی منتخب</strong>۵ کتاب تألیفی · ۷ مقاله فارسی · ۲۶ مقاله روسی · ۸ مقاله کنفرانسی</div>
-<div><strong>عضویت‌ها</strong><img src="/assets/flags/ru.svg" width="20" height="15" alt="RU" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async">عضو هیئت تحریریه مجله علمی دانشگاه وزارت امور خارجه روسیه با عنوان <em>Филологические науки в МГИМО</em> (از سال ۱۳۹۸ تاکنون)</div>
+<div><strong>عضویت‌ها</strong><img src="/assets/flags/ru.svg" width="20" height="15" alt="RU" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low">عضو هیئت تحریریه مجله علمی دانشگاه وزارت امور خارجه روسیه با عنوان <em>Филологические науки в МГИМО</em> (از سال ۱۳۹۸ تاکنون)</div>
 <div><strong>ایمیل</strong><a href="mailto:shnabati@guilan.ac.ir">shnabati@guilan.ac.ir</a></div>
 <div style="grid-column:1/-1"><strong>سوابق مدیریتی و علمی منتخب</strong><ul class="membership-list"><li>مدیر گروه زبان روسی دانشگاه گیلان (۱۳۹۹–۱۴۰۱)</li><li>مدیر دانشجویی دانشگاه گیلان (۱۴۰۱–۱۴۰۳)</li><li>مسئول دفتر روسکی میر دانشگاه گیلان (از ۱۴۰۳ تاکنون)</li><li>دبیر اجرایی اولین همایش بین‌المللی موقعیت زبان روسی در ایران و نگاه به اورآسیا (۱۴۰۱)</li><li>دبیر علمی دومین همایش بین‌المللی موقعیت زبان روسی در ایران و نگاه به اورآسیا (۱۴۰۳)</li></ul></div></div>
 <div class="board-links">
@@ -517,10 +534,10 @@ align-items:stretch
 <!-- 6. Shahram Hemmatzadeh -->
 <article class="board-profile">
 <div class="photo-logo-wrap">
-<div class="board-photo"><img src="../%D8%B4%D9%87%D8%B1%D8%A7%D9%85%20%D9%87%D9%85%D8%AA%20%D8%B2%D8%A7%D8%AF%D9%87.jpg" alt="دکتر شهرام همت‌زاده" loading="lazy" decoding="async"></div>
+<div class="board-photo"><img src="/%D8%B4%D9%87%D8%B1%D8%A7%D9%85%20%D9%87%D9%85%D8%AA%20%D8%B2%D8%A7%D8%AF%D9%87.webp" alt="دکتر شهرام همت‌زاده" loading="lazy" decoding="async" fetchpriority="low"></div>
 <div class="university-logo-box" title="دانشگاه شهید بهشتی">
 <a href="https://www.sbu.ac.ir/" target="_blank" rel="noopener">
-<img src="../لوگو شهید بهشتی.png" alt="لوگوی دانشگاه شهید بهشتی" loading="lazy" decoding="async">
+<img src="/%D9%84%D9%88%DA%AF%D9%88%20%D8%B4%D9%87%DB%8C%D8%AF%20%D8%A8%D9%87%D8%B4%D8%AA%DB%8C.webp" alt="لوگوی دانشگاه شهید بهشتی" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -541,7 +558,7 @@ align-items:stretch
 </div>
 </article>
 
-<article class="board-profile" style="margin-top:24px;"><div class="photo-logo-wrap"><div class="board-photo"><img src="دکتر بیگی.webp" alt="دکتر محسن بیگی" loading="lazy" decoding="async"></div><div class="university-logo-box" title="دانشگاه تهران"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="/tehran-logo.png" alt="لوگوی دانشگاه تهران" loading="lazy" decoding="async"></a></div></div><div><h3>دکتر محسن بیگی</h3><div class="board-role">عضو هیئت تحریریه</div><div class="profile-fields"><div><strong>مدرک علمی</strong>دکترای زبان روسی</div>
+<article class="board-profile" style="margin-top:24px;"><div class="photo-logo-wrap"><div class="board-photo"><img src="/%D8%AF%DA%A9%D8%AA%D8%B1%20%D8%A8%DB%8C%DA%AF%DB%8C.webp" alt="دکتر محسن بیگی" loading="lazy" decoding="async" fetchpriority="low"></div><div class="university-logo-box" title="دانشگاه تهران"><a href="https://ut.ac.ir/" target="_blank" rel="noopener"><img src="/tehran-logo.png" alt="لوگوی دانشگاه تهران" loading="lazy" decoding="async" fetchpriority="low"></a></div></div><div><h3>دکتر محسن بیگی</h3><div class="board-role">عضو هیئت تحریریه</div><div class="profile-fields"><div><strong>مدرک علمی</strong>دکترای زبان روسی</div>
 <div><strong>دانشگاه</strong>دانشگاه تهران</div>
 <div><strong>ایمیل</strong><a href="mailto:mohsenbeigisat@yahoo.com">mohsenbeigisat@yahoo.com</a></div>
 <div><strong>ORCID</strong><a href="https://orcid.org/0009-0002-0296-7170" target="_blank" rel="noopener">0009-0002-0296-7170</a></div>
@@ -554,11 +571,11 @@ align-items:stretch
 <article class="board-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../Mojtaba_zahraei.jpg" alt="دکتر مجتبی زهرایی" loading="lazy" decoding="async">
+<img src="/Mojtaba_zahraei.webp" alt="دکتر مجتبی زهرایی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه اصفهان">
 <a href="https://ui.ac.ir/" target="_blank" rel="noopener">
-<img src="/assets/editorial-external/university-isfahan.png" alt="لوگوی دانشگاه اصفهان" loading="lazy" decoding="async">
+<img src="/assets/editorial-external/university-isfahan.png" alt="لوگوی دانشگاه اصفهان" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -585,10 +602,10 @@ align-items:stretch
 <!-- 7. Azam Shirazi -->
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
-<div class="board-photo"><img src="اعظم شیرازی.jpg" alt="اعظم شیرازی" loading="lazy" decoding="async"></div>
+<div class="board-photo"><img src="/%D8%A7%D8%B9%D8%B8%D9%85%20%D8%B4%DB%8C%D8%B1%D8%A7%D8%B2%DB%8C.webp" alt="اعظم شیرازی" loading="lazy" decoding="async" fetchpriority="low"></div>
 <div class="university-logo-box" title="دانشگاه تربیت مدرس">
 <a href="https://www.modares.ac.ir/" target="_blank" rel="noopener">
-<img src="/assets/editorial-external/tarbiat-modares.png" alt="لوگوی دانشگاه تربیت مدرس" loading="lazy" decoding="async">
+<img src="/assets/editorial-external/tarbiat-modares.png" alt="لوگوی دانشگاه تربیت مدرس" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -617,11 +634,11 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../babazade.jpg" alt="دکتر جمیله بابازاده" loading="lazy" decoding="async">
+<img src="/babazade.jpg" alt="دکتر جمیله بابازاده" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه تهران">
 <a href="https://ut.ac.ir/" target="_blank" rel="noopener">
-<img src="/tehran-logo.png" alt="دانشگاه تهران" loading="lazy" decoding="async">
+<img src="/tehran-logo.png" alt="دانشگاه تهران" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -649,10 +666,10 @@ align-items:stretch
 <!-- Added: Dr. Ardalan Nosrati — final profile before English and Linguistics section -->
 <article class="board-profile" id="ardalan-nosrati">
 <div class="photo-logo-wrap">
-<div class="board-photo"><img src="/Nosrati%20Ardalan.JPG" alt="دکتر اردلان نصرتی" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top" decoding="async"></div>
+<div class="board-photo"><img src="/Nosrati%20Ardalan.JPG" alt="دکتر اردلان نصرتی" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top" decoding="async" fetchpriority="low"></div>
 <div class="university-logo-box" title="دانشگاه اصفهان">
 <a href="https://ui.ac.ir/" target="_blank" rel="noopener" aria-label="وب‌سایت دانشگاه اصفهان">
-<img src="/assets/editorial-external/university-isfahan.png" alt="لوگوی رسمی دانشگاه اصفهان" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box" decoding="async">
+<img src="/assets/editorial-external/university-isfahan.png" alt="لوگوی رسمی دانشگاه اصفهان" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box" decoding="async" fetchpriority="low">
 </a>
 </div>
 <div class="university-logo-caption">دانشگاه اصفهان</div>
@@ -689,11 +706,11 @@ align-items:stretch
 <article class="board-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../دکتر مهاجر.jpg" alt="دکتر مهدی مهاجر" loading="lazy" decoding="async">
+<img src="/%D8%AF%DA%A9%D8%AA%D8%B1%20%D9%85%D9%87%D8%A7%D8%AC%D8%B1.jpg" alt="دکتر مهدی مهاجر" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه شهید چمران اهواز">
 <a href="https://scu.ac.ir/" target="_blank" rel="noopener">
-<img src="../لوگو اهواز.png" alt="لوگوی دانشگاه شهید چمران اهواز" loading="lazy" decoding="async">
+<img src="/%D9%84%D9%88%DA%AF%D9%88%20%D8%A7%D9%87%D9%88%D8%A7%D8%B2.png" alt="لوگوی دانشگاه شهید چمران اهواز" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -705,7 +722,7 @@ align-items:stretch
 <div><strong>سمت علمی و سازمانی</strong>دبیر کارگروه تخصصی زبان‌ها و ادبیات خارجی شورای تحول و ارتقای علوم انسانی – شورای عالی انقلاب فرهنگی</div>
 <div><strong>وابستگی سازمانی</strong>عضو هیئت علمی گروه فرانسه، دانشگاه شهید چمران اهواز</div>
 <div><strong>حوزه تخصصی</strong>تحلیل گفتمان · ادبیات تطبیقی · زبانشناسی</div>
-<div><strong>عضویت‌ها</strong><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/pl.svg" width="20" height="15" alt="PL" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو شورای داوران نشریه Educational Role of Language (ERL)، دانشگاه گدانسک، لهستان</div>
+<div><strong>عضویت‌ها</strong><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/pl.svg" width="20" height="15" alt="PL" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو شورای داوران نشریه Educational Role of Language (ERL)، دانشگاه گدانسک، لهستان</div>
 <div><strong>گوگل اسکالر</strong><a href="https://scholar.google.com/citations?user=i_LorT4AAAAJ&amp;hl=fr" target="_blank" rel="noopener">پروفایل گوگل اسکالر</a></div>
 <div><strong>سوابق علمی</strong>۱۰ مقاله نشریه‌ای</div>
 <div><strong>ORCID</strong><a href="https://orcid.org/0009-0009-4174-0105" target="_blank" rel="noopener">0009-0009-4174-0105</a></div>
@@ -717,10 +734,10 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../%D8%B4%DB%8C%D9%85%D8%A7_%D8%A7%D8%A8%D8%B1%D8%A7%D9%87%DB%8C%D9%85%DB%8C.jpg" alt="عکس دکتر شیما ابراهیمی" loading="lazy" decoding="async">
+<img src="/%D8%B4%DB%8C%D9%85%D8%A7_%D8%A7%D8%A8%D8%B1%D8%A7%D9%87%DB%8C%D9%85%DB%8C.webp" alt="عکس دکتر شیما ابراهیمی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="لوگوی دانشگاه فردوسی مشهد">
-<a href="https://prof.um.ac.ir/shimaebrahimi/#about" target="_blank" rel="noopener noreferrer" aria-label="لوگوی دانشگاه فردوسی مشهد"><img src="../لوگو فردوسی.jpg" alt="لوگوی دانشگاه فردوسی مشهد" loading="lazy" decoding="async"></a>
+<a href="https://prof.um.ac.ir/shimaebrahimi/#about" target="_blank" rel="noopener noreferrer" aria-label="لوگوی دانشگاه فردوسی مشهد"><img src="/%D9%84%D9%88%DA%AF%D9%88%20%D9%81%D8%B1%D8%AF%D9%88%D8%B3%DB%8C.webp" alt="لوگوی دانشگاه فردوسی مشهد" loading="lazy" decoding="async" fetchpriority="low"></a>
 </div>
 </div>
 <div>
@@ -733,7 +750,7 @@ align-items:stretch
 <div><strong>مدرک دکتری</strong>زبان‌شناسی عمومی</div>
 <div><strong>سوابق انتشاراتی</strong>بیش از 80 مقاله علمی پژوهشی - 5 کتاب علمی</div>
 <div style="grid-column:1/-1"><strong>سوابق مدیریتی</strong>مدیر علمی و اجرایی نشریه «مطالعات زبان و ترجمه» (۲۰۱۹–۲۰۲۴)</div>
-<div><strong>عضویت‌ها</strong><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/pl.svg" width="20" height="15" alt="PL" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"></span> عضو شورای داوران نشریه Educational Role of Language (ERL)، دانشگاه گدانسک، لهستان</div>
+<div><strong>عضویت‌ها</strong><span aria-hidden="true" style="font-size:.85em;vertical-align:middle"><img src="/assets/flags/pl.svg" width="20" height="15" alt="PL" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"></span> عضو شورای داوران نشریه Educational Role of Language (ERL)، دانشگاه گدانسک، لهستان</div>
 <!-- Verified contact email: shimaebrahimi@um.ac.ir -->
 <div><strong>ایمیل</strong><a href="mailto:shimaebrahimi@um.ac.ir">shimaebrahimi@um.ac.ir</a></div>
 <div><strong>ORCID</strong><a href="https://orcid.org/0000-0003-3528-1386" target="_blank" rel="noopener">0000-0003-3528-1386</a></div>
@@ -756,12 +773,12 @@ align-items:stretch
 <article class="board-profile female-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../سالاپووا.jpg" alt="اولگا آلکساندراونا سالاپووا" loading="lazy" decoding="async">
+<img src="/%D8%B3%D8%A7%D9%84%D8%A7%D9%BE%D9%88%D9%88%D8%A7.jpg" alt="اولگا آلکساندراونا سالاپووا" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه دولتی جنوب اورال">
 <a href="https://www.susu.ru/" target="_blank" rel="noopener">
-<img src="../لوگو اورال - سالاپووا.png" alt="لوگوی دانشگاه دولتی جنوب اورال" loading="lazy" decoding="async">
+<img src="/%D9%84%D9%88%DA%AF%D9%88%20%D8%A7%D9%88%D8%B1%D8%A7%D9%84%20-%20%D8%B3%D8%A7%D9%84%D8%A7%D9%BE%D9%88%D9%88%D8%A7.webp" alt="لوگوی دانشگاه دولتی جنوب اورال" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -792,11 +809,11 @@ align-items:stretch
 <article class="board-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../%D0%92%D1%83%D1%80%D0%B3%D1%83%D0%BD%20%D0%9C%D0%B5%D1%85%D1%82%D0%B8%D0%B5%D0%B2.jpg" alt="دکتر وورگون گئورگیویچ مختیف" loading="lazy" decoding="async">
+<img src="/%D0%92%D1%83%D1%80%D0%B3%D1%83%D0%BD%20%D0%9C%D0%B5%D1%85%D1%82%D0%B8%D0%B5%D0%B2.jpg" alt="دکتر وورگون گئورگیویچ مختیف" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه ملی پاسیفیک (ТОГУ)">
 <a href="https://www.pnu.edu.ru/" target="_blank" rel="noopener">
-<img src="../%D8%AA%DB%8C%D8%AE%D8%A7%D8%A2%DA%A9%D8%A6%D8%A7%D9%86%D8%B3%DA%A9%DB%8C.jpg" alt="لوگوی دانشگاه ملی پاسیفیک (ТОГУ)" loading="lazy" decoding="async">
+<img src="/%D8%AA%DB%8C%D8%AE%D8%A7%D8%A2%DA%A9%D8%A6%D8%A7%D9%86%D8%B3%DA%A9%DB%8C.webp" alt="لوگوی دانشگاه ملی پاسیفیک (ТОГУ)" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -817,16 +834,16 @@ align-items:stretch
 <div class="photo-logo-wrap">
 
 <div class="board-photo">
-<img src="../rafael-guzman-tirado.jpg" alt="پروفسور رافائل گوسمان تیرادو" loading="lazy" decoding="async">
+<img src="/rafael-guzman-tirado.webp" alt="پروفسور رافائل گوسمان تیرادو" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="board-photo" style="margin-top:8px">
-<img src="../rafael-guzman-tirado_2.jpg" alt="پروفسور رافائل گوسمان تیرادو — عکس دوم" loading="lazy" decoding="async">
+<img src="/rafael-guzman-tirado_2.webp" alt="پروفسور رافائل گوسمان تیرادو — عکس دوم" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه گرانادا">
 <a href="https://www.ugr.es/" target="_blank" rel="noopener">
-<img src="../Logo_uni.jpg" alt="دانشگاه گرانادا" loading="lazy" decoding="async">
+<img src="/Logo_uni.webp" alt="دانشگاه گرانادا" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 
@@ -867,12 +884,12 @@ align-items:stretch
 <article class="board-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../urtegeshev_s.jpg" alt="دکتر نیکالای سرگئی‌یویچ اورتگشِف" loading="lazy" decoding="async">
+<img src="/urtegeshev_s.webp" alt="دکتر نیکالای سرگئی‌یویچ اورتگشِف" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه">
 <a href="https://www.philology.nsc.ru/" target="_blank" rel="noopener">
-<img src="../logo_pic.gif" alt="لوگوی مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه" loading="lazy" decoding="async">
+<img src="/logo_pic.gif" alt="لوگوی مؤسسه فیلولوژی، شعبه سیبری آکادمی علوم روسیه" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -906,12 +923,12 @@ align-items:stretch
 <article class="board-profile female-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../Раиса Жамсаранова.jpg" alt="رائیسا گاندیبالاونا ژامساراناوا" loading="lazy" decoding="async">
+<img src="/%D0%A0%D0%B0%D0%B8%D1%81%D0%B0%20%D0%96%D0%B0%D0%BC%D1%81%D0%B0%D1%80%D0%B0%D0%BD%D0%BE%D0%B2%D0%B0.jpg" alt="رائیسا گاندیبالاونا ژامساراناوا" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه دولتی ترانس‌بایکال">
 <a href="https://zabgu.ru/" target="_blank" rel="noopener">
-<img src="../زابایکال - لوگو.png" alt="لوگوی دانشگاه دولتی ترانس‌بایکال" loading="lazy" decoding="async">
+<img src="/%D8%B2%D8%A7%D8%A8%D8%A7%DB%8C%DA%A9%D8%A7%D9%84%20-%20%D9%84%D9%88%DA%AF%D9%88.webp" alt="لوگوی دانشگاه دولتی ترانس‌بایکال" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -940,12 +957,12 @@ align-items:stretch
 <article class="board-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9%20%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%20%D0%9D%D0%B5%D0%B9%D1%87%D0%B5%D0%B2.jpg" alt="پروفسور نیکولای نِیچِف" loading="lazy" decoding="async">
+<img src="/%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B9%20%D0%9C%D0%B8%D1%85%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2%20%D0%9D%D0%B5%D0%B9%D1%87%D0%B5%D0%B2.webp" alt="پروفسور نیکولای نِیچِف" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه پلوودیو">
 <a href="https://rusfil.uni-plovdiv.bg/?page_id=237" target="_blank" rel="noopener">
-<img src="../neychev-logo.png" alt="دانشگاه پلوودیو «پاییسی خیلندارسکی»" loading="lazy" decoding="async">
+<img src="/neychev-logo.webp" alt="دانشگاه پلوودیو «پاییسی خیلندارسکی»" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -961,7 +978,7 @@ align-items:stretch
 <div><strong>حوزه‌های پژوهشی</strong>تاریخ، نظریه و هرمنوتیک ادبیات روسی</div>
 <div><strong>تمرکز ویژه</strong>داستایفسکی‌شناسی · مسیحایی‌گری ادبی روسیه</div>
 <div><strong>مدارک علمی</strong>دکترای علوم (۲۰۲۳) · دکترای فیلولوژی (۱۹۹۸)</div>
-<div><strong>عضویت علمی</strong><img src="/assets/flags/bg.svg" width="20" height="15" alt="BG" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async">MAPRYAL · انجمن روسی‌شناسان بلغارستان</div>
+<div><strong>عضویت علمی</strong><img src="/assets/flags/bg.svg" width="20" height="15" alt="BG" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low">MAPRYAL · انجمن روسی‌شناسان بلغارستان</div>
 <div><strong>دستاوردهای علمی</strong>۶۷ مقاله علمی پژوهشی · ۳۲ گزارش علمی</div>
 <div><strong>ایمیل</strong><a href="mailto:neychev@uni-plovdiv.bg">neychev@uni-plovdiv.bg</a></div></div>
 
@@ -977,14 +994,14 @@ align-items:stretch
 <article class="board-profile female-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../Kisleva.jpg" alt="دکتر ماریا سرگئی‌یونا کیسلووا" loading="lazy" decoding="async">
+<img src="/Kisleva.webp" alt="دکتر ماریا سرگئی‌یونا کیسلووا" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="board-photo" style="margin-top:8px">
-<img src="../Kisleva1.jpg" alt="دکتر ماریا سرگئی‌یونا کیسلووا — عکس دوم" loading="lazy" decoding="async">
+<img src="/Kisleva1.webp" alt="دکتر ماریا سرگئی‌یونا کیسلووا — عکس دوم" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه فدرال خاور دور (ДВФУ)">
 <a href="https://www.dvfu.ru/" target="_blank" rel="noopener">
-<img src="../dfu.jpg" alt="دانشگاه فدرال خاور دور (ДВФУ)" loading="lazy" decoding="async">
+<img src="/dfu.webp" alt="دانشگاه فدرال خاور دور (ДВФУ)" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -1014,12 +1031,12 @@ align-items:stretch
 <article class="board-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../Sonu%20Saini.%20Picture.png" alt="دکتر سونو ساینی" loading="lazy" decoding="async">
+<img src="/Sonu%20Saini.%20Picture.webp" alt="دکتر سونو ساینی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه جواهر لعل نهرو">
 <a href="https://www.jnu.ac.in/" target="_blank" rel="noopener">
-<img src="/assets/editorial-external/jnu-logo.png" alt="دانشگاه جواهر لعل نهرو" loading="lazy" decoding="async">
+<img src="/assets/editorial-external/jnu-logo.png" alt="دانشگاه جواهر لعل نهرو" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -1048,12 +1065,12 @@ align-items:stretch
 <article class="board-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../handra-kaprisma.jpg" alt="دکتر هندرا کاپریسما" loading="lazy" decoding="async">
+<img src="/handra-kaprisma.jpg" alt="دکتر هندرا کاپریسما" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه اندونزی">
 <a href="https://www.ui.ac.id/" target="_blank" rel="noopener">
-<img src="/indinesia%20logo.png" alt="دانشگاه اندونزی" loading="lazy" decoding="async">
+<img src="/indinesia%20logo.png" alt="دانشگاه اندونزی" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -1081,9 +1098,9 @@ align-items:stretch
 <article class="board-profile female-profile international-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../باتایونا.jpg" alt="دکتر لاریسا باتایِونا بادمایِوا" loading="lazy" decoding="async">
+<img src="/%D8%A8%D8%A7%D8%AA%D8%A7%DB%8C%D9%88%D9%86%D8%A7.webp" alt="دکتر لاریسا باتایِونا بادمایِوا" loading="lazy" decoding="async" fetchpriority="low">
 </div>
-<div class="university-logo-box" title="دانشگاه دولتی ایروان"><a href="https://imbt.ru/about_the_university/faculty_and_staff/328/" target="_blank" rel="noopener"><img src="../لوگو سیبری.png" alt="لوگوی مؤسسه مونگول‌شناسی، بوداشناسی و تبت‌شناسی شعبه سیبری آکادمی علوم روسیه" loading="lazy" decoding="async"></a></div>
+<div class="university-logo-box" title="دانشگاه دولتی ایروان"><a href="https://imbt.ru/about_the_university/faculty_and_staff/328/" target="_blank" rel="noopener"><img src="/%D9%84%D9%88%DA%AF%D9%88%20%D8%B3%DB%8C%D8%A8%D8%B1%DB%8C.webp" alt="لوگوی مؤسسه مونگول‌شناسی، بوداشناسی و تبت‌شناسی شعبه سیبری آکادمی علوم روسیه" loading="lazy" decoding="async" fetchpriority="low"></a></div>
 </div>
 
 <div>
@@ -1107,8 +1124,8 @@ align-items:stretch
 <!-- 10. Ruzan Rubeni Grdzelyan -->
 <article class="board-profile female-profile international-profile">
 <div class="photo-logo-wrap">
-<div class="board-photo"><img src="../Ruzan.jpg" alt="رُزان روبنُونا گِردزلیان" loading="lazy" decoding="async"></div>
-<div class="university-logo-box" title="دانشگاه دولتی ایروان"><a href="https://www.ysu.am/ru/user/778" target="_blank" rel="noopener"><img src="../erevan-logo.jpg" alt="لوگوی دانشگاه دولتی ایروان" loading="lazy" decoding="async"></a></div>
+<div class="board-photo"><img src="/Ruzan.jpg" alt="رُزان روبنُونا گِردزلیان" loading="lazy" decoding="async" fetchpriority="low"></div>
+<div class="university-logo-box" title="دانشگاه دولتی ایروان"><a href="https://www.ysu.am/ru/user/778" target="_blank" rel="noopener"><img src="/erevan-logo.jpg" alt="لوگوی دانشگاه دولتی ایروان" loading="lazy" decoding="async" fetchpriority="low"></a></div>
 </div>
 <div>
 <h3>پروفسور رُزان روبنُونا گِردزلیان</h3><div class="board-role">عضو هیئت تحریریه بین‌المللی</div>
@@ -1120,8 +1137,8 @@ align-items:stretch
 <!-- International Editorial Board Member: Lyubov Stepanovna Gurevich -->
 <article class="board-profile female-profile international-profile" style="margin-top:24px;">
 <div class="photo-logo-wrap">
-<div class="board-photo" aria-label="تصویر دکتر لیوبوف گورویچ"><img src="/گورویچ.jpg" alt="تصویر دکتر لیوبوف گورویچ" loading="lazy" decoding="async"></div>
-<div class="university-logo-box" title="دانشگاه دولتی زبان‌شناسی مسکو"><a href="https://linguanet.ru/" target="_blank" rel="noopener"><img src="/assets/editorial-external/linguanet-photo.jpg" alt="لوگوی دانشگاه دولتی زبان‌شناسی مسکو" loading="lazy" decoding="async"></a></div>
+<div class="board-photo" aria-label="تصویر دکتر لیوبوف گورویچ"><img src="/%DA%AF%D9%88%D8%B1%D9%88%DB%8C%DA%86.jpg" alt="تصویر دکتر لیوبوف گورویچ" loading="lazy" decoding="async" fetchpriority="low"></div>
+<div class="university-logo-box" title="دانشگاه دولتی زبان‌شناسی مسکو"><a href="https://linguanet.ru/" target="_blank" rel="noopener"><img src="/assets/editorial-external/linguanet-photo.jpg" alt="لوگوی دانشگاه دولتی زبان‌شناسی مسکو" loading="lazy" decoding="async" fetchpriority="low"></a></div>
 </div>
 <div>
 <h3>دکتر لیوبوف استپانوونا گورویچ</h3>
@@ -1134,7 +1151,7 @@ align-items:stretch
 <div><strong>ایمیل</strong><a href="mailto:gurevich_ls@mail.ru">gurevich_ls@mail.ru</a></div>
 <div style="grid-column:1/-1"><strong>حوزه‌های پژوهشی</strong>زبان‌شناسی شناختی · کاربردشناسی و معناشناسی شناختی · فضای شناختی و فراارتباط · گفتمان سیاسی · استعاره مفهومی · ترجمه و ارتباطات بین‌فرهنگی</div>
 <div style="grid-column:1/-1"><strong>دستاوردهای پژوهشی منتخب</strong>بیش از ۱۰۰ مقاله علمی · تک‌نگاری «فضای شناختی فراارتباط» (۲۰۰۹) · کتاب «فرایندهای گفتمانی میان عقل و هیجان» (<em>Discourse Process between Reason and Emotion</em>، انتشارات پالگریو مک‌میلان / اشپرینگر نیچر، ۲۰۲۱)</div>
-<div style="grid-column:1/-1"><strong>عضویت‌ها</strong><img src="/assets/flags/ru.svg" width="20" height="15" alt="RU" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async">عضو هیئت تحریریه نشریات Philological Herald و Modern Humanities Success</div>
+<div style="grid-column:1/-1"><strong>عضویت‌ها</strong><img src="/assets/flags/ru.svg" width="20" height="15" alt="RU" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low">عضو هیئت تحریریه نشریات Philological Herald و Modern Humanities Success</div>
 
 
 </div>
@@ -1144,8 +1161,8 @@ align-items:stretch
 <!-- International Editorial Board Member: Professor Zarrina Salieva -->
 <article class="board-profile female-profile international-profile" style="margin-top:24px;">
 <div class="photo-logo-wrap" style="flex-direction:column;">
-<div class="board-photo"><img src="/Zarrina_Salieva.jpeg" alt="پروفسور زارینا سالییِوا" loading="lazy" decoding="async"></div>
-<div class="university-logo-box" title="دانشگاه دولتی سمرقند"><a href="https://www.samdu.uz/en" target="_blank" rel="noopener noreferrer" aria-label="وب‌سایت رسمی دانشگاه دولتی سمرقند"><img src="/Samarkand.jpg" alt="لوگوی دانشگاه دولتی سمرقند، ازبکستان" loading="lazy" decoding="async"></a></div>
+<div class="board-photo"><img src="/Zarrina_Salieva.webp" alt="پروفسور زارینا سالییِوا" loading="lazy" decoding="async" fetchpriority="low"></div>
+<div class="university-logo-box" title="دانشگاه دولتی سمرقند"><a href="https://www.samdu.uz/en" target="_blank" rel="noopener noreferrer" aria-label="وب‌سایت رسمی دانشگاه دولتی سمرقند"><img src="/Samarkand.webp" alt="لوگوی دانشگاه دولتی سمرقند، ازبکستان" loading="lazy" decoding="async" fetchpriority="low"></a></div>
 </div>
 <div>
 <h3>پروفسور زارینا سالییِوا</h3>
@@ -1175,12 +1192,12 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../mehrnoush-firouzi.jpg" alt="مهرنوش فیروزی" loading="lazy" decoding="async">
+<img src="/mehrnoush-firouzi.webp" alt="مهرنوش فیروزی" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 
 <div class="university-logo-box" title="دانشگاه الزهرا">
 <a href="https://alzahra.ac.ir/" target="_blank" rel="noopener">
-<img src="/assets/editorial-external/alzahra-logo.svg" alt="لوگوی دانشگاه الزهرا" loading="lazy" decoding="async">
+<img src="/assets/editorial-external/alzahra-logo.svg" alt="لوگوی دانشگاه الزهرا" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -1209,11 +1226,11 @@ align-items:stretch
 <article class="board-profile female-profile" style="margin-top:24px;">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="ثمین بابازاده.jpg" alt="ثمین بابازاده" loading="lazy" decoding="async">
+<img src="/%D8%AB%D9%85%DB%8C%D9%86%20%D8%A8%D8%A7%D8%A8%D8%A7%D8%B2%D8%A7%D8%AF%D9%87.webp" alt="ثمین بابازاده" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه تهران">
 <a href="https://ut.ac.ir/" target="_blank" rel="noopener">
-<img src="/tehran-logo.png" alt="لوگوی دانشگاه تهران" loading="lazy" decoding="async">
+<img src="/tehran-logo.png" alt="لوگوی دانشگاه تهران" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div></div>
 <div>
@@ -1223,7 +1240,7 @@ align-items:stretch
 <div class="profile-fields"><div><strong>تحصیلات</strong>کارشناسی زبان روسی · کارشناسی ارشد مطالعات منطقه‌ای (آسیای مرکزی و قفقاز)</div>
 <div><strong>دانشگاه</strong>کارشناسی دانشگاه گیلان. کارشناسی ارشد دانشگاه تهران</div>
 <div><strong>ایمیل</strong><a href="mailto:sm.babaz@gmail.com">sm.babaz@gmail.com</a></div>
-<div style="grid-column:1/-1"><strong>عضویت‌ها</strong><img src="/assets/flags/ir.svg" width="20" height="15" alt="IR" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async"><ul class="membership-list"><li>عضو انجمن آسیای مرکزی و قفقاز، دانشگاه تهران</li><li>عضو سامانه جامع رسانه‌های کشور، بخش خبرنگاران، وزارت فرهنگ و ارشاد</li></ul></div>
+<div style="grid-column:1/-1"><strong>عضویت‌ها</strong><img src="/assets/flags/ir.svg" width="20" height="15" alt="IR" loading="lazy" style="display:inline-block;width:20px;height:15px;object-fit:cover;vertical-align:-2px;margin-inline-end:6px" decoding="async" fetchpriority="low"><ul class="membership-list"><li>عضو انجمن آسیای مرکزی و قفقاز، دانشگاه تهران</li><li>عضو سامانه جامع رسانه‌های کشور، بخش خبرنگاران، وزارت فرهنگ و ارشاد</li></ul></div>
 <div style="grid-column:1/-1"><strong>فعالیت‌ها</strong>روزنامه‌نگار و پژوهشگر در پایگاه خبری تحلیلی مرور، رشت، گیلان · خبرنگاری در حوزه‌های فرهنگی، اجتماعی و محیط‌زیستی</div></div>
 <div class="board-links">
 <a href="https://www.linkedin.com/in/samin-babazadeh-403b801a7/?isSelfProfile=true" target="_blank" rel="noopener">لینکدین</a>
@@ -1236,11 +1253,11 @@ align-items:stretch
 <article class="board-profile female-profile">
 <div class="photo-logo-wrap">
 <div class="board-photo">
-<img src="../homa.jpeg" alt="هما صدق علیشاه" loading="lazy" decoding="async">
+<img src="/homa.webp" alt="هما صدق علیشاه" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="university-logo-box" title="دانشگاه الزهرا">
 <a href="https://alzahra.ac.ir/" target="_blank" rel="noopener">
-<img src="/assets/editorial-external/alzahra-logo.svg" alt="لوگوی دانشگاه الزهرا" loading="lazy" decoding="async">
+<img src="/assets/editorial-external/alzahra-logo.svg" alt="لوگوی دانشگاه الزهرا" loading="lazy" decoding="async" fetchpriority="low">
 </a>
 </div>
 </div>
@@ -1278,11 +1295,11 @@ if(!code){
 input.focus();
 return;
 }
-window.location.href='../verification.html?code='+encodeURIComponent(code);
+window.location.href='/verification.html?code='+encodeURIComponent(code);
 }
 </script>
 
-<script src="../assets/script.js?v=responsive-header-webp-20261111"></script>
+<script src="/assets/script.js?v=responsive-header-webp-20261111"></script>
 
 </body>
 </html>
