@@ -49,7 +49,6 @@ jobs:
           total_after = 0
 
           def rewrite_image(match):
-              nonlocal_dummy = None
               tag = match.group(0)
               attr = re.search(r"""\bsrc=(["'])(.*?)\1""", tag, re.I)
               if not attr:
@@ -84,7 +83,6 @@ jobs:
                   image.save(target, "WEBP", quality=88, method=6, exact=True)
 
               optimized_bytes = target.stat().st_size
-              before = total_before + 0
               report.append((source.as_posix(), target.as_posix(), original_bytes, optimized_bytes))
               converted.append(target.as_posix())
 
@@ -118,8 +116,8 @@ jobs:
           import re
           html = Path("editorial-board.html").read_text(encoding="utf-8")
           missing = []
-          for tag in re.findall(r"<img\\b[^>]*>", html, flags=re.I):
-              m = re.search(r"""\\bsrc=(["'])(.*?)\\1""", tag, re.I)
+          for tag in re.findall(r"<img\b[^>]*>", html, flags=re.I):
+              m = re.search(r"""\bsrc=(["'])(.*?)\1""", tag, re.I)
               if not m:
                   continue
               src = unescape(m.group(2))
@@ -137,7 +135,7 @@ jobs:
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A -- editorial-board.html '*.webp'
           if git diff --cached --quiet; then
             echo "No changes to publish."
