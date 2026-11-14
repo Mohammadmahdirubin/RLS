@@ -31,7 +31,7 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --upgrade Pillow
 
-      - name: Convert remaining editorial board photos and logos
+      - name: Recompress large WebP photos and logos
         shell: bash
         run: |
           python <<'PY'
@@ -39,18 +39,44 @@ jobs:
           from urllib.parse import urlsplit, unquote, quote, urlunsplit
           from html import unescape
           from PIL import Image, ImageOps
+          import os
           import re
 
           page = Path("editorial-board.html")
           source_html = page.read_text(encoding="utf-8")
-          converted = []
           report = []
+          changed = []
           total_before = 0
           total_after = 0
+          THRESHOLD = 75 * 1024
+          QUALITY = 82
+
+          def target_dimensions(tag):
+              def attr(name, fallback):
+                  m = re.search(rf'\\b{name}=["\\'](\\d+)', tag, re.I)
+                  return int(m.group(1)) if m else fallback
+              width, height = attr("width", 170), attr("height", 200)
+              # Portraits are displayed at 170x200 and zoom to 2x on desktop.
+              # 4x CSS dimensions retain detail on high-DPI screens.
+              return (min(width * 4, 680), min(height * 4, 800))
+
+          def encode_image(source, temp, max_size):
+              with Image.open(source) as opened:
+                  image = ImageOps.exif_transpose(opened)
+                  image.load()
+                  if "A" in image.getbands():
+                      image = image.convert("RGBA")
+                  elif image.mode not in ("RGB", "L"):
+                      image = image.convert("RGB")
+                  image = ImageOps.contain(
+                      image, max_size, method=Image.Resampling.LANCZOS
+                  )
+                  image.save(temp, "WEBP", quality=QUALITY, method=6, exact=True)
 
           def rewrite_image(match):
+              nonlocal_dummy = None
               tag = match.group(0)
-              attr = re.search(r"""\bsrc=(["'])(.*?)\1""", tag, re.I)
+              attr = re.search(r"""\\bsrc=(["'])(.*?)\\1""", tag, re.I)
               if not attr:
                   return tag
               raw_src = unescape(attr.group(2))
@@ -60,51 +86,65 @@ jobs:
 
               rel = unquote(parsed.path).lstrip("/")
               source = Path(rel)
-              if source.suffix.lower() not in {".jpg", ".jpeg", ".png"}:
+              if source.suffix.lower() not in {".jpg", ".jpeg", ".png", ".webp"}:
                   return tag
               if not source.is_file():
                   raise SystemExit(f"Missing local source image: {source}")
 
-              target = source.with_suffix(".webp")
-              if source == target:
+              original_bytes = source.stat().st_size
+              is_webp = source.suffix.lower() == ".webp"
+              if is_webp and original_bytes <= THRESHOLD:
                   return tag
 
-              with Image.open(source) as opened:
-                  image = ImageOps.exif_transpose(opened)
-                  image.load()
-                  original_bytes = source.stat().st_size
-                  target.parent.mkdir(parents=True, exist_ok=True)
+              target = source if is_webp else source.with_suffix(".webp")
+              temp = target.with_name(target.stem + ".rls-tmp.webp")
+              target.parent.mkdir(parents=True, exist_ok=True)
+              max_size = target_dimensions(tag)
 
-                  # Preserve alpha channels and use high-quality WebP for photographs and logos.
-                  if "A" in image.getbands():
-                      image = image.convert("RGBA")
-                  elif image.mode not in ("RGB", "L"):
-                      image = image.convert("RGB")
-                  image.save(target, "WEBP", quality=88, method=6, exact=True)
+              try:
+                  encode_image(source, temp, max_size)
+                  optimized_bytes = temp.stat().st_size
+                  if is_webp:
+                      # Replace only when the new file is meaningfully smaller.
+                      if optimized_bytes >= original_bytes * 0.96:
+                          return tag
+                      os.replace(temp, target)
+                  else:
+                      if optimized_bytes >= original_bytes:
+                          return tag
+                      os.replace(temp, target)
 
-              optimized_bytes = target.stat().st_size
-              report.append((source.as_posix(), target.as_posix(), original_bytes, optimized_bytes))
-              converted.append(target.as_posix())
+                  report.append((source.as_posix(), target.as_posix(),
+                                 original_bytes, optimized_bytes))
+                  changed.append(target.as_posix())
 
-              new_path = "/" + quote(target.as_posix(), safe="/")
-              new_url = urlunsplit(("", "", new_path, parsed.query, parsed.fragment))
-              return tag[:attr.start(2)] + new_url + tag[attr.end(2):]
+                  if is_webp:
+                      return tag
+                  new_path = "/" + quote(target.as_posix(), safe="/")
+                  new_url = urlunsplit(("", "", new_path, parsed.query, parsed.fragment))
+                  return tag[:attr.start(2)] + new_url + tag[attr.end(2):]
+              finally:
+                  if temp.exists():
+                      temp.unlink()
 
-          updated_html = re.sub(r"<img\b[^>]*>", rewrite_image, source_html, flags=re.I)
+          updated_html = re.sub(r"<img\\b[^>]*>", rewrite_image, source_html, flags=re.I)
           page.write_text(updated_html, encoding="utf-8")
 
           for source, target, before, after in report:
               total_before += before
               total_after += after
               print(f"{source}: {before:,} -> {target}: {after:,} bytes")
-          print(f"Converted assets: {len(converted)}")
+          print(f"Optimized assets: {len(changed)}")
           print(f"Bytes saved: {total_before - total_after:,}")
           Path("editorial-image-optimization.txt").write_text(
-              "\n".join(f"{a} -> {b}: {c} -> {d}" for a,b,c,d in report) + "\n",
+              "\\n".join(
+                  [f"{a} -> {b}: {c} -> {d}" for a,b,c,d in report]
+                  + [f"TOTAL: {total_before} -> {total_after}; SAVED: {total_before-total_after}"]
+              ) + "\\n",
               encoding="utf-8"
           )
-          if not converted:
-              print("All raster editorial board images already use WebP.")
+          if not changed:
+              print("No referenced image exceeded the optimization threshold or no smaller encoding was produced.")
           PY
 
       - name: Validate all image references
