@@ -295,15 +295,33 @@ align-items:stretch
 }
 
 
-/* Performance: defer off-screen profile rendering without changing card design */
+/* Keep enlarged profile photos above neighboring cards; avoid paint containment clipping */
 .board-profile{
-  content-visibility:auto;
-  contain-intrinsic-size:auto 560px;
-}
-.board-profile.owner-profile{
+  position:relative;
+  z-index:0;
+  overflow:visible;
   content-visibility:visible;
-  contain-intrinsic-size:auto;
+  contain: none;
 }
+.board-profile:hover,
+.board-profile:focus-within{
+  z-index:1000;
+}
+.board-profile .photo-logo-wrap,
+.board-profile .board-photo{
+  overflow:visible;
+}
+.board-profile .board-photo:hover,
+.board-profile .board-photo:active,
+.board-profile .board-photo:focus-within{
+  z-index:1001;
+}
+.board-profile .board-photo:hover,
+.board-profile .board-photo:active{
+  transform:scale(2);
+  transform-origin:center center;
+}
+
 .board-photo img,
 .university-logo-box img{
   display:block;
