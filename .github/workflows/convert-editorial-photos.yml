@@ -53,11 +53,10 @@ jobs:
 
           def target_dimensions(tag):
               def attr(name, fallback):
-                  m = re.search(rf'\\b{name}=["\\'](\\d+)', tag, re.I)
+                  m = re.search(rf"""\\b{name}=["'](\\d+)""", tag, re.I)
                   return int(m.group(1)) if m else fallback
               width, height = attr("width", 170), attr("height", 200)
-              # Portraits are displayed at 170x200 and zoom to 2x on desktop.
-              # 4x CSS dimensions retain detail on high-DPI screens.
+              # 4x CSS dimensions retain detail for desktop hover and high-DPI screens.
               return (min(width * 4, 680), min(height * 4, 800))
 
           def encode_image(source, temp, max_size):
@@ -74,7 +73,6 @@ jobs:
                   image.save(temp, "WEBP", quality=QUALITY, method=6, exact=True)
 
           def rewrite_image(match):
-              nonlocal_dummy = None
               tag = match.group(0)
               attr = re.search(r"""\\bsrc=(["'])(.*?)\\1""", tag, re.I)
               if not attr:
@@ -99,21 +97,19 @@ jobs:
               target = source if is_webp else source.with_suffix(".webp")
               temp = target.with_name(target.stem + ".rls-tmp.webp")
               target.parent.mkdir(parents=True, exist_ok=True)
-              max_size = target_dimensions(tag)
 
               try:
-                  encode_image(source, temp, max_size)
+                  encode_image(source, temp, target_dimensions(tag))
                   optimized_bytes = temp.stat().st_size
+
                   if is_webp:
-                      # Replace only when the new file is meaningfully smaller.
+                      # Keep the original unless the new WebP is at least 4% smaller.
                       if optimized_bytes >= original_bytes * 0.96:
                           return tag
-                      os.replace(temp, target)
-                  else:
-                      if optimized_bytes >= original_bytes:
-                          return tag
-                      os.replace(temp, target)
+                  elif optimized_bytes >= original_bytes:
+                      return tag
 
+                  os.replace(temp, target)
                   report.append((source.as_posix(), target.as_posix(),
                                  original_bytes, optimized_bytes))
                   changed.append(target.as_posix())
@@ -144,7 +140,7 @@ jobs:
               encoding="utf-8"
           )
           if not changed:
-              print("No referenced image exceeded the optimization threshold or no smaller encoding was produced.")
+              print("No referenced image exceeded the threshold or no smaller encoding was produced.")
           PY
 
       - name: Validate all image references
