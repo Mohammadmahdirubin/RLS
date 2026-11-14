@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="170" height="200" viewBox="0 0 170 200" fill="none">
+<defs>
+  <linearGradient id="gold" x1="0" y1="0" x2="170" y2="200" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#fff4b0"/><stop offset=".2" stop-color="#a66d12"/><stop offset=".42" stop-color="#f8df82"/><stop offset=".62" stop-color="#8c5b0b"/><stop offset=".82" stop-color="#f4d66e"/><stop offset="1" stop-color="#9a6817"/>
+  </linearGradient>
+  <linearGradient id="light" x1="0" y1="0" x2="170" y2="0" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#fff5c2"/><stop offset=".5" stop-color="#c99a35"/><stop offset="1" stop-color="#fff0a2"/>
+  </linearGradient>
+</defs>
+<path d="M8 38V18Q8 8 18 8H42M128 8h24q10 0 10 10v20M162 162v20q0 10-10 10h-24M42 192H18q-10 0-10-10v-20" stroke="#563707" stroke-width="7" opacity=".48"/>
+<path d="M8 38V18Q8 8 18 8H42M128 8h24q10 0 10 10v20M162 162v20q0 10-10 10h-24M42 192H18q-10 0-10-10v-20" stroke="url(#gold)" stroke-width="4"/>
+<path d="M14 34V19q0-5 5-5h15m102 0h15q5 0 5 5v15m0 132v15q0 5-5 5h-15m-102 0H19q-5 0-5-5v-15" stroke="url(#light)" stroke-width="1.5"/>
+<path d="M8 48V152M162 48v104" stroke="url(#gold)" stroke-width="2"/>
+<path d="M19 19c12 0 17 5 17 15-8-5-13-2-15 6-5-7-5-14-2-21Zm132 0c-12 0-17 5-17 15 8-5 13-2 15 6 5-7 5-14 2-21ZM19 181c12 0 17-5 17-15-8 5-13 2-15-6-5 7-5 14-2 21Zm132 0c-12 0-17-5-17-15 8 5 13 2 15-6 5 7 5 14 2 21Z" fill="url(#gold)" stroke="#80540c" stroke-width=".8"/>
+<path d="M23 27c5 1 7 4 8 8m116-8c-5 1-7 4-8 8M23 173c5-1 7-4 8-8m116 8c-5-1-7-4-8-8" stroke="#fff1a7" stroke-width="1.3" stroke-linecap="round"/>
+<path d="M76 8h18M76 192h18" stroke="url(#gold)" stroke-width="2"/>
+<path d="M85 4l3 4-3 4-3-4 3-4Zm0 184 3 4-3 4-3-4 3-4Z" fill="#e6bf58" stroke="#81570d" stroke-width=".8"/>
+</svg>
