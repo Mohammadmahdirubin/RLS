@@ -3161,3 +3161,47 @@
 @media(prefers-reduced-motion:reduce){
   .community-about-card{transition:none}
 }
+
+
+/* Soft pastel palette for the four community information cards.
+   Dark text and headings are retained for comfortable reading. */
+.community-about-grid>.community-about-card:nth-child(1){
+  background:#fdf0ed!important;
+  border-color:#efd0c8!important;
+  border-top-color:#d99b8d!important;
+}
+.community-about-grid>.community-about-card:nth-child(2){
+  background:#edf4fc!important;
+  border-color:#d0dfef!important;
+  border-top-color:#91b4d8!important;
+}
+.community-about-grid>.community-about-card:nth-child(3){
+  background:#eef5eb!important;
+  border-color:#d2e2ca!important;
+  border-top-color:#9dbd8e!important;
+}
+.community-about-grid>.community-about-card:nth-child(4){
+  background:#f3effa!important;
+  border-color:#ded2ef!important;
+  border-top-color:#b29bd5!important;
+}
+.community-about-grid>.community-about-card:nth-child(1) .community-about-number{
+  background:#f7dfd8;color:#75463d;
+}
+.community-about-grid>.community-about-card:nth-child(2) .community-about-number{
+  background:#dceafa;color:#345879;
+}
+.community-about-grid>.community-about-card:nth-child(3) .community-about-number{
+  background:#dfeeda;color:#45653d;
+}
+.community-about-grid>.community-about-card:nth-child(4) .community-about-number{
+  background:#e8def6;color:#5d477c;
+}
+.community-about-grid>.community-about-card ul{color:#51494a}
+.community-about-grid>.community-about-card li::marker{color:#77615e}
+@media(hover:hover){
+  .community-about-grid>.community-about-card:nth-child(1):hover{background:#fbe9e4!important}
+  .community-about-grid>.community-about-card:nth-child(2):hover{background:#e5effa!important}
+  .community-about-grid>.community-about-card:nth-child(3):hover{background:#e7f1e2!important}
+  .community-about-grid>.community-about-card:nth-child(4):hover{background:#eee7f7!important}
+}
