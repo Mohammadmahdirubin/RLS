@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "design": "rls-certificate-full-name-v3",
-  "updated_at": "2026-11-14T01:25:17.340524+00:00",
+  "updated_at": "2026-11-14T07:43:11.303597+00:00",
   "certificates": {
     "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {
       "file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.png",
@@ -93,6 +93,13 @@
       "membership_number": 4,
       "qr_url": "https://rlsj.ir/community.html?member=97731024-a0d7-4290-a617-b868f8ef9f71",
       "generated_at": "2026-11-13T00:17:42.720366+00:00"
+    },
+    "a7631b52-d075-4906-b02d-3267c9b787f0": {
+      "file": "assets/certificates/member-a7631b52-d075-4906-b02d-3267c9b787f0.png",
+      "fingerprint": "04bfdb6cfadd9db5b367654c84ad1f1242036848bc6c009ba66310d103b096e8",
+      "membership_number": 23,
+      "qr_url": "https://rlsj.ir/community.html?member=a7631b52-d075-4906-b02d-3267c9b787f0",
+      "generated_at": "2026-11-14T07:43:11.303540+00:00"
     },
     "b39de401-7b39-478c-88ab-50e89695e11a": {
       "file": "assets/certificates/member-b39de401-7b39-478c-88ab-50e89695e11a.png",
