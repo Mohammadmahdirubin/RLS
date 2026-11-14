@@ -3205,3 +3205,53 @@
   .community-about-grid>.community-about-card:nth-child(3):hover{background:#e7f1e2!important}
   .community-about-grid>.community-about-card:nth-child(4):hover{background:#eee7f7!important}
 }
+
+
+/* Glossy, raised member-directory cards; preserve each membership group's pastel color. */
+#member-directory .community-members>.community-member{
+  position:relative;
+  isolation:isolate;
+  overflow:visible;
+  border-width:1px!important;
+  box-shadow:
+    0 2px 5px rgba(48,35,42,.055),
+    0 9px 18px rgba(48,35,42,.105),
+    0 17px 30px rgba(48,35,42,.055),
+    inset 0 1px 0 rgba(255,255,255,.88),
+    inset 0 -1px 0 rgba(90,70,80,.06)!important;
+  transition:transform .24s cubic-bezier(.2,.75,.25,1),box-shadow .24s ease,filter .24s ease;
+}
+#member-directory .community-members>.community-member::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(145deg,rgba(255,255,255,.48) 0%,rgba(255,255,255,.16) 24%,transparent 58%,rgba(255,255,255,.12) 100%);
+}
+#member-directory .community-members>.community-member>*{
+  position:relative;
+  z-index:1;
+}
+@media(hover:hover) and (pointer:fine){
+  #member-directory .community-members>.community-member:hover{
+    z-index:10;
+    transform:scale(1.2);
+    box-shadow:
+      0 5px 10px rgba(48,35,42,.07),
+      0 17px 32px rgba(48,35,42,.16),
+      0 28px 46px rgba(48,35,42,.09),
+      inset 0 1px 0 rgba(255,255,255,.96),
+      inset 0 -1px 0 rgba(90,70,80,.07)!important;
+    filter:saturate(1.04) brightness(1.015);
+  }
+}
+@media(hover:none){
+  #member-directory .community-members>.community-member:active{
+    box-shadow:0 5px 12px rgba(48,35,42,.12),inset 0 1px 0 rgba(255,255,255,.9)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #member-directory .community-members>.community-member{transition:none}
+}
