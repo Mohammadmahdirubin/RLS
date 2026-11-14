@@ -49,6 +49,20 @@
   const {data,error}=await db.from('rls_admin_email_campaigns').select('id,subject,message,attachment_names,total_recipients,sent_count,failed_count,status,created_at,completed_at').order('created_at',{ascending:false}).limit(100);
   if(error){box.textContent='دریافت آرشیو ناموفق بود: '+error.message;return;}campaigns=data||[];renderCampaigns();
  }
+ async function loadEventEmailLogs(){
+  const box=$('admin-event-email-log-list');if(!box)return;
+  if(!await admin()){box.textContent='دسترسی مدیر لازم است.';return;}
+  box.textContent='در حال دریافت گزارش ایمیل رویدادها…';
+  const {data,error}=await db.from('rls_event_email_log').select('id,event_id,user_id,recipient_email,status,error_message,sent_at,created_at').order('created_at',{ascending:false}).limit(500);
+  if(error){box.textContent='دریافت گزارش ایمیل رویدادها ناموفق بود: '+error.message;return;}
+  const rows=data||[];
+  if(!rows.length){box.textContent='هنوز ایمیلی برای رویدادها ثبت نشده است.';return;}
+  const ids=[...new Set(rows.map(r=>r.event_id).filter(Boolean))];
+  const {data:events,error:eventError}=ids.length?await db.from('rls_events').select('id,title').in('id',ids):{data:[],error:null};
+  if(eventError){box.textContent='دریافت عنوان رویدادها ناموفق بود: '+eventError.message;return;}
+  const titles=new Map((events||[]).map(e=>[e.id,e.title]));
+  box.innerHTML='<div style="overflow-x:auto"><table class="admin-recipient-table"><thead><tr><th>رویداد</th><th>ایمیل گیرنده</th><th>وضعیت</th><th>زمان ارسال</th><th>خطا</th></tr></thead><tbody>'+rows.map(r=>'<tr><td>'+esc(titles.get(r.event_id)||'رویداد حذف‌شده')+'</td><td dir="ltr">'+esc(r.recipient_email||'—')+'</td><td><span class="admin-recipient-status '+esc(r.status)+'">'+esc(states[r.status]||r.status)+'</span></td><td>'+esc(date(r.sent_at||r.created_at))+'</td><td>'+esc(r.error_message||'—')+'</td></tr>').join('')+'</tbody></table></div>';
+ }
  async function showDetails(button){const card=button.closest('[data-campaign-card]'),details=card?.querySelector('.admin-campaign-details');if(!card||!details)return;if(!details.hidden){details.hidden=true;button.textContent='مشاهده متن و گیرندگان';return;}
   const campaign=campaigns.find(x=>x.id===button.dataset.campaignId);if(!campaign)return;button.disabled=true;button.textContent='در حال دریافت…';
   try{const {data,error}=await db.from('rls_admin_email_recipients').select('recipient_email,status,error_message,sent_at').eq('campaign_id',campaign.id).order('recipient_email').limit(2000);if(error)throw error;const recipients=data||[];
@@ -57,8 +71,8 @@
   }catch(e){details.textContent='خطا در دریافت گیرندگان: '+(e.message||'خطای نامشخص');details.hidden=false;button.textContent='بستن جزئیات';}finally{button.disabled=false;}
  }
  document.addEventListener('click',e=>{const b=e.target.closest('.admin-campaign-toggle');if(b)showDetails(b);});
- $('admin-history-search')?.addEventListener('input',renderHistory);$('admin-history-refresh')?.addEventListener('click',loadHistory);$('admin-email-archive-refresh')?.addEventListener('click',loadArchive);
- window.addEventListener('rls-admin-section-change',e=>{const s=e.detail?.section;if(s==='overview'&&!overviewLoaded)loadOverview();if(s==='history')loadHistory();if(s==='email-archive')loadArchive();});
+ $('admin-history-search')?.addEventListener('input',renderHistory);$('admin-history-refresh')?.addEventListener('click',loadHistory);$('admin-email-archive-refresh')?.addEventListener('click',()=>{loadArchive();loadEventEmailLogs();});
+ window.addEventListener('rls-admin-section-change',e=>{const s=e.detail?.section;if(s==='overview'&&!overviewLoaded)loadOverview();if(s==='history')loadHistory();if(s==='email-archive'){loadArchive();loadEventEmailLogs();}});
  window.addEventListener('rls-admin-broadcast-sent',()=>{if(!$('admin-email-archive-panel')?.hidden)loadArchive();});
  db.auth.onAuthStateChange(event=>{if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED')setTimeout(()=>{overviewLoaded=false;loadOverview();},0);if(event==='SIGNED_OUT'){overviewLoaded=false;histories=[];campaigns=[];}});
  checkAccess();async function checkAccess(){if(await admin())loadOverview();}
