@@ -504,7 +504,8 @@
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
       if (!['mr','ms'].includes(payload.salutation)) throw new Error(tr('عنوان خطاب را انتخاب کنید.','Select a salutation.','Выберите обращение.'));
-      if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { if (!payload[key + '_' + lang]) payload[key + '_' + lang] = payload[key]; });
+      // Keep language-specific fields empty until the member supplies a real translation.
+      // Never copy Persian source text into English or Russian profile columns.
       payload.phone_public = !!form.elements.namedItem('phone_public')?.checked;
       payload.email_public = !!form.elements.namedItem('email_public')?.checked;
       if (payload.website_url) {
