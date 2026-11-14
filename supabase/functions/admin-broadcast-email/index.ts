@@ -82,11 +82,34 @@ Deno.serve(async (req: Request) => {
     await collect("rls_profiles");
     await collect("rls_membership_applications");
     const targets = [...recipients.values()];
-    if (!targets.length) return json({ ok: true, sent: 0, failed: 0, skipped: 0, total: 0 });
+    const { data: campaign, error: campaignError } = await admin.from("rls_admin_email_campaigns")
+      .insert({
+        created_by: authData.user.id,
+        subject,
+        message,
+        attachment_names: files.map(file => file.name.replaceAll('"', "_").replaceAll(String.fromCharCode(13), "_").replaceAll(String.fromCharCode(10), "_")),
+        total_recipients: targets.length,
+        status: "sending",
+      })
+      .select("id")
+      .single();
+    if (campaignError || !campaign?.id) throw new Error("Could not create email archive record");
+
+    if (targets.length) {
+      const recipientRows = targets.map(recipient => ({
+        campaign_id: campaign.id,
+        recipient_email: recipient,
+        status: "pending",
+      }));
+      const { error: recipientInsertError } = await admin.from("rls_admin_email_recipients").insert(recipientRows);
+      if (recipientInsertError) throw new Error("Could not prepare recipient archive");
+    }
 
     let sent = 0, failed = 0;
     const errors: string[] = [];
     for (const recipient of targets) {
+      let resendId: string | null = null;
+      let deliveryError: string | null = null;
       try {
         const html = '<div dir="rtl" style="font-family:Tahoma,Arial;line-height:2;color:#30282a;max-width:720px;margin:auto">' +
           '<div style="border-top:5px solid #642536;padding:22px;background:#faf7f3">' +
@@ -103,13 +126,31 @@ Deno.serve(async (req: Request) => {
         });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(String(result?.message || result?.name || "Email delivery failed"));
+        resendId = typeof result?.id === "string" ? result.id : null;
         sent++;
       } catch (error) {
         failed++;
-        if (errors.length < 5) errors.push(String(error instanceof Error ? error.message : "Email delivery failed").slice(0, 300));
+        deliveryError = String(error instanceof Error ? error.message : "Email delivery failed").slice(0, 500);
+        if (errors.length < 5) errors.push(deliveryError);
       }
+      const { error: logError } = await admin.from("rls_admin_email_recipients").update({
+        status: deliveryError ? "failed" : "sent",
+        resend_email_id: resendId,
+        error_message: deliveryError,
+        sent_at: deliveryError ? null : new Date().toISOString(),
+      }).eq("campaign_id", campaign.id).eq("recipient_email", recipient);
+      if (logError && errors.length < 5) errors.push("Archive update failed for " + recipient);
     }
-    return json({ ok: failed === 0, sent, failed, skipped: 0, total: targets.length, errors });
+
+    const finalStatus = failed === 0 ? "completed" : sent === 0 ? "failed" : "partial";
+    const { error: finishError } = await admin.from("rls_admin_email_campaigns").update({
+      sent_count: sent,
+      failed_count: failed,
+      status: finalStatus,
+      completed_at: new Date().toISOString(),
+    }).eq("id", campaign.id);
+    if (finishError) errors.push("Campaign summary could not be finalized");
+    return json({ ok: failed === 0 && !finishError, campaign_id: campaign.id, sent, failed, skipped: 0, total: targets.length, errors });
   } catch (error) {
     console.error("Broadcast email error:", error);
     return json({ error: error instanceof Error ? error.message : "Unexpected broadcast email error" }, 500);
