@@ -48,12 +48,12 @@
     headers:{Authorization:'Bearer '+session.access_token},body:payload
    });
    if(error)throw error;
+   window.dispatchEvent(new CustomEvent('rls-admin-broadcast-sent'));
    if(!result?.ok){
     say('ارسال کامل نشد. ارسال‌شده: '+(result?.sent||0)+'، ناموفق: '+(result?.failed||0)+'، تکراری/ردشده: '+(result?.skipped||0)+'. '+(result?.error||''));
     return;
    }
    say('ارسال پایان یافت. موفق: '+result.sent+' از '+result.total+' گیرنده؛ ناموفق: '+result.failed+'؛ تکراری/بدون نشانی معتبر: '+result.skipped+'.');
-   window.dispatchEvent(new CustomEvent('rls-admin-broadcast-sent'));
    form.reset();
   }catch(error){
    console.error('Broadcast email failed:',error);
