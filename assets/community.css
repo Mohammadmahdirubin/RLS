@@ -3020,3 +3020,23 @@
     display:inline-flex!important;
   }
 }
+
+/* Community refinements: clearer membership entry, directory and review accordion */
+.membership-entry-actions{align-items:stretch;gap:10px}
+.membership-entry-actions .membership-entry-apply,.membership-entry-actions .membership-entry-login{display:flex;align-items:center;justify-content:flex-start;gap:11px;min-width:190px;min-height:58px;padding:10px 15px;text-align:start}
+.membership-entry-actions .membership-entry-symbol{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:0 0 32px;border-radius:50%;background:rgba(255,255,255,.16);font-size:20px;line-height:1}
+.membership-entry-actions .membership-entry-apply>span:last-child,.membership-entry-actions .membership-entry-login>span:last-child{display:flex;flex-direction:column;gap:2px}
+.membership-entry-actions .membership-entry-apply strong,.membership-entry-actions .membership-entry-login strong{font-size:13px;line-height:1.5}
+.membership-entry-actions .membership-entry-apply small,.membership-entry-actions .membership-entry-login small{font-size:10px;font-weight:500;opacity:.82;line-height:1.5}
+.community-directory-intro{max-width:850px;margin:-5px 0 18px;color:var(--community-muted);font-size:14px;line-height:1.9}
+.community-results-count{display:inline-flex;align-items:center;min-height:38px;padding:7px 12px;border:1px solid #e3d6c2;border-radius:8px;background:#faf6ed;color:var(--community-primary);font-size:12px;font-weight:800;white-space:nowrap}
+.membership-steps-accordion{overflow:hidden;border:1px solid var(--community-line);border-radius:12px;background:var(--community-surface);box-shadow:var(--community-shadow)}
+.membership-steps-accordion>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 20px;color:var(--community-primary);font-weight:850;cursor:pointer;list-style:none}
+.membership-steps-accordion>summary::-webkit-details-marker{display:none}
+.membership-steps-accordion[open]>summary{border-bottom:1px solid var(--community-line);background:#faf6ed}
+.membership-steps-content{padding:18px 22px}
+.membership-steps-content ol{margin:0;padding-inline-start:24px;line-height:2}
+.membership-steps-content li{padding:5px 0}
+.membership-steps-content .community-actions{margin-top:16px}
+@media(max-width:760px){.membership-entry-actions{display:grid!important;grid-template-columns:1fr 1fr!important}.membership-entry-actions .membership-entry-apply,.membership-entry-actions .membership-entry-login{min-width:0;width:100%;box-sizing:border-box}.membership-entry-actions .community-admin-link{grid-column:1/-1}.community-results-count{width:100%;justify-content:center}}
+@media(max-width:420px){.membership-entry-actions{grid-template-columns:1fr!important}.membership-entry-actions .community-admin-link{grid-column:auto}}
