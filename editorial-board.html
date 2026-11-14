@@ -281,9 +281,21 @@ align-items:stretch
   transform:scale(2);
   transform-origin:center center;
 }
-@media (hover:none), (max-width:700px){
-  .board-profile .board-photo:hover{
-    transform:none;
+/* Disable portrait enlargement on touch/mobile devices */
+@media (hover:none), (pointer:coarse), (max-width:700px){
+  .board-profile .board-photo,
+  .board-profile .board-photo:hover,
+  .board-profile .board-photo:active,
+  .board-profile .board-photo:focus,
+  .board-profile .board-photo:focus-within{
+    transform:none !important;
+    z-index:1 !important;
+  }
+  .board-profile .board-photo img,
+  .board-profile .board-photo:hover img,
+  .board-profile .board-photo:active img,
+  .board-profile .board-photo:focus img{
+    transform:none !important;
   }
 }
 .board-photo img,
