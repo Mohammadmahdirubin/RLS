@@ -18,6 +18,8 @@
   }
   if(embedded)embedded.disabled=platform==='google_meet';
   const isGoogle=form.elements.event_type?.value==='webinar'&&platform==='google_meet';
+  const meetingUrlField=form.elements.meeting_url?.closest('label');
+  if(meetingUrlField)meetingUrlField.hidden=platform==='google_meet';
   if(createMeetBtn){createMeetBtn.hidden=true;createMeetBtn.disabled=true;}
   const hint=document.getElementById('instructor-meet-hint');
   if(hint)hint.textContent=isGoogle
