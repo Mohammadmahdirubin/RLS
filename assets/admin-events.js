@@ -4,6 +4,7 @@
  const db=window.RLS_SUPABASE_CLIENT||window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.RLS_SUPABASE_CLIENT=db;
  const form=document.getElementById('admin-event-form'),list=document.getElementById('admin-event-list'),msg=document.getElementById('admin-event-message');
  const labels={webinar:'وبینار',seminar:'سمینار / نشست',conference:'همایش',workshop:'کارگاه',course:'دوره آموزشی',other:'سایر اطلاعیه‌ها'};
+ const statusLabels={draft:'پیش‌نویس',published:'منتشرشده',archived:'آرشیوشده'};
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const dateText=v=>{if(!v)return 'بدون تاریخ';const d=new Date(v+'T12:00:00');return Number.isNaN(d.getTime())?esc(v):new Intl.DateTimeFormat('fa-IR',{year:'numeric',month:'short',day:'numeric'}).format(d);};
  let events=[];
@@ -18,7 +19,7 @@
   const {data,error}=await db.from('rls_events').select('*').order('created_at',{ascending:false});
   if(error){list.textContent='دریافت رویدادها ناموفق بود: '+error.message;return;}
   events=data||[];if(!events.length){list.innerHTML='<p>هنوز اطلاعیه‌ای ثبت نشده است.</p>';return;}
-  list.innerHTML=events.map(e=>'<article class="admin-event-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(labels[e.event_type]||e.event_type)+' · '+dateText(e.event_date)+' · '+esc(e.status)+'</p></div><div class="admin-event-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.status==='archived'?'<button type="button" data-restore>بازگردانی</button>':'<button type="button" data-archive>انتقال به آرشیو</button>')+'<button type="button" data-delete style="background:#fff0f0;color:#a32121">حذف</button></div></article>').join('');
+  list.innerHTML=events.map(e=>'<article class="admin-event-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(labels[e.event_type]||e.event_type)+' · '+dateText(e.event_date)+' · '+esc(statusLabels[e.status]||e.status)+'</p></div><div class="admin-event-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.status==='archived'?'<button type="button" data-restore>بازگردانی</button>':'<button type="button" data-archive>انتقال به آرشیو</button>')+'<button type="button" data-delete style="background:#fff0f0;color:#a32121">حذف</button></div></article>').join('');
  }
  function reset(){form.reset();form.elements.event_id.value='';form.dataset.action='draft';msg.textContent='فرم برای ثبت اطلاعیه جدید آماده است.';}
  async function save(action){
