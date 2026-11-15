@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>پنل مدرس | انجمن مطالعات زبان روسی</title>
+<link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css">
+<style>
+.instructor-wrap{max-width:1120px;margin:32px auto 70px}.instructor-panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 8px 24px rgba(20,30,50,.05)}
+.instructor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.instructor-grid label{display:flex;flex-direction:column;gap:7px;font-weight:600}.instructor-grid input,.instructor-grid select,.instructor-grid textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:11px;background:#fff;font:inherit}.instructor-grid .wide{grid-column:1/-1}.instructor-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.instructor-actions button,.instructor-row button,.instructor-login button{border:0;border-radius:9px;padding:10px 16px;background:#173d67;color:#fff;cursor:pointer;font:inherit}.instructor-row{display:flex;justify-content:space-between;gap:14px;align-items:center;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0}.instructor-row p{margin:5px 0;color:#64748b}.instructor-row-actions{display:flex;gap:7px;flex-wrap:wrap}.instructor-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.instructor-stat{padding:17px;border-radius:13px;background:#f1f5f9}.instructor-stat strong{display:block;font-size:1.7rem}.instructor-muted{color:#64748b}.instructor-login{max-width:460px;margin:50px auto}.instructor-login label{display:block;margin:12px 0}.instructor-login input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px}.instructor-attendance{margin:10px 0;padding:12px;background:#f8fafc;border-radius:10px}.instructor-attendance-row{display:flex;justify-content:space-between;gap:8px;padding:8px;border-bottom:1px solid #e2e8f0}.instructor-attendance-row:last-child{border:0}
+@media(max-width:700px){.instructor-grid{grid-template-columns:1fr}.instructor-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.instructor-row{align-items:flex-start;flex-direction:column}}
+</style>
+</head><body class="community-page">
+<header class="site-header"><div class="container header-inner"><a class="brand" href="community.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>پنل اختصاصی مدرس</small></span></a><a href="community-events.html">مشاهده رویدادها</a></div></header>
+<main class="container instructor-wrap">
+<section id="instructor-login" class="instructor-panel instructor-login"><h1>ورود مدرس</h1><p class="instructor-muted">با حساب کاربری تأییدشده خود وارد شوید.</p><form id="instructor-login-form"><label>ایمیل<input name="email" type="email" autocomplete="username" required></label><label>رمز عبور<input name="password" type="password" autocomplete="current-password" required></label><button type="submit">ورود به پنل مدرس</button><p id="instructor-login-message" role="status"></p></form></section>
+<section id="instructor-dashboard" hidden>
+<div class="instructor-panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><p class="eyebrow">RLS · INSTRUCTOR PORTAL</p><h1>پنل مدیریت مدرس</h1><p id="instructor-identity" class="instructor-muted"></p></div><button id="instructor-logout" type="button">خروج</button></div></div>
+<div class="instructor-panel"><h2>آمار عملکرد شما</h2><div id="instructor-stats" class="instructor-stats"><div class="instructor-stat">در حال دریافت…</div></div></div>
+<div class="instructor-panel"><h2 id="instructor-form-heading">ایجاد وبینار یا اطلاعیه</h2><form id="instructor-event-form">
+<input type="hidden" name="event_id">
+<div class="instructor-grid">
+<label>عنوان برنامه<input name="title" maxlength="200" required></label>
+<label>نوع محتوا<select name="event_type"><option value="webinar">وبینار</option><option value="seminar">سمینار / نشست</option><option value="conference">همایش</option><option value="workshop">کارگاه</option><option value="course">دوره آموزشی</option><option value="other">اطلاعیه</option></select></label>
+<label>تاریخ برگزاری<input name="event_date" type="date"></label>
+<label>ساعت برگزاری<input name="event_time" placeholder="مثلاً ۱۷:۰۰"></label>
+<label>محل یا بستر برگزاری<input name="location" placeholder="آنلاین / دانشگاه / شهر"></label>
+<label>لینک ثبت‌نام یا اطلاعات بیشتر<input name="registration_url" type="url" placeholder="https://"></label>
+<label>شیوه برگزاری<select name="webinar_mode"><option value="external">لینک خارجی</option><option value="embedded">نمایش داخل سایت</option></select></label>
+<label>بستر جلسه<select name="webinar_platform"><option value="google_meet">Google Meet</option><option value="zoom">Zoom</option><option value="teams">Microsoft Teams</option><option value="jitsi">Jitsi</option><option value="other">سایر</option></select></label>
+<label>لینک جلسه<input name="meeting_url" type="url" placeholder="https://meet.google.com/..."></label>
+<label>ظرفیت ثبت‌نام<input name="capacity" type="number" min="1" placeholder="بدون محدودیت"></label>
+<label>شروع دقیق جلسه<input name="starts_at" type="datetime-local"></label>
+<label>پایان دقیق جلسه<input name="ends_at" type="datetime-local"></label>
+<label>وضعیت انتشار<select name="status"><option value="draft">پیش‌نویس</option><option value="published">انتشار مستقیم</option></select></label>
+<label>ثبت‌نام<select name="registration_enabled"><option value="true">فعال</option><option value="false">غیرفعال</option></select></label>
+<label class="wide">پوستر برنامه<input name="poster" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG، PNG یا WebP؛ حداکثر ۱۰ مگابایت</small></label>
+<label class="wide">توضیحات<textarea name="description" rows="6" maxlength="12000" required></textarea></label>
+</div><div class="instructor-actions"><button type="submit">ذخیره محتوا</button><button type="button" id="instructor-form-reset">فرم جدید</button></div><p id="instructor-event-message" role="status"></p></form></div>
+<div class="instructor-panel"><h2>وبینارها و اطلاعیه‌های من</h2><div id="instructor-event-list">در حال دریافت…</div></div>
+<div class="instructor-panel"><h2>مدیریت حضور شرکت‌کنندگان</h2><div id="instructor-attendance-panel" class="instructor-muted">برای مشاهده ثبت‌نام‌کنندگان، گزینه «شرکت‌کنندگان» را در فهرست هر وبینار انتخاب کنید.</div></div>
+</section></main>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/instructor.js?v=multi-instructor-dashboard-20261115"></script>
+</body></html>
