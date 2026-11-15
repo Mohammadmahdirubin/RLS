@@ -23,7 +23,8 @@
    if(!r.error)regs=r.data||[];if(!a.error)att=a.data||[];
   }
   const webinars=events.filter(e=>e.event_type==='webinar');const sessionsHeld=webinars.filter(e=>e.event_date&&new Date(e.event_date+'T23:59:59')<new Date()).length;const sessionsUpcoming=webinars.filter(e=>e.status==='published'&&(!e.event_date||new Date(e.event_date+'T23:59:59')>=new Date())).length;
-  const durations=att.filter(x=>x.left_at&&x.joined_at).map(x=>Math.max(0,(new Date(x.left_at)-new Date(x.joined_at))/60000));const avgDuration=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;\n  stats.innerHTML=[['کل برنامه‌ها',events.length],['وبینارها',webinars.length],['جلسات برگزارشده',sessionsHeld],['جلسات پیش‌رو',sessionsUpcoming],['ثبت‌نام‌ها',regs.filter(x=>x.status!=='cancelled').length],['شرکت‌کنندگان ثبت‌شده',new Set(att.map(x=>x.user_id)).size],['میانگین مدت حضور',avgDuration?avgDuration+' دقیقه':'—']].map(([k,v])=>'<div class="instructor-stat"><strong>'+v+'</strong><span>'+k+'</span></div>').join('');
+  const durations=att.filter(x=>x.left_at&&x.joined_at).map(x=>Math.max(0,(new Date(x.left_at)-new Date(x.joined_at))/60000));const avgDuration=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;
+  stats.innerHTML=[['کل برنامه‌ها',events.length],['وبینارها',webinars.length],['جلسات برگزارشده',sessionsHeld],['جلسات پیش‌رو',sessionsUpcoming],['ثبت‌نام‌ها',regs.filter(x=>x.status!=='cancelled').length],['شرکت‌کنندگان ثبت‌شده',new Set(att.map(x=>x.user_id)).size],['میانگین مدت حضور',avgDuration?avgDuration+' دقیقه':'—']].map(([k,v])=>'<div class="instructor-stat"><strong>'+v+'</strong><span>'+k+'</span></div>').join('');
   if(!events.length){list.innerHTML='<p>هنوز برنامه‌ای ایجاد نکرده‌اید.</p>';return;}
   list.innerHTML=events.map(e=>{
    const n=regs.filter(x=>x.event_id===e.id&&x.status!=='cancelled').length,an=new Set(att.filter(x=>x.event_id===e.id).map(x=>x.user_id)).size;
@@ -41,7 +42,8 @@
    let saved;
    if(id){const r=await db.from('rls_events').update(payload).eq('id',id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;saved=r.data;}
    else{const r=await db.from('rls_events').insert({...payload,created_by:user.id}).select('*').single();if(r.error)throw r.error;saved=r.data;}
-   const meetingUrl=String(fd.get('meeting_url')||'').trim();if(type==='webinar'&&meetingUrl){const ir=await db.from('rls_webinar_integrations').upsert({event_id:saved.id,meeting_url:meetingUrl,created_by:user.id,updated_at:new Date().toISOString()},{onConflict:'event_id'});if(ir.error)throw ir.error;}else if(type==='webinar'){const ir=await db.from('rls_webinar_integrations').delete().eq('event_id',saved.id);if(ir.error)throw ir.error;}\n   if(file&&file.size){const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg',path=saved.id+'/'+crypto.randomUUID()+'.'+ext;const up=await db.storage.from('rls-event-posters').upload(path,file,{contentType:file.type,upsert:false});if(up.error)throw up.error;const r=await db.from('rls_events').update({poster_path:path}).eq('id',saved.id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;}
+   const meetingUrl=String(fd.get('meeting_url')||'').trim();if(type==='webinar'&&meetingUrl){const ir=await db.from('rls_webinar_integrations').upsert({event_id:saved.id,meeting_url:meetingUrl,created_by:user.id,updated_at:new Date().toISOString()},{onConflict:'event_id'});if(ir.error)throw ir.error;}else if(type==='webinar'){const ir=await db.from('rls_webinar_integrations').delete().eq('event_id',saved.id);if(ir.error)throw ir.error;}
+   if(file&&file.size){const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg',path=saved.id+'/'+crypto.randomUUID()+'.'+ext;const up=await db.storage.from('rls-event-posters').upload(path,file,{contentType:file.type,upsert:false});if(up.error)throw up.error;const r=await db.from('rls_events').update({poster_path:path}).eq('id',saved.id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;}
    msg.textContent=payload.status==='published'?'محتوا مستقیماً منتشر شد.':'پیش‌نویس ذخیره شد.';reset();await load();
   }catch(err){console.error(err);msg.textContent='ذخیره انجام نشد: '+(err.message||'خطای نامشخص');}
   finally{submit.disabled=false;}
@@ -50,7 +52,9 @@
  list.addEventListener('click',async e=>{
   const row=e.target.closest('[data-id]');if(!row)return;const ev=events.find(x=>x.id===row.dataset.id);if(!ev)return;
   if(e.target.closest('[data-edit]')){
-   Object.entries({event_id:ev.id,title:ev.title,event_type:ev.event_type,event_date:ev.event_date||'',event_time:ev.event_time||'',location:ev.location||'',registration_url:ev.registration_url||'',webinar_mode:ev.webinar_mode||'external',webinar_platform:ev.webinar_platform||'google_meet',meeting_url:integration?.meeting_url||'',capacity:ev.capacity||'',starts_at:ev.starts_at?new Date(ev.starts_at).toISOString().slice(0,16):'',ends_at:ev.ends_at?new Date(ev.ends_at).toISOString().slice(0,16):'',status:ev.status,registration_enabled:String(ev.registration_enabled!==false),description:ev.description}).forEach(([k,v])=>form.elements[k].value=v);
+   const {data:integration,error:integrationError}=await db.from('rls_webinar_integrations').select('meeting_url').eq('event_id',ev.id).maybeSingle();
+   if(integrationError){msg.textContent='دریافت لینک جلسه ناموفق بود: '+integrationError.message;return;}
+   Object.entries({event_id:ev.id,title:ev.title,event_type:ev.event_type,event_date:ev.event_date||'',event_time:ev.event_time||'',location:ev.location||'',registration_url:ev.registration_url||'',webinar_mode:ev.webinar_mode||'external',webinar_platform:ev.webinar_platform||'google_meet',meeting_url:integration?.meeting_url||'',capacity:ev.capacity||'',starts_at:ev.starts_at?new Date(ev.starts_at).toISOString().slice(0,16):'',ends_at:ev.ends_at?new Date(ev.ends_at).toISOString().slice(0,16):'',status:ev.status,registration_enabled:String(ev.registration_enabled!==false),description:ev.description}).forEach(([k,v])=>{if(form.elements[k])form.elements[k].value=v;});
    document.getElementById('instructor-form-heading').textContent='ویرایش: '+ev.title;form.scrollIntoView({behavior:'smooth'});return;
   }
   if(e.target.closest('[data-archive]')){const next=ev.status==='archived'?'published':'archived';const r=await db.from('rls_events').update({status:next,updated_at:new Date().toISOString()}).eq('id',ev.id).eq('created_by',user.id);if(r.error){msg.textContent='تغییر وضعیت ناموفق بود: '+r.error.message;return;}await load();return;}
@@ -62,12 +66,31 @@
   if(error){attPanel.textContent='دریافت فهرست ناموفق بود: '+error.message;return;}
   if(!regs?.length){attPanel.textContent='هنوز کسی در این وبینار ثبت‌نام نکرده است.';return;}
   const ids=regs.map(x=>x.user_id);
-  const [{data:profiles},{data:attendance}]=await Promise.all([db.from('rls_profiles').select('user_id,full_name,email').in('user_id',ids),db.from('rls_webinar_attendance').select('user_id').eq('event_id',ev.id)]);
-  const present=new Set((attendance||[]).map(x=>x.user_id)),pmap=new Map((profiles||[]).map(x=>[x.user_id,x]));
-  attPanel.innerHTML='<h3>'+esc(ev.title)+' · '+regs.length+' ثبت‌نام</h3>'+regs.map(r=>{const p=pmap.get(r.user_id)||{};return '<div class="instructor-attendance-row"><span>'+esc(p.full_name||p.email||'شرکت‌کننده')+' · '+esc(r.status)+'</span>'+(present.has(r.user_id)?'<strong>حاضر ثبت شده</strong>':'<button type="button" data-mark-present="'+esc(r.user_id)+'">ثبت حضور</button>')+'</div>';}).join('');
+  const [{data:profiles,error:profileError},{data:attendance,error:attendanceError}]=await Promise.all([
+   db.from('rls_profiles').select('user_id,full_name,email').in('user_id',ids),
+   db.from('rls_webinar_attendance').select('id,user_id,joined_at,left_at').eq('event_id',ev.id)
+  ]);
+  if(profileError||attendanceError){attPanel.textContent='دریافت اطلاعات حضور ناموفق بود: '+(profileError?.message||attendanceError?.message);return;}
+  const attendanceByUser=new Map((attendance||[]).map(x=>[x.user_id,x])),pmap=new Map((profiles||[]).map(x=>[x.user_id,x]));
+  attPanel.innerHTML='<h3>'+esc(ev.title)+' · '+regs.length+' ثبت‌نام</h3>'+regs.map(r=>{
+   const p=pmap.get(r.user_id)||{},a=attendanceByUser.get(r.user_id);
+   const duration=a?Math.max(0,Math.round(((a.left_at?new Date(a.left_at):new Date())-new Date(a.joined_at))/60000)):0;
+   let control='';
+   if(!a)control='<button type="button" data-mark-present="'+esc(r.user_id)+'">ثبت ورود</button>';
+   else if(!a.left_at)control='<button type="button" data-mark-left="'+esc(a.id)+'">ثبت خروج</button><span>حاضر · '+duration+' دقیقه</span>';
+   else control='<strong>حضور ثبت شد · '+duration+' دقیقه</strong>';
+   return '<div class="instructor-attendance-row"><span>'+esc(p.full_name||p.email||'شرکت‌کننده')+' · '+esc(r.status)+'</span>'+control+'</div>';
+  }).join('');
   attPanel.dataset.eventId=ev.id;
  }
- attPanel.addEventListener('click',async e=>{const b=e.target.closest('[data-mark-present],[data-mark-left]');if(!b)return;b.disabled=true;let r;if(b.hasAttribute('data-mark-present')){r=await db.from('rls_webinar_attendance').insert({event_id:attPanel.dataset.eventId,user_id:b.dataset.markPresent,attendance_source:'manual',created_by:user.id});}else{r=await db.from('rls_webinar_attendance').update({left_at:new Date().toISOString()}).eq('id',b.dataset.markLeft);}if(r.error){b.disabled=false;alert('ثبت حضور/خروج ناموفق بود: '+r.error.message);return;}await load();const ev=events.find(x=>x.id===attPanel.dataset.eventId);if(ev)await showAttendees(ev);});
+ attPanel.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-mark-present],[data-mark-left]');if(!b)return;
+  b.disabled=true;let r;
+  if(b.hasAttribute('data-mark-present'))r=await db.from('rls_webinar_attendance').insert({event_id:attPanel.dataset.eventId,user_id:b.dataset.markPresent,attendance_source:'manual',created_by:user.id});
+  else r=await db.from('rls_webinar_attendance').update({left_at:new Date().toISOString()}).eq('id',b.dataset.markLeft);
+  if(r.error){b.disabled=false;alert('ثبت ورود/خروج ناموفق بود: '+r.error.message);return;}
+  await load();const ev=events.find(x=>x.id===attPanel.dataset.eventId);if(ev)await showAttendees(ev);
+ });
  loginForm.addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(loginForm);const r=await db.auth.signInWithPassword({email:f.get('email'),password:f.get('password')});if(r.error){loginMsg.textContent='ورود ناموفق بود: '+r.error.message;return;}await authorize();});
  document.getElementById('instructor-logout').addEventListener('click',async()=>{await db.auth.signOut();user=null;login.hidden=false;dash.hidden=true;});
  db.auth.onAuthStateChange(()=>setTimeout(authorize,0));authorize();
