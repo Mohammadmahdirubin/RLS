@@ -144,6 +144,7 @@ const initRLS=()=>{
   const lang=inEn?'en':inRu?'ru':'fa';
   const root=inEn||inRu?'../':'';
   const file=(path.split('/').pop()||'index.html').toLowerCase();
+  const isAssociationArea=/^(community|community-events|member-account|admin|instructor|my-webinars)\.html$/.test(file) || /\/(?:en|ru)\/community\.html$/.test(path);
   const asset=name=>root+encodeURI(name);
   const header=document.querySelector('.site-header');
   const nav=document.querySelector('.main-nav');
@@ -321,7 +322,8 @@ const initRLS=()=>{
       switcher.value=langUrls[lang];
       switcher.onchange=()=>{location.href=switcher.value;};
     }
-    // Keep the original panoramic masthead image while loading it asynchronously.
+    // Association pages keep the shared navigation but omit the large journal masthead.
+    if(!isAssociationArea){
     const banner=document.createElement('div');
     banner.className='rls-site-banner';
     const bannerLink=document.createElement('a');
@@ -341,6 +343,7 @@ const initRLS=()=>{
     bannerLink.appendChild(image);
     banner.appendChild(bannerLink);
     header.insertBefore(banner,header.firstChild);
+    }
   }
 
   // Keep the current appearance, but let below-the-fold images load on demand.
