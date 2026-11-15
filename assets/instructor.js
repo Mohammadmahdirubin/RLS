@@ -71,7 +71,8 @@
   if(!events.length){list.innerHTML='<p>هنوز برنامه‌ای ایجاد نکرده‌اید.</p>';return;}
   list.innerHTML=events.map(e=>{
    const n=regs.filter(x=>x.event_id===e.id&&x.status!=='cancelled').length,an=new Set(att.filter(x=>x.event_id===e.id).map(x=>x.user_id)).size;
-   return '<article class="instructor-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(label[e.event_type]||e.event_type)+' · '+(e.status==='published'?'منتشرشده':e.status==='archived'?'آرشیو':'پیش‌نویس')+' · '+n+' ثبت‌نام · '+an+' حاضر</p></div><div class="instructor-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.event_type==='webinar'?'<button type="button" data-attendees>شرکت‌کنندگان</button>':'')+'<button type="button" data-archive>'+ (e.status==='archived'?'بازگردانی':'آرشیو')+'</button></div></article>';
+   const state=e.status==='published'?'منتشرشده':e.status==='archived'?'آرشیو':e.status==='cancelled'?'لغوشده':'پیش‌نویس';
+   return '<article class="instructor-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(label[e.event_type]||e.event_type)+' · '+state+' · '+n+' ثبت‌نام · '+an+' حاضر</p></div><div class="instructor-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.event_type==='webinar'?'<button type="button" data-attendees>شرکت‌کنندگان</button>':'')+(e.status==='cancelled'?'<button type="button" data-restore-cancel>بازگردانی برنامه</button>':'<button type="button" data-cancel>لغو برنامه</button>')+'<button type="button" data-archive>'+ (e.status==='archived'?'بازگردانی از آرشیو':'آرشیو')+'</button><button type="button" data-delete class="instructor-delete-event">حذف</button></div></article>';
   }).join('');
  }
  function reset(){form.reset();form.elements.event_id.value='';needsModeSave=false;document.getElementById('instructor-form-heading').textContent='ایجاد وبینار یا اطلاعیه';msg.textContent='';if(meetMessage)meetMessage.textContent='';updateMeetingControls();}
@@ -115,6 +116,27 @@
    if(integrationError){msg.textContent='دریافت لینک جلسه ناموفق بود: '+integrationError.message;return;}
    Object.entries({event_id:ev.id,title:ev.title,event_type:ev.event_type,event_date:ev.event_date||'',event_time:ev.event_time||'',location:ev.location||'',registration_url:ev.registration_url||'',webinar_mode:ev.webinar_mode||'external',webinar_platform:ev.webinar_platform||'google_meet',meeting_url:integration?.meeting_url||'',capacity:ev.capacity||'',starts_at:ev.starts_at?new Date(ev.starts_at).toISOString().slice(0,16):'',ends_at:ev.ends_at?new Date(ev.ends_at).toISOString().slice(0,16):'',status:ev.status,registration_enabled:String(ev.registration_enabled!==false),description:ev.description}).forEach(([k,v])=>{if(form.elements[k])form.elements[k].value=v;});
    document.getElementById('instructor-form-heading').textContent='ویرایش: '+ev.title;updateMeetingControls();if(meetMessage)meetMessage.textContent=integration?.meeting_url?'برای این وبینار لینک جلسه ثبت شده است.':'';form.scrollIntoView({behavior:'smooth'});return;
+  }
+  if(e.target.closest('[data-cancel]')){
+   if(!confirm('برنامه «'+ev.title+'» لغو شود؟ از فهرست برنامه‌های جاری خارج می‌شود و ثبت‌نام جدید متوقف خواهد شد.'))return;
+   const r=await db.from('rls_events').update({status:'cancelled',registration_enabled:false,updated_at:new Date().toISOString()}).eq('id',ev.id).eq('created_by',user.id);
+   if(r.error){msg.textContent='لغو برنامه ناموفق بود: '+r.error.message;return;}
+   msg.textContent='برنامه لغو شد.';await load();return;
+  }
+  if(e.target.closest('[data-restore-cancel]')){
+   if(!confirm('برنامه دوباره منتشر شود؟'))return;
+   const r=await db.from('rls_events').update({status:'published',registration_enabled:true,published_at:new Date().toISOString(),updated_at:new Date().toISOString()}).eq('id',ev.id).eq('created_by',user.id);
+   if(r.error){msg.textContent='بازگردانی برنامه ناموفق بود: '+r.error.message;return;}
+   msg.textContent='برنامه دوباره منتشر شد.';await load();return;
+  }
+  if(e.target.closest('[data-delete]')){
+   if(!confirm('حذف دائمی «'+ev.title+'»؟ ثبت‌نام‌ها، سوابق حضور و لینک جلسه مرتبط نیز همراه برنامه حذف می‌شوند. این کار قابل بازگشت نیست.'))return;
+   const btn=e.target.closest('[data-delete]');btn.disabled=true;msg.textContent='در حال حذف برنامه…';
+   const r=await db.from('rls_events').delete().eq('id',ev.id).eq('created_by',user.id).select('id').maybeSingle();
+   if(r.error||!r.data){btn.disabled=false;msg.textContent='حذف برنامه انجام نشد: '+(r.error?.message||'دسترسی حذف تأیید نشد.');return;}
+   if(ev.poster_path){const pr=await db.storage.from('rls-event-posters').remove([ev.poster_path]);if(pr.error)console.warn('Poster cleanup failed:',pr.error);}
+   if(form.elements.event_id.value===ev.id)reset();
+   msg.textContent='برنامه با موفقیت حذف شد.';await load();return;
   }
   if(e.target.closest('[data-archive]')){const next=ev.status==='archived'?'published':'archived';const r=await db.from('rls_events').update({status:next,updated_at:new Date().toISOString()}).eq('id',ev.id).eq('created_by',user.id);if(r.error){msg.textContent='تغییر وضعیت ناموفق بود: '+r.error.message;return;}await load();return;}
   if(e.target.closest('[data-attendees]'))await showAttendees(ev);
