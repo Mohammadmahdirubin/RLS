@@ -118,3 +118,24 @@
 .admin-google-live h3{margin:0 0 6px;color:#263d55;font-size:15px}.admin-google-live p{margin:3px 0;font-size:12px;line-height:1.8;color:#5f6f80}
 .admin-google-warning{padding:12px;border-right:4px solid #bd8c3d;background:#fffaf0;color:#725321;font-size:12px;line-height:1.9}
 @media(max-width:650px){.admin-google-grid{grid-template-columns:1fr}.admin-google-live{align-items:stretch;flex-direction:column}.admin-google-live button{width:100%}}
+
+/* Staff account creation and admin navigation */
+.admin-page-actions,.admin-toolbar-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:12px}
+.admin-toolbar-actions{margin:0}
+.admin-toolbar-actions a,.admin-toolbar-actions button,.admin-page-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;text-decoration:none}
+.admin-logout-btn{background:#6d2433!important;color:#fff!important;border-color:#6d2433!important}
+.admin-login-back{margin:14px 0 0;font-size:13px}
+.admin-login-back a{color:#245d8c;font-weight:800}
+.admin-staff-create-form{margin:14px 0 20px;padding:16px;border:1px solid #e4ddd4;border-radius:13px;background:#fcfaf7}
+.admin-staff-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-staff-fields label{display:flex;flex-direction:column;gap:6px;color:#5b4148;font-size:12px;font-weight:800}
+.admin-staff-fields input,.admin-staff-fields select{width:100%;min-height:42px;padding:9px 11px;border:1px solid #ddd4ca;border-radius:8px;background:#fff;color:#352d2f;font:inherit}
+.admin-staff-security-note{margin:12px 0;color:#735b32;font-size:12px;line-height:1.9}
+.admin-staff-accounts,.admin-instructor-role-list{display:grid;gap:9px;margin:12px 0 20px}
+.admin-staff-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #e7dfd7;border-radius:10px;background:#fff}
+.admin-staff-row p{margin:4px 0 0;color:#6c6264;font-size:12px;direction:ltr;text-align:right;overflow-wrap:anywhere}
+.admin-staff-role{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap}
+.admin-staff-role.is-admin{background:#f5e9d5;color:#76511d}
+.admin-staff-role.is-instructor{background:#eaf1f7;color:#315a7a}
+.instructor-row-actions .instructor-delete-event{background:#fff0f0;color:#a32121;border-color:#e9caca}
+@media(max-width:650px){.admin-staff-fields{grid-template-columns:1fr}.admin-staff-row{align-items:flex-start;flex-direction:column}.admin-toolbar-actions{width:100%}.admin-toolbar-actions>*{flex:1 1 100%}}
