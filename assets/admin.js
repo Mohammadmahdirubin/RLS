@@ -100,6 +100,52 @@
       }
     });
   }
+  async function loadIncompleteRegistrations(){
+    list.textContent='در حال بررسی حساب‌های ثبت‌نامیِ بدون پرونده عضویت…';
+    try{
+      const {data:sessionData,error:sessionError}=await client.auth.getSession();
+      if(sessionError)throw sessionError;
+      const token=sessionData?.session?.access_token;
+      if(!token)throw new Error('نشست مدیر در دسترس نیست؛ دوباره وارد شوید.');
+      const {data:result,error}=await client.functions.invoke('admin-incomplete-registrations',{
+        headers:{Authorization:'Bearer '+token},
+        body:{action:'list'}
+      });
+      if(error||!result?.ok)throw error||new Error(result?.error||'دریافت ثبت‌نام‌های ناقص ناموفق بود.');
+      const records=Array.isArray(result.records)?result.records:[];
+      if(!records.length){
+        list.textContent='در حال حاضر حساب ثبت‌نامیِ بدون پرونده عضویت وجود ندارد.';
+        applyAdminSearch();
+        return;
+      }
+      list.innerHTML=records.map(item=>{
+        const missing=Array.isArray(item.missing_fields)?item.missing_fields:[];
+        const canStage=!!item.can_stage;
+        const emailState=item.email_confirmed
+          ?'<b>ایمیل تأیید شده</b>'
+          :'<b class="admin-incomplete-warning">ایمیل هنوز تأیید نشده است</b>';
+        const missingText=missing.length
+          ?'<p class="admin-meta admin-incomplete-warning">برای تشکیل پرونده، این موارد لازم است: '+missing.map(esc).join('، ')+'</p>'
+          :'';
+        return '<article class="admin-member" data-incomplete-user-id="'+esc(item.user_id)+'">'+
+          '<h3>'+esc(item.full_name||'حساب بدون نام کامل')+'</h3>'+
+          '<div class="admin-meta">ایمیل: '+esc(item.email||'—')+
+          '<br>گروه ثبت‌شده: '+esc(labels[item.category]||item.category||'ثبت نشده')+
+          '<br>وضعیت ایمیل: '+emailState+
+          '<br>تاریخ ایجاد حساب: '+(item.created_at?new Date(item.created_at).toLocaleString('fa-IR'):'—')+'</div>'+
+          '<p class="admin-meta">این حساب در Supabase وجود دارد، اما هنوز پرونده‌ای در درخواست‌های عضویت یا پروفایل اعضا ندارد.</p>'+
+          missingText+
+          (canStage?'<div class="admin-actions"><button class="approve" data-action="stage_incomplete_registration">افزودن به صف بررسی عضویت</button></div>':
+            '<p class="admin-meta">تا تکمیل اطلاعات اجباری، امکان انتقال به صف بررسی وجود ندارد.</p>')+
+          '<p class="admin-message" role="status"></p></article>';
+      }).join('');
+      applyAdminSearch();
+    }catch(error){
+      console.error('Incomplete registration list failed:',error);
+      list.textContent='دریافت ثبت‌نام‌های ناقص ناموفق بود: '+(error?.message||'خطای نامشخص');
+    }
+  }
+
   async function loadApplications(){
     list.textContent='در حال دریافت درخواست‌های مستقل…';
     const {data,error}=await client.from('rls_membership_applications')
@@ -121,11 +167,14 @@
       const d=p.profile_data||{};
       const extra=[['کشور',d.country],['شهر',d.city],['مؤسسه',d.institution],['تحصیلات',d.degree],['تخصص',d.specialty],['معرفی',d.bio],['وب‌سایت',d.website_url],['ORCID',d.orcid],['ایمیل دیگر ثبت‌شده در گزارش خطا',d.alternate_registration_email]].filter(x=>x[1]);
       const stateLabel=p.status==='pending'?'در انتظار بررسی':p.status==='approved'?'تأییدشده':p.status==='rejected'?'ردشده':p.status;
+      const recoveredNote=d._recovered_from_incomplete_auth_signup
+        ?'<p class="admin-meta admin-incomplete-warning">این پرونده از حساب ثبت‌نام ناقص بازیابی شده است. '+(d._recovered_email_confirmed?'ایمیل حساب تأیید شده است.':'ایمیل حساب هنوز تأیید نشده است؛ تأیید عضویت، تأیید ایمیل را جایگزین نمی‌کند.')+'</p>'
+        :'';
       return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3><p class="admin-meta"><b>وضعیت درخواست: '+esc(stateLabel)+'</b></p>'+photo+
         '<div class="admin-meta">ایمیل: '+esc(p.email)+' · گروه: '+esc(labels[p.category]||p.category)+
         '<br>تاریخ ثبت: '+new Date(p.created_at).toLocaleString('fa-IR')+
         (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
-        evidence+
+        evidence+recoveredNote+
         '<p class="admin-meta">با تأیید این درخواست، پروفایل عضو در فهرست عمومی اعضای تأییدشده ایجاد می‌شود. عکس پروفایل اختیاری است و در صورت نبود عکس، پروفایل بدون عکس نمایش داده خواهد شد.</p>'+
         (p.status==='pending'?'<div class="admin-actions"><button class="approve" data-action="application_approve">تأیید درخواست عضویت</button><button class="reject" data-action="application_reject">رد درخواست</button></div>':'')+
         '<p class="admin-message" role="status"></p></article>';
@@ -164,6 +213,7 @@
   async function load(){
     if(status==='certificates'){await loadCertificates();return;}
     if(status==='applications'){await loadApplications();return;}
+    if(status==='incomplete'){await loadIncompleteRegistrations();return;}
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
       .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
@@ -434,6 +484,30 @@
         await load();
       }catch(error){
         if(message)message.textContent='بازیابی عکس ناموفق بود: '+(error?.message||'خطای نامشخص');
+        b.disabled=false;
+      }
+      return;
+    }
+    if(b.dataset.action==='stage_incomplete_registration'){
+      const message=card?.querySelector('.admin-message');
+      b.disabled=true;
+      if(message)message.textContent='در حال انتقال حساب به صف درخواست‌های عضویت…';
+      try{
+        const {data:sessionData,error:sessionError}=await client.auth.getSession();
+        if(sessionError)throw sessionError;
+        const token=sessionData?.session?.access_token;
+        if(!token)throw new Error('نشست مدیر در دسترس نیست؛ دوباره وارد شوید.');
+        const {data:result,error}=await client.functions.invoke('admin-incomplete-registrations',{
+          headers:{Authorization:'Bearer '+token},
+          body:{action:'stage',user_id:card.dataset.incompleteUserId}
+        });
+        if(error||!result?.ok)throw error||new Error(result?.error||'انتقال به صف بررسی ناموفق بود.');
+        status='applications';
+        document.querySelectorAll('[data-status]').forEach(x=>x.classList.toggle('active',x.dataset.status==='applications'));
+        await load();
+      }catch(error){
+        console.error('Could not stage incomplete membership registration:',error);
+        if(message)message.textContent='انتقال ناموفق بود: '+(error?.message||'خطای نامشخص');
         b.disabled=false;
       }
       return;
