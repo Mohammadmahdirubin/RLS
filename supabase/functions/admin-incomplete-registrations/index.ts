@@ -101,6 +101,38 @@ Deno.serve(async (req: Request) => {
     const body = await req.json().catch(() => ({}));
     const action = String(body?.action || "list");
 
+    if (action === "unconfirmed_members") {
+      const { data: profiles, error: profilesError } = await admin.from("rls_profiles")
+        .select("user_id,full_name,email,member_number,created_at")
+        .eq("membership_status", "approved")
+        .not("email", "is", null)
+        .order("created_at", { ascending: false });
+      if (profilesError) throw profilesError;
+
+      const authUsers = new Map<string, any>();
+      for (let page = 1; page <= 10; page++) {
+        const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 1000 });
+        if (error) throw error;
+        for (const user of data.users) authUsers.set(user.id, user);
+        if (data.users.length < 1000) break;
+      }
+
+      const records = (profiles || []).flatMap((profile: any) => {
+        const authUser = authUsers.get(profile.user_id);
+        if (!authUser || authUser.email_confirmed_at) return [];
+        return [{
+          user_id: profile.user_id,
+          full_name: profile.full_name,
+          email: authUser.email || profile.email,
+          member_number: profile.member_number,
+          created_at: profile.created_at,
+          email_confirmed: false,
+        }];
+      });
+
+      return json({ ok: true, count: records.length, records }, 200, origin);
+    }
+
     if (action === "list") {
       const profilesResult = await admin.from("rls_profiles").select("user_id").limit(10000);
       if (profilesResult.error) throw profilesResult.error;
