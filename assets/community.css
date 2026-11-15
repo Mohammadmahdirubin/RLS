@@ -3420,3 +3420,26 @@ body.council-card-lightbox-open{overflow:hidden}
     max-height:50vh!important;
   }
 }
+
+
+/* Council preview: transparent layer, image positioned above its own card. */
+#association-council .council-card-lightbox,
+body .council-card-lightbox{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  border:0!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  pointer-events:none!important;
+}
+#association-council .council-card-lightbox::before,
+#association-council .council-card-lightbox::after,
+body .council-card-lightbox::before,
+body .council-card-lightbox::after{
+  content:none!important;
+  display:none!important;
+  background:transparent!important;
+}
+body.council-card-lightbox-open{overflow:visible!important}
