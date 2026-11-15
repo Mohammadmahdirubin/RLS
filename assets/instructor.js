@@ -9,19 +9,20 @@
  const label={webinar:'وبینار',seminar:'سمینار',conference:'همایش',workshop:'کارگاه',course:'دوره آموزشی',other:'اطلاعیه'};
  const dt=v=>v?new Date(v).toLocaleString('fa-IR'):'—';
  function updateMeetingControls(){
-  if(!createMeetBtn)return;
   const platform=form.elements.webinar_platform?.value||'google_meet';
   const mode=form.elements.webinar_mode;
   const embedded=mode?Array.from(mode.options).find(o=>o.value==='embedded'):null;
-  if(platform==='google_meet'&&mode&&mode.value==='embedded'){mode.value='external';needsModeSave=true;if(meetMessage)meetMessage.textContent='Google Meet داخل سایت تعبیه نمی‌شود؛ شیوه برگزاری به لینک خارجی تغییر کرد. ابتدا تغییر را ذخیره کنید و سپس جلسه بسازید.';}
+  if(platform==='google_meet'&&mode&&mode.value==='embedded'){
+   mode.value='external';
+   if(meetMessage)meetMessage.textContent='برای Google Meet، لینک جلسه به‌صورت خودکار پس از ذخیره ساخته می‌شود.';
+  }
   if(embedded)embedded.disabled=platform==='google_meet';
   const isGoogle=form.elements.event_type?.value==='webinar'&&platform==='google_meet';
-  createMeetBtn.hidden=!isGoogle;
-  createMeetBtn.disabled=!isGoogle||!form.elements.event_id.value||!googleConnected||needsModeSave;
+  if(createMeetBtn){createMeetBtn.hidden=true;createMeetBtn.disabled=true;}
   const hint=document.getElementById('instructor-meet-hint');
-  if(hint)hint.textContent=platform==='google_meet'
-   ?'برای Google Meet، ابتدا وبینار را ذخیره کنید؛ سپس از دکمه ساخت جلسه استفاده کنید. لینک فقط برای ثبت‌نام‌کنندگان تأییدشده در زمان مجاز نمایش داده می‌شود.'
-   :'برای این بستر، لینک جلسه را در صورت نیاز به‌صورت دستی وارد کنید.';
+  if(hint)hint.textContent=isGoogle
+   ?'پس از ذخیره یا انتشار وبینار، جلسه Google Meet به‌صورت خودکار ساخته و لینک آن ثبت می‌شود. نیازی به ویرایش دوباره نیست.'
+   :'برای بسترهای دیگر، در صورت نیاز لینک جلسه را در فیلد مربوط وارد کنید.';
  }
  async function authorize(){
   const {data:{session}}=await db.auth.getSession();if(!session){login.hidden=false;dash.hidden=true;return;}
@@ -51,23 +52,6 @@
  });
  const googleRefreshBtn=document.getElementById('instructor-google-refresh');
  if(googleRefreshBtn)googleRefreshBtn.addEventListener('click',loadGoogleMeetStatus);
- if(createMeetBtn)createMeetBtn.addEventListener('click',async()=>{
-  const eventId=String(form.elements.event_id.value||'');
-  if(!eventId){meetMessage.textContent='ابتدا وبینار را به‌صورت پیش‌نویس ذخیره کنید و سپس آن را ویرایش کنید.';return;}
-  if(!googleConnected){meetMessage.textContent='ابتدا حساب Google را از بخش اتصال Google Meet متصل کنید.';return;}
-  if(form.elements.webinar_platform.value!=='google_meet'||form.elements.webinar_mode.value==='embedded'){meetMessage.textContent='برای ساخت جلسه، بستر Google Meet و شیوه لینک خارجی را انتخاب کنید.';return;}
-  createMeetBtn.disabled=true;meetMessage.textContent='در حال ساخت جلسه در Google Meet…';
-  try{
-   const {data,error}=await db.functions.invoke('google-meet-create-space',{body:{event_id:eventId}});
-   if(error)throw error;
-   if(!data?.meeting_url)throw new Error(data?.error||'لینک جلسه از Google دریافت نشد.');
-   form.elements.meeting_url.value=data.meeting_url;
-   meetMessage.textContent=data.already_exists?'لینک جلسه قبلی بازیابی شد.':'جلسه با موفقیت ساخته و لینک آن ذخیره شد.';
-   await load();
-  }catch(error){
-   meetMessage.textContent='ساخت جلسه ناموفق بود: '+(error.message||'خطای نامشخص');
-  }finally{updateMeetingControls();}
- });
  ['webinar_platform','webinar_mode','event_type'].forEach(name=>form.elements[name]?.addEventListener('change',updateMeetingControls));
  updateMeetingControls();
  async function load(){
@@ -99,9 +83,25 @@
    let saved;
    if(id){const r=await db.from('rls_events').update(payload).eq('id',id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;saved=r.data;}
    else{const r=await db.from('rls_events').insert({...payload,created_by:user.id}).select('*').single();if(r.error)throw r.error;saved=r.data;}
-   const meetingUrl=String(fd.get('meeting_url')||'').trim();if(type==='webinar'&&meetingUrl){const ir=await db.from('rls_webinar_integrations').upsert({event_id:saved.id,meeting_url:meetingUrl,created_by:user.id,updated_at:new Date().toISOString()},{onConflict:'event_id'});if(ir.error)throw ir.error;}else if(type==='webinar'){const ir=await db.from('rls_webinar_integrations').delete().eq('event_id',saved.id);if(ir.error)throw ir.error;}
+   const meetingUrl=String(fd.get('meeting_url')||'').trim();
+   if(type==='webinar'&&meetingUrl&&String(fd.get('webinar_platform'))!=='google_meet'){
+    const ir=await db.from('rls_webinar_integrations').upsert({event_id:saved.id,meeting_url:meetingUrl,created_by:user.id,updated_at:new Date().toISOString()},{onConflict:'event_id'});if(ir.error)throw ir.error;
+   }
+   let meetResultMessage='';
+   if(type==='webinar'&&String(fd.get('webinar_platform'))==='google_meet'){
+    if(googleConnected){
+     try{
+      const mr=await db.functions.invoke('google-meet-create-space',{body:{event_id:saved.id}});
+      if(mr.error)throw mr.error;
+      if(!mr.data?.meeting_url)throw new Error(mr.data?.error||'لینک جلسه دریافت نشد.');
+      meetResultMessage=' جلسه Google Meet نیز ساخته و لینک آن ذخیره شد.';
+     }catch(meetError){console.warn('Google Meet auto-create failed:',meetError);meetResultMessage=' وبینار ذخیره شد، اما ساخت خودکار جلسه انجام نشد: '+(meetError.message||'خطای نامشخص')+'؛ اتصال Google را بررسی کنید و دوباره ذخیره کنید.';}
+    }else{
+     meetResultMessage=' برای ساخت خودکار جلسه، ابتدا حساب Google را از بخش اتصال Google Meet متصل کنید؛ سپس وبینار را دوباره ذخیره کنید.';
+    }
+   }
    if(file&&file.size){const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg',path=saved.id+'/'+crypto.randomUUID()+'.'+ext;const up=await db.storage.from('rls-event-posters').upload(path,file,{contentType:file.type,upsert:false});if(up.error)throw up.error;const r=await db.from('rls_events').update({poster_path:path}).eq('id',saved.id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;}
-   reset();msg.textContent=payload.status==='published'?'برنامه با موفقیت منتشر شد.':'پیش‌نویس ذخیره شد.';await load();
+   reset();msg.textContent=(payload.status==='published'?'برنامه با موفقیت منتشر شد.':'پیش‌نویس ذخیره شد.')+meetResultMessage;await load();
   }catch(err){console.error(err);msg.textContent='ذخیره انجام نشد: '+(err.message||'خطای نامشخص');}
   finally{submitButtons.forEach(button=>button.disabled=false);}
  });
