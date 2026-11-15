@@ -3563,3 +3563,31 @@ body .council-card-lightbox{
   filter:none!important;
 }
 body.council-card-lightbox-open{overflow:auto!important}
+
+
+/* Association pages: retain the journal's full navigation while omitting its heavy masthead. */
+.community-nav-header{
+  min-height:48px!important;
+  height:auto!important;
+  padding:0!important;
+  background:#faf7ec!important;
+  box-shadow:none!important;
+}
+.community-nav-header .header-inner{
+  min-height:48px!important;
+  height:auto!important;
+  flex-wrap:wrap!important;
+  padding-top:4px!important;
+  padding-bottom:4px!important;
+}
+.community-nav-header .rls-site-banner,
+.community-nav-header .brand{display:none!important}
+.community-nav-header .main-nav{display:flex!important}
+.community-nav-header .menu-btn{display:none}
+@media(max-width:900px){
+  .community-nav-header .menu-btn{display:inline-flex!important}
+  .community-nav-header .main-nav{display:none!important}
+  .community-nav-header .header-inner.nav-open .main-nav,
+  body.nav-open .community-nav-header .main-nav,
+  html.nav-open .community-nav-header .main-nav{display:flex!important}
+}
