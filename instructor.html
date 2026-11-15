@@ -28,7 +28,7 @@
 <label>لینک ثبت‌نام یا اطلاعات بیشتر<input name="registration_url" type="url" placeholder="https://"></label>
 <label>شیوه برگزاری<select name="webinar_mode"><option value="external">لینک خارجی</option><option value="embedded">نمایش داخل سایت</option></select></label>
 <label>بستر جلسه<select name="webinar_platform"><option value="google_meet">Google Meet</option><option value="zoom">Zoom</option><option value="teams">Microsoft Teams</option><option value="jitsi">Jitsi</option><option value="other">سایر</option></select></label>
-<label>لینک جلسه<input name="meeting_url" type="url" placeholder="https://meet.google.com/..."></label><div class="wide instructor-meet-tools"><button type="button" id="instructor-create-meet" hidden disabled>ساخت جلسه Google Meet</button><span id="instructor-meet-hint" class="instructor-meet-hint">برای ساخت جلسه، ابتدا وبینار را ذخیره کنید.</span></div><p id="instructor-meet-message" class="wide" role="status"></p>
+<label>لینک جلسه<input name="meeting_url" type="url" placeholder="https://meet.google.com/..."></label><div class="wide instructor-meet-tools"><span id="instructor-meet-hint" class="instructor-meet-hint">پس از ذخیره یا انتشار وبینار، جلسه Google Meet به‌صورت خودکار ساخته می‌شود.</span></div><p id="instructor-meet-message" class="wide" role="status"></p>
 <label>ظرفیت ثبت‌نام<input name="capacity" type="number" min="1" placeholder="بدون محدودیت"></label>
 <label>شروع دقیق جلسه<input name="starts_at" type="datetime-local"></label>
 <label>پایان دقیق جلسه<input name="ends_at" type="datetime-local"></label>
@@ -40,5 +40,5 @@
 <div class="instructor-panel"><h2>وبینارها و اطلاعیه‌های من</h2><div id="instructor-event-list">در حال دریافت…</div></div>
 <div class="instructor-panel"><h2>مدیریت حضور شرکت‌کنندگان</h2><div id="instructor-attendance-panel" class="instructor-muted">برای مشاهده ثبت‌نام‌کنندگان، گزینه «شرکت‌کنندگان» را در فهرست هر وبینار انتخاب کنید.</div></div>
 </section></main>
-<script defer src="assets/script.js?v=responsive-header-webp-20261111"></script><script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/instructor.js?v=google-meet-create-v3-20261116"></script>
+<script defer src="assets/script.js?v=responsive-header-webp-20261111"></script><script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/instructor.js?v=google-meet-auto-create-v1-20261116"></script>
 </body></html>
