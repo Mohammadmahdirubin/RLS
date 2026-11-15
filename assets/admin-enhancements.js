@@ -34,17 +34,19 @@
    const cards=[['کل پرونده‌های اعضا',all],['اعضای تأییدشده',approved],['در انتظار بررسی پروفایل',pending],['عضویت‌های تعلیق‌شده',suspended],['درخواست‌های مستقل در انتظار',pendingApps],['کل درخواست‌های مستقل',allApps],['رویدادهای منتشرشده',events],['ایمیل‌های تأییدنشده',unconfirmedMembers],['عکس‌های در انتظار تأیید',pendingPhotos]];
    if(stats)stats.innerHTML=cards.map(([l,v])=>'<div class="admin-stat-card"><span>'+esc(l)+'</span><strong>'+num(v)+'</strong></div>').join('');
    const alerts=[];
-   if(pending>0||pendingApps>0)alerts.push('<article class="admin-alert admin-alert--warning"><div><strong>درخواست‌های عضویت نیازمند بررسی</strong><p>'+num(pending)+' پروفایل و '+num(pendingApps)+' درخواست مستقل در انتظار تصمیم هستند.</p></div><button type="button" data-admin-target="members" data-admin-filter="pending">بررسی درخواست‌ها</button></article>');
+   if(pendingApps>0)alerts.push('<article class="admin-alert admin-alert--warning"><div><strong>درخواست‌های مستقل نیازمند بررسی</strong><p>'+num(pendingApps)+' پروندهٔ مستقل در صف تصمیم‌گیری است.</p></div><button type="button" data-admin-target="members" data-admin-filter="applications">بررسی درخواست‌ها</button></article>');
+   if(pending>0)alerts.push('<article class="admin-alert admin-alert--warning"><div><strong>پروفایل‌های در انتظار بررسی</strong><p>'+num(pending)+' پروفایل هنوز بررسی نهایی نشده است.</p></div><button type="button" data-admin-target="members" data-admin-filter="pending">بررسی پروفایل‌ها</button></article>');
    if(unconfirmedMembers>0)alerts.push('<article class="admin-alert admin-alert--warning"><div><strong>ایمیل اعضا تأیید نشده است</strong><p>'+num(unconfirmedMembers)+' عضو تأییدشده هنوز نشانی ایمیل خود را در حساب کاربری تأیید نکرده‌اند.</p></div><button type="button" data-admin-target="members" data-admin-filter="email_unconfirmed">مشاهده اعضا</button></article>');
    if(pendingPhotos>0)alerts.push('<article class="admin-alert admin-alert--info"><div><strong>عکس‌های جدید در انتظار تأیید</strong><p>'+num(pendingPhotos)+' عکس بارگذاری‌شده باید بررسی شوند.</p></div><button type="button" data-admin-target="members" data-admin-filter="photo_pending">بررسی عکس‌ها</button></article>');
    if(!alerts.length)alerts.push('<p class="admin-all-clear">در حال حاضر موردی برای پیگیری فوری در صف مدیریت وجود ندارد.</p>');
    if($('admin-overview-alerts'))$('admin-overview-alerts').innerHTML=alerts.join('');
    const actions=[
-    ['درخواست‌های عضویت','بررسی و تصمیم‌گیری','members','pending'],
+    ['درخواست‌های مستقل','بررسی پرونده‌های جدید','members','applications'],
     ['ثبت‌نام‌های ناقص','بازیابی پرونده‌های بدون درخواست','members','incomplete'],
+    ['ایمیل‌های تأییدنشده','پیگیری تأیید نشانی اعضا','members','email_unconfirmed'],
+    ['بازبینی عکس‌ها','تأیید یا رد عکس‌های جدید','members','photo_pending'],
     ['رویداد جدید','ثبت و انتشار اطلاعیه','events',''],
-    ['ارسال پیام همگانی','ارسال و آرشیو ایمیل','broadcast',''],
-    ['آرشیو ایمیل‌ها','پیگیری وضعیت ارسال','email-archive','']
+    ['ارسال پیام همگانی','ارسال و آرشیو ایمیل','broadcast','']
    ];
    if($('admin-overview-actions'))$('admin-overview-actions').innerHTML=actions.map(([title,desc,target,filter])=>'<button type="button" class="admin-quick-action" data-admin-target="'+target+'" data-admin-filter="'+filter+'"><strong>'+esc(title)+'</strong><span>'+esc(desc)+'</span></button>').join('');
 
