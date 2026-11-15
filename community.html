@@ -149,9 +149,10 @@
   dialog.setAttribute('role','dialog');
   dialog.setAttribute('aria-modal','false');
   dialog.setAttribute('aria-label','پیش‌نمایش بزرگ کارت انجمن');
-  dialog.innerHTML='<img alt="پیش‌نمایش کارت انجمن">';
+  dialog.innerHTML='<img alt="پیش‌نمایش کارت انجمن"><span class="council-neon-ring" aria-hidden="true"></span>';
   document.body.appendChild(dialog);
   var large=dialog.querySelector('img');
+  var neonRing=dialog.querySelector('.council-neon-ring');
   var activeTrigger=null;
   var touchMode=('ontouchstart' in window)||navigator.maxTouchPoints>0;
   function placePreview(trigger){
@@ -172,6 +173,11 @@
     large.style.height=h+'px';
     large.style.left=left+'px';
     large.style.top=top+'px';
+    var ringSize=Math.min(w*.38,h*.38,190);
+    neonRing.style.width=ringSize+'px';
+    neonRing.style.height=ringSize+'px';
+    neonRing.style.left=(left+w/2-ringSize/2)+'px';
+    neonRing.style.top=(top+h*.39-ringSize/2)+'px';
   }
   function open(trigger,card){
     if(activeTrigger===trigger&&!dialog.hidden){placePreview(trigger);return;}
