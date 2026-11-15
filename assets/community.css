@@ -3392,3 +3392,12 @@ body.council-card-lightbox-open{overflow:hidden}
   .council-card-lightbox{padding:12px}
   .council-card-lightbox img{max-width:96vw;max-height:90vh}
 }
+
+
+/* Hover preview closes automatically as soon as the pointer leaves the founder card. */
+.council-card-lightbox{
+  pointer-events:none!important;
+  cursor:default!important;
+}
+.council-card-lightbox img{pointer-events:none!important}
+.council-card-lightbox-close{display:none!important}
