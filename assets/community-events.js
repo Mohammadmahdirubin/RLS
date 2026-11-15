@@ -10,7 +10,7 @@
   const reg=registrations.get(e.id);
   if(reg?.status==='confirmed')return '<div class="community-event-registration"><span class="community-event-registered">✓ ثبت‌نام شما تأیید شده است</span> <a class="community-event-link" href="my-webinars.html">وبینارهای من و لینک ورود</a></div>';
   if(!user)return '<a class="community-event-link" href="member-account.html">برای ثبت‌نام وارد حساب کاربری شوید</a>';
-  return '<button class="community-event-link" type="button" data-register="'+esc(e.id)+'">'+(reg?.status==='cancelled'?'ثبت‌نام مجدد':'ثبت‌نام در وبینار')+'</button>';
+  return '<button style="border:0;background:transparent;padding:0;font:inherit;cursor:pointer" class="community-event-link" type="button" data-register="'+esc(e.id)+'">'+(reg?.status==='cancelled'?'ثبت‌نام مجدد':'ثبت‌نام در وبینار')+'</button>';
  }
  function render(){
   const today=new Date();today.setHours(0,0,0,0);
