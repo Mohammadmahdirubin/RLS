@@ -10,13 +10,13 @@
   const {data:role,error:re}=await db.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
   if(re||role?.role!=='admin'){list.textContent='دسترسی مدیر کل لازم است.';return;}
   const [{data:profiles,error:pe},{data:roles,error:rr}]=await Promise.all([
-   db.from('rls_profiles').select('user_id,full_name,email,institution,category,membership_status').eq('category','faculty').eq('membership_status','approved').order('full_name'),
+   db.from('rls_profiles').select('user_id,full_name,email,institution,category,membership_status').eq('membership_status','approved').order('full_name'),
    db.from('rls_user_roles').select('user_id,role')
   ]);
   if(pe||rr){list.textContent='دریافت اطلاعات ناموفق بود: '+(pe?.message||rr?.message);return;}
   const roleMap=new Map((roles||[]).map(x=>[x.user_id,x.role]));
   if(!profiles?.length){list.textContent='استاد تأییدشده‌ای برای تخصیص دسترسی پیدا نشد.';return;}
-  list.innerHTML='<div class="admin-instructor-role-list">'+profiles.map(p=>'<article class="admin-member" data-user="'+esc(p.user_id)+'"><div><strong>'+esc(p.full_name)+'</strong><p class="admin-meta">'+esc(p.institution||'')+' · '+esc(p.email||'ایمیل ثبت نشده')+'</p></div><div>'+(roleMap.get(p.user_id)==='instructor_admin'?'<span class="community-status community-status-approved">مدیر مدرس فعال</span><button type="button" data-revoke>لغو دسترسی</button>':'<button type="button" data-grant>اعطای دسترسی مدیر مدرس</button>')+'</div></article>').join('')+'</div>';
+  list.innerHTML='<div class="admin-instructor-role-list">'+profiles.map(p=>'<article class="admin-member" data-user="'+esc(p.user_id)+'"><div><strong>'+esc(p.full_name)+'</strong><p class="admin-meta">'+esc(p.institution||'')+' · '+esc(({faculty:'استاد و عضو هیئت علمی',researcher:'پژوهشگر',translator:'مترجم',student:'دانشجو',graduate:'دانش‌آموخته',culture:'فعال ادبیات و فرهنگ',honorary:'عضو افتخاری'})[p.category]||p.category||'')+' · '+esc(p.email||'ایمیل ثبت نشده')+'</p></div><div>'+(roleMap.get(p.user_id)==='instructor_admin'?'<span class="community-status community-status-approved">مدیر مدرس فعال</span><button type="button" data-revoke>لغو دسترسی</button>':'<button type="button" data-grant>اعطای دسترسی مدیر مدرس</button>')+'</div></article>').join('')+'</div>';
  }
  list.addEventListener('click',async e=>{
   const btn=e.target.closest('[data-grant],[data-revoke]');if(!btn)return;
