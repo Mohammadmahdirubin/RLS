@@ -3513,3 +3513,53 @@ body.council-card-lightbox-open{overflow:visible!important}
   outline-offset:3px;
   border-radius:3px;
 }
+
+
+/* Definitive council portrait preview: exactly 130% of its card, no neon or viewport-sized overlay. */
+#association-council .council-profile-card:hover,
+#association-council .council-profile-card.is-zoomed{
+  transform:none!important;
+  box-shadow:none!important;
+}
+.council-card-lightbox,
+#association-council .council-card-lightbox,
+body .council-card-lightbox{
+  position:fixed!important;
+  inset:0!important;
+  z-index:99999!important;
+  display:block!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+}
+.council-card-lightbox[hidden]{display:none!important}
+.council-card-lightbox img,
+#association-council .council-card-lightbox img{
+  position:fixed!important;
+  display:block!important;
+  width:auto;
+  height:auto;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  border:0!important;
+  border-radius:4px!important;
+  box-shadow:0 5px 16px rgba(0,0,0,.22)!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+/* Remove the old animated neon decoration entirely. */
+.council-neon-ring,
+#association-council .council-neon-ring{
+  display:none!important;
+  visibility:hidden!important;
+  animation:none!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+body.council-card-lightbox-open{overflow:auto!important}
