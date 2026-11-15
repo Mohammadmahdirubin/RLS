@@ -141,53 +141,56 @@
 
 <script>
 (function(){
-  var card=document.querySelector('#association-council .council-profile-card img[src*="rls-council-card-under-1mb.webp"]');
-  if(!card)return;
-  var trigger=card.closest('.council-profile-card');
-  if(!trigger)return;
-  trigger.setAttribute('role','button');
-  trigger.setAttribute('tabindex','0');
-  trigger.setAttribute('aria-label','نمایش بزرگ کارت دکتر پروانه راداندیش');
-  trigger.setAttribute('aria-haspopup','dialog');
+  var cards=Array.from(document.querySelectorAll('#association-council .council-profile-card img.council-profile-card-art'));
+  if(!cards.length)return;
   var dialog=document.createElement('div');
   dialog.className='council-card-lightbox';
   dialog.hidden=true;
   dialog.setAttribute('role','dialog');
   dialog.setAttribute('aria-modal','false');
-  dialog.setAttribute('aria-label','نمایش بزرگ کارت دکتر پروانه راداندیش');
-  dialog.innerHTML='<img alt="کارت دکتر پروانه راداندیش، عضو هیئت مؤسس انجمن مطالعات زبان روسی">';
+  dialog.setAttribute('aria-label','پیش‌نمایش بزرگ کارت انجمن');
+  dialog.innerHTML='<img alt="پیش‌نمایش کارت انجمن">';
   document.body.appendChild(dialog);
   var large=dialog.querySelector('img');
-  large.src=card.currentSrc||card.src;
-  var touchMode=false;
-  function open(){
-    if(!dialog.hidden)return;
+  var activeTrigger=null;
+  var touchMode=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+  function open(trigger,card){
+    if(activeTrigger===trigger&&!dialog.hidden)return;
+    activeTrigger=trigger;
+    large.src=card.currentSrc||card.src;
+    large.alt=card.alt||'کارت انجمن';
     dialog.hidden=false;
     trigger.setAttribute('aria-expanded','true');
     document.body.classList.add('council-card-lightbox-open');
   }
   function close(){
     if(dialog.hidden)return;
+    if(activeTrigger)activeTrigger.setAttribute('aria-expanded','false');
+    activeTrigger=null;
     dialog.hidden=true;
-    trigger.setAttribute('aria-expanded','false');
     document.body.classList.remove('council-card-lightbox-open');
   }
-  trigger.addEventListener('mouseenter',function(){if(!touchMode)open();});
-  trigger.addEventListener('mouseleave',function(){if(!touchMode)close();});
-  trigger.addEventListener('focus',open);
-  trigger.addEventListener('blur',function(){if(!touchMode)close();});
-  trigger.addEventListener('keydown',function(e){
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}
-    if(e.key==='Escape')close();
-  });
-  trigger.addEventListener('click',function(e){
-    if(e.pointerType==='touch'||('ontouchstart' in window)){
-      touchMode=true;
-      if(dialog.hidden)open();else close();
-    }
+  cards.forEach(function(card,index){
+    var trigger=card.closest('.council-profile-card');
+    if(!trigger)return;
+    trigger.setAttribute('role','button');
+    trigger.setAttribute('tabindex','0');
+    trigger.setAttribute('aria-label','نمایش بزرگ کارت انجمن، شماره '+(index+1));
+    trigger.setAttribute('aria-haspopup','dialog');
+    trigger.addEventListener('mouseenter',function(){if(!touchMode)open(trigger,card);});
+    trigger.addEventListener('mouseleave',function(){if(!touchMode&&activeTrigger===trigger)close();});
+    trigger.addEventListener('focus',function(){if(!touchMode)open(trigger,card);});
+    trigger.addEventListener('blur',function(){if(!touchMode&&activeTrigger===trigger)close();});
+    trigger.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();open(trigger,card);}
+      if(e.key==='Escape')close();
+    });
+    trigger.addEventListener('click',function(){
+      if(touchMode){if(activeTrigger===trigger&&!dialog.hidden)close();else open(trigger,card);}
+    });
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
-  window.addEventListener('resize',function(){if(touchMode)close();});
+  window.addEventListener('resize',close);
 })();
 </script>
 </body></html>
