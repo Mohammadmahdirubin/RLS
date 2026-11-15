@@ -1,4 +1,4 @@
-name: Pre-generate and cache membership certificates
+name: Pre-generate and cache membership certificates (manual refresh)
 
 on:
   schedule:
