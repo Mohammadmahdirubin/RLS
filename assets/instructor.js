@@ -23,7 +23,7 @@
    if(!r.error)regs=r.data||[];if(!a.error)att=a.data||[];
   }
   const webinars=events.filter(e=>e.event_type==='webinar');
-  stats.innerHTML=[['کل برنامه‌ها',events.length],['وبینارها',webinars.length],['ثبت‌نام‌ها',regs.filter(x=>x.status!=='cancelled').length],['شرکت‌کنندگان ثبت‌شده',new Set(att.map(x=>x.user_id)).size]].map(([k,v])=>'<div class="instructor-stat"><strong>'+v+'</strong><span>'+k+'</span></div>').join('');
+  const durations=att.filter(x=>x.left_at&&x.joined_at).map(x=>Math.max(0,(new Date(x.left_at)-new Date(x.joined_at))/60000));const avgDuration=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;\n  stats.innerHTML=[['کل برنامه‌ها',events.length],['وبینارها',webinars.length],['ثبت‌نام‌ها',regs.filter(x=>x.status!=='cancelled').length],['شرکت‌کنندگان ثبت‌شده',new Set(att.map(x=>x.user_id)).size],['میانگین مدت حضور',avgDuration?avgDuration+' دقیقه':'—']].map(([k,v])=>'<div class="instructor-stat"><strong>'+v+'</strong><span>'+k+'</span></div>').join('');
   if(!events.length){list.innerHTML='<p>هنوز برنامه‌ای ایجاد نکرده‌اید.</p>';return;}
   list.innerHTML=events.map(e=>{
    const n=regs.filter(x=>x.event_id===e.id&&x.status!=='cancelled').length,an=new Set(att.filter(x=>x.event_id===e.id).map(x=>x.user_id)).size;
@@ -67,7 +67,7 @@
   attPanel.innerHTML='<h3>'+esc(ev.title)+' · '+regs.length+' ثبت‌نام</h3>'+regs.map(r=>{const p=pmap.get(r.user_id)||{};return '<div class="instructor-attendance-row"><span>'+esc(p.full_name||p.email||'شرکت‌کننده')+' · '+esc(r.status)+'</span>'+(present.has(r.user_id)?'<strong>حاضر ثبت شده</strong>':'<button type="button" data-mark-present="'+esc(r.user_id)+'">ثبت حضور</button>')+'</div>';}).join('');
   attPanel.dataset.eventId=ev.id;
  }
- attPanel.addEventListener('click',async e=>{const b=e.target.closest('[data-mark-present]');if(!b)return;b.disabled=true;const userId=b.dataset.markPresent;const r=await db.from('rls_webinar_attendance').insert({event_id:attPanel.dataset.eventId,user_id:userId,attendance_source:'manual',created_by:user.id});if(r.error){b.disabled=false;alert('ثبت حضور ناموفق بود: '+r.error.message);return;}await load();const ev=events.find(x=>x.id===attPanel.dataset.eventId);if(ev)await showAttendees(ev);});
+ attPanel.addEventListener('click',async e=>{const b=e.target.closest('[data-mark-present],[data-mark-left]');if(!b)return;b.disabled=true;let r;if(b.hasAttribute('data-mark-present')){r=await db.from('rls_webinar_attendance').insert({event_id:attPanel.dataset.eventId,user_id:b.dataset.markPresent,attendance_source:'manual',created_by:user.id});}else{r=await db.from('rls_webinar_attendance').update({left_at:new Date().toISOString()}).eq('id',b.dataset.markLeft);}if(r.error){b.disabled=false;alert('ثبت حضور/خروج ناموفق بود: '+r.error.message);return;}await load();const ev=events.find(x=>x.id===attPanel.dataset.eventId);if(ev)await showAttendees(ev);});
  loginForm.addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(loginForm);const r=await db.auth.signInWithPassword({email:f.get('email'),password:f.get('password')});if(r.error){loginMsg.textContent='ورود ناموفق بود: '+r.error.message;return;}await authorize();});
  document.getElementById('instructor-logout').addEventListener('click',async()=>{await db.auth.signOut();user=null;login.hidden=false;dash.hidden=true;});
  db.auth.onAuthStateChange(()=>setTimeout(authorize,0));authorize();
