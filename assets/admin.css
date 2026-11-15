@@ -1,13 +1,28 @@
-<!doctype html>
-<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css"><link rel="stylesheet" href="assets/admin.css?v=manual-photo-upload-20261112"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
-<meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
-</head>
-<body class="community-page"><header class="site-header"><div class="container header-inner"><a class="brand" href="community.html"><span class="brand-mark">RLS</span><span><strong>Russian Language Studies</strong><small>پنل مدیریت انجمن</small></span></a><a href="community.html">بازگشت به انجمن</a></div></header>
-<main class="container admin-wrap"><section class="admin-heading"><p class="eyebrow">RLS · ADMINISTRATION</p><h1>پنل مدیریت انجمن</h1><p>بررسی درخواست‌های عضویت و مدیریت انتشار پروفایل اعضا</p></section>
-<section id="admin-login" class="admin-panel"><h2>ورود مدیر</h2><form id="admin-login-form"><label>ایمیل<input name="email" type="email" autocomplete="username" required></label><label>رمز عبور<input name="password" type="password" autocomplete="current-password" required></label><button class="community-search-btn" type="submit">ورود به پنل</button><p id="login-message" role="status"></p></form></section>
-<section id="admin-dashboard" class="admin-panel" hidden><div class="admin-toolbar"><div><h2>مدیریت اعضا و درخواست‌های عضویت</h2><p id="admin-identity"></p></div><button id="admin-logout" class="community-search-btn" type="button">خروج</button></div><div class="admin-filters"><button type="button" data-status="pending" class="active">در انتظار بررسی</button><button type="button" data-status="applications">درخواست‌های مستقل ثبت‌نام</button><button type="button" data-status="approved">تأییدشده</button><button type="button" data-status="photo_pending">عکس‌های جدید در انتظار تأیید</button><button type="button" data-status="rejected">ردشده</button><button type="button" data-status="suspended">تعلیق‌شده</button><button type="button" data-status="certificates">گواهی‌های عضویت</button></div><div id="admin-list" class="admin-list" aria-live="polite">در حال دریافت اطلاعات…</div>
-</section></section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=full-name-certificate-20261112"></script><script defer src="assets/admin.js?v=approved-profile-promotion-20261112"></script></body></html>
+.admin-wrap{max-width:1050px;padding-top:36px;padding-bottom:70px}.admin-heading{margin-bottom:24px}.admin-heading h1{color:#092b50;margin:4px 0}.admin-heading p{color:#607187}.admin-panel{background:#fff;border:1px solid #dce3eb;border-radius:14px;padding:24px;margin:18px 0;box-shadow:0 8px 28px rgba(9,43,80,.06)}.admin-panel h2{margin-top:0;color:#092b50}.admin-panel form{display:grid;gap:14px;max-width:480px}.admin-panel label{display:grid;gap:6px;color:#334b66}.admin-panel input{border:1px solid #ccd6e1;border-radius:8px;padding:12px;font:inherit}.admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.admin-filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.admin-filters button{border:1px solid #ccd6e1;background:#f7f8fb;padding:9px 14px;border-radius:8px;cursor:pointer;font:inherit}.admin-filters button.active{background:#092b50;color:white}.admin-list{display:grid;gap:14px}.admin-member{border:1px solid #dce3eb;border-radius:10px;padding:18px;display:grid;gap:9px}.admin-member h3{margin:0;color:#092b50}.admin-meta{color:#607187;font-size:14px;line-height:1.8}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin-actions button{border:0;border-radius:7px;padding:9px 14px;cursor:pointer;font:inherit}.admin-actions .approve{background:#e5f5eb;color:#17643a}.admin-actions .reject{background:#fff0ef;color:#9d302a}.admin-actions .suspend{background:#f4f0e5;color:#765719}.admin-message{color:#334b66;min-height:1.4em}@media(max-width:600px){.admin-panel{padding:16px}.admin-toolbar{align-items:flex-start;flex-direction:column}}
+
+.admin-photo-review{display:flex;align-items:center;gap:14px;padding:12px;background:#f7f9fb;border:1px solid #dce3eb;border-radius:10px;max-width:420px}
+.admin-photo-review img{width:104px;height:104px;object-fit:cover;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 10px #092b5022}
+.admin-photo-review span{font-weight:700;color:#244c70}
+.admin-photo-missing{padding:10px;background:#fff8e8;border-radius:8px}
+
+.admin-category-editor{display:flex;align-items:end;gap:10px;flex-wrap:wrap;padding:12px;background:#f7f9fb;border:1px solid #dce3eb;border-radius:9px}.admin-category-editor label{display:grid;gap:6px;color:#334b66;font-size:14px;min-width:220px}.admin-category-editor select{border:1px solid #ccd6e1;border-radius:8px;padding:9px;font:inherit;background:#fff}.admin-category-editor button,.admin-actions .visibility{border:0;border-radius:7px;padding:9px 14px;cursor:pointer;font:inherit;background:#e9f1fb;color:#174d7c}.admin-actions .visibility{background:#f0ecfb;color:#57408a}
+
+
+/* Administrator-only certificate review: previews are generated on demand */
+.admin-certificate-member .rls-certificate-section{margin:16px 0 0;padding:14px;background:#fbfaf6}
+.admin-certificate-member .rls-certificate-heading{text-align:right;margin-bottom:10px}
+.admin-certificate-member .rls-certificate-heading h2{font-size:17px}
+.admin-certificate-member .rls-certificate-frame{margin:12px auto;max-width:100%;overflow:auto}
+.admin-certificate-member .rls-membership-certificate-image{max-width:100%;width:100%;cursor:default;transform:none!important}
+.admin-certificate-member .rls-certificate-actions{justify-content:flex-start}
+.admin-certificate-member .rls-certificate-hint{line-height:1.8}
+
+.admin-profile-editor{border:1px solid #dce3eb;border-radius:10px;padding:12px;background:#fbfcfd}.admin-profile-editor summary{cursor:pointer;font-weight:700;color:#174d7c}.admin-profile-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.admin-profile-fields label{display:grid;gap:5px;font-size:13px;color:#334b66}.admin-profile-fields input,.admin-profile-fields textarea{width:100%;box-sizing:border-box;border:1px solid #ccd6e1;border-radius:7px;padding:9px;font:inherit;background:white}.admin-profile-fields label:has([type=checkbox]){display:flex;align-items:center;grid-column:1/-1}@media(max-width:650px){.admin-profile-fields{grid-template-columns:1fr}}
+
+
+/* Admin-only manual member photo upload */
+.admin-photo-upload{display:flex;align-items:end;gap:10px;flex-wrap:wrap;padding:12px;margin:10px 0;background:#f7f9fb;border:1px solid #dce3eb;border-radius:9px}.admin-photo-upload label{display:grid;gap:6px;color:#334b66;font-size:14px;min-width:220px}.admin-photo-upload input{max-width:100%;font:inherit}.admin-photo-upload small{flex-basis:100%;color:#64748b;font-size:12px}
+
 /* Admin event publishing */
 .admin-events-panel{margin-top:22px}.admin-event-form{padding:16px;background:#fbfcfd;border:1px solid #dce3eb;border-radius:12px}
 .admin-event-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-event-fields label{display:grid;gap:6px;font-size:14px;color:#334b66}.admin-event-fields input,.admin-event-fields select,.admin-event-fields textarea{width:100%;box-sizing:border-box;border:1px solid #ccd6e1;border-radius:8px;padding:10px;font:inherit;background:#fff;min-width:0}.admin-event-description{grid-column:1/-1}.admin-event-poster small{font-size:12px;color:#64748b}
@@ -25,3 +40,64 @@
 #admin-search-count{min-height:20px;margin:7px 2px 0;color:#64748b;font-size:12px}
 #admin-list>.admin-member[hidden]{display:none!important}
 @media(max-width:560px){.admin-search-controls{align-items:stretch;flex-direction:column}.admin-search-controls button{width:100%}.admin-search-bar{padding:12px}}
+
+
+/* RLS association administration — refreshed dashboard layout */
+.admin-wrap{max-width:1240px;padding-top:28px;padding-bottom:72px}
+.admin-heading{margin:0 0 20px;padding:22px 26px;border:1px solid #e4d9c8;border-radius:16px;background:linear-gradient(120deg,#fff,#faf6ef)}
+.admin-heading .eyebrow{margin:0;color:#9a7942;font-size:11px;font-weight:850;letter-spacing:.12em}
+.admin-heading h1{margin:5px 0 4px;color:#542231;font-size:clamp(23px,3vw,32px)}
+.admin-heading p{margin:0;color:#71666a;font-size:13px}
+.admin-panel{min-width:0;padding:22px;border:1px solid #e2d9d1;border-radius:15px;background:#fff;box-shadow:0 8px 28px rgba(45,29,34,.055)}
+.admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:15px;border-bottom:1px solid #eee6df}
+.admin-toolbar h2{margin:0;color:#542231;font-size:21px}
+.admin-toolbar p{margin:4px 0 0;color:#756a6d;font-size:12px}
+.admin-section-menu{position:relative;display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;padding:8px;border:1px solid #e6ded5;border-radius:13px;background:#faf8f5}
+.admin-section-tab{flex:1 1 190px;min-height:46px;padding:10px 13px;border:1px solid #e3dcd5;border-radius:9px;background:#fff;color:#5b4148;font-size:13px;font-weight:800;cursor:pointer}
+.admin-section-tab:hover{border-color:#bda77e;background:#fffdf8}
+.admin-section-tab.active{border-color:#947443;background:#f4ecdf;color:#5d4522;box-shadow:inset 0 -2px 0 #b28a43}
+.admin-section-content{margin-top:10px;padding:clamp(14px,2.2vw,24px);border:1px solid #e7dfd7;border-radius:14px;background:#fff;box-shadow:0 4px 18px rgba(25,45,70,.035)}
+.admin-section-content[hidden]{display:none!important}
+.admin-overview-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.admin-overview-heading .admin-section-intro{flex:1;margin-bottom:8px}
+.admin-overview-message{margin:0 0 12px;color:#7b6c6c;font-size:12px}
+.admin-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.admin-stat-card{min-width:0;padding:15px 16px;border:1px solid #e8e0d8;border-radius:12px;background:linear-gradient(150deg,#fff,#fcfaf7);transition:border-color .15s,transform .15s}
+.admin-stat-card span{color:#6b5e61;font-size:12px;line-height:1.7}
+.admin-stat-card strong{margin-top:5px;color:#542231;font-size:27px}
+.admin-overview-alerts{display:grid;gap:9px;margin:14px 0}
+.admin-alert{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 15px;border:1px solid #eadfce;border-radius:11px;background:#fffaf1}
+.admin-alert--warning{border-color:#ead5ad;background:#fffaf0}
+.admin-alert--info{border-color:#d8e4ec;background:#f6fafc}
+.admin-alert strong{display:block;color:#654c27;font-size:13px}
+.admin-alert p{margin:3px 0 0;color:#70666a;font-size:12px;line-height:1.8}
+.admin-alert button,.admin-quick-action{border:1px solid #d8c9b2;border-radius:8px;padding:8px 12px;background:#fff;color:#60471d;font:inherit;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer}
+.admin-alert button:hover,.admin-quick-action:hover{border-color:#a88a59;background:#fbf7ef}
+.admin-all-clear{margin:0;padding:12px;border:1px solid #dce8de;border-radius:9px;background:#f7fbf7;color:#416148;font-size:12px}
+.admin-overview-actions-wrap{margin:18px 0}
+.admin-overview-actions-wrap>h3{margin:0 0 9px;color:#542231;font-size:15px}
+.admin-overview-actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.admin-quick-action{display:flex;min-width:0;flex-direction:column;align-items:flex-start;gap:3px;white-space:normal;text-align:right;padding:12px 13px;border-color:#e4ddd4;background:#fff}
+.admin-quick-action strong{color:#542231;font-size:12px}
+.admin-quick-action span{color:#7a7071;font-size:11px;font-weight:500;line-height:1.6}
+.admin-overview-columns{grid-template-columns:1.1fr .9fr}
+.admin-search-controls{flex-wrap:wrap}
+.admin-search-controls input{flex:1 1 240px}
+.admin-search-controls button{flex:0 0 auto}
+.admin-email-unconfirmed{border-right:4px solid #bf9652}
+.admin-incomplete-warning{color:#9b5723!important}
+.admin-member .admin-meta{overflow-wrap:anywhere}
+.admin-section-content :is(button,input,select,textarea):focus-visible,
+.admin-panel :is(button,input,select,textarea):focus-visible{outline:3px solid rgba(152,117,62,.35);outline-offset:2px}
+.admin-panel button:disabled,.admin-section-content button:disabled{opacity:.55;cursor:wait}
+@media(max-width:900px){.admin-overview-actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){
+ .admin-overview-heading{align-items:stretch;flex-direction:column}
+ .admin-overview-heading>.community-search-btn{width:100%}
+ .admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .admin-overview-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .admin-alert{align-items:stretch;flex-direction:column}
+ .admin-alert button{width:100%}
+ .admin-toolbar{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:420px){.admin-stat-grid{grid-template-columns:1fr}.admin-overview-actions{grid-template-columns:1fr}}
