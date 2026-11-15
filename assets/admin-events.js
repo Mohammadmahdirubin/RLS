@@ -14,11 +14,29 @@
    const allowed=!error&&role?.role==='admin';panel.hidden=!allowed;if(allowed)await load();
   }catch(error){console.warn('Admin events authorization failed:',error);panel.hidden=true;}
  }
+ async function loadAnalytics(){
+  const target=document.getElementById('admin-event-analytics');if(!target)return;
+  const webinars=events.filter(e=>e.event_type==='webinar'),ids=webinars.map(e=>e.id);
+  if(!ids.length){target.innerHTML='<h3>آمار وبینارها</h3><p>هنوز وبیناری ثبت نشده است.</p>';return;}
+  const [{data:regs,error:re},{data:att,error:ae}]=await Promise.all([
+   db.from('rls_webinar_registrations').select('event_id,user_id,status').in('event_id',ids),
+   db.from('rls_webinar_attendance').select('event_id,user_id,joined_at,left_at').in('event_id',ids)
+  ]);
+  if(re||ae){target.innerHTML='<h3>آمار وبینارها</h3><p>دریافت آمار ناموفق بود: '+esc(re?.message||ae?.message)+'</p>';return;}
+  const registrations=regs||[],attendance=att||[],durations=attendance.filter(x=>x.left_at&&x.joined_at).map(x=>Math.max(0,(new Date(x.left_at)-new Date(x.joined_at))/60000));
+  const avg=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;
+  const stat=(label,value)=>'<article class="admin-stat-card"><strong>'+esc(value)+'</strong><span>'+esc(label)+'</span></article>';
+  const owners=[...new Set(webinars.map(e=>e.created_by).filter(Boolean))];
+  const {data:profiles}=owners.length?await db.from('rls_profiles').select('user_id,full_name').in('user_id',owners):{data:[]};
+  const names=new Map((profiles||[]).map(p=>[p.user_id,p.full_name]));
+  const rows=owners.map(owner=>{const mine=webinars.filter(e=>e.created_by===owner),mineIds=mine.map(e=>e.id),mr=registrations.filter(r=>mineIds.includes(r.event_id)&&r.status!=='cancelled'),ma=attendance.filter(a=>mineIds.includes(a.event_id));return {name:names.get(owner)||'مدرس',count:mine.length,regs:mr.length,present:new Set(ma.map(a=>a.user_id)).size};}).sort((a,b)=>b.present-a.present);
+  target.innerHTML='<h3>آمار کلی وبینارها</h3><div class="admin-stat-grid">'+stat('کل وبینارها',webinars.length)+stat('وبینارهای منتشرشده',webinars.filter(e=>e.status==='published').length)+stat('مجموع ثبت‌نام‌ها',registrations.filter(r=>r.status!=='cancelled').length)+stat('شرکت‌کنندگان ثبت‌شده',new Set(attendance.map(a=>a.user_id)).size)+stat('میانگین مدت حضور',avg?avg+' دقیقه':'—')+'</div><h3>عملکرد مدرسین</h3>'+(rows.length?'<div class="admin-list"><div class="admin-member"><strong>مدرس</strong><strong>وبینار</strong><strong>ثبت‌نام</strong><strong>حاضر</strong></div>'+rows.map(r=>'<div class="admin-member"><span>'+esc(r.name)+'</span><span>'+r.count+'</span><span>'+r.regs+'</span><span>'+r.present+'</span></div>').join('')+'</div>':'<p>آماری برای مدرسین ثبت نشده است.</p>');
+ }
  async function load(){
   list.textContent='در حال دریافت فهرست رویدادها…';
   const {data,error}=await db.from('rls_events').select('*').order('created_at',{ascending:false});
   if(error){list.textContent='دریافت رویدادها ناموفق بود: '+error.message;return;}
-  events=data||[];if(!events.length){list.innerHTML='<p>هنوز اطلاعیه‌ای ثبت نشده است.</p>';return;}
+  events=data||[];await loadAnalytics();if(!events.length){list.innerHTML='<p>هنوز اطلاعیه‌ای ثبت نشده است.</p>';return;}
   list.innerHTML=events.map(e=>'<article class="admin-event-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(labels[e.event_type]||e.event_type)+' · '+dateText(e.event_date)+' · '+esc(statusLabels[e.status]||e.status)+'</p></div><div class="admin-event-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.status==='archived'?'<button type="button" data-restore>بازگردانی</button>':'<button type="button" data-archive>انتقال به آرشیو</button>')+'<button type="button" data-delete style="background:#fff0f0;color:#a32121">حذف</button></div></article>').join('');
  }
  function reset(){form.reset();form.elements.event_id.value='';form.dataset.action='draft';msg.textContent='فرم برای ثبت اطلاعیه جدید آماده است.';}
