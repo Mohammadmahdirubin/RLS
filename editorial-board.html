@@ -263,18 +263,23 @@ align-items:stretch
   transform:none !important;
   z-index:1;
 }
-.board-profile .board-photo::before{content:none !important;}
+.board-profile .board-photo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("/frame-gold.webp");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  pointer-events:none;
+  z-index:3;
+}
 .board-profile .board-photo::after{content:none}
-/* Desktop-only zoom: enlarge the photo by 30%, without decorative glow/overlay */
-@media (hover:hover) and (pointer:fine) and (min-width:701px){
-  .board-profile .board-photo{
-    transition:transform .25s ease;
-  }
-  .board-profile .board-photo:hover{
-    z-index:1001;
-    transform:scale(1.3);
-    transform-origin:center center;
-  }
+/* Desktop hover zoom only; no touch-scale that can stick on mobile */
+.board-profile .board-photo:hover{
+  z-index:1001;
+  transform:scale(2);
+  transform-origin:center center;
 }
 /* Disable portrait enlargement on touch/mobile devices */
 @media (hover:none), (pointer:coarse), (max-width:700px){
