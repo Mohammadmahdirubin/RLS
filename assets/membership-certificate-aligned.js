@@ -59,7 +59,32 @@
       image.src = src;
     });
   }
+  async function getCachedCertificate(member) {
+    const userId = String(member?.user_id || '');
+    if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error('شناسه عضو برای بازیابی گواهی معتبر نیست.');
+    const number = Number(member?.member_number);
+    const version = Number.isSafeInteger(number) && number > 0 ? String(number) : 'current';
+    const url = '/assets/certificates/member-' + userId + '.png?v=' + encodeURIComponent(version);
+    const response = await fetch(url, {
+      mode: 'same-origin',
+      credentials: 'same-origin',
+      cache: 'no-cache',
+      signal: AbortSignal.timeout(15000)
+    });
+    if (!response.ok) throw new Error('فایل آماده گواهی در دسترس نیست (HTTP ' + response.status + ').');
+    const blob = await response.blob();
+    if (!blob || !blob.size || !/^image\/png(?:;|$)/i.test(blob.type)) {
+      throw new Error('فایل ذخیره‌شده گواهی معتبر نیست.');
+    }
+    return blob;
+  }
+
   async function createBlob(member) {
+    try {
+      return await getCachedCertificate(member);
+    } catch (cacheError) {
+      console.warn('Cached membership certificate is unavailable; falling back to live rendering:', cacheError);
+    }
     const [template, qr] = await Promise.all([getTemplate(), getQr(member.user_id)]);
     const canvas = document.createElement('canvas');
     canvas.width = template.naturalWidth;
@@ -132,7 +157,7 @@
       } catch (error) {
         console.error('RLS membership certificate generation failed:', error);
         button.textContent = 'تلاش دوباره';
-        panel.querySelector('.rls-certificate-hint').textContent = 'ساخت گواهی ناموفق بود. دوباره تلاش کنید.';
+        panel.querySelector('.rls-certificate-hint').textContent = 'ساخت گواهی ناموفق بود: ' + (error?.message || 'خطای نامشخص') + '؛ دوباره تلاش کنید.';
         blob = null;
       } finally {
         button.disabled = false;
