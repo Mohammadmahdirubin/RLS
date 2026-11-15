@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "design": "rls-certificate-full-name-v3",
-  "updated_at": "2026-11-15T02:38:02.083774+00:00",
+  "updated_at": "2026-11-15T09:52:51.703703+00:00",
   "certificates": {
     "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {
       "file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.png",
