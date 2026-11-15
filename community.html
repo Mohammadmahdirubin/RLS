@@ -153,18 +153,41 @@
   dialog.className='council-card-lightbox';
   dialog.hidden=true;
   dialog.setAttribute('role','dialog');
-  dialog.setAttribute('aria-modal','true');
+  dialog.setAttribute('aria-modal','false');
   dialog.setAttribute('aria-label','نمایش بزرگ کارت دکتر پروانه راداندیش');
-  dialog.innerHTML='<button type="button" class="council-card-lightbox-close" aria-label="بستن تصویر">×</button><img alt="کارت دکتر پروانه راداندیش، عضو هیئت مؤسس انجمن مطالعات زبان روسی">';
+  dialog.innerHTML='<img alt="کارت دکتر پروانه راداندیش، عضو هیئت مؤسس انجمن مطالعات زبان روسی">';
   document.body.appendChild(dialog);
   var large=dialog.querySelector('img');
   large.src=card.currentSrc||card.src;
-  function open(){dialog.hidden=false;document.body.classList.add('council-card-lightbox-open');dialog.querySelector('button').focus();}
-  function close(){dialog.hidden=true;document.body.classList.remove('council-card-lightbox-open');trigger.focus();}
-  trigger.addEventListener('click',open);
-  trigger.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
-  dialog.addEventListener('click',function(e){if(e.target===dialog||e.target.closest('.council-card-lightbox-close'))close();});
-  document.addEventListener('keydown',function(e){if(!dialog.hidden&&e.key==='Escape')close();});
+  var touchMode=false;
+  function open(){
+    if(!dialog.hidden)return;
+    dialog.hidden=false;
+    trigger.setAttribute('aria-expanded','true');
+    document.body.classList.add('council-card-lightbox-open');
+  }
+  function close(){
+    if(dialog.hidden)return;
+    dialog.hidden=true;
+    trigger.setAttribute('aria-expanded','false');
+    document.body.classList.remove('council-card-lightbox-open');
+  }
+  trigger.addEventListener('mouseenter',function(){if(!touchMode)open();});
+  trigger.addEventListener('mouseleave',function(){if(!touchMode)close();});
+  trigger.addEventListener('focus',open);
+  trigger.addEventListener('blur',function(){if(!touchMode)close();});
+  trigger.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}
+    if(e.key==='Escape')close();
+  });
+  trigger.addEventListener('click',function(e){
+    if(e.pointerType==='touch'||('ontouchstart' in window)){
+      touchMode=true;
+      if(dialog.hidden)open();else close();
+    }
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  window.addEventListener('resize',function(){if(touchMode)close();});
 })();
 </script>
 </body></html>
