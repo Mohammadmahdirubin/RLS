@@ -11,20 +11,48 @@
  async function loadOverview(){
   if(!await admin())return;const message=$('admin-overview-message'),stats=$('admin-overview-stats');if(message)message.textContent='در حال دریافت آمار…';
   try{
-   const [all,approved,pending,suspended,pendingApps,allApps,events,rows,recent]=await Promise.all([
+   const {data:sessionData,error:sessionError}=await db.auth.getSession();
+   if(sessionError)throw sessionError;
+   const token=sessionData?.session?.access_token;
+   let unconfirmedMembers=0;
+   if(token){
+    const {data:emailAudit,error:emailAuditError}=await db.functions.invoke('admin-incomplete-registrations',{
+     headers:{Authorization:'Bearer '+token},body:{action:'unconfirmed_members'}
+    });
+    if(!emailAuditError&&emailAudit?.ok)unconfirmedMembers=Number(emailAudit.count||emailAudit.records?.length||0);
+    else console.warn('Could not load unconfirmed member email count:',emailAuditError||emailAudit?.error);
+   }
+   const [all,approved,pending,suspended,pendingApps,allApps,events,rows,recent,pendingPhotoResult]=await Promise.all([
     count('rls_profiles'),count('rls_profiles','membership_status','approved'),count('rls_profiles','membership_status','pending'),count('rls_profiles','membership_status','suspended'),
-    count('rls_membership_applications','status','pending'),count('rls_membership_applications'),count('rls_events','status','approved'),
+    count('rls_membership_applications','status','pending'),count('rls_membership_applications'),count('rls_events','status','published'),
     db.from('rls_profiles').select('created_at').gte('created_at',new Date(Date.now()-183*86400000).toISOString()).order('created_at',{ascending:true}).limit(3000),
-    db.from('rls_profiles').select('full_name,display_name,created_at,membership_status').order('created_at',{ascending:false}).limit(6)
+    db.from('rls_profiles').select('full_name,display_name,created_at,membership_status').order('created_at',{ascending:false}).limit(6),
+    db.from('rls_profiles').select('user_id',{count:'exact',head:true}).not('pending_avatar_path','is',null)
    ]);
-   if(rows.error)throw rows.error;if(recent.error)throw recent.error;
-   const cards=[['کل پرونده‌های اعضا',all],['اعضای تأییدشده',approved],['در انتظار بررسی پروفایل',pending],['عضویت‌های تعلیق‌شده',suspended],['درخواست‌های مستقل در انتظار',pendingApps],['کل درخواست‌های مستقل',allApps],['رویدادهای منتشرشده',events]];
+   if(rows.error)throw rows.error;if(recent.error)throw recent.error;if(pendingPhotoResult.error)throw pendingPhotoResult.error;
+   const pendingPhotos=pendingPhotoResult.count||0;
+   const cards=[['کل پرونده‌های اعضا',all],['اعضای تأییدشده',approved],['در انتظار بررسی پروفایل',pending],['عضویت‌های تعلیق‌شده',suspended],['درخواست‌های مستقل در انتظار',pendingApps],['کل درخواست‌های مستقل',allApps],['رویدادهای منتشرشده',events],['ایمیل‌های تأییدنشده',unconfirmedMembers],['عکس‌های در انتظار تأیید',pendingPhotos]];
    if(stats)stats.innerHTML=cards.map(([l,v])=>'<div class="admin-stat-card"><span>'+esc(l)+'</span><strong>'+num(v)+'</strong></div>').join('');
+   const alerts=[];
+   if(pending>0||pendingApps>0)alerts.push('<article class="admin-alert admin-alert--warning"><div><strong>درخواست‌های عضویت نیازمند بررسی</strong><p>'+num(pending)+' پروفایل و '+num(pendingApps)+' درخواست مستقل در انتظار تصمیم هستند.</p></div><button type="button" data-admin-target="members" data-admin-filter="pending">بررسی درخواست‌ها</button></article>');
+   if(unconfirmedMembers>0)alerts.push('<article class="admin-alert admin-alert--warning"><div><strong>ایمیل اعضا تأیید نشده است</strong><p>'+num(unconfirmedMembers)+' عضو تأییدشده هنوز نشانی ایمیل خود را در حساب کاربری تأیید نکرده‌اند.</p></div><button type="button" data-admin-target="members" data-admin-filter="email_unconfirmed">مشاهده اعضا</button></article>');
+   if(pendingPhotos>0)alerts.push('<article class="admin-alert admin-alert--info"><div><strong>عکس‌های جدید در انتظار تأیید</strong><p>'+num(pendingPhotos)+' عکس بارگذاری‌شده باید بررسی شوند.</p></div><button type="button" data-admin-target="members" data-admin-filter="photo_pending">بررسی عکس‌ها</button></article>');
+   if(!alerts.length)alerts.push('<p class="admin-all-clear">در حال حاضر موردی برای پیگیری فوری در صف مدیریت وجود ندارد.</p>');
+   if($('admin-overview-alerts'))$('admin-overview-alerts').innerHTML=alerts.join('');
+   const actions=[
+    ['درخواست‌های عضویت','بررسی و تصمیم‌گیری','members','pending'],
+    ['ثبت‌نام‌های ناقص','بازیابی پرونده‌های بدون درخواست','members','incomplete'],
+    ['رویداد جدید','ثبت و انتشار اطلاعیه','events',''],
+    ['ارسال پیام همگانی','ارسال و آرشیو ایمیل','broadcast',''],
+    ['آرشیو ایمیل‌ها','پیگیری وضعیت ارسال','email-archive','']
+   ];
+   if($('admin-overview-actions'))$('admin-overview-actions').innerHTML=actions.map(([title,desc,target,filter])=>'<button type="button" class="admin-quick-action" data-admin-target="'+target+'" data-admin-filter="'+filter+'"><strong>'+esc(title)+'</strong><span>'+esc(desc)+'</span></button>').join('');
+
    const months=[],now=new Date();for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleDateString('fa-IR',{month:'short',year:'2-digit'}),count:0});}
    (rows.data||[]).forEach(r=>{if(!r.created_at)return;const d=new Date(r.created_at),m=months.find(x=>x.key===d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));if(m)m.count++;});
    const max=Math.max(1,...months.map(m=>m.count));if($('admin-signup-chart'))$('admin-signup-chart').innerHTML=months.map(m=>'<div class="admin-chart-row"><span>'+esc(m.label)+'</span><div class="admin-chart-track"><div class="admin-chart-fill" style="width:'+Math.round(m.count/max*100)+'%"></div></div><b>'+num(m.count)+'</b></div>').join('');
    if($('admin-recent-members'))$('admin-recent-members').innerHTML=(recent.data||[]).map(p=>'<div class="admin-recent-item"><div><strong>'+esc(p.full_name||p.display_name||'عضو انجمن')+'</strong><small>'+esc(states[p.membership_status]||p.membership_status||'')+'</small></div><small>'+esc(p.created_at?new Date(p.created_at).toLocaleDateString('fa-IR'):'—')+'</small></div>').join('')||'هنوز عضوی ثبت نشده است.';
-   if(message)message.textContent='';overviewLoaded=true;
+   if(message)message.textContent='آخرین به‌روزرسانی: '+new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});overviewLoaded=true;
   }catch(e){console.error(e);if(message)message.textContent='دریافت آمار ناموفق بود: '+(e.message||'خطای نامشخص');}
  }
  function value(v){if(v===null||v===undefined||v==='')return '—';if(typeof v==='boolean')return v?'بله':'خیر';return states[String(v)]||String(v);}
@@ -71,6 +99,21 @@
   }catch(e){details.textContent='خطا در دریافت گیرندگان: '+(e.message||'خطای نامشخص');details.hidden=false;button.textContent='بستن جزئیات';}finally{button.disabled=false;}
  }
  document.addEventListener('click',e=>{const b=e.target.closest('.admin-campaign-toggle');if(b)showDetails(b);});
+ document.getElementById('admin-overview-refresh')?.addEventListener('click',()=>{overviewLoaded=false;loadOverview();});
+ document.addEventListener('click',e=>{
+  const button=e.target.closest('[data-admin-target]');
+  if(!button)return;
+  const target=button.dataset.adminTarget||'';
+  const filter=button.dataset.adminFilter||'';
+  document.querySelector('#admin-dashboard [data-admin-section="'+target+'"]')?.click();
+  if(filter){
+   const filterButton=document.querySelector('#admin-members-section [data-status="'+filter+'"]');
+   if(filterButton)setTimeout(()=>{filterButton.click();document.getElementById('admin-list')?.scrollIntoView({behavior:'smooth',block:'start'});},0);
+  }else{
+   const targetId=target==='events'?'admin-event-form':target==='broadcast'?'admin-broadcast-form':target==='email-archive'?'admin-email-archive-list':'';
+   if(targetId)setTimeout(()=>document.getElementById(targetId)?.scrollIntoView({behavior:'smooth',block:'start'}),0);
+  }
+ });
  $('admin-history-search')?.addEventListener('input',renderHistory);$('admin-history-refresh')?.addEventListener('click',loadHistory);$('admin-email-archive-refresh')?.addEventListener('click',()=>{loadArchive();loadEventEmailLogs();});
  window.addEventListener('rls-admin-section-change',e=>{const s=e.detail?.section;if(s==='overview'&&!overviewLoaded)loadOverview();if(s==='history')loadHistory();if(s==='email-archive'){loadArchive();loadEventEmailLogs();}});
  window.addEventListener('rls-admin-broadcast-sent',()=>{if(!$('admin-email-archive-panel')?.hidden)loadArchive();});
