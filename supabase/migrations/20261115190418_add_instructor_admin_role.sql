@@ -1,0 +1,1 @@
+ALTER TYPE public.rls_user_role ADD VALUE IF NOT EXISTS 'instructor_admin';
