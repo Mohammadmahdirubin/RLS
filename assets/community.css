@@ -3398,6 +3398,22 @@ body.council-card-lightbox-open{overflow:hidden}
 .council-card-lightbox{
   pointer-events:none!important;
   cursor:default!important;
+  background:rgba(13,17,24,.42)!important;
 }
-.council-card-lightbox img{pointer-events:none!important}
+.council-card-lightbox img{
+  pointer-events:none!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:50vw!important;
+  max-height:50vh!important;
+  border-radius:6px!important;
+  box-shadow:0 10px 32px rgba(0,0,0,.35)!important;
+}
 .council-card-lightbox-close{display:none!important}
+@media(max-width:600px){
+  .council-card-lightbox{padding:10px!important}
+  .council-card-lightbox img{
+    max-width:70vw!important;
+    max-height:50vh!important;
+  }
+}
