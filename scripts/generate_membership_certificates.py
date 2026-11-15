@@ -246,14 +246,27 @@ def main() -> None:
             f"{filename} ({output.stat().st_size} bytes)"
         )
 
+    sorted_entries = dict(sorted(new_entries.items()))
+    previous_design = old_manifest.get("design")
+    previous_entries = old_manifest.get("certificates", {})
+    content_changed = (
+        previous_design != DESIGN_VERSION
+        or previous_entries != sorted_entries
+        or not MANIFEST_FILE.exists()
+    )
+
     manifest = {
         "schema": 1,
         "design": DESIGN_VERSION,
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-        "certificates": dict(sorted(new_entries.items())),
+        "updated_at": (
+            datetime.now(timezone.utc).isoformat()
+            if content_changed
+            else old_manifest.get("updated_at")
+        ),
+        "certificates": sorted_entries,
     }
     serialized = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
-    if not MANIFEST_FILE.exists() or MANIFEST_FILE.read_text(encoding="utf-8") != serialized:
+    if content_changed or MANIFEST_FILE.read_text(encoding="utf-8") != serialized:
         MANIFEST_FILE.write_text(serialized, encoding="utf-8")
     print(f"Done: {generated} generated, {skipped} unchanged. Certificate files are reusable until source data changes.")
 
