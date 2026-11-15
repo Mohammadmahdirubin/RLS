@@ -146,6 +146,42 @@
     }
   }
 
+  async function loadUnconfirmedMembers(){
+    list.textContent='در حال بررسی وضعیت تأیید ایمیل اعضا…';
+    try{
+      const {data:sessionData,error:sessionError}=await client.auth.getSession();
+      if(sessionError)throw sessionError;
+      const token=sessionData?.session?.access_token;
+      if(!token)throw new Error('نشست مدیر در دسترس نیست؛ دوباره وارد شوید.');
+      const {data:result,error}=await client.functions.invoke('admin-incomplete-registrations',{
+        headers:{Authorization:'Bearer '+token},
+        body:{action:'unconfirmed_members'}
+      });
+      if(error||!result?.ok)throw error||new Error(result?.error||'دریافت فهرست ایمیل‌های تأییدنشده ناموفق بود.');
+      const records=Array.isArray(result.records)?result.records:[];
+      if(!records.length){
+        list.textContent='همه اعضای تأییدشده دارای ایمیل تأییدشده هستند.';
+        applyAdminSearch();
+        return;
+      }
+      list.innerHTML=records.map(item=>
+        '<article class="admin-member admin-email-unconfirmed" data-unconfirmed-user-id="'+esc(item.user_id)+'">'+
+          '<h3>'+esc(item.full_name||'عضو انجمن')+'</h3>'+
+          '<div class="admin-meta">شماره عضویت: '+esc(String(item.member_number||'—').padStart(6,'0'))+
+          '<br>ایمیل: <span dir="ltr">'+esc(item.email||'—')+'</span>'+
+          '<br>وضعیت: <b class="admin-incomplete-warning">ایمیل هنوز در حساب کاربری تأیید نشده است</b>'+
+          '<br>تاریخ عضویت: '+(item.created_at?new Date(item.created_at).toLocaleDateString('fa-IR'):'—')+'</div>'+
+          '<p class="admin-meta">عضویت این شخص تأیید شده است؛ این فهرست فقط برای پیگیری دسترسی ورود و تأیید نشانی ایمیل است و وضعیت عضویت را تغییر نمی‌دهد.</p>'+
+          '<button type="button" class="community-search-btn" data-copy-member-email="'+esc(item.email||'')+'">کپی نشانی ایمیل</button>'+
+        '</article>'
+      ).join('');
+      applyAdminSearch();
+    }catch(error){
+      console.error('Unconfirmed member email list failed:',error);
+      list.textContent='دریافت فهرست ایمیل‌های تأییدنشده ناموفق بود: '+(error?.message||'خطای نامشخص');
+    }
+  }
+
   async function loadApplications(){
     list.textContent='در حال دریافت درخواست‌های مستقل…';
     const {data,error}=await client.from('rls_membership_applications')
@@ -214,6 +250,7 @@
     if(status==='certificates'){await loadCertificates();return;}
     if(status==='applications'){await loadApplications();return;}
     if(status==='incomplete'){await loadIncompleteRegistrations();return;}
+    if(status==='email_unconfirmed'){await loadUnconfirmedMembers();return;}
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
       .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
@@ -383,6 +420,17 @@
     load();
   }));
   list.addEventListener('click',async e=>{
+    const copyEmailButton=e.target.closest('[data-copy-member-email]');
+    if(copyEmailButton){
+      const email=copyEmailButton.dataset.copyMemberEmail||'';
+      try{
+        await navigator.clipboard.writeText(email);
+        copyEmailButton.textContent='نشانی ایمیل کپی شد';
+      }catch(error){
+        copyEmailButton.textContent='کپی نشد؛ ایمیل را دستی انتخاب کنید';
+      }
+      return;
+    }
     const evidenceButton=e.target.closest('[data-evidence-path]');
     if(evidenceButton){
       e.preventDefault();
@@ -518,6 +566,7 @@
     }
     moderate(card.dataset.id,b.dataset.action,card);
   });
+  document.getElementById('admin-list-refresh')?.addEventListener('click',()=>load());
   document.getElementById('admin-logout').addEventListener('click',async()=>{
     await client.auth.signOut();await checkAdmin();
   });
