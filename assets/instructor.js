@@ -3,10 +3,26 @@
  const db=window.RLS_SUPABASE_CLIENT||window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.RLS_SUPABASE_CLIENT=db;
  const login=document.getElementById('instructor-login'),dash=document.getElementById('instructor-dashboard'),loginForm=document.getElementById('instructor-login-form'),loginMsg=document.getElementById('instructor-login-message');
  const form=document.getElementById('instructor-event-form'),list=document.getElementById('instructor-event-list'),msg=document.getElementById('instructor-event-message'),stats=document.getElementById('instructor-stats'),attPanel=document.getElementById('instructor-attendance-panel');
- let user=null,events=[];
+ let user=null,events=[],googleConnected=false;
+ const createMeetBtn=document.getElementById('instructor-create-meet'),meetMessage=document.getElementById('instructor-meet-message');
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const label={webinar:'وبینار',seminar:'سمینار',conference:'همایش',workshop:'کارگاه',course:'دوره آموزشی',other:'اطلاعیه'};
  const dt=v=>v?new Date(v).toLocaleString('fa-IR'):'—';
+ function updateMeetingControls(){
+  if(!createMeetBtn)return;
+  const platform=form.elements.webinar_platform?.value||'google_meet';
+  const mode=form.elements.webinar_mode;
+  const embedded=mode?Array.from(mode.options).find(o=>o.value==='embedded'):null;
+  if(platform==='google_meet'&&mode&&mode.value==='embedded')mode.value='external';
+  if(embedded)embedded.disabled=platform==='google_meet';
+  const isGoogle=form.elements.event_type?.value==='webinar'&&platform==='google_meet';
+  createMeetBtn.hidden=!isGoogle;
+  createMeetBtn.disabled=!isGoogle||!form.elements.event_id.value||!googleConnected;
+  const hint=document.getElementById('instructor-meet-hint');
+  if(hint)hint.textContent=platform==='google_meet'
+   ?'برای Google Meet، ابتدا وبینار را ذخیره کنید؛ سپس از دکمه ساخت جلسه استفاده کنید. لینک فقط برای ثبت‌نام‌کنندگان تأییدشده در زمان مجاز نمایش داده می‌شود.'
+   :'برای این بستر، لینک جلسه را در صورت نیاز به‌صورت دستی وارد کنید.';
+ }
  async function authorize(){
   const {data:{session}}=await db.auth.getSession();if(!session){login.hidden=false;dash.hidden=true;return;}
   const {data:role,error}=await db.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
@@ -19,8 +35,10 @@
   statusEl.textContent='در حال بررسی وضعیت اتصال…';
   const {data,error}=await db.functions.invoke('google-meet-connection-status',{method:'GET'});
   if(error){statusEl.textContent='وضعیت اتصال قابل دریافت نیست.';messageEl.textContent=error.message||'خطای ارتباط با سرویس';return;}
+  googleConnected=!!data?.connected;
   if(data?.connected){statusEl.textContent='متصل به حساب Google: '+(data.google_email||'حساب متصل‌شده');connectBtn.textContent='اتصال مجدد حساب Google';}
   else{statusEl.textContent='هنوز حساب Google برای این مدرس متصل نشده است.';connectBtn.textContent='اتصال حساب Google';}
+  updateMeetingControls();
   const params=new URLSearchParams(window.location.search),result=params.get('google_meet');
   const messages={connected:'اتصال Google Meet با موفقیت انجام شد.',cancelled:'فرایند اتصال توسط شما لغو شد.',invalid_state:'درخواست اتصال منقضی یا نامعتبر بود؛ دوباره تلاش کنید.',not_configured:'تنظیمات OAuth هنوز کامل نشده است.',token_exchange_failed:'تأیید حساب Google ناموفق بود؛ تنظیمات OAuth را بررسی کنید.',refresh_token_missing:'گوگل مجوز دسترسی پایدار صادر نکرد؛ اتصال را دوباره انجام دهید.',save_failed:'ذخیره امن اتصال ناموفق بود.',failed:'اتصال Google Meet انجام نشد.'};
   if(result){messageEl.textContent=messages[result]||'نتیجه اتصال: '+result;params.delete('google_meet');const next=window.location.pathname+(params.toString()?'?'+params.toString():'')+window.location.hash;window.history.replaceState({},document.title,next);}
@@ -33,6 +51,25 @@
  });
  const googleRefreshBtn=document.getElementById('instructor-google-refresh');
  if(googleRefreshBtn)googleRefreshBtn.addEventListener('click',loadGoogleMeetStatus);
+ if(createMeetBtn)createMeetBtn.addEventListener('click',async()=>{
+  const eventId=String(form.elements.event_id.value||'');
+  if(!eventId){meetMessage.textContent='ابتدا وبینار را به‌صورت پیش‌نویس ذخیره کنید و سپس آن را ویرایش کنید.';return;}
+  if(!googleConnected){meetMessage.textContent='ابتدا حساب Google را از بخش اتصال Google Meet متصل کنید.';return;}
+  if(form.elements.webinar_platform.value!=='google_meet'||form.elements.webinar_mode.value==='embedded'){meetMessage.textContent='برای ساخت جلسه، بستر Google Meet و شیوه لینک خارجی را انتخاب کنید.';return;}
+  createMeetBtn.disabled=true;meetMessage.textContent='در حال ساخت جلسه در Google Meet…';
+  try{
+   const {data,error}=await db.functions.invoke('google-meet-create-space',{body:{event_id:eventId}});
+   if(error)throw error;
+   if(!data?.meeting_url)throw new Error(data?.error||'لینک جلسه از Google دریافت نشد.');
+   form.elements.meeting_url.value=data.meeting_url;
+   meetMessage.textContent=data.already_exists?'لینک جلسه قبلی بازیابی شد.':'جلسه با موفقیت ساخته و لینک آن ذخیره شد.';
+   await load();
+  }catch(error){
+   meetMessage.textContent='ساخت جلسه ناموفق بود: '+(error.message||'خطای نامشخص');
+  }finally{updateMeetingControls();}
+ });
+ ['webinar_platform','webinar_mode','event_type'].forEach(name=>form.elements[name]?.addEventListener('change',updateMeetingControls));
+ updateMeetingControls();
  async function load(){
   list.textContent='در حال دریافت برنامه‌ها…';
   const {data,error}=await db.from('rls_events').select('*').eq('created_by',user.id).order('created_at',{ascending:false});
@@ -51,20 +88,20 @@
    return '<article class="instructor-row" data-id="'+esc(e.id)+'"><div><strong>'+esc(e.title)+'</strong><p>'+esc(label[e.event_type]||e.event_type)+' · '+(e.status==='published'?'منتشرشده':e.status==='archived'?'آرشیو':'پیش‌نویس')+' · '+n+' ثبت‌نام · '+an+' حاضر</p></div><div class="instructor-row-actions"><button type="button" data-edit>ویرایش</button>'+(e.event_type==='webinar'?'<button type="button" data-attendees>شرکت‌کنندگان</button>':'')+'<button type="button" data-archive>'+ (e.status==='archived'?'بازگردانی':'آرشیو')+'</button></div></article>';
   }).join('');
  }
- function reset(){form.reset();form.elements.event_id.value='';document.getElementById('instructor-form-heading').textContent='ایجاد وبینار یا اطلاعیه';msg.textContent='';}
+ function reset(){form.reset();form.elements.event_id.value='';document.getElementById('instructor-form-heading').textContent='ایجاد وبینار یا اطلاعیه';msg.textContent='';if(meetMessage)meetMessage.textContent='';updateMeetingControls();}
  form.addEventListener('submit',async e=>{
   e.preventDefault();const fd=new FormData(form),id=String(fd.get('event_id')||''),file=fd.get('poster'),title=String(fd.get('title')||'').trim(),description=String(fd.get('description')||'').trim();
   if(title.length<3||description.length<3){msg.textContent='عنوان و توضیحات را کامل وارد کنید.';return;}
   if(file&&file.size&&(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>10485760)){msg.textContent='فرمت یا حجم پوستر مجاز نیست.';return;}
   const submit=form.querySelector('[type=submit]');submit.disabled=true;
   try{
-   const type=String(fd.get('event_type')),payload={title,description,event_type:type,event_date:fd.get('event_date')||null,event_time:String(fd.get('event_time')||'').trim()||null,location:String(fd.get('location')||'').trim()||null,registration_url:String(fd.get('registration_url')||'').trim()||null,webinar_mode:fd.get('webinar_mode'),webinar_platform:fd.get('webinar_platform'),capacity:fd.get('capacity')?Number(fd.get('capacity')):null,starts_at:fd.get('starts_at')?new Date(fd.get('starts_at')).toISOString():null,ends_at:fd.get('ends_at')?new Date(fd.get('ends_at')).toISOString():null,registration_enabled:fd.get('registration_enabled')==='true',status:fd.get('status'),published_at:fd.get('status')==='published'?new Date().toISOString():null,updated_at:new Date().toISOString()};
+   const type=String(fd.get('event_type')),desiredStatus=String(e.submitter?.dataset.saveStatus||'draft'),payload={title,description,event_type:type,event_date:fd.get('event_date')||null,event_time:String(fd.get('event_time')||'').trim()||null,location:String(fd.get('location')||'').trim()||null,registration_url:String(fd.get('registration_url')||'').trim()||null,webinar_mode:fd.get('webinar_mode'),webinar_platform:fd.get('webinar_platform'),capacity:fd.get('capacity')?Number(fd.get('capacity')):null,starts_at:fd.get('starts_at')?new Date(fd.get('starts_at')).toISOString():null,ends_at:fd.get('ends_at')?new Date(fd.get('ends_at')).toISOString():null,registration_enabled:fd.get('registration_enabled')==='true',status:desiredStatus,published_at:desiredStatus==='published'?new Date().toISOString():null,updated_at:new Date().toISOString()};
    let saved;
    if(id){const r=await db.from('rls_events').update(payload).eq('id',id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;saved=r.data;}
    else{const r=await db.from('rls_events').insert({...payload,created_by:user.id}).select('*').single();if(r.error)throw r.error;saved=r.data;}
    const meetingUrl=String(fd.get('meeting_url')||'').trim();if(type==='webinar'&&meetingUrl){const ir=await db.from('rls_webinar_integrations').upsert({event_id:saved.id,meeting_url:meetingUrl,created_by:user.id,updated_at:new Date().toISOString()},{onConflict:'event_id'});if(ir.error)throw ir.error;}else if(type==='webinar'){const ir=await db.from('rls_webinar_integrations').delete().eq('event_id',saved.id);if(ir.error)throw ir.error;}
    if(file&&file.size){const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg',path=saved.id+'/'+crypto.randomUUID()+'.'+ext;const up=await db.storage.from('rls-event-posters').upload(path,file,{contentType:file.type,upsert:false});if(up.error)throw up.error;const r=await db.from('rls_events').update({poster_path:path}).eq('id',saved.id).eq('created_by',user.id).select('*').single();if(r.error)throw r.error;}
-   msg.textContent=payload.status==='published'?'محتوا مستقیماً منتشر شد.':'پیش‌نویس ذخیره شد.';reset();await load();
+   reset();msg.textContent=payload.status==='published'?'برنامه با موفقیت منتشر شد.':'پیش‌نویس ذخیره شد.';await load();
   }catch(err){console.error(err);msg.textContent='ذخیره انجام نشد: '+(err.message||'خطای نامشخص');}
   finally{submit.disabled=false;}
  });
@@ -75,7 +112,7 @@
    const {data:integration,error:integrationError}=await db.from('rls_webinar_integrations').select('meeting_url').eq('event_id',ev.id).maybeSingle();
    if(integrationError){msg.textContent='دریافت لینک جلسه ناموفق بود: '+integrationError.message;return;}
    Object.entries({event_id:ev.id,title:ev.title,event_type:ev.event_type,event_date:ev.event_date||'',event_time:ev.event_time||'',location:ev.location||'',registration_url:ev.registration_url||'',webinar_mode:ev.webinar_mode||'external',webinar_platform:ev.webinar_platform||'google_meet',meeting_url:integration?.meeting_url||'',capacity:ev.capacity||'',starts_at:ev.starts_at?new Date(ev.starts_at).toISOString().slice(0,16):'',ends_at:ev.ends_at?new Date(ev.ends_at).toISOString().slice(0,16):'',status:ev.status,registration_enabled:String(ev.registration_enabled!==false),description:ev.description}).forEach(([k,v])=>{if(form.elements[k])form.elements[k].value=v;});
-   document.getElementById('instructor-form-heading').textContent='ویرایش: '+ev.title;form.scrollIntoView({behavior:'smooth'});return;
+   document.getElementById('instructor-form-heading').textContent='ویرایش: '+ev.title;updateMeetingControls();if(meetMessage)meetMessage.textContent=integration?.meeting_url?'برای این وبینار لینک جلسه ثبت شده است.':'';form.scrollIntoView({behavior:'smooth'});return;
   }
   if(e.target.closest('[data-archive]')){const next=ev.status==='archived'?'published':'archived';const r=await db.from('rls_events').update({status:next,updated_at:new Date().toISOString()}).eq('id',ev.id).eq('created_by',user.id);if(r.error){msg.textContent='تغییر وضعیت ناموفق بود: '+r.error.message;return;}await load();return;}
   if(e.target.closest('[data-attendees]'))await showAttendees(ev);
