@@ -3443,3 +3443,37 @@ body .council-card-lightbox::after{
   background:transparent!important;
 }
 body.council-card-lightbox-open{overflow:visible!important}
+
+
+/* Rotating pink neon halo around the portrait in the enlarged council-card preview. */
+.council-neon-ring{
+  position:fixed;
+  z-index:100001;
+  display:block;
+  box-sizing:border-box;
+  border:3px solid transparent;
+  border-radius:50%;
+  background:
+    linear-gradient(transparent,transparent) padding-box,
+    conic-gradient(from 0deg,
+      rgba(255,72,183,.08) 0deg,
+      #ff36b8 62deg,
+      #ff9de0 112deg,
+      #e60091 178deg,
+      rgba(255,72,183,.12) 238deg,
+      #ff55c8 310deg,
+      rgba(255,72,183,.08) 360deg) border-box;
+  box-shadow:
+    0 0 7px rgba(255,54,184,.82),
+    0 0 16px rgba(255,54,184,.58),
+    inset 0 0 7px rgba(255,110,207,.22);
+  filter:drop-shadow(0 0 5px rgba(255,40,175,.8));
+  pointer-events:none;
+  animation:council-neon-orbit 3.6s linear infinite;
+}
+@keyframes council-neon-orbit{
+  to{transform:rotate(360deg)}
+}
+@media(prefers-reduced-motion:reduce){
+  .council-neon-ring{animation:none}
+}
