@@ -3591,3 +3591,10 @@ body.council-card-lightbox-open{overflow:auto!important}
   body.nav-open .community-nav-header .main-nav,
   html.nav-open .community-nav-header .main-nav{display:flex!important}
 }
+
+@media(max-width:900px){
+  html.nav-open .community-nav-header .main-nav,
+  body.nav-open .community-nav-header .main-nav{
+    top:48px!important;
+  }
+}
