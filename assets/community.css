@@ -204,6 +204,10 @@
 .membership-card input[type=file],#member-session input[type=file]{padding:8px;background:#fbfaf8;font-size:12px}
 .membership-card small,#member-session small{color:#817677;font-size:11px;font-weight:400;line-height:1.7}
 .membership-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.membership-social-two{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+.membership-social-two label{min-width:0}
+.membership-social-two input{font-size:12px}
+.membership-social-heading{margin:7px 0 -3px;color:#75686a;font-size:12px;font-weight:750;line-height:1.7}
 .membership-consent{display:flex!important;align-items:flex-start;gap:9px!important;font-weight:550!important;line-height:1.8}
 .membership-consent input{flex:0 0 17px;width:17px;height:17px;margin:3px 0 0;accent-color:var(--community-primary)}
 .membership-card button.community-button,.member-profile-edit button.community-button{width:100%}
