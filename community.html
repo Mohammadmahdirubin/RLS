@@ -154,14 +154,36 @@
   var large=dialog.querySelector('img');
   var activeTrigger=null;
   var touchMode=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+  function placePreview(trigger){
+    if(!trigger||dialog.hidden)return;
+    var rect=trigger.getBoundingClientRect();
+    var maxW=Math.min(window.innerWidth*.5,900);
+    var maxH=window.innerHeight*.5;
+    var ratio=(large.naturalWidth&&large.naturalHeight)?large.naturalWidth/large.naturalHeight:1;
+    var w=Math.min(maxW,maxH*ratio);
+    var h=w/ratio;
+    if(h>maxH){h=maxH;w=h*ratio;}
+    var left=rect.left+rect.width/2-w/2;
+    left=Math.max(8,Math.min(left,window.innerWidth-w-8));
+    var top=rect.top-h-12;
+    if(top<8)top=Math.min(window.innerHeight-h-8,rect.bottom+12);
+    top=Math.max(8,top);
+    large.style.width=w+'px';
+    large.style.height=h+'px';
+    large.style.left=left+'px';
+    large.style.top=top+'px';
+  }
   function open(trigger,card){
-    if(activeTrigger===trigger&&!dialog.hidden)return;
+    if(activeTrigger===trigger&&!dialog.hidden){placePreview(trigger);return;}
     activeTrigger=trigger;
+    large.removeAttribute('style');
     large.src=card.currentSrc||card.src;
     large.alt=card.alt||'کارت انجمن';
     dialog.hidden=false;
     trigger.setAttribute('aria-expanded','true');
     document.body.classList.add('council-card-lightbox-open');
+    if(large.complete)placePreview(trigger);
+    else large.onload=function(){if(activeTrigger===trigger)placePreview(trigger);};
   }
   function close(){
     if(dialog.hidden)return;
@@ -190,7 +212,8 @@
     });
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
-  window.addEventListener('resize',close);
+  window.addEventListener('resize',function(){if(activeTrigger)placePreview(activeTrigger);});
+  window.addEventListener('scroll',function(){if(activeTrigger)placePreview(activeTrigger);},{passive:true});
 })();
 </script>
 </body></html>
