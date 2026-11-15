@@ -3482,3 +3482,34 @@ body.council-card-lightbox-open{overflow:visible!important}
 @media(prefers-reduced-motion:reduce){
   .council-neon-ring{animation:none}
 }
+
+
+/* Lightweight association-only header: text link, no logo, menu, images or effects. */
+.community-lite-header{
+  box-sizing:border-box;
+  width:100%;
+  min-height:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  padding:0 clamp(14px,3vw,32px);
+  margin:0;
+  background:#fff;
+  border-bottom:1px solid #e8edf2;
+  box-shadow:none;
+}
+.community-lite-header a{
+  display:inline-flex;
+  align-items:center;
+  min-height:42px;
+  color:#173d67;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.4;
+  text-decoration:none;
+}
+.community-lite-header a:focus-visible{
+  outline:2px solid #b68a42;
+  outline-offset:3px;
+  border-radius:3px;
+}
