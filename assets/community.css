@@ -3398,7 +3398,7 @@ body.council-card-lightbox-open{overflow:hidden}
 .council-card-lightbox{
   pointer-events:none!important;
   cursor:default!important;
-  background:rgba(13,17,24,.42)!important;
+  background:transparent!important;
 }
 .council-card-lightbox img{
   pointer-events:none!important;
