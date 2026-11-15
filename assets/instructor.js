@@ -22,8 +22,8 @@
    const [r,a]=await Promise.all([db.from('rls_webinar_registrations').select('id,event_id,user_id,status').in('event_id',ids),db.from('rls_webinar_attendance').select('id,event_id,user_id,joined_at,left_at').in('event_id',ids)]);
    if(!r.error)regs=r.data||[];if(!a.error)att=a.data||[];
   }
-  const webinars=events.filter(e=>e.event_type==='webinar');
-  const durations=att.filter(x=>x.left_at&&x.joined_at).map(x=>Math.max(0,(new Date(x.left_at)-new Date(x.joined_at))/60000));const avgDuration=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;\n  stats.innerHTML=[['کل برنامه‌ها',events.length],['وبینارها',webinars.length],['ثبت‌نام‌ها',regs.filter(x=>x.status!=='cancelled').length],['شرکت‌کنندگان ثبت‌شده',new Set(att.map(x=>x.user_id)).size],['میانگین مدت حضور',avgDuration?avgDuration+' دقیقه':'—']].map(([k,v])=>'<div class="instructor-stat"><strong>'+v+'</strong><span>'+k+'</span></div>').join('');
+  const webinars=events.filter(e=>e.event_type==='webinar');const sessionsHeld=webinars.filter(e=>e.event_date&&new Date(e.event_date+'T23:59:59')<new Date()).length;const sessionsUpcoming=webinars.filter(e=>e.status==='published'&&(!e.event_date||new Date(e.event_date+'T23:59:59')>=new Date())).length;
+  const durations=att.filter(x=>x.left_at&&x.joined_at).map(x=>Math.max(0,(new Date(x.left_at)-new Date(x.joined_at))/60000));const avgDuration=durations.length?Math.round(durations.reduce((a,b)=>a+b,0)/durations.length):0;\n  stats.innerHTML=[['کل برنامه‌ها',events.length],['وبینارها',webinars.length],['جلسات برگزارشده',sessionsHeld],['جلسات پیش‌رو',sessionsUpcoming],['ثبت‌نام‌ها',regs.filter(x=>x.status!=='cancelled').length],['شرکت‌کنندگان ثبت‌شده',new Set(att.map(x=>x.user_id)).size],['میانگین مدت حضور',avgDuration?avgDuration+' دقیقه':'—']].map(([k,v])=>'<div class="instructor-stat"><strong>'+v+'</strong><span>'+k+'</span></div>').join('');
   if(!events.length){list.innerHTML='<p>هنوز برنامه‌ای ایجاد نکرده‌اید.</p>';return;}
   list.innerHTML=events.map(e=>{
    const n=regs.filter(x=>x.event_id===e.id&&x.status!=='cancelled').length,an=new Set(att.filter(x=>x.event_id===e.id).map(x=>x.user_id)).size;
