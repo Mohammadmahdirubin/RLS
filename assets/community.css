@@ -3350,3 +3350,45 @@
   object-fit:cover!important;
   object-position:center!important;
 }
+
+
+/* Founder card: open the existing optimized asset in a viewport-sized lightbox.
+   This avoids enlarging the small card with a CSS transform. */
+#association-council .council-profile-card.is-zoomed,
+#association-council .council-profile-card:hover{
+  transform:none!important;
+  box-shadow:none!important;
+}
+#association-council .council-profile-card img[src*="rls-council-card-under-1mb.webp"]{
+  cursor:zoom-in;
+}
+#association-council .council-profile-card[role="button"]:focus-visible{
+  outline:3px solid #b68a42!important;
+  outline-offset:3px;
+}
+.council-card-lightbox[hidden]{display:none!important}
+.council-card-lightbox{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  padding:22px;box-sizing:border-box;
+  background:rgba(13,17,24,.92);
+  cursor:zoom-out;
+}
+.council-card-lightbox img{
+  display:block;width:auto;height:auto;
+  max-width:min(96vw,900px);max-height:94vh;
+  object-fit:contain;object-position:center;
+  border-radius:4px;box-shadow:0 14px 48px rgba(0,0,0,.45);
+  cursor:default;
+}
+.council-card-lightbox-close{
+  position:absolute;top:12px;right:14px;
+  width:42px;height:42px;border:1px solid rgba(255,255,255,.55);
+  border-radius:50%;background:rgba(20,24,32,.75);
+  color:#fff;font-size:30px;line-height:1;cursor:pointer;
+}
+body.council-card-lightbox-open{overflow:hidden}
+@media(max-width:600px){
+  .council-card-lightbox{padding:12px}
+  .council-card-lightbox img{max-width:96vw;max-height:90vh}
+}
