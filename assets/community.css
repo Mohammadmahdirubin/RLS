@@ -439,14 +439,14 @@
 .community-member--researcher{background:#e8f2ff;border-color:#bfd5f5}
 .community-member--translator{background:#fff7d9;border-color:#eadb9b}
 .community-member--culture{background:#ffeded;border-color:#efc1c1}
-.community-member--honorary{background:#fff0df;border-color:#e8c99e}
+.community-member--honorary{background:#ffe0e3;border-color:#e58b98}
 .community-member--student .member-category--student{background:#e5d5fb;border-color:#c8a9ed;color:#58358a}
 .community-member--graduate .member-category--graduate{background:#c9f0e9;border-color:#8bd4c6;color:#17695d}
 .community-member--faculty .member-category--faculty{background:#afd5a9;border-color:#80b77a;color:#214f25}
 .community-member--researcher .member-category--researcher{background:#d3e5ff;border-color:#a5c7f1;color:#24558f}
 .community-member--translator .member-category--translator{background:#fff0b8;border-color:#e5d17a;color:#785b12}
 .community-member--culture .member-category--culture{background:#ffdada;border-color:#eab0b0;color:#8b3535}
-.community-member--honorary .member-category--honorary{background:#ffe2bf;border-color:#e5bd8d;color:#80501d}
+.community-member--honorary .member-category--honorary{background:#ffc4cc;border-color:#e58b98;color:#8f1d32}
 .member-category{gap:6px;font-weight:800}
 .member-category-symbol{display:inline-grid;place-items:center;min-width:17px;height:17px;border-radius:50%;font-size:12px;line-height:1}
 .member-public-card .member-category{margin-top:0}
@@ -458,7 +458,7 @@
 .community-category[data-category-filter="researcher"] .symbol{background:#e8f2ff;color:#24558f;font-weight:850;border:1px solid #bfd5f5}
 .community-category[data-category-filter="translator"] .symbol{background:#fff7d9;color:#785b12;font-weight:850;border:1px solid #eadb9b}
 .community-category[data-category-filter="culture"] .symbol{background:#ffeded;color:#8b3535;font-weight:850;border:1px solid #efc1c1}
-.community-category[data-category-filter="honorary"] .symbol{background:#fff0df;color:#80501d;font-weight:850;border:1px solid #e8c99e}
+.community-category[data-category-filter="honorary"] .symbol{background:#ffe0e3;color:#8f1d32;font-weight:850;border:1px solid #e58b98}
 
 /* Keep the original category pictograms on both filters and member cards. */
 .member-category-symbol{font-family:inherit;font-size:14px;min-width:19px;height:19px}
@@ -504,7 +504,7 @@
 .member-public-card--researcher{--member-profile-bg:#e8f2ff;--member-profile-border:#bfd5f5;--member-profile-accent:#24558f;--member-profile-badge-bg:#d3e5ff;--member-profile-badge-border:#a5c7f1}
 .member-public-card--translator{--member-profile-bg:#fff7d9;--member-profile-border:#eadb9b;--member-profile-accent:#785b12;--member-profile-badge-bg:#fff0b8;--member-profile-badge-border:#e5d17a}
 .member-public-card--culture{--member-profile-bg:#ffeded;--member-profile-border:#efc1c1;--member-profile-accent:#8b3535;--member-profile-badge-bg:#ffdada;--member-profile-badge-border:#eab0b0}
-.member-public-card--honorary{--member-profile-bg:#fff0df;--member-profile-border:#e8c99e;--member-profile-accent:#80501d;--member-profile-badge-bg:#ffe2bf;--member-profile-badge-border:#e5bd8d}
+.member-public-card--honorary{--member-profile-bg:#ffe0e3;--member-profile-border:#e58b98;--member-profile-accent:#8f1d32;--member-profile-badge-bg:#ffc4cc;--member-profile-badge-border:#e58b98}
 
 
 /* Four fixed placeholder cards for the Association Council. */
@@ -2908,7 +2908,7 @@
 .community-member--researcher{background:#d7e7fb;border-color:#abc9ef}
 .community-member--translator{background:#fff1c5;border-color:#e5d17a}
 .community-member--culture{background:#fbe0e0;border-color:#eab0b0}
-.community-member--honorary{background:#fbe7d1;border-color:#e5bd8d}
+.community-member--honorary{background:#ffe0e3;border-color:#e58b98}
 
 /* Enforce membership category colors on rendered directory cards */
 #member-directory .community-members > .community-member.community-member--student{
@@ -2942,9 +2942,9 @@
   border-color:#eab0b0!important;
 }
 #member-directory .community-members > .community-member.community-member--honorary{
-  background:#fbe7d1!important;
-  background-color:#fbe7d1!important;
-  border-color:#e5bd8d!important;
+  background:#ffe0e3!important;
+  background-color:#ffe0e3!important;
+  border-color:#e58b98!important;
 }
 
 /* Collapsible membership review steps, closed by default */
