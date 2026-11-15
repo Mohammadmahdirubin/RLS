@@ -101,3 +101,20 @@
  .admin-toolbar{align-items:flex-start;flex-direction:column}
 }
 @media(max-width:420px){.admin-stat-grid{grid-template-columns:1fr}.admin-overview-actions{grid-template-columns:1fr}}
+
+
+/* Google Meet setup checklist in the super-admin dashboard */
+.admin-google-summary{margin:12px 0;padding:12px 15px;border:1px solid #d9e3eb;border-radius:10px;background:#f7fafc;color:#40566d;font-size:13px;line-height:1.8}
+.admin-google-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.admin-google-card{min-width:0;padding:16px;border:1px solid #e7dfd7;border-radius:12px;background:#fff}
+.admin-google-card h3{margin:9px 0 7px;color:#542231;font-size:15px}
+.admin-google-card p,.admin-google-card li{color:#655b5d;font-size:12px;line-height:1.9;overflow-wrap:anywhere}
+.admin-google-card ul{padding-right:20px;margin:8px 0}
+.admin-google-card a{display:inline-block;margin-top:6px;color:#245d8c;font-size:12px;font-weight:800;text-decoration:underline}
+.admin-google-state{display:inline-block;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:800}
+.admin-google-state.is-done{background:#e8f4eb;color:#28613a}.admin-google-state.is-pending{background:#fff2df;color:#89571c}.admin-google-state.is-info{background:#edf3f8;color:#365b79}
+.admin-google-url{padding:9px;border-radius:8px;background:#f5f7fa;font-size:11px;word-break:break-all}
+.admin-google-live{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px;margin-top:18px;border:1px solid #d9e3eb;border-radius:12px;background:#f8fafc}
+.admin-google-live h3{margin:0 0 6px;color:#263d55;font-size:15px}.admin-google-live p{margin:3px 0;font-size:12px;line-height:1.8;color:#5f6f80}
+.admin-google-warning{padding:12px;border-right:4px solid #bd8c3d;background:#fffaf0;color:#725321;font-size:12px;line-height:1.9}
+@media(max-width:650px){.admin-google-grid{grid-template-columns:1fr}.admin-google-live{align-items:stretch;flex-direction:column}.admin-google-live button{width:100%}}
