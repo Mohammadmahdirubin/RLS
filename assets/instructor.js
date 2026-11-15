@@ -11,8 +11,28 @@
   const {data:{session}}=await db.auth.getSession();if(!session){login.hidden=false;dash.hidden=true;return;}
   const {data:role,error}=await db.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
   if(error||!['admin','instructor_admin'].includes(role?.role)){login.hidden=false;dash.hidden=true;loginMsg.textContent='این حساب دسترسی پنل مدرس را ندارد.';return;}
-  user=session.user;login.hidden=true;dash.hidden=false;document.getElementById('instructor-identity').textContent=user.email||'مدرس';await load();
+  user=session.user;login.hidden=true;dash.hidden=false;document.getElementById('instructor-identity').textContent=user.email||'مدرس';await load();await loadGoogleMeetStatus();
  }
+ async function loadGoogleMeetStatus(){
+  const statusEl=document.getElementById('instructor-google-status'),messageEl=document.getElementById('instructor-google-message'),connectBtn=document.getElementById('instructor-google-connect');
+  if(!statusEl||!user)return;
+  statusEl.textContent='در حال بررسی وضعیت اتصال…';
+  const {data,error}=await db.functions.invoke('google-meet-connection-status',{method:'GET'});
+  if(error){statusEl.textContent='وضعیت اتصال قابل دریافت نیست.';messageEl.textContent=error.message||'خطای ارتباط با سرویس';return;}
+  if(data?.connected){statusEl.textContent='متصل به حساب Google: '+(data.google_email||'حساب متصل‌شده');connectBtn.textContent='اتصال مجدد حساب Google';}
+  else{statusEl.textContent='هنوز حساب Google برای این مدرس متصل نشده است.';connectBtn.textContent='اتصال حساب Google';}
+  const params=new URLSearchParams(window.location.search),result=params.get('google_meet');
+  const messages={connected:'اتصال Google Meet با موفقیت انجام شد.',cancelled:'فرایند اتصال توسط شما لغو شد.',invalid_state:'درخواست اتصال منقضی یا نامعتبر بود؛ دوباره تلاش کنید.',not_configured:'تنظیمات OAuth هنوز کامل نشده است.',token_exchange_failed:'تأیید حساب Google ناموفق بود؛ تنظیمات OAuth را بررسی کنید.',refresh_token_missing:'گوگل مجوز دسترسی پایدار صادر نکرد؛ اتصال را دوباره انجام دهید.',save_failed:'ذخیره امن اتصال ناموفق بود.',failed:'اتصال Google Meet انجام نشد.'};
+  if(result){messageEl.textContent=messages[result]||'نتیجه اتصال: '+result;params.delete('google_meet');const next=window.location.pathname+(params.toString()?'?'+params.toString():'')+window.location.hash;window.history.replaceState({},document.title,next);}
+ }
+ const googleConnectBtn=document.getElementById('instructor-google-connect');
+ if(googleConnectBtn)googleConnectBtn.addEventListener('click',async()=>{
+  googleConnectBtn.disabled=true;const messageEl=document.getElementById('instructor-google-message');messageEl.textContent='در حال آماده‌سازی اتصال امن…';
+  try{const {data,error}=await db.functions.invoke('google-meet-oauth-start',{body:{}});if(error)throw error;if(!data?.authorization_url)throw new Error(data?.error||'آدرس ورود گوگل دریافت نشد.');window.location.assign(data.authorization_url);}
+  catch(error){messageEl.textContent='شروع اتصال ناموفق بود: '+(error.message||'خطای نامشخص');googleConnectBtn.disabled=false;}
+ });
+ const googleRefreshBtn=document.getElementById('instructor-google-refresh');
+ if(googleRefreshBtn)googleRefreshBtn.addEventListener('click',loadGoogleMeetStatus);
  async function load(){
   list.textContent='در حال دریافت برنامه‌ها…';
   const {data,error}=await db.from('rls_events').select('*').eq('created_by',user.id).order('created_at',{ascending:false});
