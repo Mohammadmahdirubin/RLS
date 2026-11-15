@@ -3393,40 +3393,22 @@
 
 
 
-/* Council cards: desktop hover zoom only. No mobile/touch zoom and no neon decoration. */
-#association-council,
-#association-council .council-profile-grid{
-  overflow:visible!important;
-}
-#association-council .council-profile-card{
-  position:relative!important;
-  z-index:1!important;
+/* Council cards: fixed presentation on every device; no hover, focus, or tap zoom. */
+#association-council .council-profile-card,
+#association-council .council-profile-card:hover,
+#association-council .council-profile-card:focus,
+#association-council .council-profile-card:focus-visible,
+#association-council .council-profile-card:active,
+#association-council .council-profile-card.is-zoomed,
+#association-council .council-profile-portrait,
+#association-council .council-profile-portrait:hover,
+#association-council .council-profile-portrait:focus,
+#association-council .council-profile-portrait:active{
   transform:none!important;
-  transform-origin:center center!important;
-  transition:transform .2s ease!important;
   box-shadow:none!important;
   filter:none!important;
-}
-@media (hover:hover) and (pointer:fine) and (min-width:761px){
-  #association-council .council-profile-card:hover,
-  #association-council .council-profile-card:focus-visible{
-    transform:scale(1.3)!important;
-    z-index:100!important;
-    box-shadow:none!important;
-  }
-}
-@media (hover:none), (pointer:coarse), (max-width:760px){
-  #association-council .council-profile-card,
-  #association-council .council-profile-card:hover,
-  #association-council .council-profile-card:focus,
-  #association-council .council-profile-card:active,
-  #association-council .council-profile-card.is-zoomed,
-  #association-council .council-profile-portrait,
-  #association-council .council-profile-portrait:hover,
-  #association-council .council-profile-portrait:active{
-    transform:none!important;
-    box-shadow:none!important;
-  }
+  transition:none!important;
+  cursor:default!important;
 }
 
 /* Remove all remnants of the former neon/lightbox feature. */
