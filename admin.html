@@ -54,6 +54,14 @@
 <label>ساعت برگزاری<input name="event_time" maxlength="40" placeholder="مثلاً ۱۷:۰۰"></label>
 <label>محل یا بستر برگزاری<input name="location" maxlength="250" placeholder="آنلاین / دانشگاه / شهر"></label>
 <label>لینک ثبت‌نام یا اطلاعات بیشتر<input name="registration_url" type="url" maxlength="1000" placeholder="https://"></label>
+<label>شیوه برگزاری وبینار<select name="webinar_mode"><option value="external">لینک خارجی</option><option value="embedded">نمایش داخل سایت</option></select></label>
+<label>بستر جلسه<select name="webinar_platform"><option value="google_meet">Google Meet</option><option value="zoom">Zoom</option><option value="teams">Microsoft Teams</option><option value="jitsi">Jitsi</option><option value="other">سایر</option></select></label>
+<label>لینک خصوصی جلسه<input name="meeting_url" type="url" maxlength="2000" placeholder="https://meet.google.com/..."></label>
+<label>ظرفیت ثبت‌نام<input name="capacity" type="number" min="1" placeholder="بدون محدودیت"></label>
+<label>زمان دقیق شروع<input name="starts_at" type="datetime-local"></label>
+<label>زمان دقیق پایان<input name="ends_at" type="datetime-local"></label>
+<label>ثبت‌نام<select name="registration_enabled"><option value="true">فعال</option><option value="false">غیرفعال</option></select></label>
+
 <label class="admin-event-poster">تصویر پوستر<input name="poster" type="file" accept="image/jpeg,image/png,image/webp"><small>JPG، PNG یا WebP؛ حداکثر ۱۰ مگابایت</small></label>
 <label class="admin-event-description">توضیحات برنامه<textarea name="description" rows="5" maxlength="12000" required></textarea></label>
 </div>
@@ -74,4 +82,4 @@
 </form>
 </section>
 </section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=cached-certificate-fallback-20261115"></script><script defer src="assets/admin.js?v=admin-ops-dashboard-20261115"></script><script defer src="assets/admin-events.js?v=admin-event-status-fa-20261115"></script><script defer src="assets/admin-instructors.js?v=instructor-roles-20261115"></script><script defer src="assets/admin-sections.js?v=instructor-management-20261115"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-archive-20261114"></script><script defer src="assets/admin-enhancements.js?v=admin-ops-dashboard-v2-20261115"></script></body></html>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/membership-certificate-aligned.js?v=cached-certificate-fallback-20261115"></script><script defer src="assets/admin.js?v=admin-ops-dashboard-20261115"></script><script defer src="assets/admin-events.js?v=private-meet-links-and-webinar-fields-20261115"></script><script defer src="assets/admin-instructors.js?v=instructor-roles-20261115"></script><script defer src="assets/admin-sections.js?v=instructor-management-20261115"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-archive-20261114"></script><script defer src="assets/admin-enhancements.js?v=admin-ops-dashboard-v2-20261115"></script></body></html>
