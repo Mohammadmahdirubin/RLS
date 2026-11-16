@@ -12,10 +12,22 @@
 <main class="staff-wrap">
 <section id="staff-login" class="staff-card"><h1>ورود به پنل همکاران اجرایی</h1><p class="staff-muted">با حساب کاربری ثبت‌شده در انجمن وارد شوید.</p><form id="staff-login-form"><div class="staff-grid"><label>ایمیل<input name="email" type="email" autocomplete="username" required></label><label>رمز عبور<input name="password" type="password" autocomplete="current-password" required></label></div><div class="staff-actions"><button type="submit">ورود</button></div><p id="staff-login-message" role="status"></p></form></section>
 <section id="staff-dashboard" hidden>
-<div class="staff-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><p class="eyebrow">RLS · STAFF PORTAL</p><h1>پنل همکاران اجرایی انجمن</h1><p id="staff-identity" class="staff-muted"></p></div><button class="staff-logout" id="staff-logout" type="button">خروج</button></div><p class="staff-notice">این پنل فقط ابزارهای واگذارشده را نمایش می‌دهد. مدیریت اعضا، مدارک، گواهی‌ها، نقش مدیران و ارسال ایمیل همگانی در این پنل وجود ندارد.</p></div>
+<div class="staff-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><p class="eyebrow">RLS · STAFF PORTAL</p><h1>پنل همکاران اجرایی انجمن</h1><p id="staff-identity" class="staff-muted"></p></div><button class="staff-logout" id="staff-logout" type="button">خروج</button></div><p class="staff-notice">این پنل فقط ابزارهای واگذارشده را نمایش می‌دهد. مدیریت اعضا، مدارک، گواهی‌ها و نقش مدیران در دسترس همکاران نیست. ارسال پیام همگانی فقط برای اطلاع‌رسانی‌های مصوب و با تأیید نهایی انجام شود.</p></div>
 <section id="staff-password-change" class="staff-card" hidden><h2>تغییر رمز عبور</h2><p>برای امنیت حساب، رمز اختصاصی خودتان را تعیین کنید.</p><form id="staff-password-form"><div class="staff-grid"><label>رمز جدید<input name="new_password" type="password" minlength="10" autocomplete="new-password" required></label><label>تکرار رمز جدید<input name="confirm_password" type="password" minlength="10" autocomplete="new-password" required></label></div><div class="staff-actions"><button type="submit">ذخیره رمز جدید</button></div><p id="staff-password-message" role="status"></p></form></section>
 <section id="staff-temp-password-admin" class="staff-card" hidden><h2>تنظیم رمز موقت همکاران</h2><p>این بخش فقط برای مدیرکل نمایش داده می‌شود. رمز تعیین‌شده برای هر دو همکار یکسان خواهد بود و پس از ورود باید آن را تغییر دهند.</p><form id="staff-temp-password-form"><div class="staff-grid"><label class="wide">رمز موقت مشترک<input name="temp_password" type="password" minlength="8" autocomplete="new-password" required></label></div><div class="staff-actions"><button type="submit">تنظیم رمز برای هر دو همکار</button></div><p id="staff-temp-password-message" role="status"></p></form></section>
 <div class="staff-card"><h2>مدیریت برنامه‌های علمی</h2><p>ایجاد و مدیریت وبینار، سمینار، همایش، کارگاه و دوره‌های ثبت‌شده توسط حساب خودتان؛ همراه با ثبت‌نام‌کنندگان و حضور جلسات خودتان.</p><div class="staff-actions"><a class="staff-link" href="instructor.html">ورود به مدیریت برنامه‌های علمی</a></div></div>
+<section id="staff-broadcast-panel" class="staff-card" hidden>
+<h2>ارسال پیام همگانی به کاربران</h2>
+<p class="staff-muted">این پیام به نشانی‌های ایمیل ثبت‌شده در پروفایل اعضا و درخواست‌های عضویت ارسال می‌شود. نشانی‌های تکراری حذف می‌شوند. پیش از ارسال، موضوع و متن را دقیق بررسی کنید؛ ارسال پس از شروع قابل بازگشت نیست.</p>
+<form id="staff-broadcast-form">
+<div class="staff-grid">
+<label>موضوع پیام<input name="subject" type="text" maxlength="180" required></label>
+<label class="wide">متن پیام<textarea name="message" rows="9" maxlength="20000" required></textarea></label>
+<label class="wide">فایل‌های پیوست<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png,.webp"><small>حداکثر ۲ فایل؛ هر فایل حداکثر ۵ مگابایت.</small></label>
+</div>
+<div class="staff-actions"><button type="submit" id="staff-broadcast-send">ارسال پیام همگانی</button><button type="reset" class="staff-logout">پاک‌کردن فرم</button></div>
+<p id="staff-broadcast-message" role="status" aria-live="polite"></p>
+</form></section>
 <section id="admin-editorial-email-panel" class="staff-card">
 <div><h2>ارسال ایمیل به هیئت تحریریه</h2><p class="staff-muted">فهرست گیرندگان از صفحه رسمی هیئت تحریریه دریافت می‌شود. پیش از ارسال، نام و نشانی همه گیرندگان را بررسی کنید.</p></div>
 <form id="admin-editorial-email-form">
@@ -30,7 +42,7 @@
 <p id="admin-editorial-message" role="status" aria-live="polite"></p>
 </form></section>
 </section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/script.js?v=admin-shared-nav-fix-20261116"></script><script defer src="assets/admin-editorial-email.js?v=staff-admin-20261116b"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/script.js?v=admin-shared-nav-fix-20261116"></script><script defer src="assets/staff-broadcast.js?v=staff-broadcast-20261116a"></script><script defer src="assets/admin-editorial-email.js?v=staff-admin-20261116b"></script>
 <script>
 window.addEventListener('DOMContentLoaded',()=>{
 const cfg=window.RLS_SUPABASE_CONFIG;if(!cfg||!window.supabase)return;
