@@ -34,7 +34,7 @@
  async function sessionAndAdmin(){
   const {data:{session},error}=await db.auth.getSession();
   if(error||!session?.access_token)return null;
-  const allowedUsers=new Set(["b39de401-7b39-478c-88ab-50e89695e11a","1301d37a-faf9-41cc-8f30-317f7dc56b45"]);
+  const allowedUsers=new Set(["b39de401-7b39-478c-88ab-50e89695e11a","1301d37a-faf9-41cc-8f30-317f7dc56b45","51ca897d-f1fb-4b81-8354-c72a8c647621"]);
   if(!allowedUsers.has(session.user.id))return null;
   authorized=true;
   return session;
