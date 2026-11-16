@@ -252,8 +252,10 @@
     if(status==='incomplete'){await loadIncompleteRegistrations();return;}
     if(status==='email_unconfirmed'){await loadUnconfirmedMembers();return;}
     list.textContent='در حال دریافت اطلاعات…';
+    const orderByApproval=['approved','suspended','photo_pending'].includes(status);
     let query=client.from('rls_profiles')
-      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
+      .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,reviewed_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
+      .order(orderByApproval?'reviewed_at':'created_at',{ascending:false,nullsFirst:false})
       .order('created_at',{ascending:false});
     if(status==='photo_pending'){
       query=query.in('membership_status',['approved','suspended']).not('pending_avatar_path','is',null);
