@@ -228,6 +228,10 @@ def cached_certificate_is_valid(member: dict, output: Path) -> bool:
         return False
 
 
+def qr_is_decodable(image_path: Path) -> bool:
+    with Image.open(image_path) as image:
+        return bool(decode_qr(image.convert("RGB")))
+
 def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
     """Create a compact admin preview and a high-quality downloadable WebP."""
     full_path = png_path.with_suffix(".webp")
@@ -236,13 +240,13 @@ def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
         full = source.convert("RGB")
         full.save(full_path, "WEBP", quality=92, method=6)
         # Retain lossless encoding if lossy compression damages QR readability.
-        if not decode_qr(full_path):
+        if not qr_is_decodable(full_path):
             full.save(full_path, "WEBP", lossless=True, method=6)
 
         preview = source.convert("RGB")
         preview.thumbnail((900, 900), Image.Resampling.LANCZOS)
         preview.save(preview_path, "WEBP", quality=90, method=6)
-        if not decode_qr(preview_path):
+        if not qr_is_decodable(preview_path):
             preview.save(preview_path, "WEBP", quality=96, method=6)
         if not decode_qr(preview_path):
             preview.save(preview_path, "WEBP", lossless=True, method=6)
@@ -295,7 +299,16 @@ def main() -> None:
                 f"{filename} ({output.stat().st_size} bytes)"
             )
 
-        full_webp, preview_webp = build_webp_variants(output)
+        full_webp = output.with_suffix(".webp")
+        preview_webp = output.with_name(output.stem + ".preview.webp")
+        if (
+            not unchanged
+            or not full_webp.exists()
+            or full_webp.stat().st_size == 0
+            or not preview_webp.exists()
+            or preview_webp.stat().st_size == 0
+        ):
+            full_webp, preview_webp = build_webp_variants(output)
         new_entries[user_id] = {
             "file": f"assets/certificates/{filename}",
             "full_file": f"assets/certificates/{full_webp.name}",
