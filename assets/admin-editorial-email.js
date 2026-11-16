@@ -26,7 +26,7 @@
   list.dir='rtl';
   items.forEach(item=>{
    const li=document.createElement('li');
-   li.textContent=(item.name||'عضو هیئت تحریریه')+' — '+item.email;
+   li.textContent=(item.name||'عضو هیئت تحریریه')+' — '+item.email+(item.group?' ('+item.group+')':'');
    list.appendChild(li);
   });
   recipientsBox.appendChild(list);
