@@ -75,7 +75,7 @@
       .select('user_id,full_name,display_name,category,email,created_at,membership_status,member_number')
       .in('membership_status',['approved','suspended'])
       .not('member_number','is',null)
-      .order('member_number',{ascending:true});
+      .order('created_at',{ascending:false});
     if(error){list.textContent='خطا در دریافت فهرست گواهی‌ها: '+error.message;return;}
     if(!data?.length){list.textContent='هنوز گواهی صادرشده‌ای برای بررسی وجود ندارد.';return;}
     list.innerHTML=data.map(p=>{
@@ -254,21 +254,38 @@
     list.textContent='در حال دریافت اطلاعات…';
     let query=client.from('rls_profiles')
       .select('user_id,full_name,display_name,category,email,country,city,institution,degree,specialty,bio,evidence_url,website_url,orcid,avatar_path,pending_avatar_path,membership_status,member_number,is_public,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,blog_url')
-      .order('created_at',{ascending:status!=='approved'});
+      .order('created_at',{ascending:false});
     if(status==='photo_pending'){
       query=query.in('membership_status',['approved','suspended']).not('pending_avatar_path','is',null);
     }else{
       query=query.eq('membership_status',status);
     }
-    const {data,error}=await query;
+    const [{data,error},{data:applicationEvidence,error:applicationEvidenceError}]=await Promise.all([
+      query,
+      client.from('rls_membership_applications')
+        .select('email,evidence_path,created_at')
+        .not('evidence_path','is',null)
+        .order('created_at',{ascending:false})
+    ]);
     if(error){list.textContent='خطا در دریافت درخواست‌ها: '+error.message;return;}
+    if(applicationEvidenceError)console.warn('Could not load original application evidence:',applicationEvidenceError);
+    const evidenceByEmail=new Map();
+    (applicationEvidence||[]).forEach(item=>{
+      const key=String(item.email||'').trim().toLowerCase();
+      if(key&&item.evidence_path&&!evidenceByEmail.has(key))evidenceByEmail.set(key,item.evidence_path);
+    });
     if(!data?.length){list.textContent='در این دسته درخواستی وجود ندارد.';return;}
     const html=await Promise.all(data.map(async p=>{
       let evidence='';
-      if(p.evidence_url && p.evidence_url.startsWith(p.user_id + '/') && !p.evidence_url.includes('..')){
-        // Do not create hundreds of signed URLs while rendering the member list.
-        // A signed link is requested only when an administrator opens the evidence.
-        evidence='<p><button type="button" class="community-search-btn admin-evidence-link" data-evidence-path="'+esc(p.evidence_url)+'">ساخت پیوند امن مدرک</button></p>';
+      const profileEvidence=String(p.evidence_url||'');
+      const applicationPath=evidenceByEmail.get(String(p.email||'').trim().toLowerCase())||'';
+      const evidencePath=profileEvidence.startsWith(p.user_id+'/')&&!profileEvidence.includes('..')
+        ?profileEvidence
+        :(/^applications\/[0-9a-f-]{36}\/[^/]+$/i.test(applicationPath)&&!applicationPath.includes('..')?applicationPath:'');
+      const evidenceBucket=profileEvidence===evidencePath?'rls-members-private':'rls-membership-applications';
+      if(evidencePath){
+        // Create a short-lived signed URL only when the administrator opens the private file.
+        evidence='<p><button type="button" class="community-search-btn admin-evidence-link" data-evidence-bucket="'+evidenceBucket+'" data-evidence-path="'+esc(evidencePath)+'">مشاهده مدرک ضمیمه‌شده هنگام ثبت‌نام</button></p>';
       }
       const reviewAvatarPath=p.pending_avatar_path||p.avatar_path;
       const avatarUrl=reviewAvatarPath
@@ -440,7 +457,9 @@
       evidenceButton.textContent='در حال ساخت پیوند امن…';
       try{
         const path=evidenceButton.dataset.evidencePath||'';
-        const {data:signed,error}=await client.storage.from('rls-members-private').createSignedUrl(path,300);
+        const bucket=evidenceButton.dataset.evidenceBucket||'';
+        if(!['rls-members-private','rls-membership-applications'].includes(bucket)||!path||path.includes('..'))throw new Error('مسیر مدرک معتبر نیست.');
+        const {data:signed,error}=await client.storage.from(bucket).createSignedUrl(path,300);
         if(error||!signed?.signedUrl)throw error||new Error('Signed URL unavailable');
         const link=document.createElement('a');
         link.href=signed.signedUrl;
