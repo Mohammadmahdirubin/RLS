@@ -138,7 +138,7 @@ Deno.serve(async (req: Request) => {
 
     const targets = await loadIranianEditorialRecipients();
     const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-    const archiveSubject = "هیئت تحریریه ایران | " + subject;
+    const archiveSubject = "هیئت تحریریه زبان روسی و انگلیسی/زبان‌شناسی | " + subject;
     const { data: campaign, error: campaignError } = await admin.from("rls_admin_email_campaigns")
       .insert({
         created_by: authData.user.id,
@@ -170,7 +170,7 @@ Deno.serve(async (req: Request) => {
           '<div style="border-top:5px solid #642536;padding:22px;background:#faf7f3">' +
           '<p style="color:#8b6a36">دوفصلنامه مطالعات زبان روسی · RLS</p><h2>' + esc(subject) + '</h2>' +
           '<div style="white-space:pre-wrap">' + esc(message) + '</div>' +
-          '<hr><small>این پیام برای اعضای ایرانی هیئت تحریریه نشریه ارسال شده است.</small></div></div>';
+          '<hr><small>این پیام برای اعضای هیئت تحریریه زبان روسی و انگلیسی/زبان‌شناسی نشریه ارسال شده است.</small></div></div>';
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { "Authorization": "Bearer " + resendKey, "Content-Type": "application/json" },
