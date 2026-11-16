@@ -64,4 +64,17 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/certificates/
           git commit -m "Pre-generate and cache approved membership certificates"
-          git push
+          # Other site updates may land while images are being encoded.
+          # Rebase generated assets onto the latest main before pushing.
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              echo "Optimized membership certificates published."
+              exit 0
+            fi
+            echo "Push race detected; retrying after refreshing main (attempt $attempt)."
+            sleep $((attempt * 3))
+          done
+          echo "Could not publish optimized certificates after retries."
+          exit 1
