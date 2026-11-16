@@ -10,7 +10,7 @@ export default {
   const url=new URL(request.url);
   if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
-   if(!/^RLS-RV-\\d{4}-\\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
+   if(!/^RLS-RV-\d{4}-\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
    const cert=await env.DB.prepare("SELECT certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE certificate_code=?").bind(code).first();
    if(!cert)return reply({error:"گواهی با این شناسه یافت نشد."},404);
    return reply({certificate:cert});
@@ -29,7 +29,7 @@ export default {
    const issueDate=String(body.issue_date||"").trim().slice(0,20);
    if(!reviewer)return reply({error:"نام داور الزامی است."},400);
    if(!Number.isInteger(count)||count<1||count>10000)return reply({error:"تعداد داوری باید عدد صحیح بین ۱ تا ۱۰۰۰۰ باشد."},400);
-   if(!/^\\d{4}\\/\\d{2}\\/\\d{2}$/.test(issueDate))return reply({error:"تاریخ صدور باید به صورت YYYY/MM/DD باشد."},400);
+   if(!/^\d{4}\/\d{2}\/\d{2}$/.test(issueDate))return reply({error:"تاریخ صدور باید به صورت YYYY/MM/DD باشد."},400);
    const inserted=await env.DB.prepare("INSERT INTO reviewer_certificates (certificate_code,reviewer_name,review_count,issue_date,status) VALUES ('PENDING',?,?,?,'active')").bind(reviewer,count,issueDate).run();
    const id=inserted?.meta?.last_row_id;
    if(!id)return reply({error:"ثبت گواهی انجام نشد."},500);
@@ -39,7 +39,7 @@ export default {
    const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE id=?").bind(id).first();
    return reply({success:true,certificate:cert},201);
   }
-  const certMatch=url.pathname.match(/^\\/admin-api\\/certificates\\/(\\d+)$/);
+  const certMatch=url.pathname.match(/^\/admin-api\/certificates\/(\d+)$/);
   if(certMatch && request.method==="PATCH"){
    let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
    const id=Number(certMatch[1]),status=String(body.status||"");
