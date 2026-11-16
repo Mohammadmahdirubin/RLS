@@ -10,6 +10,7 @@ on:
       - ".github/workflows/generate-membership-certificates.yml"
       - "scripts/generate_membership_certificates.py"
       - "assets/membership-certificate-aligned.js"
+      - "assets/membership-certificate-v4.js"
       - "member-account.html"
 
 permissions:
