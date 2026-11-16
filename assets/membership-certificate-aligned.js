@@ -1,18 +1,23 @@
 /* RLS Membership Certificate — direct download of optimized, QR-verified WebP */
 (function () {
   'use strict';
-  function certificateUrl(member) {
+  function certificateUrls(member) {
     const userId = String(member && member.user_id || '');
     if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error('شناسه عضو برای بازیابی گواهی معتبر نیست.');
     const number = Number(member.member_number);
     if (!Number.isSafeInteger(number) || number < 1) throw new Error('شماره عضویت معتبر نیست.');
-    return '/assets/certificates/member-' + userId + '.webp?v=' + encodeURIComponent(number) + '&cb=certificate-webp-lightweight-20261116';
+    const base = '/assets/certificates/member-' + userId;
+    const query = '?v=' + encodeURIComponent(number);
+    return {
+      webp: base + '.webp' + query + '&cb=certificate-webp-lightweight-20261116',
+      png: base + '.png' + query + '&cb=certificate-png-fallback-20261116'
+    };
   }
   function downloadLink(url, member, label) {
     const link = document.createElement('a');
     link.className = 'community-button primary rls-certificate-download';
     link.href = url;
-    link.download = 'RLS-Membership-Certificate-' + String(member.member_number).padStart(6, '0') + '.webp';
+    link.download = 'RLS-Membership-Certificate-' + String(member.member_number).padStart(6, '0') + (url.includes('.png') ? '.png' : '.webp');
     link.textContent = label;
     return link;
   }
@@ -21,8 +26,8 @@
     const adminPreview = options.adminPreview === true;
     if (!container || !member || !['approved', 'suspended'].includes(member.membership_status) || !member.member_number || !member.user_id) return;
     if (container.querySelector('.rls-certificate-section')) return;
-    let url;
-    try { url = certificateUrl(member); }
+    let urls;
+    try { urls = certificateUrls(member); }
     catch (error) {
       const warning = document.createElement('p');
       warning.className = 'rls-certificate-hint';
@@ -43,7 +48,7 @@
     const hint = document.createElement('span');
     hint.className = 'rls-certificate-hint';
     if (!adminPreview) {
-      actions.appendChild(downloadLink(url, member, 'دانلود گواهی عضویت'));
+      actions.appendChild(downloadLink(urls.webp, member, 'دانلود گواهی عضویت'));
       hint.textContent = 'نسخه کم‌حجم گواهی با حفظ وضوح QR؛ دانلود مستقیم.';
       actions.appendChild(hint);
       return;
@@ -74,19 +79,25 @@
       preview.onload = () => {
         window.clearTimeout(timeout);
         frame.hidden = false;
-        button.replaceWith(downloadLink(url, member, 'دانلود همین گواهی'));
+        button.replaceWith(downloadLink(preview.currentSrc || preview.src, member, 'دانلود همین گواهی'));
         hint.textContent = 'گواهی کم‌حجم و QR با موفقیت بارگذاری شد.';
         loading = false;
       };
       preview.onerror = () => {
+        if (preview.dataset.fallback !== '1') {
+          preview.dataset.fallback = '1';
+          preview.src = urls.png + '&preview=' + Date.now();
+          return;
+        }
         window.clearTimeout(timeout);
-        hint.textContent = 'فایل گواهی این عضو در مسیر سایت پیدا نشد؛ بررسی انتشار فایل لازم است.';
+        hint.textContent = 'نسخه‌های WebP و PNG این گواهی در مسیر سایت پیدا نشدند؛ انتشار فایل گواهی باید بررسی شود.';
         button.disabled = false;
         button.textContent = 'تلاش دوباره برای نمایش';
         loading = false;
       };
       preview.removeAttribute('src');
-      preview.src = url + '&preview=' + Date.now();
+      preview.dataset.fallback = '0';
+      preview.src = urls.webp + '&preview=' + Date.now();
     });
   }
   window.RLSMembershipCertificate = { render };
