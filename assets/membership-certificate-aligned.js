@@ -1,4 +1,4 @@
-/* RLS Membership Certificate — direct download of pre-generated, QR-verified PNG */
+/* RLS Membership Certificate — direct download of optimized, QR-verified WebP */
 (function () {
   'use strict';
   function certificateUrl(member) {
@@ -6,13 +6,13 @@
     if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error('شناسه عضو برای بازیابی گواهی معتبر نیست.');
     const number = Number(member.member_number);
     if (!Number.isSafeInteger(number) || number < 1) throw new Error('شماره عضویت معتبر نیست.');
-    return '/assets/certificates/member-' + userId + '.png?v=' + encodeURIComponent(number) + '&cb=certificate-flow-audit-20261116';
+    return '/assets/certificates/member-' + userId + '.webp?v=' + encodeURIComponent(number) + '&cb=certificate-webp-lightweight-20261116';
   }
   function downloadLink(url, member, label) {
     const link = document.createElement('a');
     link.className = 'community-button primary rls-certificate-download';
     link.href = url;
-    link.download = 'RLS-Membership-Certificate-' + String(member.member_number).padStart(6, '0') + '.png';
+    link.download = 'RLS-Membership-Certificate-' + String(member.member_number).padStart(6, '0') + '.webp';
     link.textContent = label;
     return link;
   }
@@ -34,7 +34,7 @@
     panel.className = 'rls-certificate-section' + (adminPreview ? ' rls-certificate-section--admin' : ' rls-certificate-section--download');
     panel.innerHTML =
       '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>' +
-      (adminPreview ? 'پیش‌نمایش فقط برای بررسی مدیر' : 'نسخه اختصاصی · فایل PNG') +
+      (adminPreview ? 'پیش‌نمایش فقط برای بررسی مدیر' : 'نسخه سبک و باکیفیت · فایل WebP') +
       '</p></div>' +
       (adminPreview ? '<div class="rls-certificate-frame" hidden><img class="rls-membership-certificate-image" alt="گواهی عضویت برای بررسی مدیر" decoding="async"></div>' : '') +
       '<div class="rls-certificate-actions"></div>';
@@ -43,8 +43,8 @@
     const hint = document.createElement('span');
     hint.className = 'rls-certificate-hint';
     if (!adminPreview) {
-      actions.appendChild(downloadLink(url, member, 'دانلود گواهی عضویت (PNG)'));
-      hint.textContent = 'فایل آماده گواهی به‌همراه QR معتبر؛ دانلود مستقیم و بدون وابستگی به سرویس خارجی.';
+      actions.appendChild(downloadLink(url, member, 'دانلود گواهی عضویت'));
+      hint.textContent = 'نسخه کم‌حجم گواهی با حفظ وضوح QR؛ دانلود مستقیم.';
       actions.appendChild(hint);
       return;
     }
@@ -70,12 +70,12 @@
         button.disabled = false;
         button.textContent = 'تلاش دوباره برای نمایش';
         loading = false;
-      }, 45000);
+      }, 20000);
       preview.onload = () => {
         window.clearTimeout(timeout);
         frame.hidden = false;
         button.replaceWith(downloadLink(url, member, 'دانلود همین گواهی'));
-        hint.textContent = 'گواهی و QR در فایل آماده با موفقیت بارگذاری شد.';
+        hint.textContent = 'گواهی کم‌حجم و QR با موفقیت بارگذاری شد.';
         loading = false;
       };
       preview.onerror = () => {
