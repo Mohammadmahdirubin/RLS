@@ -286,8 +286,10 @@
         :(/^applications\/[0-9a-f-]{36}\/[^/]+$/i.test(applicationPath)&&!applicationPath.includes('..')?applicationPath:'');
       const evidenceBucket=profileEvidence===evidencePath?'rls-members-private':'rls-membership-applications';
       if(evidencePath){
-        // Create a short-lived signed URL only when the administrator opens the private file.
-        evidence='<p><button type="button" class="community-search-btn admin-evidence-link" data-evidence-bucket="'+evidenceBucket+'" data-evidence-path="'+esc(evidencePath)+'">مشاهده مدرک ضمیمه‌شده هنگام ثبت‌نام</button></p>';
+        // Keep the document in each member's admin card and create a short-lived private link on demand.
+        evidence='<details class="admin-member-evidence"><summary>مدارک ضمیمه‌شده هنگام ثبت‌نام</summary><p><button type="button" class="community-search-btn admin-evidence-link" data-evidence-bucket="'+evidenceBucket+'" data-evidence-path="'+esc(evidencePath)+'">بازکردن / مشاهده مدرک ثبت‌نام</button></p><small>پیوند مشاهده فقط برای مدیر ساخته می‌شود و پس از ۵ دقیقه منقضی خواهد شد.</small></details>';
+      }else{
+        evidence='<details class="admin-member-evidence"><summary>مدارک ضمیمه‌شده هنگام ثبت‌نام</summary><p class="admin-meta">برای این عضو فایلی در پرونده ثبت‌نام پیدا نشد.</p></details>';
       }
       const reviewAvatarPath=p.pending_avatar_path||p.avatar_path;
       const avatarUrl=reviewAvatarPath
@@ -297,7 +299,7 @@
         :'<p class="admin-meta admin-photo-missing">عکس پروفایل ثبت نشده است؛ مدیر می‌تواند آن را از همین بخش بارگذاری کند یا عضو بعداً از پنل خود ارسال کند.</p>';
       const photoUploader='<div class="admin-photo-upload"><label>بارگذاری دستی عکس برای این عضو<input type="file" accept="image/jpeg,image/png,image/webp" data-admin-avatar-file></label><button type="button" class="approve" data-action="upload_member_avatar">بارگذاری عکس</button><small>JPG، PNG یا WebP؛ حداکثر ۵ مگابایت. عکس پس از بارگذاری در انتظار تأیید مدیر خواهد بود.</small></div>';
       return '<article class="admin-member" data-id="'+esc(p.user_id)+'" data-email="'+esc(p.email||'')+'" data-avatar-path="'+esc(p.avatar_path||'')+'" data-pending-avatar="'+esc(p.pending_avatar_path||'')+'"><h3>'+esc(p.full_name)+'</h3>'+
-        photo+photoUploader+
+        photo+photoUploader+evidence+
         '<div class="admin-meta">گروه: '+esc(labels[p.category]||p.category)+' · ایمیل: '+esc(p.email)+
         '<br>محل: '+esc([p.city,p.country].filter(Boolean).join('، ')||'ثبت نشده')+' · مؤسسه: '+esc(p.institution||'ثبت نشده')+
         '<br>تحصیلات: '+esc(p.degree||'—')+' · تخصص: '+esc(p.specialty||'—')+
