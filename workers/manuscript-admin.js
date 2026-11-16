@@ -2,7 +2,7 @@ export default {
  async fetch(request, env) {
   const origin = request.headers.get("Origin") || "";
   const allowed = ["https://rlsj.ir","https://www.rlsj.ir","https://mohammadmahdirubin.github.io"];
-  const headers = {"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","Access-Control-Allow-Origin":origin,"Access-Control-Allow-Headers":"Authorization, Content-Type","Access-Control-Allow-Methods":"GET, PATCH, OPTIONS","Vary":"Origin"};
+  const headers = {"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","Access-Control-Allow-Origin":origin,"Access-Control-Allow-Headers":"Authorization, Content-Type","Access-Control-Allow-Methods":"GET, POST, PATCH, OPTIONS","Vary":"Origin"};
   const reply = (data,status=200) => new Response(JSON.stringify(data),{status,headers});
   if (!allowed.includes(origin)) return new Response("Forbidden",{status:403});
   if (request.method==="OPTIONS") return new Response(null,{status:204,headers});
