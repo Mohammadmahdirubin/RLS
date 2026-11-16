@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>پنل همکاران اجرایی | انجمن مطالعات زبان روسی</title>
+<link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css?v=community-main-nav-20261115">
+<style>
+.staff-wrap{max-width:980px;margin:34px auto 70px;padding:0 16px}.staff-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 8px 24px rgba(20,30,50,.05)}.staff-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.staff-grid label{display:flex;flex-direction:column;gap:7px;font-weight:600}.staff-grid input,.staff-grid textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:11px;background:#fff;font:inherit}.staff-grid .wide{grid-column:1/-1}.staff-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.staff-actions button,.staff-link{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;padding:11px 17px;background:#173d67;color:#fff;text-decoration:none;cursor:pointer;font:inherit}.staff-actions button:disabled{opacity:.55;cursor:not-allowed}.staff-muted{color:#64748b}.staff-recipients{padding:12px;background:#f8fafc;border-radius:10px;margin:14px 0;overflow-wrap:anywhere}.staff-recipients ol{padding-right:24px}.staff-notice{padding:12px;border-radius:10px;background:#f8fafc}.staff-logout{background:#6b7280!important}
+@media(max-width:650px){.staff-grid{grid-template-columns:1fr}}
+</style></head><body class="community-page">
+<header class="site-header community-nav-header"><div class="container header-inner"><button class="menu-btn" type="button" aria-label="باز کردن منو">☰</button><nav class="main-nav" aria-label="منوی اصلی سایت"></nav></div></header>
+<main class="staff-wrap">
+<section id="staff-login" class="staff-card"><h1>ورود به پنل همکاران اجرایی</h1><p class="staff-muted">با حساب کاربری ثبت‌شده در انجمن وارد شوید.</p><form id="staff-login-form"><div class="staff-grid"><label>ایمیل<input name="email" type="email" autocomplete="username" required></label><label>رمز عبور<input name="password" type="password" autocomplete="current-password" required></label></div><div class="staff-actions"><button type="submit">ورود</button></div><p id="staff-login-message" role="status"></p></form></section>
+<section id="staff-dashboard" hidden>
+<div class="staff-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><p class="eyebrow">RLS · STAFF PORTAL</p><h1>پنل همکاران اجرایی انجمن</h1><p id="staff-identity" class="staff-muted"></p></div><button class="staff-logout" id="staff-logout" type="button">خروج</button></div><p class="staff-notice">این پنل فقط ابزارهای واگذارشده را نمایش می‌دهد. مدیریت اعضا، مدارک، گواهی‌ها، نقش مدیران و ارسال ایمیل همگانی در این پنل وجود ندارد.</p></div>
+<div class="staff-card"><h2>مدیریت برنامه‌های علمی</h2><p>ایجاد و مدیریت وبینار، سمینار، همایش، کارگاه و دوره‌های ثبت‌شده توسط حساب خودتان؛ همراه با ثبت‌نام‌کنندگان و حضور جلسات خودتان.</p><div class="staff-actions"><a class="staff-link" href="instructor.html">ورود به مدیریت برنامه‌های علمی</a></div></div>
+<section id="admin-editorial-email-panel" class="staff-card">
+<div><h2>ارسال ایمیل به هیئت تحریریه</h2><p class="staff-muted">فهرست گیرندگان از صفحه رسمی هیئت تحریریه دریافت می‌شود. پیش از ارسال، نام و نشانی همه گیرندگان را بررسی کنید.</p></div>
+<form id="admin-editorial-email-form">
+<div class="staff-actions"><button type="button" id="admin-editorial-load">دریافت فهرست اعضای هیئت تحریریه</button></div>
+<div id="admin-editorial-recipients" class="staff-recipients" role="status" aria-live="polite">برای مشاهده فهرست گیرندگان، دکمه دریافت فهرست را بزنید.</div>
+<div class="staff-grid">
+<label>موضوع ایمیل<input name="subject" type="text" maxlength="180" required></label>
+<label class="wide">متن پیام<textarea name="message" rows="8" maxlength="20000" required></textarea></label>
+<label class="wide">فایل‌های پیوست<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png,.webp"><small>حداکثر ۲ فایل؛ هر فایل حداکثر ۵ مگابایت.</small></label>
+</div>
+<div class="staff-actions"><button type="submit" id="admin-editorial-send" disabled>ارسال ایمیل به هیئت تحریریه</button><button type="reset" id="admin-editorial-reset" class="staff-logout">پاک‌کردن فرم</button></div>
+<p id="admin-editorial-message" role="status" aria-live="polite"></p>
+</form></section>
+</section></main>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/script.js?v=admin-shared-nav-fix-20261116"></script><script defer src="assets/admin-editorial-email.js?v=restricted-staff-20261116"></script>
+<script>
+(function(){const cfg=window.RLS_SUPABASE_CONFIG;if(!cfg||!window.supabase)return;const db=window.RLS_SUPABASE_CLIENT||window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});window.RLS_SUPABASE_CLIENT=db;const allowed=new Set(["b39de401-7b39-478c-88ab-50e89695e11a","1301d37a-faf9-41cc-8f30-317f7dc56b45"]);const login=document.getElementById('staff-login'),dash=document.getElementById('staff-dashboard'),form=document.getElementById('staff-login-form'),msg=document.getElementById('staff-login-message');async function authorize(){const {data:{session}}=await db.auth.getSession();if(!session||!allowed.has(session.user.id)){login.hidden=false;dash.hidden=true;if(session)msg.textContent='این حساب مجاز به ورود به پنل همکاران نیست.';return;}login.hidden=true;dash.hidden=false;document.getElementById('staff-identity').textContent=session.user.email||'همکار انجمن';}form.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(form);const {error}=await db.auth.signInWithPassword({email:fd.get('email'),password:fd.get('password')});if(error){msg.textContent='ورود ناموفق بود: '+error.message;return;}await authorize();});document.getElementById('staff-logout').addEventListener('click',async()=>{await db.auth.signOut();await authorize();});db.auth.onAuthStateChange(()=>setTimeout(authorize,0));authorize();})();
+</script></body></html>
