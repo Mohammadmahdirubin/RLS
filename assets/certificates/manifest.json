@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "design": "rls-certificate-full-name-v3",
-  "updated_at": "2026-11-15T17:48:52.441806+00:00",
+  "updated_at": "2026-11-16T08:54:58.432457+00:00",
   "certificates": {
     "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {
       "file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.png",
@@ -31,12 +31,19 @@
       "qr_url": "https://rlsj.ir/community.html?member=14c1d68e-45ec-4120-b7ba-fcfd03520830",
       "generated_at": "2026-11-13T00:17:47.595496+00:00"
     },
+    "26de3904-34cc-4ef1-a9f8-cf487e9a0b00": {
+      "file": "assets/certificates/member-26de3904-34cc-4ef1-a9f8-cf487e9a0b00.png",
+      "fingerprint": "0b30f0a6966826c0ddb64007dce2b1db1c2bd60486095924ace69c6e1dcad018",
+      "membership_number": 27,
+      "qr_url": "https://rlsj.ir/community.html?member=26de3904-34cc-4ef1-a9f8-cf487e9a0b00",
+      "generated_at": "2026-11-16T08:54:58.432401+00:00"
+    },
     "2885334b-f707-43ba-8ee8-c33f2f1c50d5": {
       "file": "assets/certificates/member-2885334b-f707-43ba-8ee8-c33f2f1c50d5.png",
-      "fingerprint": "f3918cf246d57fb3f59aee5f521f5f0638a8f9eb04f188e2f3a035cd533850c1",
+      "fingerprint": "7d4f16f611baef7edeaf58503e88036bd8d4cc2ed61622780b73e128921335bc",
       "membership_number": 25,
       "qr_url": "https://rlsj.ir/community.html?member=2885334b-f707-43ba-8ee8-c33f2f1c50d5",
-      "generated_at": "2026-11-15T17:48:52.441760+00:00"
+      "generated_at": "2026-11-16T08:54:55.967081+00:00"
     },
     "42101e7d-59b2-46b3-97c6-12ce97c29e5b": {
       "file": "assets/certificates/member-42101e7d-59b2-46b3-97c6-12ce97c29e5b.png",
@@ -100,6 +107,13 @@
       "membership_number": 4,
       "qr_url": "https://rlsj.ir/community.html?member=97731024-a0d7-4290-a617-b868f8ef9f71",
       "generated_at": "2026-11-13T00:17:42.720366+00:00"
+    },
+    "a2ab17ae-206d-4e7a-bd49-277e17e8c599": {
+      "file": "assets/certificates/member-a2ab17ae-206d-4e7a-bd49-277e17e8c599.png",
+      "fingerprint": "cc7cb6ae8fd33b7299771b200949d13d880bc1f8b808ae0c835931ef667b10c9",
+      "membership_number": 26,
+      "qr_url": "https://rlsj.ir/community.html?member=a2ab17ae-206d-4e7a-bd49-277e17e8c599",
+      "generated_at": "2026-11-16T08:54:57.199696+00:00"
     },
     "a7631b52-d075-4906-b02d-3267c9b787f0": {
       "file": "assets/certificates/member-a7631b52-d075-4906-b02d-3267c9b787f0.png",
