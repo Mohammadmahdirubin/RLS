@@ -68,31 +68,43 @@
       loading = true;
       button.disabled = true;
       button.textContent = 'در حال دریافت پیش‌نمایش…';
-      const timeout = window.setTimeout(() => {
+      let timeout = window.setTimeout(() => {
+        if (preview.dataset.fallback !== '1') {
+          preview.dataset.fallback = '1';
+          hint.textContent = 'دریافت نسخه WebP طول کشید؛ در حال تلاش با نسخه PNG…';
+          preview.src = urls.png + '&preview=' + Date.now();
+          timeout = window.setTimeout(() => {
+            preview.onerror = null;
+            preview.onload = null;
+            hint.textContent = 'پیش‌نمایش در زمان مجاز دریافت نشد؛ می‌توانید فایل گواهی را مستقیماً دریافت کنید.';
+            button.replaceWith(downloadLink(urls.png, member, 'دانلود مستقیم گواهی PNG'));
+            loading = false;
+          }, 60000);
+          return;
+        }
         preview.onerror = null;
         preview.onload = null;
-        hint.textContent = 'بارگذاری فایل گواهی بیش از حد طول کشید. دوباره تلاش کنید.';
-        button.disabled = false;
-        button.textContent = 'تلاش دوباره برای نمایش';
+        hint.textContent = 'پیش‌نمایش دریافت نشد؛ لینک دریافت مستقیم گواهی در دسترس است.';
+        button.replaceWith(downloadLink(urls.png, member, 'دانلود مستقیم گواهی PNG'));
         loading = false;
-      }, 20000);
+      }, 30000);
       preview.onload = () => {
         window.clearTimeout(timeout);
         frame.hidden = false;
         button.replaceWith(downloadLink(preview.currentSrc || preview.src, member, 'دانلود همین گواهی'));
-        hint.textContent = 'گواهی کم‌حجم و QR با موفقیت بارگذاری شد.';
+        hint.textContent = 'گواهی با موفقیت بارگذاری شد.';
         loading = false;
       };
       preview.onerror = () => {
         if (preview.dataset.fallback !== '1') {
           preview.dataset.fallback = '1';
+          hint.textContent = 'نسخه WebP دریافت نشد؛ در حال تلاش با نسخه PNG…';
           preview.src = urls.png + '&preview=' + Date.now();
           return;
         }
         window.clearTimeout(timeout);
-        hint.textContent = 'نسخه‌های WebP و PNG این گواهی در مسیر سایت پیدا نشدند؛ انتشار فایل گواهی باید بررسی شود.';
-        button.disabled = false;
-        button.textContent = 'تلاش دوباره برای نمایش';
+        hint.textContent = 'پیش‌نمایش بارگذاری نشد؛ می‌توانید فایل گواهی را مستقیماً دریافت کنید.';
+        button.replaceWith(downloadLink(urls.png, member, 'دانلود مستقیم گواهی PNG'));
         loading = false;
       };
       preview.removeAttribute('src');
