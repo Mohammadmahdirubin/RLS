@@ -69,14 +69,17 @@
       mode: 'same-origin',
       credentials: 'same-origin',
       cache: 'no-cache',
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(45000)
     });
     if (!response.ok) throw new Error('فایل آماده گواهی در دسترس نیست (HTTP ' + response.status + ').');
-    const blob = await response.blob();
-    if (!blob || !blob.size || !/^image\/png(?:;|$)/i.test(blob.type)) {
-      throw new Error('فایل ذخیره‌شده گواهی معتبر نیست.');
+    const bytes = await response.arrayBuffer();
+    const signature = new Uint8Array(bytes, 0, Math.min(8, bytes.byteLength));
+    const pngSignature = [137,80,78,71,13,10,26,10];
+    if (bytes.byteLength < 8 || !pngSignature.every((value, index) => signature[index] === value)) {
+      throw new Error('فایل ذخیره‌شده گواهی تصویر PNG معتبر نیست.');
     }
-    return blob;
+    // Validate the actual PNG bytes rather than relying on CDN MIME headers.
+    return new Blob([bytes], { type: 'image/png' });
   }
 
   async function createBlob(member) {
