@@ -104,7 +104,7 @@
         timer = window.setTimeout(tryNext, 10000);
       };
       tryNext();
-    });;
+    });
   }
   window.RLSMembershipCertificate = { render };
 })();
