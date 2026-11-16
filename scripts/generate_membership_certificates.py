@@ -227,6 +227,35 @@ def cached_certificate_is_valid(member: dict, output: Path) -> bool:
         print(f"Cached certificate validation failed for {output.name}: {error}")
         return False
 
+
+def qr_is_decodable(image_path: Path) -> bool:
+    with Image.open(image_path) as image:
+        return bool(decode_qr(image.convert("RGB")))
+
+def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
+    """Create a compact admin preview and a high-quality downloadable WebP."""
+    full_path = png_path.with_suffix(".webp")
+    preview_path = png_path.with_name(png_path.stem + ".preview.webp")
+    with Image.open(png_path) as source:
+        full = source.convert("RGB")
+        full.save(full_path, "WEBP", quality=92, method=6)
+        # Retain lossless encoding if lossy compression damages QR readability.
+        if not qr_is_decodable(full_path):
+            full.save(full_path, "WEBP", lossless=True, method=6)
+
+        preview = source.convert("RGB")
+        preview.thumbnail((900, 900), Image.Resampling.LANCZOS)
+        preview.save(preview_path, "WEBP", quality=90, method=6)
+        if not qr_is_decodable(preview_path):
+            preview.save(preview_path, "WEBP", quality=96, method=6)
+        if not decode_qr(preview_path):
+            preview.save(preview_path, "WEBP", lossless=True, method=6)
+    print(
+        f"Optimized {png_path.name}: preview={preview_path.stat().st_size:,} bytes; "
+        f"download={full_path.stat().st_size:,} bytes"
+    )
+    return full_path, preview_path
+
 def main() -> None:
     if not TEMPLATE_FILE.exists():
         raise FileNotFoundError(f"Certificate template not found: {TEMPLATE_FILE}")
@@ -253,23 +282,46 @@ def main() -> None:
         filename = f"member-{user_id}.png"
         output = OUTPUT_DIR / filename
         previous = old_entries.get(user_id, {})
-        if previous.get("fingerprint") == fingerprint and output.exists() and output.stat().st_size > 0 and cached_certificate_is_valid(member, output):
+        unchanged = (
+            previous.get("fingerprint") == fingerprint
+            and output.exists()
+            and output.stat().st_size > 0
+            and cached_certificate_is_valid(member, output)
+        )
+        if unchanged:
             skipped += 1
-            continue
+            target_url = PROFILE_BASE + user_id
+        else:
+            target_url = build_certificate(member, output)
+            generated += 1
+            print(
+                f"Generated and QR-verified member {int(member['member_number']):06d}: "
+                f"{filename} ({output.stat().st_size} bytes)"
+            )
 
-        target_url = build_certificate(member, output)
+        full_webp = output.with_suffix(".webp")
+        preview_webp = output.with_name(output.stem + ".preview.webp")
+        if (
+            not unchanged
+            or not full_webp.exists()
+            or full_webp.stat().st_size == 0
+            or not preview_webp.exists()
+            or preview_webp.stat().st_size == 0
+        ):
+            full_webp, preview_webp = build_webp_variants(output)
         new_entries[user_id] = {
             "file": f"assets/certificates/{filename}",
+            "full_file": f"assets/certificates/{full_webp.name}",
+            "preview_file": f"assets/certificates/{preview_webp.name}",
             "fingerprint": fingerprint,
             "membership_number": int(member["member_number"]),
             "qr_url": target_url,
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": (
+                previous.get("generated_at")
+                if unchanged and previous.get("generated_at")
+                else datetime.now(timezone.utc).isoformat()
+            ),
         }
-        generated += 1
-        print(
-            f"Generated and QR-verified member {int(member['member_number']):06d}: "
-            f"{filename} ({output.stat().st_size} bytes)"
-        )
 
     sorted_entries = dict(sorted(new_entries.items()))
     previous_design = old_manifest.get("design")
