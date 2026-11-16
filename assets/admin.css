@@ -139,3 +139,8 @@
 .admin-staff-role.is-instructor{background:#eaf1f7;color:#315a7a}
 .instructor-row-actions .instructor-delete-event{background:#fff0f0;color:#a32121;border-color:#e9caca}
 @media(max-width:650px){.admin-staff-fields{grid-template-columns:1fr}.admin-staff-row{align-items:flex-start;flex-direction:column}.admin-toolbar-actions{width:100%}.admin-toolbar-actions>*{flex:1 1 100%}}
+
+/* Keep an unopened certificate preview genuinely hidden despite shared flex styles. */
+.admin-certificate-member .rls-certificate-frame[hidden]{display:none!important}
+.admin-certificate-member .rls-certificate-frame:not([hidden]){display:block!important;width:100%;height:auto;max-height:none;overflow:auto}
+.admin-certificate-member .rls-membership-certificate-image{display:block!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;object-fit:contain;object-position:center top}
