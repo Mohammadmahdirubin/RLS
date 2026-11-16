@@ -1,6 +1,6 @@
 (function(){
  const tabs=[...document.querySelectorAll('#admin-dashboard [data-admin-section]')];
- const panels={overview:document.getElementById('admin-overview-panel'),members:document.getElementById('admin-members-section'),history:document.getElementById('admin-history-panel'),'email-archive':document.getElementById('admin-email-archive-panel'),events:document.getElementById('admin-events-panel'),instructors:document.getElementById('admin-instructors-panel'),'google-meet':document.getElementById('admin-google-meet-panel'),broadcast:document.getElementById('admin-broadcast-panel')};
+ const panels={overview:document.getElementById('admin-overview-panel'),members:document.getElementById('admin-members-section'),history:document.getElementById('admin-history-panel'),'email-archive':document.getElementById('admin-email-archive-panel'),events:document.getElementById('admin-events-panel'),instructors:document.getElementById('admin-instructors-panel'),'google-meet':document.getElementById('admin-google-meet-panel'),broadcast:document.getElementById('admin-broadcast-panel'),'editorial-email':document.getElementById('admin-editorial-email-panel')};
  if(!tabs.length)return;
  function activate(name){
   tabs.forEach(tab=>{const active=tab.dataset.adminSection===name;tab.classList.toggle('active',active);tab.setAttribute('aria-expanded',String(active));});

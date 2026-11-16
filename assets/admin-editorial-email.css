@@ -1,0 +1,5 @@
+
+.admin-editorial-recipients{margin:14px 0;padding:14px 18px;border:1px solid var(--line,#d7dce0);border-radius:10px;background:#f8fbfd;line-height:1.9}
+.admin-editorial-recipients ol{columns:2;column-gap:32px;margin:8px 0 0;padding-inline-start:24px}
+.admin-editorial-recipients li{break-inside:avoid;padding:2px 0;font-size:13px;overflow-wrap:anywhere}
+@media(max-width:700px){.admin-editorial-recipients ol{columns:1}}

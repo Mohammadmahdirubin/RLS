@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css?v=community-main-nav-20261115"><link rel="stylesheet" href="assets/admin.css?v=admin-staff-tools-and-navigation-20261116"><link rel="stylesheet" href="assets/admin-layout.css?v=two-members-per-row-20261113"><link rel="stylesheet" href="assets/admin-sections.css?v=admin-dashboard-history-archive-20261114"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پنل مدیریت انجمن | RLS</title><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/community.css?v=community-main-nav-20261115"><link rel="stylesheet" href="assets/admin.css?v=admin-staff-tools-and-navigation-20261116"><link rel="stylesheet" href="assets/admin-layout.css?v=two-members-per-row-20261113"><link rel="stylesheet" href="assets/admin-sections.css?v=admin-dashboard-history-archive-20261114"><link rel="stylesheet" href="assets/admin-editorial-email.css?v=iranian-editorial-email-20261116"><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head>
 <body class="community-page"><header class="site-header community-nav-header"><div class="container header-inner"><button class="menu-btn" type="button" aria-label="باز کردن منو">☰</button><nav class="main-nav" aria-label="منوی اصلی سایت"></nav></div></header>
@@ -16,6 +16,7 @@
 <button type="button" class="admin-section-tab" data-admin-section="instructors" aria-expanded="false">مدیریت استادان و مدیران</button>
 <button type="button" class="admin-section-tab" data-admin-section="google-meet" aria-expanded="false">راه‌اندازی Google Meet</button>
 <button type="button" class="admin-section-tab" data-admin-section="broadcast" aria-expanded="false">ارسال پیام همگانی به کاربران</button>
+<button type="button" class="admin-section-tab" data-admin-section="editorial-email" aria-expanded="false">ایمیل به هیئت تحریریه ایران</button>
 </nav>
 <section id="admin-overview-panel" class="admin-section-content">
 <div class="admin-overview-heading">
@@ -113,5 +114,19 @@
 <p id="admin-broadcast-message" role="status" aria-live="polite"></p>
 </form>
 </section>
+<section id="admin-editorial-email-panel" class="admin-section-content" hidden>
+<div class="admin-section-intro"><h2>ارسال ایمیل به هیئت تحریریه ایران</h2><p>فهرست گیرندگان به‌صورت خودکار از بخش «هیئت تحریریه ایران» در صفحه رسمی نشریه دریافت می‌شود. پیش از ارسال، نام و نشانی همه گیرندگان را بررسی کنید.</p></div>
+<form id="admin-editorial-email-form" class="admin-event-form">
+<div class="admin-event-actions"><button type="button" id="admin-editorial-load">دریافت فهرست اعضای هیئت تحریریه</button></div>
+<div id="admin-editorial-recipients" class="admin-editorial-recipients" role="status" aria-live="polite">برای مشاهده فهرست گیرندگان، دکمه دریافت فهرست را بزنید.</div>
+<div class="admin-event-fields">
+<label>موضوع ایمیل<input name="subject" type="text" maxlength="180" required placeholder="موضوع پیام به اعضای هیئت تحریریه"></label>
+<label class="admin-event-description">متن پیام<textarea name="message" rows="9" maxlength="20000" required placeholder="متن پیام خود را بنویسید…"></textarea></label>
+<label class="admin-event-poster">فایل‌های پیوست<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png,.webp"><small>حداکثر ۲ فایل؛ هر فایل حداکثر ۵ مگابایت.</small></label>
+</div>
+<div class="admin-event-actions"><button type="submit" id="admin-editorial-send" disabled>ارسال ایمیل به همه اعضای ایرانی هیئت تحریریه</button><button type="reset" id="admin-editorial-reset">پاک‌کردن فرم</button></div>
+<p id="admin-editorial-message" role="status" aria-live="polite"></p>
+</form>
+</section>
 </section></main>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/script.js?v=admin-shared-nav-fix-20261116"></script><script defer src="assets/membership-certificate-aligned.js?v=certificate-preview-v4-20261116"></script><script defer src="assets/admin.js?v=member-evidence-card-visible-20261116"></script><script defer src="assets/admin-events.js?v=event-cancel-delete-20261116"></script><script defer src="assets/admin-instructors.js?v=admin-create-staff-20261116"></script><script defer src="assets/admin-sections.js?v=instructor-management-20261115"></script><script defer src="assets/admin-google-meet.js?v=google-meet-admin-check-20261115"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-archive-20261114"></script><script defer src="assets/admin-enhancements.js?v=admin-ops-dashboard-v2-20261115"></script></body></html>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.102.0"></script><script defer src="assets/supabase-config.js?v=shared-auth-20261109"></script><script defer src="assets/script.js?v=admin-shared-nav-fix-20261116"></script><script defer src="assets/membership-certificate-aligned.js?v=certificate-preview-v4-20261116"></script><script defer src="assets/admin.js?v=member-evidence-card-visible-20261116"></script><script defer src="assets/admin-events.js?v=event-cancel-delete-20261116"></script><script defer src="assets/admin-instructors.js?v=admin-create-staff-20261116"></script><script defer src="assets/admin-sections.js?v=editorial-email-panel-20261116"></script><script defer src="assets/admin-google-meet.js?v=google-meet-admin-check-20261115"></script><script defer src="assets/admin-broadcast.js?v=admin-broadcast-archive-20261114"></script><script defer src="assets/admin-editorial-email.js?v=iranian-editorial-email-20261116"></script><script defer src="assets/admin-enhancements.js?v=admin-ops-dashboard-v2-20261115"></script></body></html>
