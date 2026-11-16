@@ -55,6 +55,11 @@
         msg.textContent='بررسی دسترسی مدیر ناموفق بود: '+error.message+' · نشست شما حفظ شده است.';
         login.hidden=false;dashboard.hidden=true;return;
       }
+      const staffIds=new Set(['b39de401-7b39-478c-88ab-50e89695e11a','1301d37a-faf9-41cc-8f30-317f7dc56b45']);
+      if(role?.role==='instructor_admin'&&staffIds.has(session.user.id)){
+        window.location.replace('staff-panel.html');
+        return;
+      }
       if(role?.role!=='admin'){
         msg.textContent='این حساب دسترسی مدیر انجمن را ندارد. نشست کاربری شما حفظ شده است.';
         login.hidden=false;dashboard.hidden=true;return;
@@ -428,6 +433,24 @@
       list.prepend(note);
     }
   }
+  const tempPasswordForm=document.getElementById('admin-staff-temp-password-form');
+  if(tempPasswordForm)tempPasswordForm.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const password=String(new FormData(tempPasswordForm).get('password')||'');
+    const output=document.getElementById('admin-staff-temp-password-message');
+    if(password.length<8){output.textContent='رمز باید دست‌کم ۸ نویسه داشته باشد.';return;}
+    if(!confirm('رمز موقت برای هر دو همکار اجرایی تنظیم شود؟'))return;
+    const {data:{session}}=await client.auth.getSession();
+    if(!session){output.textContent='نشست مدیر معتبر نیست؛ دوباره وارد شوید.';return;}
+    output.textContent='در حال تنظیم رمزها…';
+    const people=[['b39de401-7b39-478c-88ab-50e89695e11a','خانم هما علیشاه'],['1301d37a-faf9-41cc-8f30-317f7dc56b45','خانم مهرنوش فیروزی']];
+    const results=[];
+    for(const [user_id,name] of people){
+      const {data,error}=await client.functions.invoke('admin-manage-staff',{headers:{Authorization:'Bearer '+session.access_token},body:{action:'set_temp_password',user_id,password}});
+      results.push(name+': '+(error||!data?.ok?'ناموفق — '+(data?.error||error?.message||'خطای نامشخص'):'رمز موقت تنظیم شد؛ تغییر آن در اولین ورود الزامی است.'));
+    }
+    output.textContent=results.join(' ');
+  });
   form.addEventListener('submit',async e=>{
     e.preventDefault();msg.textContent='در حال ورود…';
     const fd=new FormData(form);
