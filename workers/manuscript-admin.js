@@ -6,10 +6,48 @@ export default {
   const reply = (data,status=200) => new Response(JSON.stringify(data),{status,headers});
   if (!allowed.includes(origin)) return new Response("Forbidden",{status:403});
   if (request.method==="OPTIONS") return new Response(null,{status:204,headers});
-  if (!env.DB || !env.ADMIN_TOKEN) return reply({error:"Admin API is not configured"},503);
+  if (!env.DB) return reply({error:"Database is not configured"},503);
+  const url=new URL(request.url);
+  if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
+   const code=(url.searchParams.get("code")||"").trim().toUpperCase();
+   if(!/^RLS-RV-\\d{4}-\\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
+   const cert=await env.DB.prepare("SELECT certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE certificate_code=?").bind(code).first();
+   if(!cert)return reply({error:"گواهی با این شناسه یافت نشد."},404);
+   return reply({certificate:cert});
+  }
+  if (!env.ADMIN_TOKEN) return reply({error:"Admin API is not configured"},503);
   const auth=request.headers.get("Authorization")||"";
   if (auth !== "Bearer "+env.ADMIN_TOKEN) return reply({error:"Unauthorized"},401);
-  const url=new URL(request.url);
+  if(url.pathname==="/admin-api/certificates" && request.method==="GET"){
+   const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
+   return reply({certificates:result.results||[]});
+  }
+  if(url.pathname==="/admin-api/certificates" && request.method==="POST"){
+   let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
+   const reviewer=String(body.reviewer_name||"").trim().slice(0,200);
+   const count=Number(body.review_count);
+   const issueDate=String(body.issue_date||"").trim().slice(0,20);
+   if(!reviewer)return reply({error:"نام داور الزامی است."},400);
+   if(!Number.isInteger(count)||count<1||count>10000)return reply({error:"تعداد داوری باید عدد صحیح بین ۱ تا ۱۰۰۰۰ باشد."},400);
+   if(!/^\\d{4}\\/\\d{2}\\/\\d{2}$/.test(issueDate))return reply({error:"تاریخ صدور باید به صورت YYYY/MM/DD باشد."},400);
+   const inserted=await env.DB.prepare("INSERT INTO reviewer_certificates (certificate_code,reviewer_name,review_count,issue_date,status) VALUES ('PENDING',?,?,?,'active')").bind(reviewer,count,issueDate).run();
+   const id=inserted?.meta?.last_row_id;
+   if(!id)return reply({error:"ثبت گواهی انجام نشد."},500);
+   const year=new Date().getUTCFullYear();
+   const code="RLS-RV-"+year+"-"+String(id).padStart(6,"0");
+   await env.DB.prepare("UPDATE reviewer_certificates SET certificate_code=? WHERE id=?").bind(code,id).run();
+   const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE id=?").bind(id).first();
+   return reply({success:true,certificate:cert},201);
+  }
+  const certMatch=url.pathname.match(/^\\/admin-api\\/certificates\\/(\\d+)$/);
+  if(certMatch && request.method==="PATCH"){
+   let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
+   const id=Number(certMatch[1]),status=String(body.status||"");
+   if(!["active","revoked"].includes(status))return reply({error:"Invalid certificate status"},400);
+   const result=await env.DB.prepare("UPDATE reviewer_certificates SET status=? WHERE id=?").bind(status,id).run();
+   if(!(result?.meta?.changes>0))return reply({error:"Certificate not found"},404);
+   return reply({success:true,id,status});
+  }
   if(url.pathname==="/admin-api/manuscripts" && request.method==="GET"){
    const result=await env.DB.prepare("SELECT id,tracking_code,author,email,title,institution,orcid,abstract,message,main_filename,supplementary_filename,status,received_at,updated_at,editor_note FROM manuscripts ORDER BY received_at DESC LIMIT 500").all();
    return reply({manuscripts:result.results||[]});
