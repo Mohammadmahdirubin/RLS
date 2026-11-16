@@ -70,7 +70,7 @@
         button.disabled = false;
         button.textContent = 'تلاش دوباره برای نمایش';
         loading = false;
-      }, 15000);
+      }, 45000);
       preview.onload = () => {
         window.clearTimeout(timeout);
         frame.hidden = false;
@@ -85,7 +85,8 @@
         button.textContent = 'تلاش دوباره برای نمایش';
         loading = false;
       };
-      preview.src = url;
+      preview.removeAttribute('src');
+      preview.src = url + '&preview=' + Date.now();
     });
   }
   window.RLSMembershipCertificate = { render };
