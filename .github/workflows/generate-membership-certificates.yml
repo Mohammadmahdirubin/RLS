@@ -42,23 +42,17 @@ jobs:
       - name: Generate only missing or changed certificates
         run: python scripts/generate_membership_certificates.py
 
-      - name: Create fast certificate previews
+      - name: Create full-size lossless WebP files only
         run: |
           python - <<'PY'
           from pathlib import Path
           from PIL import Image
           for source in sorted(Path('assets/certificates').glob('member-*.png')):
               full_webp = source.with_suffix('.webp')
-              preview_webp = source.with_name(source.stem + '.preview.webp')
               with Image.open(source) as original:
                   image = original.convert('RGB')
-                  # Keep the full-size WebP lossless for high-quality downloads.
                   image.save(full_webp, 'WEBP', lossless=True, method=6)
-                  # Admin preview is a separate, much smaller file for quick display.
-                  preview = image.copy()
-                  preview.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
-                  preview.save(preview_webp, 'WEBP', quality=78, method=5, optimize=True)
-              print(f'{source.name}: {source.stat().st_size:,} bytes; preview: {preview_webp.stat().st_size:,} bytes')
+              print(f'{source.name}: {source.stat().st_size:,} bytes; original WebP: {full_webp.stat().st_size:,} bytes')
           PY
 
       - name: Commit cached member certificates
@@ -71,13 +65,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/certificates/
           git commit -m "Pre-generate and cache approved membership certificates"
-          # Other site updates may land while images are being encoded.
-          # Rebase generated assets onto the latest main before pushing.
           for attempt in 1 2 3 4 5; do
             git fetch origin main
             git rebase origin/main
             if git push origin HEAD:main; then
-              echo "Optimized membership certificates published."
+              echo "Original membership certificates published."
               exit 0
             fi
             echo "Push race detected; retrying after refreshing main (attempt $attempt)."
