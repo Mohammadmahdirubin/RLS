@@ -3557,3 +3557,12 @@ html body header.site-header.community-nav-header .menu-btn{
     margin:0 0 6px!important;
   }
 }
+
+
+/* Member profile identity: keep institution and country compact beneath the name. */
+.member-public-identity{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:4px 0 10px;min-width:0;color:#62585a;font-size:13px;line-height:1.65}
+.member-public-identity-item{display:inline-flex;align-items:baseline;gap:4px;min-width:0;max-width:100%;overflow-wrap:anywhere}
+.member-public-identity-item strong{flex:0 0 auto;color:#78686a;font-size:12px;font-weight:800}
+.member-public-fields{align-items:start!important}
+.member-public-field{align-self:start;height:fit-content;min-height:0}
+@media(max-width:600px){.member-public-identity{gap:5px 10px;font-size:12px}.member-public-identity-item strong{font-size:11px}}
