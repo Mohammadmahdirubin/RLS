@@ -9,6 +9,7 @@
     const base = '/assets/certificates/member-' + userId;
     const query = '?v=' + encodeURIComponent(number);
     return {
+      preview: base + '.preview.webp' + query + '&cb=certificate-fast-preview-20261116c',
       webp: base + '.webp' + query + '&cb=certificate-webp-lightweight-20261116',
       png: base + '.png' + query + '&cb=certificate-png-fallback-20261116'
     };
@@ -68,49 +69,42 @@
       loading = true;
       button.disabled = true;
       button.textContent = 'در حال دریافت پیش‌نمایش…';
-      let timeout = window.setTimeout(() => {
-        if (preview.dataset.fallback !== '1') {
-          preview.dataset.fallback = '1';
-          hint.textContent = 'دریافت نسخه WebP طول کشید؛ در حال تلاش با نسخه PNG…';
-          preview.src = urls.png + '&preview=' + Date.now();
-          timeout = window.setTimeout(() => {
-            preview.onerror = null;
-            preview.onload = null;
-            hint.textContent = 'پیش‌نمایش در زمان مجاز دریافت نشد؛ می‌توانید فایل گواهی را مستقیماً دریافت کنید.';
-            button.replaceWith(downloadLink(urls.png, member, 'دانلود مستقیم گواهی PNG'));
-            loading = false;
-          }, 60000);
-          return;
-        }
-        preview.onerror = null;
+      const candidates = [
+        { url: urls.preview, label: 'پیش‌نمایش کم‌حجم' },
+        { url: urls.webp, label: 'نسخه WebP اصلی' },
+        { url: urls.png, label: 'نسخه PNG اصلی' }
+      ];
+      let index = 0;
+      let timer = null;
+      const finishWithDownload = () => {
+        if (timer) window.clearTimeout(timer);
         preview.onload = null;
-        hint.textContent = 'پیش‌نمایش دریافت نشد؛ لینک دریافت مستقیم گواهی در دسترس است.';
-        button.replaceWith(downloadLink(urls.png, member, 'دانلود مستقیم گواهی PNG'));
-        loading = false;
-      }, 30000);
-      preview.onload = () => {
-        window.clearTimeout(timeout);
-        frame.hidden = false;
-        button.replaceWith(downloadLink(preview.currentSrc || preview.src, member, 'دانلود همین گواهی'));
-        hint.textContent = 'گواهی با موفقیت بارگذاری شد.';
+        preview.onerror = null;
+        hint.textContent = 'پیش‌نمایش دریافت نشد؛ فایل اصلی را می‌توانید مستقیم دریافت کنید.';
+        button.replaceWith(downloadLink(urls.webp, member, 'دانلود گواهی عضویت'));
         loading = false;
       };
-      preview.onerror = () => {
-        if (preview.dataset.fallback !== '1') {
-          preview.dataset.fallback = '1';
-          hint.textContent = 'نسخه WebP دریافت نشد؛ در حال تلاش با نسخه PNG…';
-          preview.src = urls.png + '&preview=' + Date.now();
+      const tryNext = () => {
+        if (timer) window.clearTimeout(timer);
+        if (index >= candidates.length) {
+          finishWithDownload();
           return;
         }
-        window.clearTimeout(timeout);
-        hint.textContent = 'پیش‌نمایش بارگذاری نشد؛ می‌توانید فایل گواهی را مستقیماً دریافت کنید.';
-        button.replaceWith(downloadLink(urls.png, member, 'دانلود مستقیم گواهی PNG'));
-        loading = false;
+        const candidate = candidates[index++];
+        hint.textContent = candidate.label + '…';
+        preview.onload = () => {
+          if (timer) window.clearTimeout(timer);
+          frame.hidden = false;
+          button.replaceWith(downloadLink(urls.webp, member, 'دانلود گواهی اصلی'));
+          hint.textContent = 'پیش‌نمایش سریع بارگذاری شد.';
+          loading = false;
+        };
+        preview.onerror = tryNext;
+        preview.src = candidate.url;
+        timer = window.setTimeout(tryNext, 10000);
       };
-      preview.removeAttribute('src');
-      preview.dataset.fallback = '0';
-      preview.src = urls.webp + '&preview=' + Date.now();
-    });
+      tryNext();
+    });;
   }
   window.RLSMembershipCertificate = { render };
 })();
