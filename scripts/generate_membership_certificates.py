@@ -202,6 +202,31 @@ def build_certificate(member: dict, output: Path) -> str:
         )
     return target_url
 
+def cached_certificate_is_valid(member: dict, output: Path) -> bool:
+    """Check cached PNG integrity and decode the QR from the final composed certificate."""
+    try:
+        user_id = str(member.get("user_id") or "")
+        if not re.fullmatch(r"[0-9a-fA-F-]{36}", user_id):
+            return False
+        target_url = PROFILE_BASE + user_id
+        with Image.open(TEMPLATE_FILE) as template:
+            expected_size = template.size
+        with Image.open(output) as saved:
+            if saved.format != "PNG" or saved.size != expected_size:
+                return False
+            saved.load()
+            scale = saved.width / 1500.0
+            qr_box = round(156 * scale)
+            qr_x = round(1265 * scale)
+            qr_y = round(735 * scale)
+            qr_crop = saved.crop((qr_x, qr_y, qr_x + qr_box, qr_y + qr_box))
+            decoded = decode_qr(qr_crop)
+        destinations = [item.data.decode("utf-8", errors="replace") for item in decoded]
+        return target_url in destinations
+    except Exception as error:
+        print(f"Cached certificate validation failed for {output.name}: {error}")
+        return False
+
 def main() -> None:
     if not TEMPLATE_FILE.exists():
         raise FileNotFoundError(f"Certificate template not found: {TEMPLATE_FILE}")
@@ -228,7 +253,7 @@ def main() -> None:
         filename = f"member-{user_id}.png"
         output = OUTPUT_DIR / filename
         previous = old_entries.get(user_id, {})
-        if previous.get("fingerprint") == fingerprint and output.exists() and output.stat().st_size > 0:
+        if previous.get("fingerprint") == fingerprint and output.exists() and output.stat().st_size > 0 and cached_certificate_is_valid(member, output):
             skipped += 1
             continue
 
