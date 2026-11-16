@@ -42,16 +42,23 @@ jobs:
       - name: Generate only missing or changed certificates
         run: python scripts/generate_membership_certificates.py
 
-      - name: Create lightweight lossless WebP copies for fast preview and download
+      - name: Create fast certificate previews
         run: |
           python - <<'PY'
           from pathlib import Path
           from PIL import Image
           for source in sorted(Path('assets/certificates').glob('member-*.png')):
-              target = source.with_suffix('.webp')
-              with Image.open(source) as image:
-                  image.convert('RGB').save(target, 'WEBP', lossless=True, method=6)
-              print(f'{source.name}: {source.stat().st_size:,} bytes -> {target.name}: {target.stat().st_size:,} bytes')
+              full_webp = source.with_suffix('.webp')
+              preview_webp = source.with_name(source.stem + '.preview.webp')
+              with Image.open(source) as original:
+                  image = original.convert('RGB')
+                  # Keep the full-size WebP lossless for high-quality downloads.
+                  image.save(full_webp, 'WEBP', lossless=True, method=6)
+                  # Admin preview is a separate, much smaller file for quick display.
+                  preview = image.copy()
+                  preview.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
+                  preview.save(preview_webp, 'WEBP', quality=78, method=5, optimize=True)
+              print(f'{source.name}: {source.stat().st_size:,} bytes; preview: {preview_webp.stat().st_size:,} bytes')
           PY
 
       - name: Commit cached member certificates
