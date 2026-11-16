@@ -40,28 +40,39 @@ async function loadIranianEditorialRecipients() {
   });
   if (!response.ok) throw new Error("صفحه هیئت تحریریه در دسترس نیست (HTTP " + response.status + ")");
   const html = await response.text();
-  const startMatch = /<h2\b[^>]*>\s*هیئت\s*تحریریه\s*ایران\s*<\/h2>/u.exec(html);
-  if (!startMatch || startMatch.index === undefined) throw new Error("بخش هیئت تحریریه ایران در صفحه رسمی پیدا نشد.");
-  const afterStart = html.slice(startMatch.index + startMatch[0].length);
-  const endMatch = /<h2\b[^>]*>\s*(?:هیئت\s*تحریریه\s*بین‌المللی|کارشناسان\s*نشریه)\s*<\/h2>/u.exec(afterStart);
-  if (!endMatch || endMatch.index === undefined) throw new Error("مرز بخش هیئت تحریریه ایران مشخص نشد؛ برای جلوگیری از ارسال اشتباه، عملیات متوقف شد.");
-  const section = afterStart.slice(0, endMatch.index);
-  const articles = section.match(/<article\b[\s\S]*?<\/article>/gi) || [];
-  const found = new Map<string, { name: string; email: string }>();
-  for (const article of articles) {
-    const nameMatch = /<h3\b[^>]*>([\s\S]*?)<\/h3>/i.exec(article);
-    const name = nameMatch ? textFromHtml(nameMatch[1]) : "عضو هیئت تحریریه";
-    const links = [...article.matchAll(/href\s*=\s*["']mailto:([^"'?#]+)["']/gi)];
-    for (const link of links) {
-      const email = validEmail(link[1]);
-      if (email) {
-        const key = email.toLowerCase();
-        if (!found.has(key)) found.set(key, { name, email });
+  const headings = [...html.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)];
+  const found = new Map<string, { name: string; email: string; group: string }>();
+  const sections = [
+    { pattern: /^زبان\s*روسی$/u, group: "هیئت تحریریه زبان روسی" },
+    { pattern: /^انگلیسی\s*و\s*زبان\s*شناسی$/u, group: "هیئت تحریریه انگلیسی و زبان‌شناسی" },
+  ];
+  for (let i = 0; i < headings.length; i++) {
+    const title = textFromHtml(headings[i][1]).replace(/\u200c/g, " ").replace(/\s+/g, " ").trim();
+    const sectionConfig = sections.find(item => item.pattern.test(title));
+    if (!sectionConfig) continue;
+    const sectionStart = (headings[i].index ?? 0) + headings[i][0].length;
+    const sectionEnd = headings[i + 1]?.index ?? html.length;
+    const section = html.slice(sectionStart, sectionEnd);
+    const articles = section.match(/<article\b[\s\S]*?<\/article>/gi) || [];
+    for (const article of articles) {
+      const nameMatch = /<h3\b[^>]*>([\s\S]*?)<\/h3>/i.exec(article);
+      const name = nameMatch ? textFromHtml(nameMatch[1]) : "عضو هیئت تحریریه";
+      const links = [...article.matchAll(/href\s*=\s*["']mailto:([^"'?#]+)["']/gi)];
+      for (const link of links) {
+        const email = validEmail(link[1]);
+        if (email) {
+          const key = email.toLowerCase();
+          if (!found.has(key)) found.set(key, { name, email, group: sectionConfig.group });
+        }
       }
     }
   }
   const recipients = [...found.values()];
-  if (!recipients.length) throw new Error("هیچ نشانی ایمیل معتبری در بخش هیئت تحریریه ایران پیدا نشد.");
+  if (!recipients.length) throw new Error("نشانی ایمیل معتبری در بخش‌های هیئت تحریریه زبان روسی و زبان‌شناسی پیدا نشد.");
+  const linguistics = recipients.filter(item => item.group.includes("زبان‌شناسی"));
+  if (linguistics.length !== 2) {
+    throw new Error("تعداد اعضای بخش انگلیسی و زبان‌شناسی مطابق انتظار نیست؛ برای جلوگیری از ارسال ناقص یا اشتباه، عملیات متوقف شد.");
+  }
   return recipients;
 }
 
@@ -127,7 +138,7 @@ Deno.serve(async (req: Request) => {
 
     const targets = await loadIranianEditorialRecipients();
     const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-    const archiveSubject = "هیئت تحریریه ایران | " + subject;
+    const archiveSubject = "هیئت تحریریه زبان روسی و انگلیسی/زبان‌شناسی | " + subject;
     const { data: campaign, error: campaignError } = await admin.from("rls_admin_email_campaigns")
       .insert({
         created_by: authData.user.id,
@@ -159,7 +170,7 @@ Deno.serve(async (req: Request) => {
           '<div style="border-top:5px solid #642536;padding:22px;background:#faf7f3">' +
           '<p style="color:#8b6a36">دوفصلنامه مطالعات زبان روسی · RLS</p><h2>' + esc(subject) + '</h2>' +
           '<div style="white-space:pre-wrap">' + esc(message) + '</div>' +
-          '<hr><small>این پیام برای اعضای ایرانی هیئت تحریریه نشریه ارسال شده است.</small></div></div>';
+          '<hr><small>این پیام برای اعضای هیئت تحریریه زبان روسی و انگلیسی/زبان‌شناسی نشریه ارسال شده است.</small></div></div>';
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { "Authorization": "Bearer " + resendKey, "Content-Type": "application/json" },

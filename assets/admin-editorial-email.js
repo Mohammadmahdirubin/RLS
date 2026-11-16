@@ -26,7 +26,7 @@
   list.dir='rtl';
   items.forEach(item=>{
    const li=document.createElement('li');
-   li.textContent=(item.name||'عضو هیئت تحریریه')+' — '+item.email;
+   li.textContent=(item.name||'عضو هیئت تحریریه')+' — '+item.email+(item.group?' ('+item.group+')':'');
    list.appendChild(li);
   });
   recipientsBox.appendChild(list);
@@ -79,7 +79,7 @@
    if(!allowedExtensions.test(file.name)){say('نوع فایل مجاز نیست: '+file.name);return;}
   }
   const count=preview.recipients.length;
-  if(!confirm('ایمیل با موضوع «'+subject+'» برای '+count+' عضو ایرانی هیئت تحریریه ارسال شود؟ این عملیات پس از شروع قابل بازگشت نیست.'))return;
+  if(!confirm('ایمیل با موضوع «'+subject+'» برای '+count+' عضو هیئت تحریریه زبان روسی و انگلیسی/زبان‌شناسی ارسال شود؟ این عملیات پس از شروع قابل بازگشت نیست.'))return;
   send.disabled=true;load.disabled=true;form.querySelector('[type="reset"]').disabled=true;
   try{
    say('در حال آماده‌سازی و ارسال ایمیل‌ها…');
