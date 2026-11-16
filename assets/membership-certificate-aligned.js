@@ -1,4 +1,4 @@
-/* RLS Membership Certificate — direct download of optimized, QR-verified WebP */
+/* RLS Membership Certificate — original typography preserved; no reduced preview */
 (function () {
   'use strict';
   function certificateUrls(member) {
@@ -9,9 +9,8 @@
     const base = '/assets/certificates/member-' + userId;
     const query = '?v=' + encodeURIComponent(number);
     return {
-      preview: base + '.preview.webp' + query + '&cb=certificate-fast-preview-20261116c',
-      webp: base + '.webp' + query + '&cb=certificate-webp-lightweight-20261116',
-      png: base + '.png' + query + '&cb=certificate-png-fallback-20261116'
+      webp: base + '.webp' + query + '&cb=certificate-original-webp-20261116d',
+      png: base + '.png' + query + '&cb=certificate-original-png-20261116d'
     };
   }
   function downloadLink(url, member, label) {
@@ -40,9 +39,9 @@
     panel.className = 'rls-certificate-section' + (adminPreview ? ' rls-certificate-section--admin' : ' rls-certificate-section--download');
     panel.innerHTML =
       '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>' +
-      (adminPreview ? 'پیش‌نمایش فقط برای بررسی مدیر' : 'نسخه سبک و باکیفیت · فایل WebP') +
+      (adminPreview ? 'نمایش نسخه اصلی گواهی، بدون تغییر اندازه یا فونت' : 'نسخه اصلی باکیفیت · فایل WebP') +
       '</p></div>' +
-      (adminPreview ? '<div class="rls-certificate-frame" hidden><img class="rls-membership-certificate-image" alt="گواهی عضویت برای بررسی مدیر" decoding="async"></div>' : '') +
+      (adminPreview ? '<div class="rls-certificate-frame" hidden><img class="rls-membership-certificate-image" alt="گواهی اصلی عضویت برای بررسی مدیر" decoding="async"></div>' : '') +
       '<div class="rls-certificate-actions"></div>';
     container.appendChild(panel);
     const actions = panel.querySelector('.rls-certificate-actions');
@@ -50,58 +49,49 @@
     hint.className = 'rls-certificate-hint';
     if (!adminPreview) {
       actions.appendChild(downloadLink(urls.webp, member, 'دانلود گواهی عضویت'));
-      hint.textContent = 'نسخه کم‌حجم گواهی با حفظ وضوح QR؛ دانلود مستقیم.';
+      hint.textContent = 'دانلود مستقیم نسخه اصلی گواهی.';
       actions.appendChild(hint);
       return;
     }
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'community-button primary rls-certificate-download';
-    button.textContent = 'نمایش گواهی برای بررسی';
+    button.textContent = 'نمایش گواهی اصلی';
     actions.appendChild(button);
-    hint.textContent = 'برای جلوگیری از بارگذاری هم‌زمان، تصویر فقط پس از انتخاب نمایش داده می‌شود.';
+    hint.textContent = 'تصویر اصلی فقط پس از انتخاب بارگذاری می‌شود.';
     actions.appendChild(hint);
     const frame = panel.querySelector('.rls-certificate-frame');
-    const preview = panel.querySelector('.rls-membership-certificate-image');
+    const image = panel.querySelector('.rls-membership-certificate-image');
     let loading = false;
     button.addEventListener('click', () => {
       if (loading) return;
       loading = true;
       button.disabled = true;
-      button.textContent = 'در حال دریافت پیش‌نمایش…';
-      const candidates = [
-        { url: urls.preview, label: 'پیش‌نمایش کم‌حجم' },
-        { url: urls.webp, label: 'نسخه WebP اصلی' },
-        { url: urls.png, label: 'نسخه PNG اصلی' }
-      ];
+      button.textContent = 'در حال دریافت گواهی اصلی…';
+      const candidates = [urls.webp, urls.png];
       let index = 0;
       let timer = null;
-      const finishWithDownload = () => {
+      const fail = () => {
         if (timer) window.clearTimeout(timer);
-        preview.onload = null;
-        preview.onerror = null;
-        hint.textContent = 'پیش‌نمایش دریافت نشد؛ فایل اصلی را می‌توانید مستقیم دریافت کنید.';
-        button.replaceWith(downloadLink(urls.webp, member, 'دانلود گواهی عضویت'));
+        image.onload = null;
+        image.onerror = null;
+        hint.textContent = 'نمایش تصویر ممکن نشد؛ فایل اصلی را مستقیم دریافت کنید.';
+        button.replaceWith(downloadLink(urls.png, member, 'دانلود گواهی اصلی (PNG)'));
         loading = false;
       };
       const tryNext = () => {
         if (timer) window.clearTimeout(timer);
-        if (index >= candidates.length) {
-          finishWithDownload();
-          return;
-        }
-        const candidate = candidates[index++];
-        hint.textContent = candidate.label + '…';
-        preview.onload = () => {
+        if (index >= candidates.length) { fail(); return; }
+        image.onload = () => {
           if (timer) window.clearTimeout(timer);
           frame.hidden = false;
           button.replaceWith(downloadLink(urls.webp, member, 'دانلود گواهی اصلی'));
-          hint.textContent = 'پیش‌نمایش سریع بارگذاری شد.';
+          hint.textContent = 'گواهی اصلی با فونت و اندازه واقعی نمایش داده شد.';
           loading = false;
         };
-        preview.onerror = tryNext;
-        preview.src = candidate.url;
-        timer = window.setTimeout(tryNext, 10000);
+        image.onerror = tryNext;
+        image.src = candidates[index++];
+        timer = window.setTimeout(tryNext, 15000);
       };
       tryNext();
     });
