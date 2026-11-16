@@ -192,18 +192,18 @@ h1{
 
 <h1>سامانه استعلام اصالت نامه‌ها و عضویت</h1>
 <p class="intro">
-این صفحه برای استعلام اصالت نامه‌های همکاری و عضویت در هیئت تحریریه نشریه «مطالعات زبان روسی» ایجاد شده است.
+این صفحه برای استعلام اصالت نامه‌های همکاری، گواهی‌های عضویت هیئت تحریریه و گواهی‌های انجام داوری علمی نشریه «مطالعات زبان روسی» ایجاد شده است.
 برای مشاهده نتیجه، کد استعلام درج‌شده در نامه را وارد کنید.
 </p>
 
 <div class="lang-block" lang="ru" dir="ltr">
   <h2>Система проверки подлинности</h2>
-  <p>Эта страница предназначена для проверки подлинности писем о сотрудничестве и членстве в редакционной коллегии журнала «Исследования по русскому языку». Введите код проверки, указанный в письме, чтобы получить результат.</p>
+  <p>Эта страница предназначена для проверки подлинности писем о сотрудничестве, документов о членстве в редакционной коллегии и свидетельств о рецензировании журнала «Исследования по русскому языку». Введите код проверки, указанный в письме, чтобы получить результат.</p>
 </div>
 
 <div class="lang-block" lang="en" dir="ltr">
   <h2>Verification System</h2>
-  <p>This page is provided to verify the authenticity of collaboration letters and editorial board membership documents of <em>Russian Language Studies</em>. Enter the verification code shown on the document to view the verification result.</p>
+  <p>This page verifies collaboration letters, editorial board membership documents, and peer-review certificates issued by <em>Russian Language Studies</em>. Enter the verification code shown on the document to view the verification result.</p>
 </div>
 
 <div class="search">
@@ -554,7 +554,7 @@ const revokedCertificates = {
    تابع استعلام
    ========================= */
 
-function verify(){
+async function verify(){
 
   const code =
     document.getElementById("code")
@@ -593,6 +593,61 @@ function verify(){
     result.style.background = "#fff1f1";
     result.style.borderColor = "#e4b7b9";
     result.classList.add("show");
+    return;
+  }
+
+
+  /* گواهی‌های داوری پویا از پایگاه داده؛ در همان مرجع استعلام */
+  if (/^RLS-RV-\\d{4}-\\d{6}$/.test(code)) {
+    try {
+      const response = await fetch(
+        "https://rls-manuscript-admin.sheraginrub.workers.dev/certificate-api/verify?code=" + encodeURIComponent(code)
+      );
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "استعلام گواهی انجام نشد.");
+      const cert = payload.certificate || {};
+      const safe = value => String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[ch]));
+      const active = cert.status === "active";
+      const statusFa = active ? "معتبر" : "باطل‌شده";
+      const statusEn = active ? "Valid" : "Revoked";
+      const statusRu = active ? "Действительно" : "Аннулировано";
+      result.innerHTML =
+        '<div class="verified">' +
+          (active ? '✓ گواهی داوری در سامانه تأیید اصالت شد' : '✕ این گواهی داوری باطل شده است') +
+        '</div>' +
+        '<div class="verify-section verify-fa" dir="rtl" lang="fa">' +
+          '<h3>اطلاعات گواهی داوری</h3>' +
+          '<div><span class="label">نام داور:</span> ' + safe(cert.reviewer_name) + '</div>' +
+          '<div><span class="label">تعداد داوری‌ها:</span> ' + Number(cert.review_count).toLocaleString("fa-IR") + ' مورد</div>' +
+          '<div><span class="label">تاریخ صدور:</span> ' + safe(cert.issue_date) + '</div>' +
+          '<div><span class="label">وضعیت:</span> ' + statusFa + '</div>' +
+          '<div><span class="label">کد استعلام:</span> <span dir="ltr">' + safe(code) + '</span></div>' +
+        '</div>' +
+        '<div class="verify-section verify-en" dir="ltr" lang="en">' +
+          '<h3>Peer Review Certificate</h3>' +
+          '<div><span class="label">Reviewer:</span> ' + safe(cert.reviewer_name) + '</div>' +
+          '<div><span class="label">Completed reviews:</span> ' + Number(cert.review_count).toLocaleString("en") + '</div>' +
+          '<div><span class="label">Issue date:</span> ' + safe(cert.issue_date) + '</div>' +
+          '<div><span class="label">Status:</span> ' + statusEn + '</div>' +
+          '<div><span class="label">Verification code:</span> ' + safe(code) + '</div>' +
+        '</div>' +
+        '<div class="verify-section verify-ru" dir="ltr" lang="ru">' +
+          '<h3>Свидетельство о рецензировании</h3>' +
+          '<div><span class="label">Рецензент:</span> ' + safe(cert.reviewer_name) + '</div>' +
+          '<div><span class="label">Количество рецензий:</span> ' + Number(cert.review_count).toLocaleString("ru") + '</div>' +
+          '<div><span class="label">Дата выдачи:</span> ' + safe(cert.issue_date) + '</div>' +
+          '<div><span class="label">Статус:</span> ' + statusRu + '</div>' +
+          '<div><span class="label">Код проверки:</span> ' + safe(code) + '</div>' +
+        '</div>';
+      result.style.background = active ? "var(--lg)" : "#fff1f1";
+      result.style.borderColor = active ? "var(--b)" : "#e4b7b9";
+      result.classList.add("show");
+    } catch (err) {
+      error.textContent = err.message || "ارتباط با سامانه استعلام برقرار نشد.";
+      error.classList.add("show");
+    }
     return;
   }
 
@@ -708,7 +763,7 @@ if(target){
     .trim()
     .toUpperCase();
 
-  if(records[key] || revokedCertificates[key]){
+  if(records[key] || revokedCertificates[key] || /^RLS-RV-\\d{4}-\\d{6}$/.test(key)){
 
     document.getElementById("code").value =
       key;
