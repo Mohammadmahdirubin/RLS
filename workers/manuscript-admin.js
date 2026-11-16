@@ -30,7 +30,8 @@ export default {
    if(!reviewer)return reply({error:"نام داور الزامی است."},400);
    if(!Number.isInteger(count)||count<1||count>10000)return reply({error:"تعداد داوری باید عدد صحیح بین ۱ تا ۱۰۰۰۰ باشد."},400);
    if(!/^\d{4}\/\d{2}\/\d{2}$/.test(issueDate))return reply({error:"تاریخ صدور باید به صورت YYYY/MM/DD باشد."},400);
-   const inserted=await env.DB.prepare("INSERT INTO reviewer_certificates (certificate_code,reviewer_name,review_count,issue_date,status) VALUES ('PENDING',?,?,?,'active')").bind(reviewer,count,issueDate).run();
+   const pendingCode="TMP-"+crypto.randomUUID();
+   const inserted=await env.DB.prepare("INSERT INTO reviewer_certificates (certificate_code,reviewer_name,review_count,issue_date,status) VALUES (?,?,?,?,'active')").bind(pendingCode,reviewer,count,issueDate).run();
    const id=inserted?.meta?.last_row_id;
    if(!id)return reply({error:"ثبت گواهی انجام نشد."},500);
    const year=new Date().getUTCFullYear();
