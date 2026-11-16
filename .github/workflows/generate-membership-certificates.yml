@@ -1,8 +1,8 @@
-name: Pre-generate and cache membership certificates (manual refresh)
+name: Generate and optimize membership certificates
 
 on:
   schedule:
-    - cron: "17 */4 * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -17,7 +17,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: membership-certificates-main
+  group: membership-certificates-optimized
   cancel-in-progress: false
 
 jobs:
@@ -42,18 +42,8 @@ jobs:
       - name: Generate only missing or changed certificates
         run: python scripts/generate_membership_certificates.py
 
-      - name: Create full-size lossless WebP files only
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          from PIL import Image
-          for source in sorted(Path('assets/certificates').glob('member-*.png')):
-              full_webp = source.with_suffix('.webp')
-              with Image.open(source) as original:
-                  image = original.convert('RGB')
-                  image.save(full_webp, 'WEBP', lossless=True, method=6)
-              print(f'{source.name}: {source.stat().st_size:,} bytes; original WebP: {full_webp.stat().st_size:,} bytes')
-          PY
+      - name: Build compact preview and high-quality WebP variants
+        run: echo "WebP variants are generated and QR-checked by the certificate generator."
 
       - name: Commit cached member certificates
         run: |
