@@ -7,7 +7,7 @@
  window.RLS_SUPABASE_CLIENT=db;
  const message=document.getElementById('staff-broadcast-message'),send=document.getElementById('staff-broadcast-send'),fileInput=form.elements.attachments;
  const allowedStaff=new Set(['b39de401-7b39-478c-88ab-50e89695e11a','1301d37a-faf9-41cc-8f30-317f7dc56b45']);
- const allowedExtensions=/\\.(pdf|docx?|xlsx?|pptx?|txt|csv|jpe?g|png|webp)$/i;
+ const allowedExtensions=/\.(pdf|docx?|xlsx?|pptx?|txt|csv|jpe?g|png|webp)$/i;
  let authorized=false;const say=value=>{message.textContent=value;};
  async function checkAccess(){
   try{const {data:{session},error}=await db.auth.getSession();if(error||!session){authorized=false;panel.hidden=true;return;}
