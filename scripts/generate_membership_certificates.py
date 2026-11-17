@@ -244,12 +244,23 @@ def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
             full.save(full_path, "WEBP", lossless=True, method=6)
 
         preview = source.convert("RGB")
-        preview.thumbnail((900, 900), Image.Resampling.LANCZOS)
-        preview.save(preview_path, "WEBP", quality=90, method=6)
+        # Keep the preview reasonably small, but never sacrifice QR readability.
+        preview.thumbnail((1100, 1100), Image.Resampling.LANCZOS)
+        preview.save(preview_path, "WEBP", quality=88, method=5)
         if not qr_is_decodable(preview_path):
-            preview.save(preview_path, "WEBP", quality=96, method=6)
-        if not decode_qr(preview_path):
-            preview.save(preview_path, "WEBP", lossless=True, method=6)
+            preview.save(preview_path, "WEBP", quality=96, method=5)
+        if not qr_is_decodable(preview_path):
+            preview.save(preview_path, "WEBP", lossless=True, method=5)
+        if not qr_is_decodable(preview_path):
+            # Some displays need a larger QR module size; retry with a less reduced image.
+            with Image.open(png_path) as original:
+                larger_preview = original.convert("RGB")
+                larger_preview.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
+                larger_preview.save(preview_path, "WEBP", lossless=True, method=5)
+        if not qr_is_decodable(preview_path):
+            raise RuntimeError(f"QR verification failed for preview {preview_path.name}")
+    if not qr_is_decodable(full_path):
+        raise RuntimeError(f"QR verification failed for full WebP {full_path.name}")
     print(
         f"Optimized {png_path.name}: preview={preview_path.stat().st_size:,} bytes; "
         f"download={full_path.stat().st_size:,} bytes"
@@ -307,6 +318,8 @@ def main() -> None:
             or full_webp.stat().st_size == 0
             or not preview_webp.exists()
             or preview_webp.stat().st_size == 0
+            or not qr_is_decodable(full_webp)
+            or not qr_is_decodable(preview_webp)
         ):
             full_webp, preview_webp = build_webp_variants(output)
         new_entries[user_id] = {
