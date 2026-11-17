@@ -81,10 +81,25 @@ window.renderRLSArticleList = function(targetId, language) {
     }
     var actions = document.createElement('div');
     actions.className = 'article-actions';
-    var doi = document.createElement('span');
-    doi.className = 'status';
-    doi.textContent = labels.doi + ': ' + (a.doi || (lang === 'fa' ? 'تعیین نشده' : lang === 'en' ? 'Not assigned' : 'Не присвоен'));
-    actions.appendChild(doi);
+    var doiLabel = document.createElement('span');
+    doiLabel.className = 'doi-label';
+    doiLabel.textContent = labels.doi + ':';
+    actions.appendChild(doiLabel);
+    if (a.doi) {
+      var doi = document.createElement('a');
+      doi.className = 'status doi-badge';
+      doi.href = 'https://doi.org/' + String(a.doi).replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, '');
+      doi.target = '_blank';
+      doi.rel = 'noopener noreferrer';
+      doi.dir = 'ltr';
+      doi.textContent = a.doi;
+      actions.appendChild(doi);
+    } else {
+      var doi = document.createElement('span');
+      doi.className = 'status';
+      doi.textContent = lang === 'fa' ? 'تعیین نشده' : lang === 'en' ? 'Not assigned' : 'Не присвоен';
+      actions.appendChild(doi);
+    }
     // Always open the article in the language of the original submission,
     // regardless of the language currently selected on the RLS website.
     var articleLocale = ['fa', 'en', 'ru'].includes(a.language)
