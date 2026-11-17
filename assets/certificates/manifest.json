@@ -1,207 +1,207 @@
 {
   "schema": 1,
-  "design": "rls-certificate-persian-raqm-tehran-date-v5",
-  "updated_at": "2026-11-17T13:19:27.391410+00:00",
+  "design": "rls-certificate-persian-raqm-tehran-date-v6-digits-font",
+  "updated_at": "2026-11-17T14:00:32.061330+00:00",
   "certificates": {
     "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {
       "file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.png",
       "full_file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.webp",
       "preview_file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "cc91122f66fafde0677f9356d7985f8080d154730d04ee5961284637f6c5fc54",
+      "fingerprint": "45fe712823df17d2a464003276b6062926c39e4c3ab1958a8da698407967caf6",
       "membership_number": 17,
       "qr_url": "https://rlsj.ir/community.html?member=0a7588ef-945d-4b2b-be50-61eb8fad22c6",
-      "generated_at": "2026-11-17T13:19:08.128306+00:00"
+      "generated_at": "2026-11-17T14:00:15.344783+00:00"
     },
     "0d9dd4ab-2acc-471c-9ee1-7784e337b592": {
       "file": "assets/certificates/member-0d9dd4ab-2acc-471c-9ee1-7784e337b592.png",
       "full_file": "assets/certificates/member-0d9dd4ab-2acc-471c-9ee1-7784e337b592.webp",
       "preview_file": "assets/certificates/member-0d9dd4ab-2acc-471c-9ee1-7784e337b592.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "072079ec087c23c7c41658fdbf9648cfeac71d5a6e4b67867fbeefca56f3d7dc",
+      "fingerprint": "f39a9f84037b2ee9d34e353b806977a9df3d9bbdc86090fe9b45b03f413fe048",
       "membership_number": 1,
       "qr_url": "https://rlsj.ir/community.html?member=0d9dd4ab-2acc-471c-9ee1-7784e337b592",
-      "generated_at": "2026-11-17T13:18:41.231417+00:00"
+      "generated_at": "2026-11-17T13:59:52.149150+00:00"
     },
     "1301d37a-faf9-41cc-8f30-317f7dc56b45": {
       "file": "assets/certificates/member-1301d37a-faf9-41cc-8f30-317f7dc56b45.png",
       "full_file": "assets/certificates/member-1301d37a-faf9-41cc-8f30-317f7dc56b45.webp",
       "preview_file": "assets/certificates/member-1301d37a-faf9-41cc-8f30-317f7dc56b45.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "5814a789573e3e1282f3e2b60738df73d7f2dc520b8225dfca558901caa595e1",
+      "fingerprint": "f1411a921972a64af4cac2564abc2b1611f5c0e5c7ea6c0ffc7779e06d2a5aa8",
       "membership_number": 6,
       "qr_url": "https://rlsj.ir/community.html?member=1301d37a-faf9-41cc-8f30-317f7dc56b45",
-      "generated_at": "2026-11-17T13:18:53.220140+00:00"
+      "generated_at": "2026-11-17T14:00:02.499681+00:00"
     },
     "14c1d68e-45ec-4120-b7ba-fcfd03520830": {
       "file": "assets/certificates/member-14c1d68e-45ec-4120-b7ba-fcfd03520830.png",
       "full_file": "assets/certificates/member-14c1d68e-45ec-4120-b7ba-fcfd03520830.webp",
       "preview_file": "assets/certificates/member-14c1d68e-45ec-4120-b7ba-fcfd03520830.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "1800b331140b576794e2a715f8052e8517beca0a7ce4cc64d0a7eee2ed0f857f",
+      "fingerprint": "1b8b656c59794d6b1897449dc578767c66df4cc793e4479496e935a3534fd7a7",
       "membership_number": 11,
       "qr_url": "https://rlsj.ir/community.html?member=14c1d68e-45ec-4120-b7ba-fcfd03520830",
-      "generated_at": "2026-11-17T13:19:00.333408+00:00"
+      "generated_at": "2026-11-17T14:00:08.922629+00:00"
     },
     "26de3904-34cc-4ef1-a9f8-cf487e9a0b00": {
       "file": "assets/certificates/member-26de3904-34cc-4ef1-a9f8-cf487e9a0b00.png",
       "full_file": "assets/certificates/member-26de3904-34cc-4ef1-a9f8-cf487e9a0b00.webp",
       "preview_file": "assets/certificates/member-26de3904-34cc-4ef1-a9f8-cf487e9a0b00.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "fec51f1bf8329d3529eaf1d564caa9f34d7df548c08c454be55b0814c218a29c",
+      "fingerprint": "ae683b8f830f0aa5a4015079e55227edd8f170288caacf91538771899c1d4fed",
       "membership_number": 27,
       "qr_url": "https://rlsj.ir/community.html?member=26de3904-34cc-4ef1-a9f8-cf487e9a0b00",
-      "generated_at": "2026-11-17T13:19:24.638772+00:00"
+      "generated_at": "2026-11-17T14:00:29.637130+00:00"
     },
     "2885334b-f707-43ba-8ee8-c33f2f1c50d5": {
       "file": "assets/certificates/member-2885334b-f707-43ba-8ee8-c33f2f1c50d5.png",
       "full_file": "assets/certificates/member-2885334b-f707-43ba-8ee8-c33f2f1c50d5.webp",
       "preview_file": "assets/certificates/member-2885334b-f707-43ba-8ee8-c33f2f1c50d5.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "67f5ca4da845025c97eeeee839ad5e26c8fc89e94c19aa355e0a31ff69e981a3",
+      "fingerprint": "e0854ceba4fc91cff8944dcdfe45f9376c1a87a790ca96248f4b93e0dd63d899",
       "membership_number": 25,
       "qr_url": "https://rlsj.ir/community.html?member=2885334b-f707-43ba-8ee8-c33f2f1c50d5",
-      "generated_at": "2026-11-17T13:19:19.951733+00:00"
+      "generated_at": "2026-11-17T14:00:25.632988+00:00"
     },
     "42101e7d-59b2-46b3-97c6-12ce97c29e5b": {
       "file": "assets/certificates/member-42101e7d-59b2-46b3-97c6-12ce97c29e5b.png",
       "full_file": "assets/certificates/member-42101e7d-59b2-46b3-97c6-12ce97c29e5b.webp",
       "preview_file": "assets/certificates/member-42101e7d-59b2-46b3-97c6-12ce97c29e5b.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "21f32533963c0fa311b7d90009d2d8599e5f3f365f72f2ae9af93137cb330575",
+      "fingerprint": "62b39306948b6fd2ce660622ed43b0d1e6df1e77ecfbba99d54c70c758a01642",
       "membership_number": 12,
       "qr_url": "https://rlsj.ir/community.html?member=42101e7d-59b2-46b3-97c6-12ce97c29e5b",
-      "generated_at": "2026-11-17T13:19:02.797638+00:00"
+      "generated_at": "2026-11-17T14:00:11.047521+00:00"
     },
     "50e4d0c4-072c-4786-bd96-9cf4158b160a": {
       "file": "assets/certificates/member-50e4d0c4-072c-4786-bd96-9cf4158b160a.png",
       "full_file": "assets/certificates/member-50e4d0c4-072c-4786-bd96-9cf4158b160a.webp",
       "preview_file": "assets/certificates/member-50e4d0c4-072c-4786-bd96-9cf4158b160a.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "2c127d0748386a379de5bc6a80498c6743d761b7339fa7572b58181a6e30a312",
+      "fingerprint": "fe6d0ef69e174565da4259afc6a7ea2b92ec196ee7082dc0b14e41d99f2dcb47",
       "membership_number": 20,
       "qr_url": "https://rlsj.ir/community.html?member=50e4d0c4-072c-4786-bd96-9cf4158b160a",
-      "generated_at": "2026-11-17T13:19:10.313401+00:00"
+      "generated_at": "2026-11-17T14:00:17.246595+00:00"
     },
     "5a337db8-87c8-40a0-9c39-06cba5c978e9": {
       "file": "assets/certificates/member-5a337db8-87c8-40a0-9c39-06cba5c978e9.png",
       "full_file": "assets/certificates/member-5a337db8-87c8-40a0-9c39-06cba5c978e9.webp",
       "preview_file": "assets/certificates/member-5a337db8-87c8-40a0-9c39-06cba5c978e9.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "2c9ed30dbe4c3d7f52b4301ac7b85708f7045fe29224e88a36e99167f6c47444",
+      "fingerprint": "3278aad9444d89cc3913ba5102e0a2bad2323982b440887ef00bd20cea8cec89",
       "membership_number": 9,
       "qr_url": "https://rlsj.ir/community.html?member=5a337db8-87c8-40a0-9c39-06cba5c978e9",
-      "generated_at": "2026-11-17T13:18:58.149016+00:00"
+      "generated_at": "2026-11-17T14:00:06.741274+00:00"
     },
     "611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27": {
       "file": "assets/certificates/member-611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27.png",
       "full_file": "assets/certificates/member-611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27.webp",
       "preview_file": "assets/certificates/member-611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "d6506f34cf62f2084e015f308101d7b3f6852bd76c585ce8516afc87a2640e61",
+      "fingerprint": "cab25523ec8162dfbc0eb9e3a006bc41ff1a0fcf762bc3a49538be3fe09dfe40",
       "membership_number": 14,
       "qr_url": "https://rlsj.ir/community.html?member=611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27",
-      "generated_at": "2026-11-17T13:19:05.644341+00:00"
+      "generated_at": "2026-11-17T14:00:13.450021+00:00"
     },
     "69f2abdb-089d-4d03-b080-cbe7089bd1cf": {
       "file": "assets/certificates/member-69f2abdb-089d-4d03-b080-cbe7089bd1cf.png",
       "full_file": "assets/certificates/member-69f2abdb-089d-4d03-b080-cbe7089bd1cf.webp",
       "preview_file": "assets/certificates/member-69f2abdb-089d-4d03-b080-cbe7089bd1cf.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "0a7195bb63afd740236036dbbe213ccd60b306d6c830f8786b0cc3f3ee094ef9",
+      "fingerprint": "7a66839ed4e9d07063777d1ff2cb9b96256d75acd46603ffa41c3b085f3efd35",
       "membership_number": 22,
       "qr_url": "https://rlsj.ir/community.html?member=69f2abdb-089d-4d03-b080-cbe7089bd1cf",
-      "generated_at": "2026-11-17T13:19:15.257661+00:00"
+      "generated_at": "2026-11-17T14:00:21.571018+00:00"
     },
     "7a959afc-c71d-4d3b-a287-e0d3f3262d9f": {
       "file": "assets/certificates/member-7a959afc-c71d-4d3b-a287-e0d3f3262d9f.png",
       "full_file": "assets/certificates/member-7a959afc-c71d-4d3b-a287-e0d3f3262d9f.webp",
       "preview_file": "assets/certificates/member-7a959afc-c71d-4d3b-a287-e0d3f3262d9f.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "58be954586cecf35632e2ee77c60a3a3398c4229ba7058afbb5f2c95ec8609dc",
+      "fingerprint": "bf13a2a52df012e4f78271dbe4ce71cef983374b0dc7738bcb5126ae94f5dc8d",
       "membership_number": 3,
       "qr_url": "https://rlsj.ir/community.html?member=7a959afc-c71d-4d3b-a287-e0d3f3262d9f",
-      "generated_at": "2026-11-17T13:18:45.867669+00:00"
+      "generated_at": "2026-11-17T13:59:56.101535+00:00"
     },
     "8ba94f95-0545-4ade-8638-eddc7a699365": {
       "file": "assets/certificates/member-8ba94f95-0545-4ade-8638-eddc7a699365.png",
       "full_file": "assets/certificates/member-8ba94f95-0545-4ade-8638-eddc7a699365.webp",
       "preview_file": "assets/certificates/member-8ba94f95-0545-4ade-8638-eddc7a699365.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "20bd3af70c02e8d5b3b91c49fd07ca9c78ea88d1e6d65a2c3c663ec893f2fc63",
+      "fingerprint": "3b3067e68ef395c55c16690712e58e07a5233075c47b21168d1d4782100f8a13",
       "membership_number": 7,
       "qr_url": "https://rlsj.ir/community.html?member=8ba94f95-0545-4ade-8638-eddc7a699365",
-      "generated_at": "2026-11-17T13:18:55.681655+00:00"
+      "generated_at": "2026-11-17T14:00:04.605398+00:00"
     },
     "90be7173-fc2c-46ba-a7c9-61ddf2d9e0da": {
       "file": "assets/certificates/member-90be7173-fc2c-46ba-a7c9-61ddf2d9e0da.png",
       "full_file": "assets/certificates/member-90be7173-fc2c-46ba-a7c9-61ddf2d9e0da.webp",
       "preview_file": "assets/certificates/member-90be7173-fc2c-46ba-a7c9-61ddf2d9e0da.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "2eb4758c023c5481dd5efb3874411aeea5b3b5d9290b0e38eebd16f2173c5e88",
+      "fingerprint": "ee9dd788cbbe2fe384467c474f24e9bd9b333b4c09582ef95f22f31e165eefec",
       "membership_number": 28,
       "qr_url": "https://rlsj.ir/community.html?member=90be7173-fc2c-46ba-a7c9-61ddf2d9e0da",
-      "generated_at": "2026-11-17T13:19:27.391377+00:00"
+      "generated_at": "2026-11-17T14:00:32.061286+00:00"
     },
     "94b8dd8a-d708-4809-8179-1ce995f31e4a": {
       "file": "assets/certificates/member-94b8dd8a-d708-4809-8179-1ce995f31e4a.png",
       "full_file": "assets/certificates/member-94b8dd8a-d708-4809-8179-1ce995f31e4a.webp",
       "preview_file": "assets/certificates/member-94b8dd8a-d708-4809-8179-1ce995f31e4a.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "944a0a752afe75de4d07de7c35ce241f3e9f153ea2a2a67a958f08c4c8bc1628",
+      "fingerprint": "91fe036cbdb8b536ec72a52f1397c4531dd42b367574c967ff1ad3a9dd2bc3d8",
       "membership_number": 21,
       "qr_url": "https://rlsj.ir/community.html?member=94b8dd8a-d708-4809-8179-1ce995f31e4a",
-      "generated_at": "2026-11-17T13:19:12.803126+00:00"
+      "generated_at": "2026-11-17T14:00:19.391267+00:00"
     },
     "97731024-a0d7-4290-a617-b868f8ef9f71": {
       "file": "assets/certificates/member-97731024-a0d7-4290-a617-b868f8ef9f71.png",
       "full_file": "assets/certificates/member-97731024-a0d7-4290-a617-b868f8ef9f71.webp",
       "preview_file": "assets/certificates/member-97731024-a0d7-4290-a617-b868f8ef9f71.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "1b37f21c122112bd42ca0e293e66ac44c140e242173e464ab430782035d2aa90",
+      "fingerprint": "a555f7b8ff22f9091d7c0b9be9d9bb6a54f7b53ec9c9e2a7b1ce4a4c4ba3dac1",
       "membership_number": 4,
       "qr_url": "https://rlsj.ir/community.html?member=97731024-a0d7-4290-a617-b868f8ef9f71",
-      "generated_at": "2026-11-17T13:18:48.318991+00:00"
+      "generated_at": "2026-11-17T13:59:58.242639+00:00"
     },
     "a2ab17ae-206d-4e7a-bd49-277e17e8c599": {
       "file": "assets/certificates/member-a2ab17ae-206d-4e7a-bd49-277e17e8c599.png",
       "full_file": "assets/certificates/member-a2ab17ae-206d-4e7a-bd49-277e17e8c599.webp",
       "preview_file": "assets/certificates/member-a2ab17ae-206d-4e7a-bd49-277e17e8c599.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "5ded7349cd13062a3caa0bc14ce1951eaf99f5a6403529871ad47c94aaf866f7",
+      "fingerprint": "eef4f978fa7547a78899a3a934d7d91b695d5874cb5c3a67e3846c8f43e5ee02",
       "membership_number": 26,
       "qr_url": "https://rlsj.ir/community.html?member=a2ab17ae-206d-4e7a-bd49-277e17e8c599",
-      "generated_at": "2026-11-17T13:19:22.450095+00:00"
+      "generated_at": "2026-11-17T14:00:27.766771+00:00"
     },
     "a7631b52-d075-4906-b02d-3267c9b787f0": {
       "file": "assets/certificates/member-a7631b52-d075-4906-b02d-3267c9b787f0.png",
       "full_file": "assets/certificates/member-a7631b52-d075-4906-b02d-3267c9b787f0.webp",
       "preview_file": "assets/certificates/member-a7631b52-d075-4906-b02d-3267c9b787f0.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "6a63c8e1c1538b1eba9c20a01009cb4bac3ce11e04f617f3845f5461fc185826",
+      "fingerprint": "30d083227324f9208ddba78cd4d409e75ab3bae5da72649b088cf94f3e44efcb",
       "membership_number": 23,
       "qr_url": "https://rlsj.ir/community.html?member=a7631b52-d075-4906-b02d-3267c9b787f0",
-      "generated_at": "2026-11-17T13:19:17.450517+00:00"
+      "generated_at": "2026-11-17T14:00:23.479481+00:00"
     },
     "b39de401-7b39-478c-88ab-50e89695e11a": {
       "file": "assets/certificates/member-b39de401-7b39-478c-88ab-50e89695e11a.png",
       "full_file": "assets/certificates/member-b39de401-7b39-478c-88ab-50e89695e11a.webp",
       "preview_file": "assets/certificates/member-b39de401-7b39-478c-88ab-50e89695e11a.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "d83971b399a419748cc8e6853a19bea2f7114c4618768369bf4cac3bace46bec",
+      "fingerprint": "458124816ae111eeff89b11333fe29db515e8dd6fb577053dd299c5d7c330b9a",
       "membership_number": 2,
       "qr_url": "https://rlsj.ir/community.html?member=b39de401-7b39-478c-88ab-50e89695e11a",
-      "generated_at": "2026-11-17T13:18:43.681316+00:00"
+      "generated_at": "2026-11-17T13:59:54.231458+00:00"
     },
     "d1db816a-b33a-4ec8-b103-21331c8f86b5": {
       "file": "assets/certificates/member-d1db816a-b33a-4ec8-b103-21331c8f86b5.png",
       "full_file": "assets/certificates/member-d1db816a-b33a-4ec8-b103-21331c8f86b5.webp",
       "preview_file": "assets/certificates/member-d1db816a-b33a-4ec8-b103-21331c8f86b5.preview.webp",
       "preview_version": "rls-preview-persian-raqm-v3",
-      "fingerprint": "e9c46b4d5cbfb71a682dc1276c131b65a54ae9f13c544f443010293ac666ce94",
+      "fingerprint": "b54d94d7eff742948a968a90ce88db4a7fd2f287b9048a6ff1071b7b9e29865d",
       "membership_number": 5,
       "qr_url": "https://rlsj.ir/community.html?member=d1db816a-b33a-4ec8-b103-21331c8f86b5",
-      "generated_at": "2026-11-17T13:18:50.769931+00:00"
+      "generated_at": "2026-11-17T14:00:00.388582+00:00"
     }
   }
 }
