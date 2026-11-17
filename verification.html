@@ -125,7 +125,7 @@ h1{
   font-weight:700
 }
 
-.doc{
+.certificate-image{margin-top:22px;padding-top:16px;border-top:1px solid #d9c9ad;text-align:center}.certificate-image img{display:block;max-width:100%;height:auto;margin:10px auto;border:1px solid #d9c9ad;border-radius:8px;background:#faf6eb}.doc{
   margin-top:18px;
   padding:14px;
   background:#fff;
@@ -643,6 +643,9 @@ async function verify(){
         '</div>';
       result.style.background = active ? "var(--lg)" : "#fff1f1";
       result.style.borderColor = active ? "var(--b)" : "#e4b7b9";
+      if (typeof cert.certificate_image === "string" && cert.certificate_image.startsWith("https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/")) {
+        result.insertAdjacentHTML("beforeend", '<div class="certificate-image"><h3>تصویر کامل گواهی صادرشده</h3><img src="' + safe(cert.certificate_image) + '" alt="تصویر کامل گواهی داوری"></div>');
+      }
       result.classList.add("show");
     } catch (err) {
       error.textContent = err.message || "ارتباط با سامانه استعلام برقرار نشد.";
