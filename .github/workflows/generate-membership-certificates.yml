@@ -17,7 +17,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: membership-certificates-optimized
+  group: membership-certificates-optimized-v2
   cancel-in-progress: true
 
 jobs:
