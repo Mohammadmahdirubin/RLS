@@ -370,7 +370,8 @@ def main() -> None:
             full_webp, preview_webp = build_webp_variants(output)
         full_jpeg = output.with_suffix(".jpg")
         if (
-            not full_jpeg.exists()
+            not unchanged
+            or not full_jpeg.exists()
             or full_jpeg.stat().st_size == 0
             or not qr_is_decodable(full_jpeg)
         ):
