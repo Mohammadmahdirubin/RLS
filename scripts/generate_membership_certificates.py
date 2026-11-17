@@ -21,7 +21,7 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v5"
+DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v6-digits-font"
 PREVIEW_VERSION = "rls-preview-persian-raqm-v3"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
@@ -153,6 +153,8 @@ def build_certificate(member: dict, output: Path) -> str:
 
     name_font = load_text_font(find_font(True), max(1, round(46 * scale)))
     detail_font = load_text_font(find_font(True), max(1, round(29 * scale)))
+    # Use a font with Persian Extended-Arabic digits; Noto Naskh may render U+06F0–U+06F9 as empty squares.
+    digit_font = load_text_font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", max(1, round(29 * scale)))
 
     # Keep the original Unicode order. RAQM applies Persian glyph shaping and bidi once.
     draw_persian_text(
@@ -171,7 +173,8 @@ def build_certificate(member: dict, output: Path) -> str:
     for value, y, direction in fields:
         draw_persian_text(
             draw, (round(350 * scale), round(y * scale)), value,
-            detail_font, anchor="rm", direction=direction,
+            digit_font if direction == "ltr" else detail_font,
+            anchor="rm", direction=direction,
         )
 
     target_url = PROFILE_BASE + user_id
