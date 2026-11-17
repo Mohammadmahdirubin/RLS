@@ -12,9 +12,7 @@ from urllib.parse import urljoin
 import requests
 import qrcode
 from qrcode.constants import ERROR_CORRECT_H
-from PIL import Image, ImageDraw, ImageFont
-from arabic_reshaper import reshape
-from bidi.algorithm import get_display
+from PIL import Image, ImageDraw, ImageFont, features
 from pyzbar.pyzbar import decode as decode_qr
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,8 +20,8 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-full-name-v3"
-PREVIEW_VERSION = "rls-preview-webp-v2"
+DESIGN_VERSION = "rls-certificate-persian-raqm-v4"
+PREVIEW_VERSION = "rls-preview-persian-raqm-v3"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
@@ -91,8 +89,22 @@ def find_font(bold: bool) -> str:
             return candidate
     raise RuntimeError("No Arabic/Persian-capable font is installed on the runner.")
 
-def visual_rtl(value: str) -> str:
-    return get_display(reshape(str(value or "")))
+def load_text_font(path: str, size: int) -> ImageFont.FreeTypeFont:
+    """Load a font with HarfBuzz/FriBidi shaping so Pillow handles Persian exactly once."""
+    if not features.check_feature("raqm"):
+        raise RuntimeError("Pillow lacks libraqm/RAQM; Persian text cannot be rendered safely.")
+    return ImageFont.truetype(path, size, layout_engine=ImageFont.Layout.RAQM)
+
+
+def draw_persian_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], value: str,
+                      font: ImageFont.FreeTypeFont, *, anchor: str,
+                      direction: str = "rtl") -> None:
+    """Draw logical Unicode text; RAQM performs shaping and bidi once, without pre-reversal."""
+    draw.text(
+        xy, str(value or ""), font=font, fill=(16, 47, 91), anchor=anchor,
+        direction=direction, language="fa" if direction == "rtl" else None,
+        stroke_width=0,
+    )
 
 def persian_digits(value: str) -> str:
     return str(value).translate(str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹"))
@@ -134,35 +146,27 @@ def build_certificate(member: dict, output: Path) -> str:
     if not name:
         raise ValueError(f"Missing full_name for {user_id}")
 
-    name_font = ImageFont.truetype(find_font(True), max(1, round(46 * scale)))
-    detail_font = ImageFont.truetype(find_font(True), max(1, round(29 * scale)))
-    navy = (16, 47, 91)
+    name_font = load_text_font(find_font(True), max(1, round(46 * scale)))
+    detail_font = load_text_font(find_font(True), max(1, round(29 * scale)))
 
-    draw.text(
-        (round(746 * scale), round(535 * scale)),
-        visual_rtl(name),
-        font=name_font,
-        fill=navy,
-        anchor="mm",
-        stroke_width=0,
+    # Keep the original Unicode order. RAQM applies Persian glyph shaping and bidi once.
+    draw_persian_text(
+        draw, (round(746 * scale), round(535 * scale)), name,
+        name_font, anchor="mm", direction="rtl",
     )
 
     category = GROUPS.get(str(member.get("category") or ""), str(member.get("category") or "—"))
     created_at = str(member.get("created_at") or "")
     date_label = member_date(created_at)
     fields = [
-        (persian_digits(f"{number:06d}"), 770),
-        (category, 826),
-        (date_label, 882),
+        (persian_digits(f"{number:06d}"), 770, "ltr"),
+        (category, 826, "rtl"),
+        (date_label, 882, "ltr"),
     ]
-    for value, y in fields:
-        draw.text(
-            (round(350 * scale), round(y * scale)),
-            visual_rtl(value),
-            font=detail_font,
-            fill=navy,
-            anchor="rm",
-            stroke_width=0,
+    for value, y, direction in fields:
+        draw_persian_text(
+            draw, (round(350 * scale), round(y * scale)), value,
+            detail_font, anchor="rm", direction=direction,
         )
 
     target_url = PROFILE_BASE + user_id
@@ -278,6 +282,8 @@ def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
     return full_path, preview_path
 
 def main() -> None:
+    if not features.check_feature("raqm"):
+        raise RuntimeError("Pillow lacks libraqm/RAQM; refusing to publish malformed Persian certificates.")
     if not TEMPLATE_FILE.exists():
         raise FileNotFoundError(f"Certificate template not found: {TEMPLATE_FILE}")
     members = fetch_members()
