@@ -44,7 +44,7 @@ else fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code)).then(as
  const reviewerFa=c.reviewer_name;
  const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
  const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
- const gregorianDate=jalaliToGregorianText(c.issue_date);
+ const gregorianISO=jalaliToGregorianText(c.issue_date);\n const gregorianDateEn=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});\n const gregorianDateRu=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})+' г.';
  const active=c.status==='active';
  document.getElementById('reviewer').textContent=reviewerFa;
  document.getElementById('count').textContent=Number(c.review_count).toLocaleString('fa-IR')+' مورد';
@@ -52,12 +52,12 @@ else fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code)).then(as
  document.getElementById('state').textContent=active?'معتبر':'باطل‌شده';
  document.getElementById('reviewerEn').textContent=reviewerEn;
  document.getElementById('countEn').textContent=Number(c.review_count).toLocaleString('en-US');
- document.getElementById('dateEn').textContent=gregorianDate;
+ document.getElementById('dateEn').textContent=gregorianDateEn;
  document.getElementById('stateEn').textContent=active?'Valid':'Revoked';
  document.getElementById('codeEn').textContent=c.certificate_code;
  document.getElementById('reviewerRu').textContent=reviewerRu;
  document.getElementById('countRu').textContent=Number(c.review_count).toLocaleString('ru-RU');
- document.getElementById('dateRu').textContent=gregorianDate;
+ document.getElementById('dateRu').textContent=gregorianDateRu;
  document.getElementById('stateRu').textContent=active?'Действительно':'Аннулировано';
  document.getElementById('codeRu').textContent=c.certificate_code;
  document.getElementById('details').hidden=false;
