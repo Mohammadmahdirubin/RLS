@@ -21,8 +21,8 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v7-noto-arabic-digits"
-PREVIEW_VERSION = "rls-preview-persian-raqm-v3"
+DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v8-force-all-legacy"
+PREVIEW_VERSION = "rls-preview-persian-raqm-v4-force-all-legacy"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
