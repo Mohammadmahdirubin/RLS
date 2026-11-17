@@ -1,21 +1,65 @@
 <!doctype html>
 <html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>استعلام گواهی داوری | مطالعات زبان روسی</title>
 <style>
-:root{--wine:#5b1723;--gold:#c08d35;--ink:#302b28;--muted:#746d65;--paper:#faf6eb}*{box-sizing:border-box}body{margin:0;background:#f3eee4;color:var(--ink);font-family:Tahoma,Arial,sans-serif}.top{background:var(--wine);color:#fff;text-align:center;padding:28px 16px;border-bottom:5px solid var(--gold)}.top h1{font-size:22px;margin:0 0 8px}.top p{margin:0;color:#f0dfc0}.wrap{max-width:760px;margin:30px auto;padding:0 16px}.card{background:#fff;border:1px solid #e3d6bf;border-radius:16px;padding:26px;box-shadow:0 10px 30px #4b30100d}.label{color:var(--muted);font-size:13px}.code{font:700 20px Georgia,serif;direction:ltr;text-align:center;background:#f8f2e6;padding:15px;border:1px dashed var(--gold);border-radius:10px;margin:14px 0 20px}.status{padding:13px 15px;border-radius:9px;font-weight:bold;margin:16px 0}.valid{background:#e8f5eb;color:#17643b}.revoked{background:#fff0e8;color:#9b3a18}.error{background:#fff0f0;color:#9b2020}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.item{border-bottom:1px solid #eee5d8;padding:12px 0}.item strong{display:block;margin-top:7px;font-size:16px}.foot{text-align:center;color:var(--muted);font-size:12px;margin:22px}.certificate-image{margin-top:22px;text-align:center}.certificate-image img{display:block;width:100%;height:auto;border:1px solid #d8c8ac;border-radius:8px;background:var(--paper)}a{color:var(--wine)}@media(max-width:560px){.grid{grid-template-columns:1fr}.card{padding:18px}}
+:root{--wine:#5b1723;--gold:#c08d35;--ink:#302b28;--muted:#746d65;--paper:#faf6eb}*{box-sizing:border-box}body{margin:0;background:#f3eee4;color:var(--ink);font-family:Tahoma,Arial,sans-serif}.top{background:var(--wine);color:#fff;text-align:center;padding:28px 16px;border-bottom:5px solid var(--gold)}.top h1{font-size:22px;margin:0 0 8px}.top p{margin:0;color:#f0dfc0}.wrap{max-width:760px;margin:30px auto;padding:0 16px}.card{background:#fff;border:1px solid #e3d6bf;border-radius:16px;padding:26px;box-shadow:0 10px 30px #4b30100d}.label{color:var(--muted);font-size:13px}.code{font:700 20px Georgia,serif;direction:ltr;text-align:center;background:#f8f2e6;padding:15px;border:1px dashed var(--gold);border-radius:10px;margin:14px 0 20px}.status{padding:13px 15px;border-radius:9px;font-weight:bold;margin:16px 0}.valid{background:#e8f5eb;color:#17643b}.revoked{background:#fff0e8;color:#9b3a18}.error{background:#fff0f0;color:#9b2020}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.item{border-bottom:1px solid #eee5d8;padding:12px 0}.item strong{display:block;margin-top:7px;font-size:16px}.foot{text-align:center;color:var(--muted);font-size:12px;margin:22px}.language-result{margin-top:18px;padding:18px;border:1px solid #e3d6bf;border-radius:12px;background:#fff}.language-result h2{margin:0 0 12px;color:var(--wine);font-size:19px}.language-result .label{color:var(--muted);font-size:13px}.language-result strong{direction:ltr;text-align:left;overflow-wrap:anywhere}.certificate-image{margin-top:22px;text-align:center}.certificate-image img{display:block;width:100%;height:auto;border:1px solid #d8c8ac;border-radius:8px;background:var(--paper)}a{color:var(--wine)}@media(max-width:560px){.grid{grid-template-columns:1fr}.card{padding:18px}}
 </style><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
-</head><body><header class="top"><h1>سامانه استعلام گواهی داوری</h1><p>نشریه مطالعات زبان روسی · Russian Language Studies</p></header><main class="wrap"><section class="card"><div class="label">شناسه گواهی</div><div class="code" id="code">در حال دریافت شناسه…</div><div id="result" class="status">در حال بررسی اعتبار گواهی…</div><div id="certificateImage" class="certificate-image" hidden><div class="label">تصویر کامل گواهی صادرشده</div><img id="certificateImageSrc" alt="تصویر کامل گواهی داوری"></div><div id="details" class="grid" hidden><div class="item"><span class="label">نام داور</span><strong id="reviewer"></strong></div><div class="item"><span class="label">تعداد داوری‌های انجام‌شده</span><strong id="count"></strong></div><div class="item"><span class="label">تاریخ صدور گواهی</span><strong id="date"></strong></div><div class="item"><span class="label">وضعیت</span><strong id="state"></strong></div></div></section><p class="foot">این صفحه مرجع رسمی بررسی اصالت گواهی‌های صادرشده از سوی نشریه مطالعات زبان روسی است.<br><a href="https://rlsj.ir/">rlsj.ir</a></p></main>
+</head><body><header class="top"><h1>سامانه استعلام گواهی داوری</h1><p>نشریه مطالعات زبان روسی · Russian Language Studies</p></header><main class="wrap"><section class="card"><div class="label">شناسه گواهی</div><div class="code" id="code">در حال دریافت شناسه…</div><div id="result" class="status">در حال بررسی اعتبار گواهی…</div><div id="certificateImage" class="certificate-image" hidden><div class="label">تصویر کامل گواهی صادرشده</div><img id="certificateImageSrc" alt="تصویر کامل گواهی داوری"></div><div id="details" hidden>
+<div class="grid">
+<div class="item"><span class="label">نام داور</span><strong id="reviewer"></strong></div>
+<div class="item"><span class="label">تعداد داوری‌های انجام‌شده</span><strong id="count"></strong></div>
+<div class="item"><span class="label">تاریخ صدور گواهی</span><strong id="date"></strong></div>
+<div class="item"><span class="label">وضعیت</span><strong id="state"></strong></div>
+</div>
+<section class="language-result" lang="en" dir="ltr"><h2>Peer Review Certificate</h2><div class="grid"><div class="item"><span class="label">Reviewer</span><strong id="reviewerEn"></strong></div><div class="item"><span class="label">Completed reviews</span><strong id="countEn"></strong></div><div class="item"><span class="label">Issue date</span><strong id="dateEn"></strong></div><div class="item"><span class="label">Status</span><strong id="stateEn"></strong></div><div class="item"><span class="label">Verification code</span><strong id="codeEn"></strong></div></div></section>
+<section class="language-result" lang="ru" dir="ltr"><h2>Свидетельство о рецензировании</h2><div class="grid"><div class="item"><span class="label">Рецензент</span><strong id="reviewerRu"></strong></div><div class="item"><span class="label">Количество рецензий</span><strong id="countRu"></strong></div><div class="item"><span class="label">Дата выдачи</span><strong id="dateRu"></strong></div><div class="item"><span class="label">Статус</span><strong id="stateRu"></strong></div><div class="item"><span class="label">Код проверки</span><strong id="codeRu"></strong></div></div></section>
+</div></section><p class="foot">این صفحه مرجع رسمی بررسی اصالت گواهی‌های صادرشده از سوی نشریه مطالعات زبان روسی است.<br><a href="https://rlsj.ir/">rlsj.ir</a></p></main>
 <script>
+function jalaliToGregorianText(input){
+ const digits=String(input||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+ const m=digits.match(/^(\\d{3,4})[\\/-](\\d{1,2})[\\/-](\\d{1,2})$/);
+ if(!m)return input;
+ let jy=+m[1],jm=+m[2],jd=+m[3];
+ const g_d_m=[0,31,((jy%4===3)?29:28),31,30,31,30,31,31,30,31,30,31];
+ let jy2=jy-979;
+ let days=365*jy2+Math.floor(jy2/33)*8+Math.floor((jy2%33+3)/4);
+ for(let i=1;i<jm;i++)days+=(i<=6?31:30);
+ days+=jd-1+79;
+ let gy=1600+400*Math.floor(days/146097);days%=146097;
+ let leap=true;
+ if(days>=36525){days--;gy+=100*Math.floor(days/36524);days%=36524;if(days>=365)days++ ;else leap=false;}
+ gy+=4*Math.floor(days/1461);days%=1461;
+ if(days>=366){leap=false;days--;gy+=Math.floor(days/365);days%=365;}
+ let gm=1;
+ for(;gm<=12;gm++){const dim=gm===2?(leap?29:28):([4,6,9,11].includes(gm)?30:31);if(days<dim)break;days-=dim;}
+ const pad=n=>String(n).padStart(2,'0');
+ return String(gy)+'-'+pad(gm)+'-'+pad(days+1);
+}
 const API='https://rls-manuscript-admin.sheraginrub.workers.dev';
 const p=new URLSearchParams(location.search),code=(p.get('code')||'').trim().toUpperCase();
 document.getElementById('code').textContent=code||'شناسه وارد نشده است';
 const box=document.getElementById('result');
 if(!code){box.className='status error';box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';}
 else fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code)).then(async r=>{const j=await r.json();if(!r.ok)throw Error(j.error||'استعلام ناموفق بود');return j.certificate;}).then(c=>{
- document.getElementById('reviewer').textContent=c.reviewer_name;
+ const reviewerFa=c.reviewer_name;
+ const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
+ const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
+ const gregorianDate=jalaliToGregorianText(c.issue_date);
+ const active=c.status==='active';
+ document.getElementById('reviewer').textContent=reviewerFa;
  document.getElementById('count').textContent=Number(c.review_count).toLocaleString('fa-IR')+' مورد';
  document.getElementById('date').textContent=c.issue_date;
- document.getElementById('state').textContent=c.status==='active'?'معتبر':'باطل‌شده';
+ document.getElementById('state').textContent=active?'معتبر':'باطل‌شده';
+ document.getElementById('reviewerEn').textContent=reviewerEn;
+ document.getElementById('countEn').textContent=Number(c.review_count).toLocaleString('en-US');
+ document.getElementById('dateEn').textContent=gregorianDate;
+ document.getElementById('stateEn').textContent=active?'Valid':'Revoked';
+ document.getElementById('codeEn').textContent=c.certificate_code;
+ document.getElementById('reviewerRu').textContent=reviewerRu;
+ document.getElementById('countRu').textContent=Number(c.review_count).toLocaleString('ru-RU');
+ document.getElementById('dateRu').textContent=gregorianDate;
+ document.getElementById('stateRu').textContent=active?'Действительно':'Аннулировано';
+ document.getElementById('codeRu').textContent=c.certificate_code;
  document.getElementById('details').hidden=false;
  if(typeof c.certificate_image==="string" && c.certificate_image.startsWith("https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/")){document.getElementById("certificateImageSrc").src=c.certificate_image;document.getElementById("certificateImage").hidden=false;}
  box.className='status '+(c.status==='active'?'valid':'revoked');
