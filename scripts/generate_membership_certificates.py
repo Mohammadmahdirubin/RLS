@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create and cache one permanent PNG membership certificate per approved public member."""
+"""Create verified PNG source, JPEG download, and compact WebP preview per approved member."""
 from __future__ import annotations
 
 import hashlib
@@ -21,8 +21,8 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v9-dejavu-digits"
-PREVIEW_VERSION = "rls-preview-persian-raqm-v5-dejavu-digits"
+DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v10-jpeg-download"
+PREVIEW_VERSION = "rls-preview-persian-raqm-v6-jpeg-download"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
@@ -250,6 +250,27 @@ def qr_is_decodable(image_path: Path) -> bool:
         print(f"QR check failed for {image_path.name}: {error}")
         return False
 
+def build_jpeg_download(png_path: Path) -> Path:
+    """Create a real high-quality JPEG download and verify its embedded QR."""
+    jpg_path = png_path.with_suffix(".jpg")
+    with Image.open(png_path) as source:
+        image = source.convert("RGB")
+        image.save(jpg_path, format="JPEG", quality=98, subsampling=0, optimize=True)
+    if not qr_is_decodable(jpg_path):
+        with Image.open(png_path) as source:
+            source.convert("RGB").save(
+                jpg_path, format="JPEG", quality=100, subsampling=0, optimize=True
+            )
+    if not qr_is_decodable(jpg_path):
+        raise RuntimeError(f"QR verification failed for JPEG download {jpg_path.name}")
+    with Image.open(jpg_path) as check:
+        if check.format != "JPEG":
+            raise RuntimeError(f"Download is not a real JPEG: {jpg_path.name}")
+        check.verify()
+    print(f"JPEG download verified: {jpg_path.name} ({jpg_path.stat().st_size:,} bytes)")
+    return jpg_path
+
+
 def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
     """Create a compact admin preview and a high-quality downloadable WebP."""
     full_path = png_path.with_suffix(".webp")
@@ -347,9 +368,17 @@ def main() -> None:
             or previous.get("preview_version") != PREVIEW_VERSION
         ):
             full_webp, preview_webp = build_webp_variants(output)
+        full_jpeg = output.with_suffix(".jpg")
+        if (
+            not full_jpeg.exists()
+            or full_jpeg.stat().st_size == 0
+            or not qr_is_decodable(full_jpeg)
+        ):
+            full_jpeg = build_jpeg_download(output)
+
         new_entries[user_id] = {
             "file": f"assets/certificates/{filename}",
-            "full_file": f"assets/certificates/{full_webp.name}",
+            "full_file": f"assets/certificates/{full_jpeg.name}",
             "preview_file": f"assets/certificates/{preview_webp.name}",
             "preview_version": PREVIEW_VERSION,
             "fingerprint": fingerprint,
