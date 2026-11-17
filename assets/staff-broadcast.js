@@ -21,7 +21,7 @@
   if(subject.length<2||body.length<2){say('موضوع و متن پیام را کامل وارد کنید.');return;}
   if(files.length>2){say('حداکثر دو فایل پیوست مجاز است.');return;}
   for(const file of files){if(file.size>5*1024*1024){say('حجم هر فایل نباید بیشتر از ۵ مگابایت باشد: '+file.name);return;}if(!allowedExtensions.test(file.name)){say('نوع فایل مجاز نیست: '+file.name);return;}}
-  if(!confirm('ایمیل با موضوع «'+subject+'» برای همه ثبت‌نام‌کنندگان انجمن، شامل اعضا و متقاضیان، ارسال شود؟ این عملیات پس از شروع قابل بازگشت نیست.'))return;
+  if(!confirm('ایمیل با موضوع «'+subject+'» برای اعضا و متقاضیان انجمن و همه استادان و اعضای هیئت علمی/تحریریه درج‌شده در سایت (ایران، روسی، انگلیسی و بین‌المللی) ارسال شود؟ نشانی‌های تکراری حذف می‌شوند. این عملیات پس از شروع قابل بازگشت نیست.'))return;
   send.disabled=true;form.querySelector('[type="reset"]').disabled=true;
   try{say('در حال آماده‌سازی و ارسال ایمیل‌ها…');const {data:{session},error:sessionError}=await db.auth.getSession();if(sessionError||!session?.access_token)throw new Error('نشست معتبر نیست؛ دوباره وارد شوید.');
    const payload=new FormData();payload.append('subject',subject);payload.append('message',body);files.forEach(file=>payload.append('attachments',file,file.name));
