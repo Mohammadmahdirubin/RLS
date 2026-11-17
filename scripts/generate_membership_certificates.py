@@ -51,7 +51,7 @@ def fetch_members() -> list[dict]:
         "Accept": "application/json",
     }
     params = {
-        "select": "user_id,full_name,category,created_at,member_number,membership_status",
+        "select": "user_id,full_name,category,created_at,reviewed_at,member_number,membership_status",
         "membership_status": "eq.approved",
         "member_number": "not.is.null",
         "order": "member_number.asc",
@@ -126,6 +126,7 @@ def source_fingerprint(member: dict) -> str:
         "full_name": str(member.get("full_name") or ""),
         "category": str(member.get("category") or ""),
         "created_at": str(member.get("created_at") or ""),
+        "reviewed_at": str(member.get("reviewed_at") or ""),
         "member_number": str(member.get("member_number") or ""),
     }
     payload = json.dumps(relevant, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
@@ -161,7 +162,7 @@ def build_certificate(member: dict, output: Path) -> str:
 
     category = GROUPS.get(str(member.get("category") or ""), str(member.get("category") or "—"))
     created_at = str(member.get("created_at") or "")
-    date_label = member_date(created_at)
+    date_label = member_date(str(member.get("reviewed_at") or created_at))
     fields = [
         (persian_digits(f"{number:06d}"), 770, "ltr"),
         (category, 826, "rtl"),
