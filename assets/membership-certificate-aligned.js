@@ -9,10 +9,10 @@
     if (!Number.isSafeInteger(number) || number < 1) throw new Error('شماره عضویت معتبر نیست.');
     const base = '/assets/certificates/member-' + userId;
     // Versioned URL enables long-lived browser/CDN caching; bump when the image format changes.
-    const query = '?v=' + encodeURIComponent(number) + '&cv=rls-cert-v6';
+    const query = '?v=' + encodeURIComponent(number) + '&cv=rls-cert-png-v7';
     return {
       preview: base + '.preview.webp' + query,
-      full: base + '.webp' + query
+      full: base + '.png' + query
     };
   }
 
@@ -21,7 +21,7 @@
     link.className = 'community-button primary rls-certificate-download';
     link.href = url;
     link.download = 'RLS-Membership-Certificate-' +
-      String(member.member_number).padStart(6, '0') + '.webp';
+      String(member.member_number).padStart(6, '0') + '.png';
     link.textContent = label;
     return link;
   }
@@ -52,7 +52,7 @@
       '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>' +
       (adminPreview
         ? 'پیش‌نمایش سبک؛ فایل اصلی فقط هنگام دانلود دریافت می‌شود.'
-        : 'نسخه اصلی باکیفیت · WebP') +
+        : 'نسخه اصلی باکیفیت · PNG') +
       '</p></div>' +
       (adminPreview
         ? '<div class="rls-certificate-frame" hidden><img class="rls-membership-certificate-image" alt="پیش‌نمایش گواهی عضویت" decoding="async" loading="lazy"></div>'
