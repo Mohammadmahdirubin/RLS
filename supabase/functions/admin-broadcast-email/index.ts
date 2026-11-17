@@ -18,6 +18,24 @@ const toBase64 = (bytes: Uint8Array) => {
   }
   return btoa(binary);
 };
+const loadEditorialBoardEmails = async (): Promise<string[]> => {
+  const response = await fetch("https://rlsj.ir/editorial-board.html", {
+    headers: { "Accept": "text/html", "User-Agent": "RLS-All-Community-Mailer/1.0" },
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok) throw new Error("فهرست رسمی استادان و هیئت تحریریه در دسترس نیست؛ برای جلوگیری از ارسال ناقص، عملیات متوقف شد.");
+  const html = await response.text();
+  const found = new Map<string, string>();
+  for (const match of html.matchAll(/href\s*=\s*["']mailto:([^"'?#]+)["']/gi)) {
+    let email = String(match[1] || "").trim();
+    try { email = decodeURIComponent(email); } catch { /* retain original */ }
+    const valid = validEmail(email);
+    if (valid) found.set(valid.toLowerCase(), valid);
+  }
+  if (!found.size) throw new Error("هیچ ایمیل معتبری در فهرست رسمی استادان و هیئت تحریریه پیدا نشد؛ ارسال متوقف شد.");
+  return [...found.values()];
+};
+
 const validEmail = (value: unknown) => {
   const email = String(value ?? "").trim();
   return email.length <= 320 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "";
@@ -81,6 +99,8 @@ Deno.serve(async (req: Request) => {
     };
     await collect("rls_profiles");
     await collect("rls_membership_applications");
+    const editorialBoardEmails = await loadEditorialBoardEmails();
+    for (const email of editorialBoardEmails) recipients.set(email.toLowerCase(), email);
     const targets = [...recipients.values()];
     const { data: campaign, error: campaignError } = await admin.from("rls_admin_email_campaigns")
       .insert({
@@ -115,7 +135,7 @@ Deno.serve(async (req: Request) => {
           '<div style="border-top:5px solid #642536;padding:22px;background:#faf7f3">' +
           '<p style="color:#8b6a36">انجمن مطالعات زبان روسی · RLS</p><h2>' + esc(subject) + '</h2>' +
           '<div style="white-space:pre-wrap">' + esc(message) + '</div>' +
-          '<hr><small>این پیام برای ثبت‌نام‌کنندگان انجمن مطالعات زبان روسی ارسال شده است.</small></div></div>';
+          '<hr><small>این پیام برای اعضا و متقاضیان انجمن و استادان و اعضای هیئت علمی و تحریریه درج‌شده در وب‌سایت رسمی انجمن ارسال شده است.</small></div></div>';
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { "Authorization": "Bearer " + resendKey, "Content-Type": "application/json" },
