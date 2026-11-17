@@ -23,6 +23,7 @@ TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
 DESIGN_VERSION = "rls-certificate-full-name-v3"
+PREVIEW_VERSION = "rls-preview-webp-v2"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
@@ -329,12 +330,14 @@ def main() -> None:
             or preview_webp.stat().st_size == 0
             or not qr_is_decodable(full_webp)
             or not qr_is_decodable(preview_webp)
+            or previous.get("preview_version") != PREVIEW_VERSION
         ):
             full_webp, preview_webp = build_webp_variants(output)
         new_entries[user_id] = {
             "file": f"assets/certificates/{filename}",
             "full_file": f"assets/certificates/{full_webp.name}",
             "preview_file": f"assets/certificates/{preview_webp.name}",
+            "preview_version": PREVIEW_VERSION,
             "fingerprint": fingerprint,
             "membership_number": int(member["member_number"]),
             "qr_url": target_url,
