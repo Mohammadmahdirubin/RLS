@@ -21,7 +21,7 @@
     link.className = 'community-button primary rls-certificate-download';
     link.href = url;
     link.download = 'RLS-Membership-Certificate-' +
-      String(member.member_number).padStart(6, '0') + '.png';
+      String(member.member_number).padStart(6, '0') + '.webp';
     link.textContent = label;
     return link;
   }
