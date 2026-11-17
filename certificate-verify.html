@@ -17,7 +17,7 @@
 <script>
 function jalaliToGregorianText(input){
  const digits=String(input||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
- const m=digits.match(/^(\\d{3,4})[\\/-](\\d{1,2})[\\/-](\\d{1,2})$/);
+ const m=digits.match(/^(\d{3,4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
  if(!m)return input;
  let jy=+m[1],jm=+m[2],jd=+m[3];
  const g_d_m=[0,31,((jy%4===3)?29:28),31,30,31,30,31,31,30,31,30,31];
@@ -40,11 +40,13 @@ const p=new URLSearchParams(location.search),code=(p.get('code')||'').trim().toU
 document.getElementById('code').textContent=code||'شناسه وارد نشده است';
 const box=document.getElementById('result');
 if(!code){box.className='status error';box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';}
-else fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code)).then(async r=>{const j=await r.json();if(!r.ok)throw Error(j.error||'استعلام ناموفق بود');return j.certificate;}).then(c=>{
+else fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code),{cache:'no-store',headers:{'Accept':'application/json'}}).then(async r=>{const j=await r.json();if(!r.ok)throw Error(j.error||'استعلام ناموفق بود');return j.certificate;}).then(c=>{
  const reviewerFa=c.reviewer_name;
  const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
  const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
- const gregorianISO=jalaliToGregorianText(c.issue_date);\n const gregorianDateEn=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});\n const gregorianDateRu=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})+' г.';
+ const gregorianISO=jalaliToGregorianText(c.issue_date);
+ const gregorianDateEn=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
+ const gregorianDateRu=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})+' г.';
  const active=c.status==='active';
  document.getElementById('reviewer').textContent=reviewerFa;
  document.getElementById('count').textContent=Number(c.review_count).toLocaleString('fa-IR')+' مورد';
