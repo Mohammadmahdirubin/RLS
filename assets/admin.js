@@ -13,6 +13,7 @@
   const labels={student:'دانشجو',graduate:'دانش‌آموخته',faculty:'استاد و عضو هیئت علمی',researcher:'پژوهشگر مطالعات روسیه',translator:'مترجم زبان روسی',culture:'فعال ادبیات و فرهنگ روسیه',honorary:'عضو افتخاری'};
   const categories=Object.entries(labels);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const formatMembershipDate=value=>value?new Intl.DateTimeFormat('fa-IR-u-ca-persian',{timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value)):'—';
   const adminSearch=document.getElementById('admin-member-search');
   const adminSearchCount=document.getElementById('admin-search-count');
   function normalizeAdminSearch(value){
@@ -77,7 +78,7 @@
   async function loadCertificates(){
     list.textContent='در حال دریافت فهرست گواهی‌ها…';
     const {data,error}=await client.from('rls_profiles')
-      .select('user_id,full_name,display_name,category,email,created_at,membership_status,member_number')
+      .select('user_id,full_name,display_name,category,email,created_at,reviewed_at,membership_status,member_number')
       .in('membership_status',['approved','suspended'])
       .not('member_number','is',null)
       .order('created_at',{ascending:false});
@@ -90,7 +91,7 @@
       return '<article class="admin-member admin-certificate-member" data-certificate-user="'+esc(p.user_id)+'">'+
         '<h3>'+esc(name)+'</h3>'+
         '<div class="admin-meta">شماره عضویت: '+esc(number)+' · گروه: '+esc(labels[p.category]||p.category||'—')+state+
-        '<br>ایمیل: '+esc(p.email||'—')+' · تاریخ عضویت: '+(p.created_at?new Date(p.created_at).toLocaleDateString('fa-IR'):'—')+'</div>'+
+        '<br>ایمیل: '+esc(p.email||'—')+' · تاریخ عضویت: '+formatMembershipDate(p.reviewed_at||p.created_at)+'</div>'+
         '<div class="admin-certificate-preview"></div></article>';
     }).join('');
     applyAdminSearch();
@@ -99,7 +100,7 @@
       const target=card?.querySelector('.admin-certificate-preview');
       if(target&&p.membership_status==='approved'&&window.RLSMembershipCertificate){
         window.RLSMembershipCertificate.render(target,{
-          user_id:String(p.user_id),full_name:p.full_name,category:p.category,created_at:p.created_at,
+          user_id:String(p.user_id),full_name:p.full_name,category:p.category,created_at:p.created_at,reviewed_at:p.reviewed_at,
           member_number:p.member_number,membership_status:p.membership_status
         },{adminPreview:true});
       }else if(target&&p.membership_status==='suspended'){
