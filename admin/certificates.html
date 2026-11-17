@@ -25,7 +25,7 @@ $('logout').onclick=()=>{sessionStorage.removeItem('rlsCertApi');sessionStorage.
 async function revokeCert(id){if(!confirm('گواهی باطل شود؟ سابقه آن حذف نخواهد شد.'))return;try{await req('/admin-api/certificates/'+id,{method:'PATCH',body:JSON.stringify({status:'revoked'})});await load()}catch(e){alert(e.message)}}
 function printCert(id){
  const c=records.find(x=>x.id===id);if(!c)return;
- const verify='https://rlsj.ir/verification.html?code='+encodeURIComponent(c.certificate_code);
+ const verify='https://rlsj.ir/certificate-verify.html?code='+encodeURIComponent(c.certificate_code);
  const fa=v=>String(v??'').replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
  const w=window.open('','_blank');if(!w){alert('برای چاپ، اجازه بازشدن پنجره جدید را فعال کنید.');return}
  w.document.write(`<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>گواهی داوری ${esc(c.certificate_code)}</title><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script><style>
