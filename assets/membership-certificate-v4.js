@@ -9,10 +9,10 @@
     if (!Number.isSafeInteger(number) || number < 1) throw new Error('شماره عضویت معتبر نیست.');
     const base = '/assets/certificates/member-' + userId;
     // Versioned URL enables long-lived browser/CDN caching; bump when the image format changes.
-    const query = '?v=' + encodeURIComponent(number) + '&cv=rls-cert-png-v7';
+    const query = '?v=' + encodeURIComponent(number) + '&cv=rls-cert-webp-v8';
     return {
       preview: base + '.preview.webp' + query,
-      full: base + '.png' + query
+      full: base + '.webp' + query
     };
   }
 
