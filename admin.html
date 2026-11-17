@@ -111,14 +111,14 @@
  <p class="admin-google-warning">نکته امنیتی: Client Secret، Refresh Token و کلیدهای Supabase نباید در این پنل، کد سایت، GitHub یا پیام‌رسان قرار بگیرند. آن‌ها فقط در Supabase Edge Function Secrets ذخیره می‌شوند.</p>
  </section>
  <section id="admin-broadcast-panel" class="admin-section-content" hidden>
-<div class="admin-section-intro"><h2>ارسال پیام همگانی به کاربران</h2><p>ارسال ایمیل جداگانه به همه ثبت‌نام‌کنندگان انجمن، شامل متقاضیان و اعضای تأییدشده؛ حداکثر دو فایل پیوست.</p></div>
+<div class="admin-section-intro"><h2>ارسال پیام همگانی به کاربران</h2><p>ارسال ایمیل جداگانه به اعضا و متقاضیان انجمن و همه استادان و اعضای هیئت علمی و تحریریه درج‌شده در وب‌سایت رسمی (ایران، روسی، انگلیسی/زبان‌شناسی و بین‌المللی). نشانی‌های تکراری حذف می‌شوند؛ حداکثر دو فایل پیوست.</p></div>
 <form id="admin-broadcast-form" class="admin-event-form">
 <div class="admin-event-fields">
 <label>موضوع ایمیل<input name="subject" type="text" maxlength="180" required placeholder="موضوع پیام"></label>
 <label class="admin-event-description">متن پیام<textarea name="message" rows="9" maxlength="20000" required placeholder="متن پیام خود را بنویسید…"></textarea></label>
 <label class="admin-event-poster">فایل‌های پیوست<input name="attachments" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png,.webp"><small>حداکثر ۲ فایل؛ هر فایل حداکثر ۵ مگابایت. فایل‌های PDF، Office، متنی و تصویر پذیرفته می‌شوند.</small></label>
 </div>
-<div class="admin-event-actions"><button type="submit" id="admin-broadcast-send">ارسال ایمیل به همه کاربران</button><button type="reset" id="admin-broadcast-reset">پاک‌کردن فرم</button></div>
+<div class="admin-event-actions"><button type="submit" id="admin-broadcast-send">ارسال ایمیل به همه اعضا و استادان</button><button type="reset" id="admin-broadcast-reset">پاک‌کردن فرم</button></div>
 <p id="admin-broadcast-message" role="status" aria-live="polite"></p>
 </form>
 </section>
