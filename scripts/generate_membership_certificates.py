@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -20,7 +21,7 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-persian-raqm-v4"
+DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v5"
 PREVIEW_VERSION = "rls-preview-persian-raqm-v3"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
@@ -110,10 +111,13 @@ def persian_digits(value: str) -> str:
     return str(value).translate(str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹"))
 
 def member_date(value: str) -> str:
+    """Convert the membership timestamp to the official Tehran calendar date."""
     parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
-    return persian_digits(parsed.astimezone(timezone.utc).astimezone().strftime("%Y-%m-%d")) if False else persian_digits(
-        __import__("jdatetime").date.fromgregorian(date=parsed.date()).strftime("%Y/%m/%d")
-    )
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    local_date = parsed.astimezone(ZoneInfo("Asia/Tehran")).date()
+    jalali_date = __import__("jdatetime").date.fromgregorian(date=local_date)
+    return persian_digits(jalali_date.strftime("%Y/%m/%d"))
 
 def source_fingerprint(member: dict) -> str:
     relevant = {
