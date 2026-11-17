@@ -244,10 +244,17 @@ const initRLS=()=>{
     };
     addCrossrefExportStatus();
   }
-  const isMobileUA=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const mobile=isMobileUA && Math.min(window.innerWidth||9999, screen.width||9999)<=900;
-  if(mobile)document.documentElement.classList.add('rls-mobile-mode');
-  else document.documentElement.classList.remove('rls-mobile-mode');
+  // Responsive layout follows the actual CSS viewport, not the browser User-Agent.
+  // This also handles mobile browsers requesting the desktop site.
+  const viewportMeta=document.querySelector('meta[name="viewport"]');
+  if(!viewportMeta){
+    const meta=document.createElement('meta');
+    meta.name='viewport';
+    meta.content='width=device-width, initial-scale=1, viewport-fit=cover';
+    document.head.appendChild(meta);
+  }
+  const mobile=window.matchMedia('(max-width: 900px)').matches;
+  document.documentElement.classList.toggle('rls-mobile-mode',mobile);
 
   const labels={
     fa:{home:'صفحه اصلی',about:'درباره نشریه',association:'انجمن',board:'هیئت تحریریه',news:'اخبار نشریه',policies:'سیاست‌ها',review:'داوری',ethics:'اخلاق نشر',plagiarism:'سرقت علمی',conflict:'تعارض منافع',copyright:'حقوق نشر',ai:'هوش مصنوعی',data:'داده و بازتولیدپذیری',complaints:'شکایت و اعتراض',preservation:'حفظ و آرشیو دیجیتال',repository:'سیاست مخازن و خودآرشیوی',identifiers:'شناسه‌های پایدار مقالات',fees:'هزینه‌های انتشار',corrections:'اصلاح و ابطال',publication:'انتشارات',articles:'مقالات منتشرشده',issues:'شماره دوم',archive:'آرشیو شماره‌ها',authors:'نویسندگان',guidelines:'راهنمای نویسندگان',authorInfo:'اطلاعات نویسندگان',indexing:'نمایه‌ها',metrics:'اطلاعات و آمار',contact:'تماس با نشریه',privacy:'حریم خصوصی',openAccess:'دسترسی آزاد',submit:'ارسال مقاله'},
