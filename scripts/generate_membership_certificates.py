@@ -229,8 +229,13 @@ def cached_certificate_is_valid(member: dict, output: Path) -> bool:
 
 
 def qr_is_decodable(image_path: Path) -> bool:
-    with Image.open(image_path) as image:
-        return bool(decode_qr(image.convert("RGB")))
+    try:
+        with Image.open(image_path) as image:
+            image.load()
+            return bool(decode_qr(image.convert("RGB")))
+    except Exception as error:
+        print(f"QR check failed for {image_path.name}: {error}")
+        return False
 
 def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
     """Create a compact admin preview and a high-quality downloadable WebP."""
@@ -244,19 +249,23 @@ def build_webp_variants(png_path: Path) -> tuple[Path, Path]:
             full.save(full_path, "WEBP", lossless=True, method=6)
 
         preview = source.convert("RGB")
-        # Keep the preview reasonably small, but never sacrifice QR readability.
+        # Prefer a small preview, increasing dimensions only when QR validation needs it.
         preview.thumbnail((1100, 1100), Image.Resampling.LANCZOS)
         preview.save(preview_path, "WEBP", quality=88, method=5)
+        if not qr_is_decodable(preview_path):
+            with Image.open(png_path) as original:
+                preview = original.convert("RGB")
+                preview.thumbnail((1300, 1300), Image.Resampling.LANCZOS)
+                preview.save(preview_path, "WEBP", quality=90, method=5)
+        if not qr_is_decodable(preview_path):
+            with Image.open(png_path) as original:
+                preview = original.convert("RGB")
+                preview.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
+                preview.save(preview_path, "WEBP", quality=92, method=5)
         if not qr_is_decodable(preview_path):
             preview.save(preview_path, "WEBP", quality=96, method=5)
         if not qr_is_decodable(preview_path):
             preview.save(preview_path, "WEBP", lossless=True, method=5)
-        if not qr_is_decodable(preview_path):
-            # Some displays need a larger QR module size; retry with a less reduced image.
-            with Image.open(png_path) as original:
-                larger_preview = original.convert("RGB")
-                larger_preview.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
-                larger_preview.save(preview_path, "WEBP", lossless=True, method=5)
         if not qr_is_decodable(preview_path):
             raise RuntimeError(f"QR verification failed for preview {preview_path.name}")
     if not qr_is_decodable(full_path):
