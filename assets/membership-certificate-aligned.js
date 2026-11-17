@@ -9,7 +9,7 @@
     if (!Number.isSafeInteger(number) || number < 1) throw new Error('شماره عضویت معتبر نیست.');
     const base = '/assets/certificates/member-' + userId;
     // Versioned URL enables long-lived browser/CDN caching; bump when the image format changes.
-    const query = '?v=' + encodeURIComponent(number) + '&cv=rls-cert-v4';
+    const query = '?v=' + encodeURIComponent(number) + '&cv=rls-cert-v5';
     return {
       preview: base + '.preview.webp' + query,
       full: base + '.webp' + query
@@ -87,7 +87,10 @@
       loading = true;
       button.disabled = true;
       button.textContent = 'در حال دریافت پیش‌نمایش…';
+      image.loading = 'eager';
       let settled = false;
+      let timer = 0;
+      let usingFullFallback = false;
       const finish = (ok) => {
         if (settled) return;
         settled = true;
@@ -100,15 +103,35 @@
           image.dataset.loaded = 'true';
           frame.hidden = false;
           button.replaceWith(downloadLink(urls.full, member, 'دانلود نسخه اصلی'));
-          hint.textContent = 'پیش‌نمایش سبک نمایش داده شد؛ دانلود اصلی جداگانه انجام می‌شود.';
+          hint.textContent = usingFullFallback
+            ? 'نسخه اصلی برای پیش‌نمایش نمایش داده شد؛ دانلود همان فایل در دسترس است.'
+            : 'پیش‌نمایش سبک نمایش داده شد؛ دانلود اصلی جداگانه انجام می‌شود.';
         } else {
           button.textContent = 'تلاش دوباره برای نمایش';
-          hint.textContent = 'پیش‌نمایش بارگذاری نشد؛ اتصال را بررسی و دوباره تلاش کنید.';
+          hint.textContent = 'تصویر گواهی از سرور دریافت نشد؛ دوباره تلاش کنید.';
         }
       };
-      const timer = window.setTimeout(() => finish(false), 20000);
+      const armTimeout = (milliseconds) => {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          if (!usingFullFallback) loadFullFallback();
+          else finish(false);
+        }, milliseconds);
+      };
+      const loadFullFallback = () => {
+        if (settled || usingFullFallback) return;
+        usingFullFallback = true;
+        button.textContent = 'در حال دریافت نسخه اصلی…';
+        hint.textContent = 'نسخه سبک در دسترس نبود؛ نسخه اصلی در حال بارگذاری است.';
+        armTimeout(15000);
+        image.src = urls.full;
+      };
       image.onload = () => finish(true);
-      image.onerror = () => finish(false);
+      image.onerror = () => {
+        if (!usingFullFallback) loadFullFallback();
+        else finish(false);
+      };
+      armTimeout(10000);
       image.src = urls.preview;
     });
   }
