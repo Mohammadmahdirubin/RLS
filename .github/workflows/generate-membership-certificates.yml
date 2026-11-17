@@ -35,9 +35,11 @@ jobs:
       - name: Install image, QR and Persian text dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libzbar0 fonts-noto-core fonts-dejavu-core
+          sudo apt-get install -y libzbar0 libraqm-dev fonts-noto-core fonts-dejavu-core
           python -m pip install --upgrade pip
-          python -m pip install requests pillow qrcode[pil] pyzbar arabic-reshaper python-bidi jdatetime
+          python -m pip install --no-binary=Pillow pillow
+          python -m pip install requests qrcode[pil] pyzbar jdatetime
+          python -c "from PIL import features; assert features.check_feature('raqm'), 'Pillow was built without libraqm/RAQM support'"
 
       - name: Generate only missing or changed certificates
         run: python scripts/generate_membership_certificates.py
