@@ -97,11 +97,13 @@
     data.forEach(p=>{
       const card=list.querySelector('[data-certificate-user="'+String(p.user_id)+'"]');
       const target=card?.querySelector('.admin-certificate-preview');
-      if(target&&window.RLSMembershipCertificate){
+      if(target&&p.membership_status==='approved'&&window.RLSMembershipCertificate){
         window.RLSMembershipCertificate.render(target,{
           user_id:String(p.user_id),full_name:p.full_name,category:p.category,created_at:p.created_at,
           member_number:p.member_number,membership_status:p.membership_status
         },{adminPreview:true});
+      }else if(target&&p.membership_status==='suspended'){
+        target.textContent='به‌دلیل تعلیق عضویت، پیش‌نمایش گواهی در این بخش فعال نیست.';
       }
     });
   }
