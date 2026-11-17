@@ -52,7 +52,7 @@
       '<div class="rls-certificate-heading"><h2>گواهی عضویت انجمن</h2><p>' +
       (adminPreview
         ? 'پیش‌نمایش سبک؛ فایل اصلی فقط هنگام دانلود دریافت می‌شود.'
-        : 'نسخه اصلی باکیفیت · PNG') +
+        : 'نسخه اصلی باکیفیت · WebP') +
       '</p></div>' +
       (adminPreview
         ? '<div class="rls-certificate-frame" hidden><img class="rls-membership-certificate-image" alt="پیش‌نمایش گواهی عضویت" decoding="async" loading="lazy"></div>'
