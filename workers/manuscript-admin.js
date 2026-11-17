@@ -32,7 +32,7 @@ export default {
    if(!image.startsWith(prefix))return reply({error:"A PNG data URL is required"},400);
    const imageBase64=image.slice(prefix.length).replace(/\s/g,"");
    if(imageBase64.length<100||imageBase64.length>4500000||!imageBase64.startsWith("iVBORw0KGgo"))return reply({error:"Invalid or oversized PNG image"},400);
-   const ghHeaders={"Authorization":"Bearer "+env.GITHUB_TOKEN,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"};
+   const ghHeaders={"Authorization":"Bearer "+env.GITHUB_TOKEN,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"RLS-Manuscript-Admin/1.0 (https://rlsj.ir)","Content-Type":"application/json"};
    const path="assets/certificates/"+cert.certificate_code+".png";
    const contentUrl="https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/"+path.split("/").map(encodeURIComponent).join("/");
    let existingSha=null;
