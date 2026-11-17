@@ -47,24 +47,25 @@ jobs:
       - name: Build compact preview and high-quality WebP variants
         run: echo "WebP variants are generated and QR-checked by the certificate generator."
 
-      - name: Commit cached member certificates
+      - name: Publish certificates without manifest rebase conflicts
         run: |
-          if [ -z "$(git status --porcelain -- assets/certificates)" ]; then
-            echo "All member certificates are already generated and current."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/certificates/
-          git commit -m "Pre-generate and cache approved membership certificates"
           for attempt in 1 2 3 4 5; do
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+            python scripts/generate_membership_certificates.py
+            if [ -z "$(git status --porcelain -- assets/certificates)" ]; then
+              echo "All approved member certificates are already generated and current."
+              exit 0
+            fi
+            git add assets/certificates/
+            git commit -m "Pre-generate and cache approved membership certificates"
             if git push origin HEAD:main; then
               echo "Original membership certificates published."
               exit 0
             fi
-            echo "Push race detected; retrying after refreshing main (attempt $attempt)."
+            echo "Main changed during publish; regenerating from latest main (attempt $attempt)."
             sleep $((attempt * 3))
           done
           echo "Could not publish optimized certificates after retries."
