@@ -113,7 +113,7 @@ window.renderRLSArticleList = function(targetId, language) {
       : '';
     var page = document.createElement('a');
     page.className = 'button secondary';
-    page.href = localizedOjsUrl || a.href || ('article-' + a.id + '.html'); // Open the article in its original language.
+    page.href = localizedOjsUrl || ('https://ojs.rlsj.ir/index.php/rls/' + articleLocale + '/'); // All article-view links must stay on OJS; never fall back to local article pages.
     page.setAttribute('data-rls-article-id', a.id);
     page.textContent = labels.view;
     actions.appendChild(page);
