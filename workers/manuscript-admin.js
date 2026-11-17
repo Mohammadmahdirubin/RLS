@@ -44,7 +44,7 @@ export default {
    const saved=await fetch(contentUrl,{method:"PUT",headers:ghHeaders,body:JSON.stringify(payload)});
    if(!saved.ok){const detail=await saved.text();return reply({error:"GitHub upload failed: "+saved.status+" "+detail.slice(0,350)},502);}
    const savedJson=await saved.json();
-   const imageUrl=savedJson?.content?.download_url;
+   const imageUrl=savedJson?.content?.download_url ? savedJson.content.download_url+"?v="+Date.now() : null;
    if(!imageUrl)return reply({error:"GitHub uploaded the image but did not return a download URL"},502);
    await env.DB.prepare("UPDATE reviewer_certificates SET certificate_image=? WHERE id=?").bind(imageUrl,id).run();
    return reply({success:true,id,certificate_code:cert.certificate_code,certificate_image:imageUrl});
