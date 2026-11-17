@@ -13,7 +13,8 @@
   const labels={student:'دانشجو',graduate:'دانش‌آموخته',faculty:'استاد و عضو هیئت علمی',researcher:'پژوهشگر مطالعات روسیه',translator:'مترجم زبان روسی',culture:'فعال ادبیات و فرهنگ روسیه',honorary:'عضو افتخاری'};
   const categories=Object.entries(labels);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const formatMembershipDate=value=>value?new Intl.DateTimeFormat('fa-IR-u-ca-persian',{timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value)):'—';
+  const formatMembershipDate=value=>{if(!value)return '—';const date=new Date(value);return Number.isNaN(date.getTime())?'—':new Intl.DateTimeFormat('fa-IR-u-ca-persian',{timeZone:'Asia/Tehran',calendar:'persian',numberingSystem:'arabext',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);};
+  const formatAdminDateTime=value=>{if(!value)return '—';const date=new Date(value);return Number.isNaN(date.getTime())?'—':new Intl.DateTimeFormat('fa-IR-u-ca-persian',{timeZone:'Asia/Tehran',calendar:'persian',numberingSystem:'arabext',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(date);};
   const adminSearch=document.getElementById('admin-member-search');
   const adminSearchCount=document.getElementById('admin-search-count');
   function normalizeAdminSearch(value){
@@ -140,7 +141,7 @@
           '<div class="admin-meta">ایمیل: '+esc(item.email||'—')+
           '<br>گروه ثبت‌شده: '+esc(labels[item.category]||item.category||'ثبت نشده')+
           '<br>وضعیت ایمیل: '+emailState+
-          '<br>تاریخ ایجاد حساب: '+(item.created_at?new Date(item.created_at).toLocaleString('fa-IR'):'—')+'</div>'+
+          '<br>تاریخ ایجاد حساب: '+(item.created_at?formatAdminDateTime(item.created_at):'—')+'</div>'+
           '<p class="admin-meta">این حساب در Supabase وجود دارد، اما هنوز پرونده‌ای در درخواست‌های عضویت یا پروفایل اعضا ندارد.</p>'+
           missingText+
           (canStage?'<div class="admin-actions"><button class="approve" data-action="stage_incomplete_registration">افزودن به صف بررسی عضویت</button></div>':
@@ -178,7 +179,7 @@
           '<div class="admin-meta">شماره عضویت: '+esc(String(item.member_number||'—').padStart(6,'0'))+
           '<br>ایمیل: <span dir="ltr">'+esc(item.email||'—')+'</span>'+
           '<br>وضعیت: <b class="admin-incomplete-warning">ایمیل هنوز در حساب کاربری تأیید نشده است</b>'+
-          '<br>تاریخ عضویت: '+(item.created_at?new Date(item.created_at).toLocaleDateString('fa-IR'):'—')+'</div>'+
+          '<br>تاریخ عضویت: '+(item.created_at?formatMembershipDate(item.created_at):'—')+'</div>'+
           '<p class="admin-meta">عضویت این شخص تأیید شده است؛ این فهرست فقط برای پیگیری دسترسی ورود و تأیید نشانی ایمیل است و وضعیت عضویت را تغییر نمی‌دهد.</p>'+
           '<button type="button" class="community-search-btn" data-copy-member-email="'+esc(item.email||'')+'">کپی نشانی ایمیل</button>'+
         '</article>'
@@ -216,7 +217,7 @@
         :'';
       return '<article class="admin-member" data-application-id="'+esc(p.id)+'"><h3>'+esc(p.full_name)+'</h3><p class="admin-meta"><b>وضعیت درخواست: '+esc(stateLabel)+'</b></p>'+photo+
         '<div class="admin-meta">ایمیل: '+esc(p.email)+' · گروه: '+esc(labels[p.category]||p.category)+
-        '<br>تاریخ ثبت: '+new Date(p.created_at).toLocaleString('fa-IR')+
+        '<br>تاریخ ثبت: '+formatAdminDateTime(p.created_at)+
         (extra.length?'<br>'+extra.map(x=>'<b>'+esc(x[0])+':</b> '+esc(x[1])).join(' · '):'')+'</div>'+
         evidence+recoveredNote+
         '<p class="admin-meta">با تأیید این درخواست، پروفایل عضو در فهرست عمومی اعضای تأییدشده ایجاد می‌شود. عکس پروفایل اختیاری است و در صورت نبود عکس، پروفایل بدون عکس نمایش داده خواهد شد.</p>'+
