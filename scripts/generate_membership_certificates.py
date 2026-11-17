@@ -21,8 +21,8 @@ CONFIG_FILE = ROOT / "assets" / "supabase-config.js"
 TEMPLATE_FILE = ROOT / "Bilingual Russian Language Membership Certificate.png"
 OUTPUT_DIR = ROOT / "assets" / "certificates"
 MANIFEST_FILE = OUTPUT_DIR / "manifest.json"
-DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v8-force-all-legacy"
-PREVIEW_VERSION = "rls-preview-persian-raqm-v4-force-all-legacy"
+DESIGN_VERSION = "rls-certificate-persian-raqm-tehran-date-v9-dejavu-digits"
+PREVIEW_VERSION = "rls-preview-persian-raqm-v5-dejavu-digits"
 PROFILE_BASE = "https://rlsj.ir/community.html?member="
 GROUPS = {
     "student": "دانشجو",
@@ -153,8 +153,8 @@ def build_certificate(member: dict, output: Path) -> str:
 
     name_font = load_text_font(find_font(True), max(1, round(46 * scale)))
     detail_font = load_text_font(find_font(True), max(1, round(29 * scale)))
-    # Use a font with Persian Extended-Arabic digits; Noto Naskh may render U+06F0–U+06F9 as empty squares.
-    digit_font = load_text_font("/usr/share/fonts/truetype/noto/NotoSansArabic-Bold.ttf", max(1, round(29 * scale)))
+    # Use DejaVu Sans for Persian digits: it reliably contains U+06F0–U+06F9 in the certificate renderer.
+    digit_font = load_text_font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", max(1, round(29 * scale)))
 
     # Keep the original Unicode order. RAQM applies Persian glyph shaping and bidi once.
     draw_persian_text(
