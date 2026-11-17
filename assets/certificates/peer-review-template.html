@@ -14,7 +14,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 .main .statement{margin:0;max-width:100%;font-size:11.2pt;line-height:1.8}
 .main .count{color:#5b1723;font-weight:bold}
 /* Official seal is now an independent element, shifted away from the owner name/title. */
-.official-seal{position:absolute;left:34.2%;top:71.6%;width:10.4%;height:auto;display:block;object-fit:contain;z-index:3;pointer-events:none;filter:drop-shadow(0 0 .25mm rgba(255,255,255,.65))}
+.official-seal{position:absolute;left:37.2%;top:72.2%;width:8.8%;height:auto;display:block;object-fit:contain;z-index:3;pointer-events:none;opacity:.96;filter:saturate(1.24) contrast(1.08) drop-shadow(0 0 .2mm rgba(255,255,255,.55))}
 .meta{position:absolute;right:3.6%;top:39.1%;width:17.8%;height:30.5%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2mm 3mm;background:rgba(250,246,235,.99);border:0;border-radius:5mm;color:#4a3422;font-size:9.8pt;line-height:1.45;overflow:hidden}
 .meta strong{display:block;max-width:100%;color:#5b1723;font-size:11.2pt;line-height:1.35;margin:.7mm 0;white-space:normal;overflow-wrap:anywhere;word-break:normal}
 .meta hr{width:88%;flex:0 0 auto;border:0;border-top:1px solid #c6a66a;margin:1.5mm 0}
@@ -44,13 +44,13 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     <div class="meta-label">تاریخ صدور</div><strong>۱۴۰۵/۰۸/۲۶</strong><hr>
     <div class="meta-label">شناسه استعلام</div><div class="code">RLS-RV-2026-000004</div>
   </div>
-  <div class="qr" id="qr"><img src="data:image/png;base64,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" alt="QR code"></div>
+  <div class="qr" id="qr" role="img" aria-label="کد QR استعلام گواهی"></div>
 </div>
 <div class="no-print" style="position:fixed;top:10px;left:10px;z-index:10;display:flex;gap:8px;align-items:center">
   <button id="printButton" style="border:0;border-radius:7px;background:#5b1723;color:#fff;padding:9px 14px;font:13px Tahoma;cursor:pointer">چاپ / ذخیره PDF</button>
   <span id="saveStatus" style="background:#fffaf0;border:1px solid #c08d35;border-radius:7px;padding:8px 10px;font:12px Tahoma;color:#5b1723">در حال آماده‌سازی گواهی…</span>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/assets/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (async () => {
@@ -59,7 +59,12 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   const name = get("name", "دکتر پروانه راداندیش");
   const count = get("count", "۳");
   const date = get("date", "۱۴۰۵/۰۸/۲۶");
-  const code = get("code", "RLS-RV-2026-000004");
+  const code = get("code", "");
+  if (!/^RLS-RV-\d{4}-\d{6}$/.test(code)) {
+    document.getElementById("qr").textContent = "شناسه استعلام معتبر نیست";
+    document.getElementById("saveStatus").textContent = "این قالب فقط با شناسه واقعی گواهی از پنل صدور قابل استفاده است.";
+    return;
+  }
   const id = Number(p.get("id") || 0);
   document.querySelector(".name").textContent = name;
   document.querySelector(".count").textContent = count + " مقاله علمی";
@@ -68,9 +73,13 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   document.querySelector(".code").textContent = code;
   const verifyUrl = "https://rlsj.ir/certificate-verify.html?code=" + encodeURIComponent(code);
   const holder = document.getElementById("qr");
+  holder.innerHTML = "";
+  holder.title = verifyUrl;
   if (window.QRCode) {
-    holder.innerHTML = "";
-    new QRCode(holder, {text: verifyUrl, width: 240, height: 240, colorDark: "#111111", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M});
+    new QRCode(holder, {text: verifyUrl, width: 360, height: 360, colorDark: "#111111", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M});
+  } else {
+    holder.textContent = "ساخت QR بارگذاری نشد";
+    document.getElementById("saveStatus").textContent = "کتابخانه QR در سایت بارگذاری نشد؛ فایل assets/qrcode.min.js را بررسی کنید.";
   }
   document.getElementById("printButton").addEventListener("click", () => window.print());
   const status = document.getElementById("saveStatus");
