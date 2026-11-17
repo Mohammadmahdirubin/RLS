@@ -11,15 +11,46 @@ export default {
   if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
    if(!/^RLS-RV-\d{4}-\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
-   const cert=await env.DB.prepare("SELECT certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE certificate_code=?").bind(code).first();
+   const cert=await env.DB.prepare("SELECT certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE certificate_code=?").bind(code).first();
    if(!cert)return reply({error:"گواهی با این شناسه یافت نشد."},404);
    return reply({certificate:cert});
   }
   if (!env.ADMIN_TOKEN) return reply({error:"Admin API is not configured"},503);
   const auth=request.headers.get("Authorization")||"";
   if (auth !== "Bearer "+env.ADMIN_TOKEN) return reply({error:"Unauthorized"},401);
+  const certificateImageMatch=url.pathname.match(/^\/admin-api\/certificates\/(\d+)\/image$/);
+  if(certificateImageMatch && request.method==="POST"){
+   if(!env.GITHUB_TOKEN)return reply({error:"GitHub storage is not configured. Set GITHUB_TOKEN."},503);
+   const id=Number(certificateImageMatch[1]);
+   const cert=await env.DB.prepare("SELECT id,certificate_code FROM reviewer_certificates WHERE id=?").bind(id).first();
+   if(!cert)return reply({error:"Certificate not found"},404);
+   const declaredLength=Number(request.headers.get("Content-Length")||0);
+   if(declaredLength>5500000)return reply({error:"PNG image is too large"},413);
+   let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
+   const image=String(body.image||"");
+   const prefix="data:image/png;base64,";
+   if(!image.startsWith(prefix))return reply({error:"A PNG data URL is required"},400);
+   const imageBase64=image.slice(prefix.length).replace(/\s/g,"");
+   if(imageBase64.length<100||imageBase64.length>4500000||!imageBase64.startsWith("iVBORw0KGgo"))return reply({error:"Invalid or oversized PNG image"},400);
+   const ghHeaders={"Authorization":"Bearer "+env.GITHUB_TOKEN,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"};
+   const path="assets/certificates/"+cert.certificate_code+".png";
+   const contentUrl="https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/"+path.split("/").map(encodeURIComponent).join("/");
+   let existingSha=null;
+   const previous=await fetch(contentUrl,{headers:ghHeaders});
+   if(previous.ok){const old=await previous.json();existingSha=old.sha;}
+   else if(previous.status!==404){const detail=await previous.text();return reply({error:"GitHub lookup failed: "+previous.status+" "+detail.slice(0,250)},502);}
+   const payload={message:"Store reviewer certificate image "+cert.certificate_code,content:imageBase64};
+   if(existingSha)payload.sha=existingSha;
+   const saved=await fetch(contentUrl,{method:"PUT",headers:ghHeaders,body:JSON.stringify(payload)});
+   if(!saved.ok){const detail=await saved.text();return reply({error:"GitHub upload failed: "+saved.status+" "+detail.slice(0,350)},502);}
+   const savedJson=await saved.json();
+   const imageUrl=savedJson?.content?.download_url;
+   if(!imageUrl)return reply({error:"GitHub uploaded the image but did not return a download URL"},502);
+   await env.DB.prepare("UPDATE reviewer_certificates SET certificate_image=? WHERE id=?").bind(imageUrl,id).run();
+   return reply({success:true,id,certificate_code:cert.certificate_code,certificate_image:imageUrl});
+  }
   if(url.pathname==="/admin-api/certificates" && request.method==="GET"){
-   const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
+   const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
    return reply({certificates:result.results||[]});
   }
   if(url.pathname==="/admin-api/certificates" && request.method==="POST"){
