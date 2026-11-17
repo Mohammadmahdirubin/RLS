@@ -257,7 +257,10 @@
     if (joinedLabelEl) joinedLabelEl.textContent = isApproved
       ? tr('تاریخ عضویت','Membership date','Дата вступления')
       : tr('تاریخ ثبت درخواست','Application date','Дата подачи заявки');
-    if (joinedEl) joinedEl.textContent = formatMemberDate(profile.created_at || user?.created_at);
+    const membershipDate = isApproved
+      ? (profile.reviewed_at || profile.created_at || user?.created_at)
+      : (profile.created_at || user?.created_at);
+    if (joinedEl) joinedEl.textContent = formatMemberDate(membershipDate);
     const certificatePanel = document.getElementById('member-certificate-panel');
     const ownsProfile = !!(user?.id && profile?.user_id && String(user.id) === String(profile.user_id));
     const mayViewCertificate = isApproved && ownsProfile && !!window.RLSMembershipCertificate;
@@ -272,6 +275,7 @@
             full_name: profile.full_name,
             category: profile.category,
             created_at: profile.created_at || user.created_at,
+            reviewed_at: profile.reviewed_at,
             member_number: profile.member_number,
             membership_status: profile.membership_status
           });
