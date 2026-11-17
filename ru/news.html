@@ -28,6 +28,47 @@
   .mobile-news-content .cooperation-person img{width:64px;height:76px}
 }
 
+
+/* Mobile image safety: never enlarge a news image over adjacent text. */
+@media(max-width:600px){
+  .issue-news-layout,.autumn-news{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  .issue-news-layout .issue-news-poster,
+  .autumn-news .autumn-poster{
+    display:block!important;
+    width:auto!important;
+    max-width:min(100%,180px)!important;
+    max-height:240px!important;
+    height:auto!important;
+    margin:8px auto 12px!important;
+    transform:none!important;
+    position:static!important;
+  }
+  .news-card img:hover,.news-card a>img:hover,
+  .news-card .autumn-poster:hover,.news-card .issue-news-poster:hover,
+  .cooperation-person img:hover{
+    transform:none!important;
+    position:static!important;
+    z-index:auto!important;
+    box-shadow:none!important;
+  }
+  .news-card .cooperation-person{min-width:0!important;overflow:hidden!important}
+  .news-card img{max-width:100%;height:auto}
+}
+@media(hover:none){
+  .news-card img:hover,.news-card a>img:hover,
+  .news-card .autumn-poster:hover,.news-card .issue-news-poster:hover,
+  .cooperation-person img:hover{
+    transform:none!important;
+    position:static!important;
+    z-index:auto!important;
+    box-shadow:none!important;
+  }
+}
+
 </style>
 <meta name="keywords" content="исследования по русскому языку, русский язык, обучение русскому языку, статьи о русском языке, русская лингвистика, русская литература, русская культура, перевод с русского языка, научный журнал русского языка, исследования русского языка, русский язык как иностранный">
 </head>
