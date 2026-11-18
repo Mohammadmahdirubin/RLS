@@ -23,6 +23,9 @@ export default {
     if (request.headers.get("Access-Control-Request-Private-Network")==="true") preflightHeaders.set("Access-Control-Allow-Private-Network","true");
     return new Response(null,{status:204,headers:preflightHeaders});
   }
+  if(url.pathname==="/admin-api/health" && request.method==="GET"){
+   return reply({ok:true,worker:"rls-manuscript-admin",release:"cert-admin-health-2026-11-18-a",databaseConfigured:!!env.DB,adminTokenConfigured:!!env.ADMIN_TOKEN,githubTokenConfigured:!!env.GITHUB_TOKEN,origin});
+  }
   if (!env.DB) return reply({error:"Database is not configured"},503);
   if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
