@@ -42,7 +42,7 @@ const box=document.getElementById('result');
 if(!code){
  box.className='status error';
  box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';
-}else if(!/^RLS-RV-\\d{4}-\\d{6}$/.test(code)){
+}else if(!/^RLS-RV-\d{4}-\d{6}$/.test(code)){
  box.className='status error';
  box.textContent='قالب شناسه گواهی معتبر نیست.';
 }else{
