@@ -152,12 +152,23 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     await Promise.all(Array.from(document.images).map(img => img.complete ? Promise.resolve() : new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; })));
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     if (!window.html2canvas) throw new Error("کتابخانه ساخت تصویر بارگذاری نشد.");
-    const canvas = await html2canvas(document.getElementById("certificate"), {scale:4, backgroundColor:"#f8f1e2", useCORS:true, logging:false});
-    const image = canvas.toDataURL("image/png");
+    let image = "";
+    let usedScale = 4;
+    const maxImageChars = 4200000;
+    for (const scale of [4, 3.5, 3, 2.5, 2]) {
+      const canvas = await html2canvas(document.getElementById("certificate"), {scale, backgroundColor:"#f8f1e2", useCORS:true, logging:false});
+      const candidate = canvas.toDataURL("image/png");
+      if (candidate.length <= maxImageChars) {
+        image = candidate;
+        usedScale = scale;
+        break;
+      }
+    }
+    if (!image) throw new Error("حجم تصویر حتی پس از بهینه‌سازی از حد مجاز بیشتر است. لطفاً دوباره تلاش کنید.");
     const response = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/image", {method:"POST", headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}, body:JSON.stringify({image})});
     const result = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(result.error || "ذخیره تصویر گواهی ناموفق بود: " + response.status);
-    status.textContent = "تصویر گواهی با موفقیت در سامانه ثبت شد.";
+    status.textContent = "تصویر گواهی با موفقیت ذخیره شد (وضوح خروجی: "+usedScale+"×).";
     status.style.color = "#17643b";
   } catch (error) {
     status.textContent = "ذخیره تصویر انجام نشد: " + (error.message || error);
