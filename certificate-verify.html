@@ -85,10 +85,18 @@ if(!code){
    document.getElementById('stateRu').textContent=active?'Действительно':'Аннулировано';
    document.getElementById('codeRu').textContent=c.certificate_code;
    document.getElementById('details').hidden=false;
-   if(typeof c.certificate_image==="string" && c.certificate_image.startsWith("https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/")){
-    document.getElementById("certificateImageSrc").src=c.certificate_image;
-    document.getElementById("certificateImage").hidden=false;
-   }
+   const imageBox=document.getElementById("certificateImage");
+   const imageEl=document.getElementById("certificateImageSrc");
+   const safeStoredImage=typeof c.certificate_image==="string" &&
+     /^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\//.test(c.certificate_image)
+       ? c.certificate_image : "";
+   const fallbackImage="https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/"+encodeURIComponent(code)+".png";
+   imageEl.onerror=()=>{
+     if(imageEl.src!==fallbackImage){imageEl.src=fallbackImage;return;}
+     imageBox.hidden=true;
+   };
+   imageEl.src=safeStoredImage || fallbackImage;
+   imageBox.hidden=false;
    box.className='status '+(active?'valid':'revoked');
    box.textContent=active?'این گواهی در سامانه نشریه ثبت شده و معتبر است.':'این گواهی در سامانه نشریه باطل شده است.';
   }catch(error){
