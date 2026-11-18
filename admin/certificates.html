@@ -13,10 +13,57 @@ const sealData='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgwKC
 const $=id=>document.getElementById(id);let api='',token='',records=[];
 function msg(id,text,err=false){$(id).innerHTML='<div class="msg '+(err?'err':'ok')+'">'+esc(text)+'</div>'}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function req(path,opts={}){const r=await fetch(api.replace(/\/$/,'')+path,{...opts,headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json',...(opts.headers||{})}});let j={};try{j=await r.json()}catch{}if(!r.ok)throw Error(j.error||'خطای '+r.status);return j}
+async function fetchRetry(url,options={}){
+ let lastError;
+ for(let attempt=0;attempt<3;attempt++){
+  try{
+   const response=await fetch(url,{...options,cache:'no-store'});
+   if([429,502,503,504].includes(response.status)&&attempt<2){
+    await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));
+    continue;
+   }
+   return response;
+  }catch(error){
+   lastError=error;
+   if(attempt<2){await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));continue;}
+  }
+ }
+ throw new Error('ارتباط با Worker پس از سه تلاش برقرار نشد. شبکه، CORS یا وضعیت انتشار Worker را بررسی کنید.'+(lastError?' ('+lastError.message+')':''));
+}
+async function req(path,opts={}){
+ const r=await fetchRetry(api.replace(/\/$/,'')+path,{...opts,headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json',...(opts.headers||{})}});
+ let j={};try{j=await r.json()}catch{}
+ if(!r.ok){const error=new Error(j.error||'خطای '+r.status);error.status=r.status;throw error}
+ return j
+}
+async function workerHealth(){
+ const r=await fetchRetry(api.replace(/\/$/,'')+'/admin-api/health',{headers:{'Accept':'application/json'}});
+ let j={};try{j=await r.json()}catch{}
+ if(r.status===404)return null;
+ if(!r.ok){const error=new Error(j.error||'خطای بررسی سلامت Worker: '+r.status);error.status=r.status;throw error}
+ if(!j.databaseConfigured)throw new Error('Worker در دسترس است، اما اتصال پایگاه داده (DB) تنظیم نشده است.');
+ if(!j.adminTokenConfigured)throw new Error('Worker در دسترس است، اما کلید مدیریتی ADMIN_TOKEN در تنظیمات آن وجود ندارد.');
+ return j
+}
 function jalaliToday(){const f=new Intl.DateTimeFormat('en-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const o=Object.fromEntries(f.map(x=>[x.type,x.value]));return o.year+'/'+o.month+'/'+o.day}
 $('date').value=jalaliToday();
-$('connect').onclick=async()=>{api=$('api').value.trim();token=$('token').value.trim();if(!api||!token)return msg('msg','نشانی API و کلید الزامی است.',true);try{await load();sessionStorage.setItem('rlsCertApi',api);sessionStorage.setItem('rlsCertToken',token);$('connection').classList.add('hidden');$('issuePanel').classList.remove('hidden');$('recordsPanel').classList.remove('hidden')}catch(e){const detail=e instanceof TypeError&&/fetch/i.test(e.message)?'ارتباط مرورگر با Worker برقرار نشد. مبدأ صفحه: '+location.origin+'؛ انتشار نسخهٔ جدید Worker و مجاز بودن این مبدأ را بررسی کنید.':e.message;msg('msg',detail,true)}};
+$('connect').onclick=async()=>{
+ api=$('api').value.trim();token=$('token').value.trim();
+ if(!api||!token)return msg('msg','نشانی API و کلید الزامی است.',true);
+ const button=$('connect');button.disabled=true;button.textContent='در حال بررسی اتصال…';
+ try{
+  await workerHealth();
+  await load();
+  try{sessionStorage.setItem('rlsCertApi',api);sessionStorage.setItem('rlsCertToken',token)}catch{}
+  $('connection').classList.add('hidden');$('issuePanel').classList.remove('hidden');$('recordsPanel').classList.remove('hidden');
+ }catch(e){
+  let detail=e.message||'اتصال ناموفق بود.';
+  if(e.status===401)detail='کلید مدیریتی پذیرفته نشد (401). کلید فعلی ADMIN_TOKEN را دوباره وارد کنید؛ کلید در پیام نمایش داده نمی‌شود.';
+  else if(e.status===403)detail='Worker مبدأ سایت را مجاز نکرده است (403). تنظیمات CORS را بررسی کنید.';
+  else if(e.status===503)detail='Worker در دسترس است، اما یکی از تنظیمات سرور یا پایگاه داده مشکل دارد: '+detail;
+  msg('msg',detail,true);
+ }finally{button.disabled=false;button.textContent='اتصال'}
+};
 async function load(){const j=await req('/admin-api/certificates');records=j.certificates||[];render()}
 function render(){$('rows').innerHTML=records.length?records.map(c=>'<tr><td class="code">'+esc(c.certificate_code)+'</td><td>'+esc(c.reviewer_name)+'</td><td>'+Number(c.review_count).toLocaleString('fa-IR')+'</td><td>'+esc(c.issue_date)+'</td><td>'+(c.status==='active'?'معتبر':'باطل‌شده')+'</td><td><div class="actions"><button class="alt" onclick="printCert('+Number(c.id)+')">چاپ / PDF</button>'+(c.status==='active'?'<button class="danger" onclick="revokeCert('+Number(c.id)+')">ابطال</button>':'')+'</div></td></tr>').join(''):'<tr><td colspan="6">هنوز گواهی صادر نشده است.</td></tr>'}
 $('create').onclick=async()=>{try{const payload={reviewer_name:$('name').value.trim(),review_count:Number($('count').value),issue_date:$('date').value.trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d))};const j=await req('/admin-api/certificates',{method:'POST',body:JSON.stringify(payload)});msg('createMsg','گواهی با شناسه '+j.certificate.certificate_code+' ثبت شد.');await load();printCert(j.certificate.id)}catch(e){msg('createMsg',e.message,true)}};
@@ -38,5 +85,14 @@ function printCert(id){
  if(!popup)alert("مرورگر پنجره صدور گواهی را مسدود کرد. اجازه بازشدن پنجره جدید را فعال کنید و دوباره روی «چاپ / PDF» بزنید.");
 }
 
-const savedApi=sessionStorage.getItem('rlsCertApi'),savedToken=sessionStorage.getItem('rlsCertToken');if(savedApi&&savedToken){$('api').value=savedApi;$('token').value=savedToken;api=savedApi;token=savedToken;load().then(()=>{$('connection').classList.add('hidden');$('issuePanel').classList.remove('hidden');$('recordsPanel').classList.remove('hidden')}).catch(()=>{})}
+const savedApi=sessionStorage.getItem('rlsCertApi'),savedToken=sessionStorage.getItem('rlsCertToken');
+if(savedApi&&savedToken){
+ $('api').value=savedApi;$('token').value=savedToken;api=savedApi;token=savedToken;
+ workerHealth().then(()=>load()).then(()=>{
+  $('connection').classList.add('hidden');$('issuePanel').classList.remove('hidden');$('recordsPanel').classList.remove('hidden');
+ }).catch(e=>{
+  if(e.status===401){sessionStorage.removeItem('rlsCertToken');$('token').value='';}
+  msg('msg',(e.status===401?'کلید ذخیره‌شده در این مرورگر دیگر معتبر نیست. کلید فعلی را وارد کنید. ':'ورود خودکار انجام نشد: ')+(e.message||'خطای نامشخص')+' برای تلاش دوباره دکمهٔ اتصال را بزنید.',true);
+ });
+}
 </script></body></html>
