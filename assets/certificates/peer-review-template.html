@@ -96,6 +96,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   const holder = document.getElementById("qr");
   holder.innerHTML = "";
   holder.title = verifyUrl;
+  let qrReady = false;
   try {
     if (typeof window.qrcode !== "function") throw new Error("مولد QR جدید بارگذاری نشد.");
     const qr = window.qrcode(0, "Q");
@@ -114,11 +115,13 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     svg.setAttribute("height", "100%");
     svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
     svg.style.display = "block";
+    qrReady = true;
   } catch (qrError) {
     holder.textContent = "ساخت کد QR ناموفق بود";
     document.getElementById("saveStatus").textContent = qrError.message || "خطا در تولید QR";
     document.getElementById("saveStatus").style.color = "#9b2020";
   }
+  if (!qrReady) return;
   document.getElementById("printButton").addEventListener("click", () => window.print());
   const status = document.getElementById("saveStatus");
   if (!id) { status.textContent = "پیش‌نمایش؛ برای ذخیره خودکار از پنل صدور باز کنید."; return; }
