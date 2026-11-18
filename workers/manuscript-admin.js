@@ -1,11 +1,26 @@
 export default {
  async fetch(request, env) {
   const origin = request.headers.get("Origin") || "";
-  const allowed = ["https://rlsj.ir","https://www.rlsj.ir","https://mohammadmahdirubin.github.io"];
-  const headers = {"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","Access-Control-Allow-Origin":origin,"Access-Control-Allow-Headers":"Authorization, Content-Type","Access-Control-Allow-Methods":"GET, POST, PATCH, OPTIONS","Vary":"Origin"};
+  const allowed = origin === "https://rlsj.ir" ||
+    origin === "https://www.rlsj.ir" ||
+    origin === "https://mohammadmahdirubin.github.io" ||
+    /^https:\/\/(?:[a-z0-9-]+\.)*rlsj\.ir$/.test(origin);
+  const headers = {
+    "Content-Type":"application/json; charset=utf-8",
+    "Cache-Control":"no-store",
+    "Access-Control-Allow-Origin":allowed ? origin : "null",
+    "Access-Control-Allow-Headers":"Authorization, Content-Type, Accept, X-Requested-With",
+    "Access-Control-Allow-Methods":"GET, POST, PATCH, OPTIONS",
+    "Access-Control-Max-Age":"86400",
+    "Vary":"Origin"
+  };
   const reply = (data,status=200) => new Response(JSON.stringify(data),{status,headers});
-  if (!allowed.includes(origin)) return new Response("Forbidden",{status:403});
-  if (request.method==="OPTIONS") return new Response(null,{status:204,headers});
+  if (!allowed) return new Response(JSON.stringify({error:"Origin not allowed",origin:origin||"(none)"}),{status:403,headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"}});
+  if (request.method==="OPTIONS") {
+    const preflightHeaders = new Headers(headers);
+    if (request.headers.get("Access-Control-Request-Private-Network")==="true") preflightHeaders.set("Access-Control-Allow-Private-Network","true");
+    return new Response(null,{status:204,headers:preflightHeaders});
+  }
   if (!env.DB) return reply({error:"Database is not configured"},503);
   const url=new URL(request.url);
   if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
