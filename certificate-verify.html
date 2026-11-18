@@ -39,32 +39,64 @@ const API='https://rls-manuscript-admin.sheraginrub.workers.dev';
 const p=new URLSearchParams(location.search),code=(p.get('code')||'').trim().toUpperCase();
 document.getElementById('code').textContent=code||'شناسه وارد نشده است';
 const box=document.getElementById('result');
-if(!code){box.className='status error';box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';}
-else fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code),{cache:'no-store',headers:{'Accept':'application/json'}}).then(async r=>{const j=await r.json();if(!r.ok)throw Error(j.error||'استعلام ناموفق بود');return j.certificate;}).then(c=>{
- const reviewerFa=c.reviewer_name;
- const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
- const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
- const gregorianISO=jalaliToGregorianText(c.issue_date);
- const gregorianDateEn=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
- const gregorianDateRu=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})+' г.';
- const active=c.status==='active';
- document.getElementById('reviewer').textContent=reviewerFa;
- document.getElementById('count').textContent=Number(c.review_count).toLocaleString('fa-IR')+' مورد';
- document.getElementById('date').textContent=c.issue_date;
- document.getElementById('state').textContent=active?'معتبر':'باطل‌شده';
- document.getElementById('reviewerEn').textContent=reviewerEn;
- document.getElementById('countEn').textContent=Number(c.review_count).toLocaleString('en-US');
- document.getElementById('dateEn').textContent=gregorianDateEn;
- document.getElementById('stateEn').textContent=active?'Valid':'Revoked';
- document.getElementById('codeEn').textContent=c.certificate_code;
- document.getElementById('reviewerRu').textContent=reviewerRu;
- document.getElementById('countRu').textContent=Number(c.review_count).toLocaleString('ru-RU');
- document.getElementById('dateRu').textContent=gregorianDateRu;
- document.getElementById('stateRu').textContent=active?'Действительно':'Аннулировано';
- document.getElementById('codeRu').textContent=c.certificate_code;
- document.getElementById('details').hidden=false;
- if(typeof c.certificate_image==="string" && c.certificate_image.startsWith("https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/")){document.getElementById("certificateImageSrc").src=c.certificate_image;document.getElementById("certificateImage").hidden=false;}
- box.className='status '+(c.status==='active'?'valid':'revoked');
- box.textContent=c.status==='active'?'این گواهی در سامانه نشریه ثبت شده و معتبر است.':'این گواهی در سامانه نشریه باطل شده است.';
-}).catch(e=>{box.className='status error';box.textContent=e.message;});
+if(!code){
+ box.className='status error';
+ box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';
+}else if(!/^RLS-RV-\\d{4}-\\d{6}$/.test(code)){
+ box.className='status error';
+ box.textContent='قالب شناسه گواهی معتبر نیست.';
+}else{
+ (async()=>{
+  try{
+   const response=await fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code),{
+    method:'GET',
+    mode:'cors',
+    credentials:'omit',
+    cache:'no-store',
+    headers:{'Accept':'application/json'}
+   });
+   const raw=await response.text();
+   let payload;
+   try{payload=JSON.parse(raw)}catch{
+    throw new Error('پاسخ سرویس استعلام قابل خواندن نیست (HTTP '+response.status+'). انتشار Worker و اتصال پایگاه داده را بررسی کنید.');
+   }
+   if(!response.ok)throw new Error(payload.error||'استعلام ناموفق بود (HTTP '+response.status+').');
+   const c=payload.certificate;
+   if(!c||c.certificate_code!==code)throw new Error('پاسخ سامانه با شناسهٔ درخواست‌شده مطابقت ندارد.');
+   const reviewerFa=c.reviewer_name;
+   const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
+   const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
+   const gregorianISO=jalaliToGregorianText(c.issue_date);
+   const gregorianDateEn=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
+   const gregorianDateRu=new Date(gregorianISO+'T12:00:00Z').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})+' г.';
+   const active=c.status==='active';
+   document.getElementById('reviewer').textContent=reviewerFa;
+   document.getElementById('count').textContent=Number(c.review_count).toLocaleString('fa-IR')+' مورد';
+   document.getElementById('date').textContent=c.issue_date;
+   document.getElementById('state').textContent=active?'معتبر':'باطل‌شده';
+   document.getElementById('reviewerEn').textContent=reviewerEn;
+   document.getElementById('countEn').textContent=Number(c.review_count).toLocaleString('en-US');
+   document.getElementById('dateEn').textContent=gregorianDateEn;
+   document.getElementById('stateEn').textContent=active?'Valid':'Revoked';
+   document.getElementById('codeEn').textContent=c.certificate_code;
+   document.getElementById('reviewerRu').textContent=reviewerRu;
+   document.getElementById('countRu').textContent=Number(c.review_count).toLocaleString('ru-RU');
+   document.getElementById('dateRu').textContent=gregorianDateRu;
+   document.getElementById('stateRu').textContent=active?'Действительно':'Аннулировано';
+   document.getElementById('codeRu').textContent=c.certificate_code;
+   document.getElementById('details').hidden=false;
+   if(typeof c.certificate_image==="string" && c.certificate_image.startsWith("https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/")){
+    document.getElementById("certificateImageSrc").src=c.certificate_image;
+    document.getElementById("certificateImage").hidden=false;
+   }
+   box.className='status '+(active?'valid':'revoked');
+   box.textContent=active?'این گواهی در سامانه نشریه ثبت شده و معتبر است.':'این گواهی در سامانه نشریه باطل شده است.';
+  }catch(error){
+   box.className='status error';
+   box.textContent=error instanceof TypeError
+    ?'ارتباط با سامانهٔ استعلام برقرار نشد. پس از انتشار نسخهٔ جدید Worker دوباره امتحان کنید.'
+    :(error.message||'خطای نامشخص در استعلام گواهی.');
+  }
+ })();
+}
 </script></body></html>
