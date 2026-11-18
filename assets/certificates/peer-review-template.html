@@ -21,8 +21,8 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 .meta hr{width:88%;flex:0 0 auto;border:0;border-top:1px solid #c6a66a;margin:1.5mm 0}
 .meta-label{display:block;width:100%;max-width:100%;text-align:center;white-space:normal;overflow-wrap:anywhere;font-size:10.2pt;line-height:1.32}
 .code{display:block;max-width:100%;font-family:Georgia,serif;direction:ltr;text-align:center;font-size:8.6pt;line-height:1.2;white-space:normal;overflow-wrap:anywhere;word-break:break-word;color:#211b18}
-.qr{position:absolute;right:3.2%;bottom:7.4%;width:13.5%;aspect-ratio:1/1;height:auto;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;background:#fff;padding:4mm;border:1px solid #c69a45;border-radius:1.2mm}
-.qr img,.qr canvas{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important}
+.qr{position:absolute;right:2.8%;bottom:3.4%;width:16.4%;aspect-ratio:1/1;height:auto;display:grid;place-items:center;overflow:hidden;box-sizing:border-box;background:#fff;padding:2mm;border:1px solid #c69a45;border-radius:1.5mm}
+.qr svg{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:hidden;shape-rendering:crispEdges}
 @media screen and (max-width:1122px){.sheet{width:100vw;height:calc(100vw * 210 / 297);margin:0 auto;box-shadow:none}}
 @media print{html,body{background:white}.sheet{margin:0;box-shadow:none}}
 </style><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی, نشریه دانشگاهی, پژوهش‌های علمی, داوری علمی">
@@ -54,7 +54,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   <button id="printButton" style="border:0;border-radius:7px;background:#5b1723;color:#fff;padding:9px 14px;font:13px Tahoma;cursor:pointer">چاپ / ذخیره PDF</button>
   <span id="saveStatus" style="background:#fffaf0;border:1px solid #c08d35;border-radius:7px;padding:8px 10px;font:12px Tahoma;color:#5b1723">در حال آماده‌سازی گواهی…</span>
 </div>
-<script src="/assets/qrcode.min.js"></script>
+<script src="/assets/qrcode-generator-2.0.4.js?v=20261118"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (async () => {
@@ -96,11 +96,28 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   const holder = document.getElementById("qr");
   holder.innerHTML = "";
   holder.title = verifyUrl;
-  if (window.QRCode) {
-    new QRCode(holder, {text: verifyUrl, width: 320, height: 320, colorDark: "#111111", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M});
-  } else {
-    holder.textContent = "ساخت QR بارگذاری نشد";
-    document.getElementById("saveStatus").textContent = "کتابخانه QR در سایت بارگذاری نشد؛ فایل assets/qrcode.min.js را بررسی کنید.";
+  try {
+    if (typeof window.qrcode !== "function") throw new Error("مولد QR جدید بارگذاری نشد.");
+    const qr = window.qrcode(0, "Q");
+    qr.addData(verifyUrl, "Byte");
+    qr.make();
+    holder.innerHTML = qr.createSvgTag({
+      cellSize: 5,
+      margin: 4,
+      scalable: true,
+      alt: {text: "کد QR اعتبارسنجی گواهی"},
+      title: {text: "استعلام آنلاین گواهی در سایت مطالعات زبان روسی"}
+    });
+    const svg = holder.querySelector("svg");
+    if (!svg) throw new Error("تصویر برداری QR ساخته نشد.");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svg.style.display = "block";
+  } catch (qrError) {
+    holder.textContent = "ساخت کد QR ناموفق بود";
+    document.getElementById("saveStatus").textContent = qrError.message || "خطا در تولید QR";
+    document.getElementById("saveStatus").style.color = "#9b2020";
   }
   document.getElementById("printButton").addEventListener("click", () => window.print());
   const status = document.getElementById("saveStatus");
@@ -111,7 +128,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     if (!token) throw new Error("نشست مدیریتی پیدا نشد؛ از پنل صدور دوباره وارد شوید.");
     await document.fonts.ready;
     await Promise.all(Array.from(document.images).map(img => img.complete ? Promise.resolve() : new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; })));
-    await new Promise(resolve => setTimeout(resolve, 450));
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     if (!window.html2canvas) throw new Error("کتابخانه ساخت تصویر بارگذاری نشد.");
     const canvas = await html2canvas(document.getElementById("certificate"), {scale:2, backgroundColor:"#f8f1e2", useCORS:true, logging:false});
     const image = canvas.toDataURL("image/png");
