@@ -92,7 +92,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   document.querySelector(".meta strong").textContent = count + " مورد";
   document.querySelectorAll(".meta strong")[1].textContent = date;
   document.querySelector(".code").textContent = code;
-  const verifyUrl = "https://rlsj.ir/v.html?c=" + encodeURIComponent(code);
+  const verifyUrl = "https://rlsj.ir/certificate-verify.html?code=" + encodeURIComponent(code);
   const holder = document.getElementById("qr");
   holder.innerHTML = "";
   holder.title = verifyUrl;
