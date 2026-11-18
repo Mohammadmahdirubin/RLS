@@ -21,6 +21,9 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 .meta hr{width:88%;flex:0 0 auto;border:0;border-top:1px solid #c6a66a;margin:1.5mm 0}
 .meta-label{display:block;width:100%;max-width:100%;text-align:center;white-space:normal;overflow-wrap:anywhere;font-size:10.2pt;line-height:1.32}
 .code{display:block;max-width:100%;font-family:Georgia,serif;direction:ltr;text-align:center;font-size:8.6pt;line-height:1.2;white-space:normal;overflow-wrap:anywhere;word-break:break-word;color:#211b18}
+.verification-copy{position:absolute;left:62.4%;top:77.55%;width:23.1%;height:10.4%;z-index:4;display:flex;align-items:center;justify-content:center;padding:1mm 1.2mm;direction:rtl;text-align:right;background:rgba(248,241,226,.97);border-radius:1mm;color:#241d18;font-family:Tahoma,Arial,sans-serif;font-size:10pt;font-weight:500;line-height:1.58;letter-spacing:0;white-space:normal;overflow:hidden;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
+.verification-copy span{display:block;width:100%}
+.qr-frame-left-line{position:absolute;left:86.25%;top:77.35%;width:1.15px;height:13.15%;z-index:4;background:linear-gradient(to bottom,rgba(190,151,75,.25),#b89143 12%,#b89143 88%,rgba(190,151,75,.25));box-shadow:0 0 .35mm rgba(139,101,40,.35);pointer-events:none}
 .qr{position:absolute;left:91.35%;top:83.57%;transform:translate(-50%,-50%);width:7.8%;height:11.05%;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;background:#fff;padding:.55mm;border:1px solid #c69a45;border-radius:1mm;z-index:5}
 .qr svg{display:block!important;flex:0 0 100%;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:hidden;shape-rendering:crispEdges}
 @media screen and (max-width:1122px){.sheet{width:100vw;height:calc(100vw * 210 / 297);margin:0 auto;box-shadow:none}}
@@ -48,6 +51,8 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     <div class="meta-label">تاریخ صدور</div><strong>۱۴۰۵/۰۸/۲۶</strong><hr>
     <div class="meta-label">شناسه استعلام</div><div class="code">RLS-RV-2026-000004</div>
   </div>
+  <div class="verification-copy" dir="rtl"><span>اصالت این گواهی از طریق کد QR یا با ورود شناسه فوق در سامانه استعلام وب‌سایت رسمی نشریه قابل بررسی است.</span></div>
+  <div class="qr-frame-left-line" aria-hidden="true"></div>
   <div class="qr" id="qr" role="img" aria-label="کد QR استعلام گواهی"></div>
 </div>
 <div class="no-print" style="position:fixed;top:10px;left:10px;z-index:10;display:flex;gap:8px;align-items:center">
