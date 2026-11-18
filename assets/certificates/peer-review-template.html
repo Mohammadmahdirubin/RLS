@@ -27,7 +27,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 .qr{position:absolute;left:91.35%;top:83.57%;transform:translate(-50%,-50%);width:7.8%;height:11.05%;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;background:#fff;padding:.55mm;border:1px solid #c69a45;border-radius:1mm;z-index:5}
 .qr svg{display:block!important;flex:0 0 100%;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:hidden;shape-rendering:crispEdges}
 @media screen and (max-width:1122px){.sheet{width:100vw;height:calc(100vw * 210 / 297);margin:0 auto;box-shadow:none}}
-@media print{html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print,#printButton,#saveStatus{display:none!important;visibility:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid;page-break-inside:avoid}}
+@page{size:A4 landscape;margin:0}\n@media print{html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important}}\nbody.printing>.no-print{display:none!important;visibility:hidden!important}
 </style><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی, نشریه دانشگاهی, پژوهش‌های علمی, داوری علمی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head>
@@ -127,7 +127,21 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     document.getElementById("saveStatus").style.color = "#9b2020";
   }
   if (!qrReady) return;
-  document.getElementById("printButton").addEventListener("click", () => window.print());
+  const printButton = document.getElementById("printButton");
+  const toolbar = document.querySelector(".no-print");
+  printButton.addEventListener("click", () => {
+    document.body.classList.add("printing");
+    if (toolbar) { toolbar.style.setProperty("display","none","important"); toolbar.style.setProperty("visibility","hidden","important"); }
+    printButton.style.setProperty("display","none","important");
+    document.getElementById("saveStatus").style.setProperty("display","none","important");
+    setTimeout(() => window.print(), 120);
+  });
+  window.addEventListener("afterprint", () => {
+    document.body.classList.remove("printing");
+    if (toolbar) { toolbar.style.removeProperty("display"); toolbar.style.removeProperty("visibility"); }
+    printButton.style.removeProperty("display");
+    document.getElementById("saveStatus").style.removeProperty("display");
+  });
   const status = document.getElementById("saveStatus");
   if (!id) { status.textContent = "پیش‌نمایش؛ برای ذخیره خودکار از پنل صدور باز کنید."; return; }
   try {
