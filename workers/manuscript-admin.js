@@ -1,14 +1,16 @@
 export default {
  async fetch(request, env) {
+  const url = new URL(request.url);
+  const publicVerifyEndpoint = url.pathname === "/certificate-api/verify";
   const origin = request.headers.get("Origin") || "";
-  const allowed = origin === "https://rlsj.ir" ||
+  const allowed = publicVerifyEndpoint || origin === "https://rlsj.ir" ||
     origin === "https://www.rlsj.ir" ||
     origin === "https://mohammadmahdirubin.github.io" ||
     /^https:\/\/(?:[a-z0-9-]+\.)*rlsj\.ir$/.test(origin);
   const headers = {
     "Content-Type":"application/json; charset=utf-8",
     "Cache-Control":"no-store",
-    "Access-Control-Allow-Origin":allowed ? origin : "null",
+    "Access-Control-Allow-Origin":publicVerifyEndpoint ? "*" : (allowed ? origin : "null"),
     "Access-Control-Allow-Headers":"Authorization, Content-Type, Accept, X-Requested-With",
     "Access-Control-Allow-Methods":"GET, POST, PATCH, OPTIONS",
     "Access-Control-Max-Age":"86400",
@@ -22,7 +24,6 @@ export default {
     return new Response(null,{status:204,headers:preflightHeaders});
   }
   if (!env.DB) return reply({error:"Database is not configured"},503);
-  const url=new URL(request.url);
   if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
    if(!/^RLS-RV-\d{4}-\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
