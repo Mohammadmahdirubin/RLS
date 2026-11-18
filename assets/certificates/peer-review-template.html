@@ -60,7 +60,24 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   const get = (key, fallback) => p.get(key) || fallback;
   const name = get("name", "دکتر پروانه راداندیش");
   const count = get("count", "۳");
-  const date = get("date", "۱۴۰۵/۰۸/۲۶");
+  const rawDate = get("date", "۱۴۰۵/۰۸/۲۶");
+  const toPersianDigits = value => String(value).replace(/[0-9]/g, d => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+  const toEnglishDigits = value => String(value).replace(/[۰-۹٠-٩]/g, d => {
+    const fa = "۰۱۲۳۴۵۶۷۸۹", ar = "٠١٢٣٤٥٦٧٨٩";
+    return String(fa.indexOf(d) >= 0 ? fa.indexOf(d) : ar.indexOf(d));
+  });
+  function formatIssueDate(value) {
+    const normalized = toEnglishDigits(value).trim();
+    const iso = normalized.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})$/);
+    if (iso) {
+      const gregorian = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]), 12);
+      const parts = new Intl.DateTimeFormat("en-u-ca-persian", {year:"numeric", month:"2-digit", day:"2-digit"}).formatToParts(gregorian);
+      const p = Object.fromEntries(parts.map(x => [x.type, x.value]));
+      return toPersianDigits(p.year + "/" + p.month + "/" + p.day);
+    }
+    return toPersianDigits(String(value).trim().replace(/-/g, "/"));
+  }
+  const date = formatIssueDate(rawDate);
   const code = get("code", "");
   if (!/^RLS-RV-\d{4}-\d{6}$/.test(code)) {
     document.getElementById("qr").textContent = "شناسه استعلام معتبر نیست";
