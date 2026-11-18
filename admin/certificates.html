@@ -33,7 +33,7 @@ function printCert(id){
   date:String(c.issue_date||""),
   code:String(c.certificate_code||"")
  });
- const target="/assets/certificates/peer-review-template.html?v=20261118-sealclear-lineclean-v4&"+params.toString();
+ const target="/assets/certificates/peer-review-template.html?v=20261118-persian-issue-date-v5&"+params.toString();
  const popup=window.open(target,"_blank");
  if(!popup)alert("مرورگر پنجره صدور گواهی را مسدود کرد. اجازه بازشدن پنجره جدید را فعال کنید و دوباره روی «چاپ / PDF» بزنید.");
 }
