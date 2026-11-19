@@ -35,7 +35,7 @@ function jalaliToGregorianText(input){
  const pad=n=>String(n).padStart(2,'0');
  return String(gy)+'-'+pad(gm)+'-'+pad(days+1);
 }
-const API='https://rls-manuscript-admin.sheraginrub.workers.dev';
+const API='https://rlsj.ir/worker-api';
 const p=new URLSearchParams(location.search),code=(p.get('code')||'').trim().toUpperCase();
 document.getElementById('code').textContent=code||'شناسه وارد نشده است';
 const box=document.getElementById('result');
