@@ -90,7 +90,15 @@
       image.loading = 'eager';
       let settled = false;
       let timer = 0;
-      let usingFullFallback = false;
+      const userId = String(member.user_id);
+      const rawBase = 'https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/member-' + userId;
+      const sources = [
+        {url: urls.preview, label: 'پیش‌نمایش سبک'},
+        {url: rawBase + '.preview.webp', label: 'پیش‌نمایش از مخزن پشتیبان'},
+        {url: urls.full, label: 'نسخه اصلی'},
+        {url: rawBase + '.jpg', label: 'نسخه اصلی از مخزن پشتیبان'}
+      ];
+      let sourceIndex = 0;
       const finish = (ok) => {
         if (settled) return;
         settled = true;
@@ -103,36 +111,34 @@
           image.dataset.loaded = 'true';
           frame.hidden = false;
           button.replaceWith(downloadLink(urls.full, member, 'دانلود نسخه اصلی'));
-          hint.textContent = usingFullFallback
-            ? 'نسخه اصلی برای پیش‌نمایش نمایش داده شد؛ دانلود همان فایل در دسترس است.'
-            : 'پیش‌نمایش سبک نمایش داده شد؛ دانلود اصلی جداگانه انجام می‌شود.';
+          hint.textContent = sourceIndex === 0
+            ? 'پیش‌نمایش سبک نمایش داده شد؛ دانلود اصلی جداگانه انجام می‌شود.'
+            : 'تصویر از مسیر پشتیبان دریافت شد؛ دانلود نسخه اصلی در دسترس است.';
         } else {
           button.textContent = 'تلاش دوباره برای نمایش';
-          hint.textContent = 'تصویر گواهی از سرور دریافت نشد؛ دوباره تلاش کنید.';
+          hint.textContent = 'تصویر گواهی از مسیرهای اصلی و پشتیبان دریافت نشد؛ دوباره تلاش کنید.';
         }
       };
-      const armTimeout = (milliseconds) => {
+      const loadSource = () => {
+        if (settled) return;
+        if (sourceIndex >= sources.length) { finish(false); return; }
+        const source = sources[sourceIndex];
+        button.textContent = 'در حال دریافت ' + source.label + '…';
+        hint.textContent = 'در حال بررسی مسیر دریافت تصویر گواهی.';
         window.clearTimeout(timer);
         timer = window.setTimeout(() => {
-          if (!usingFullFallback) loadFullFallback();
-          else finish(false);
-        }, milliseconds);
+          sourceIndex++;
+          loadSource();
+        }, sourceIndex < 2 ? 10000 : 15000);
+        image.onload = () => finish(true);
+        image.onerror = () => {
+          window.clearTimeout(timer);
+          sourceIndex++;
+          loadSource();
+        };
+        image.src = source.url;
       };
-      const loadFullFallback = () => {
-        if (settled || usingFullFallback) return;
-        usingFullFallback = true;
-        button.textContent = 'در حال دریافت نسخه اصلی…';
-        hint.textContent = 'نسخه سبک در دسترس نبود؛ نسخه اصلی در حال بارگذاری است.';
-        armTimeout(15000);
-        image.src = urls.full;
-      };
-      image.onload = () => finish(true);
-      image.onerror = () => {
-        if (!usingFullFallback) loadFullFallback();
-        else finish(false);
-      };
-      armTimeout(10000);
-      image.src = urls.preview;
+      loadSource();
     });
   }
 
