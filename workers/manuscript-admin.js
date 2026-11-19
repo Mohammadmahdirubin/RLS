@@ -8,7 +8,7 @@ export default {
     : (url.pathname === "/worker-api" ? "/" : url.pathname);
   const publicVerifyEndpoint = path === "/certificate-api/verify";
   const origin = request.headers.get("Origin") || "";
-  const allowed = publicVerifyEndpoint || origin === "https://rlsj.ir" ||
+  const allowed = publicVerifyEndpoint || (path === "/admin-api/health" && !origin) || origin === "https://rlsj.ir" ||
     origin === "https://www.rlsj.ir" ||
     origin === "https://mohammadmahdirubin.github.io" ||
     /^https:\/\/(?:[a-z0-9-]+\.)*rlsj\.ir$/.test(origin);
@@ -29,7 +29,7 @@ export default {
     return new Response(null,{status:204,headers:preflightHeaders});
   }
   if((path==="/admin-api/health" && request.method==="GET") && (!origin || allowed)){
-   return reply({ok:true,worker:"rls-manuscript-admin",release:"cert-admin-health-2026-11-18-a",databaseConfigured:!!env.DB,adminTokenConfigured:!!env.ADMIN_TOKEN,githubTokenConfigured:!!env.GITHUB_TOKEN,origin});
+   return reply({ok:true,worker:"rls-manuscript-admin",release:"custom-domain-api-2026-11-20-a",databaseConfigured:!!env.DB,adminTokenConfigured:!!env.ADMIN_TOKEN,githubTokenConfigured:!!env.GITHUB_TOKEN,origin});
   }
   if (!env.DB) return reply({error:"Database is not configured"},503);
   if(path==="/certificate-api/verify" && request.method==="GET"){
