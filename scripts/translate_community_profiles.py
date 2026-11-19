@@ -40,7 +40,10 @@ def api_translate(source, target):
                      {"role":"user","content":json.dumps(source,ensure_ascii=False)}]},
     timeout=90
    )
-   if response.status_code==429 or response.status_code>=500:
+   if response.status_code==429:
+    detail=response.text[:500]
+    raise RuntimeError("OpenAI API returned HTTP 429 (quota, billing, or rate limit). Check API usage limits/billing. "+detail)
+   if response.status_code>=500:
     if attempt<3: time.sleep(3*(attempt+1)); continue
    response.raise_for_status()
    content=response.json()["choices"][0]["message"]["content"]
