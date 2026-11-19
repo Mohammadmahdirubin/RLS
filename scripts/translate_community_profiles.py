@@ -63,9 +63,13 @@ def main():
   fingerprint=digest(member)
   hashes=member.setdefault("_translation_hashes",{})
   for lang in LANGS:
-   if hashes.get(lang)==fingerprint and all(
-    not src[field] or member.get(field+"_"+lang) for field in FIELDS
-   ): continue
+   complete=all(not src[field] or str(member.get(field+"_"+lang) or "").strip() for field in FIELDS)
+   if hashes.get(lang)==fingerprint and complete: continue
+   # Adopt already-complete translations created/verified manually without spending API quota.
+   if not hashes.get(lang) and complete:
+    hashes[lang]=fingerprint
+    print(f"Preserved complete existing translation for member {uid} ({lang})")
+    continue
    try:
     output=api_translate(src,lang)
     for field,value in output.items():
