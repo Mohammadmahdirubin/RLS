@@ -1,7 +1,12 @@
 export default {
  async fetch(request, env) {
   const url = new URL(request.url);
-  const publicVerifyEndpoint = url.pathname === "/certificate-api/verify";
+  // Custom-domain proxy route: Cloudflare Route rlsj.ir/worker-api/*
+  // Normalize the routed prefix so existing API handlers remain unchanged.
+  const path = url.pathname.startsWith("/worker-api/")
+    ? url.pathname.slice("/worker-api".length)
+    : (url.pathname === "/worker-api" ? "/" : url.pathname);
+  const publicVerifyEndpoint = path === "/certificate-api/verify";
   const origin = request.headers.get("Origin") || "";
   const allowed = publicVerifyEndpoint || origin === "https://rlsj.ir" ||
     origin === "https://www.rlsj.ir" ||
@@ -23,11 +28,11 @@ export default {
     if (request.headers.get("Access-Control-Request-Private-Network")==="true") preflightHeaders.set("Access-Control-Allow-Private-Network","true");
     return new Response(null,{status:204,headers:preflightHeaders});
   }
-  if(url.pathname==="/admin-api/health" && request.method==="GET"){
+  if((path==="/admin-api/health" && request.method==="GET") && (!origin || allowed)){
    return reply({ok:true,worker:"rls-manuscript-admin",release:"cert-admin-health-2026-11-18-a",databaseConfigured:!!env.DB,adminTokenConfigured:!!env.ADMIN_TOKEN,githubTokenConfigured:!!env.GITHUB_TOKEN,origin});
   }
   if (!env.DB) return reply({error:"Database is not configured"},503);
-  if(url.pathname==="/certificate-api/verify" && request.method==="GET"){
+  if(path==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
    if(!/^RLS-RV-\d{4}-\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
    const cert=await env.DB.prepare("SELECT certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE certificate_code=?").bind(code).first();
@@ -37,7 +42,7 @@ export default {
   if (!env.ADMIN_TOKEN) return reply({error:"Admin API is not configured"},503);
   const auth=request.headers.get("Authorization")||"";
   if (auth !== "Bearer "+env.ADMIN_TOKEN) return reply({error:"Unauthorized"},401);
-  const certificateImageMatch=url.pathname.match(/^\/admin-api\/certificates\/(\d+)\/image$/);
+  const certificateImageMatch=path.match(/^\/admin-api\/certificates\/(\d+)\/image$/);
   if(certificateImageMatch && request.method==="POST"){
    if(!env.GITHUB_TOKEN)return reply({error:"GitHub storage is not configured. Set GITHUB_TOKEN."},503);
    const id=Number(certificateImageMatch[1]);
@@ -68,11 +73,11 @@ export default {
    await env.DB.prepare("UPDATE reviewer_certificates SET certificate_image=? WHERE id=?").bind(imageUrl,id).run();
    return reply({success:true,id,certificate_code:cert.certificate_code,certificate_image:imageUrl});
   }
-  if(url.pathname==="/admin-api/certificates" && request.method==="GET"){
+  if(path==="/admin-api/certificates" && request.method==="GET"){
    const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
    return reply({certificates:result.results||[]});
   }
-  if(url.pathname==="/admin-api/certificates" && request.method==="POST"){
+  if(path==="/admin-api/certificates" && request.method==="POST"){
    let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
    const reviewer=String(body.reviewer_name||"").trim().slice(0,200);
    const count=Number(body.review_count);
@@ -90,7 +95,7 @@ export default {
    const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE id=?").bind(id).first();
    return reply({success:true,certificate:cert},201);
   }
-  const certMatch=url.pathname.match(/^\/admin-api\/certificates\/(\d+)$/);
+  const certMatch=path.match(/^\/admin-api\/certificates\/(\d+)$/);
   if(certMatch && request.method==="PATCH"){
    let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
    const id=Number(certMatch[1]),status=String(body.status||"");
@@ -99,11 +104,11 @@ export default {
    if(!(result?.meta?.changes>0))return reply({error:"Certificate not found"},404);
    return reply({success:true,id,status});
   }
-  if(url.pathname==="/admin-api/manuscripts" && request.method==="GET"){
+  if(path==="/admin-api/manuscripts" && request.method==="GET"){
    const result=await env.DB.prepare("SELECT id,tracking_code,author,email,title,institution,orcid,abstract,message,main_filename,supplementary_filename,status,received_at,updated_at,editor_note FROM manuscripts ORDER BY received_at DESC LIMIT 500").all();
    return reply({manuscripts:result.results||[]});
   }
-  const historyParts=url.pathname.split("/");
+  const historyParts=path.split("/");
   if(historyParts.length===5 && historyParts[1]==="admin-api" && historyParts[2]==="manuscripts" && historyParts[4]==="history" && request.method==="GET"){
    const id=Number(historyParts[3]);
    if(!Number.isInteger(id)||id<1)return reply({error:"Invalid manuscript id"},400);
@@ -112,7 +117,7 @@ export default {
    const result=await env.DB.prepare("SELECT id,manuscript_id,status,editor_note,changed_at FROM manuscript_admin_history WHERE manuscript_id=? ORDER BY changed_at DESC,id DESC LIMIT 200").bind(id).all();
    return reply({history:result.results||[]});
   }
-  const match=url.pathname.match(/^\/admin-api\/manuscripts\/(\d+)$/);
+  const match=path.match(/^\/admin-api\/manuscripts\/(\d+)$/);
   if(match && request.method==="PATCH"){
    let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
    const allowedStatuses=["received","in_review","revision_required","accepted","rejected"];
