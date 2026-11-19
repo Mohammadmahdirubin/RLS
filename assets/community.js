@@ -263,10 +263,11 @@
   };
   const localized = (m,key) => {
     if(lang==='fa') return m[key] || '';
-    const override=memberTranslations[lang]?.[m.user_id]?.[key];
     const translated=m[key+'_'+lang];
-    if(override) return override;
+    const override=memberTranslations[lang]?.[m.user_id]?.[key];
+    // The synchronized profile JSON is authoritative; embedded translations are fallback only.
     if(translated) return translated;
+    if(override) return override;
     const original=String(m[key]||'').trim();
     // Never leak Persian/Arabic-script profile text into English or Russian pages.
     // Use the source value only when it is already written in a non-Persian script.
