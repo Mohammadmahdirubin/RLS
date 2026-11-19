@@ -455,12 +455,39 @@
     }
     output.textContent=results.join(' ');
   });
+  function withTimeout(promise,ms,message){
+    let timer;
+    return Promise.race([
+      promise,
+      new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(message)),ms);})
+    ]).finally(()=>clearTimeout(timer));
+  }
   form.addEventListener('submit',async e=>{
-    e.preventDefault();msg.textContent='در حال ورود…';
+    e.preventDefault();
+    if(form.dataset.loginPending==='1')return;
+    form.dataset.loginPending='1';
+    const submitButton=form.querySelector('button[type="submit"],button:not([type])');
+    const originalButtonText=submitButton?.textContent;
+    if(submitButton){submitButton.disabled=true;submitButton.textContent='در حال بررسی…';}
+    msg.textContent='در حال ورود…';
     const fd=new FormData(form);
-    const {error}=await client.auth.signInWithPassword({email:fd.get('email'),password:fd.get('password')});
-    if(error){msg.textContent='ورود ناموفق: '+error.message;return;}
-    await checkAdmin();
+    try{
+      const result=await withTimeout(
+        client.auth.signInWithPassword({email:fd.get('email'),password:fd.get('password')}),
+        15000,
+        'پاسخی از سامانهٔ ورود دریافت نشد. اتصال اینترنت یا دسترسی به Supabase را بررسی کنید و دوباره تلاش کنید.'
+      );
+      if(result.error){msg.textContent='ورود ناموفق: '+result.error.message;return;}
+      msg.textContent='ورود انجام شد؛ در حال بررسی دسترسی…';
+      await checkAdmin();
+    }catch(error){
+      console.error('RLS admin login failed:',error);
+      const message=error?.message||'خطای نامشخص';
+      msg.textContent='ورود انجام نشد: '+message+' اگر اتصال کند است، چند لحظه بعد دوباره تلاش کنید.';
+    }finally{
+      form.dataset.loginPending='0';
+      if(submitButton){submitButton.disabled=false;submitButton.textContent=originalButtonText||'ورود به پنل';}
+    }
   });
   document.querySelectorAll('[data-status]').forEach(b=>b.addEventListener('click',()=>{
     status=b.dataset.status;
