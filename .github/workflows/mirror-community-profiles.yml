@@ -9,6 +9,7 @@ on:
     paths:
       - ".github/workflows/mirror-community-profiles.yml"
       - "scripts/sync_community_profiles.py"
+      - "scripts/translate_community_profiles.py"
       - "scripts/generate_membership_certificates.py"
       - "assets/community.js"
 
@@ -37,7 +38,9 @@ jobs:
           python -m pip install --no-binary=Pillow pillow
           python -m pip install requests qrcode[pil] pyzbar jdatetime
           python -c "from PIL import features; assert features.check_feature('raqm'), 'Pillow was built without libraqm/RAQM support'"
-      - name: Publish profiles, avatars and certificates safely
+      - name: Publish profiles, avatars, translations and certificates safely
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -45,6 +48,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python scripts/sync_community_profiles.py
+            python scripts/translate_community_profiles.py
             python scripts/generate_membership_certificates.py
             git add assets/community-members.json assets/community-profiles/avatars/ assets/certificates/
             if git diff --cached --quiet; then
