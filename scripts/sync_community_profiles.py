@@ -79,7 +79,7 @@ def mirror_avatar(base: str, key: str, member: dict) -> str:
     AVATAR_DIR.mkdir(parents=True, exist_ok=True)
     target = AVATAR_DIR / (uid + extension)
     target.write_bytes(response.content)
-    return target.relative_to(ROOT).as_posix()
+    return "/" + target.relative_to(ROOT).as_posix()
 
 def main() -> None:
     base, key = read_config()
