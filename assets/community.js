@@ -401,7 +401,7 @@
     node.href=href;
   }
   function setProfileSeo(m, id) {
-    const displayName=localized(m,'display_name')||localized(m,'full_name')||'RLS Member';
+    const displayName=localized(m,'full_name')||localized(m,'display_name')||'RLS Member';
     const group=(labels[lang]||labels.en)[m.category]||m.category||'Member';
     const headline=localized(m,'profile_headline')||localized(m,'specialty')||group;
     const bio=localized(m,'bio')||headline;
