@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Translate approved public member profiles into English and Russian."""
+"""Translate approved public member profiles into English and Russian.
+
+Triggered for a verification pass on 2026-11-19.
+"""
 from __future__ import annotations
 import hashlib, json, os, sys, time
 from pathlib import Path
