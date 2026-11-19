@@ -9,7 +9,7 @@
   let mirroredMembersPromise = null;
   async function loadMirroredMembers() {
     if (!mirroredMembersPromise) {
-      mirroredMembersPromise = fetch('/assets/community-members.json', {cache:'no-cache'})
+      mirroredMembersPromise = fetch('/assets/community-members.json?refresh='+Date.now(), {cache:'no-store'})
         .then(response => { if (!response.ok) throw new Error('Community mirror unavailable'); return response.json(); })
         .then(payload => Array.isArray(payload?.members) ? payload : null)
         .catch(() => { mirroredMembersPromise = null; return null; });
@@ -350,6 +350,7 @@
     if(!path)return '';
     const value=String(path);
     if(/^https?:\/\//i.test(value)||value.startsWith('/'))return value;
+    if(value.startsWith('assets/'))return '/'+value;
     if(!db)return '';
     // Use the original public object URL: avoids paid image-transform endpoints
     // and lets the browser/CDN cache the uniquely named member image.
