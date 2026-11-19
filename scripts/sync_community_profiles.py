@@ -82,12 +82,31 @@ def mirror_avatar(base: str, key: str, member: dict) -> str:
     target.write_bytes(response.content)
     return "/" + target.relative_to(ROOT).as_posix()
 
+def read_existing_translations() -> dict[str, dict]:
+    if not OUT_JSON.exists():
+        return {}
+    try:
+        payload = json.loads(OUT_JSON.read_text(encoding="utf-8"))
+        return {str(m.get("user_id")): m for m in payload.get("members", []) if m.get("user_id")}
+    except Exception:
+        return {}
+
 def main() -> None:
+    previous = read_existing_translations()
     base, key = read_config()
     members = fetch_members(base, key)
     output = []
     for source in members:
         member = {field: source.get(field) for field in FIELDS}
+        old = previous.get(str(member.get("user_id")), {})
+        # Preserve translations and fingerprints across periodic source syncs.
+        for field in FIELDS:
+            for lang in ("en", "ru"):
+                translated_key = f"{field}_{lang}"
+                if translated_key in old:
+                    member[translated_key] = old[translated_key]
+        if isinstance(old.get("_translation_hashes"), dict):
+            member["_translation_hashes"] = old["_translation_hashes"]
         member["avatar_url"] = mirror_avatar(base, key, source)
         output.append(member)
     payload = {
