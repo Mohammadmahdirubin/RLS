@@ -270,7 +270,7 @@
     const original=String(m[key]||'').trim();
     // Never leak Persian/Arabic-script profile text into English or Russian pages.
     // Use the source value only when it is already written in a non-Persian script.
-    return original && !/[\\u0600-\\u06FF]/.test(original) ? original : '';
+    return original && !/[\u0600-\u06FF]/.test(original) ? original : '';
   };
   const stripSalutation = value => String(value || '').replace(/^\s*(?:(?:آقای|خانم|جناب آقای|سرکار خانم)\s*|(?:Mr\\.?|Mrs\\.?|Ms\\.?|г-н|г-жа)\s*)/i,'').trim();
   const initials = name => String(name || 'RLS').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toLocaleUpperCase();
