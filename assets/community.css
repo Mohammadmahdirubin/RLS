@@ -3566,3 +3566,15 @@ html body header.site-header.community-nav-header .menu-btn{
 .member-public-fields{align-items:start!important}
 .member-public-field{align-self:start;height:fit-content;min-height:0}
 @media(max-width:600px){.member-public-identity{gap:5px 10px;font-size:12px}.member-public-identity-item strong{font-size:11px}}
+
+/* Public member profile: durable citation links, language switch and existing approved membership certificate. */
+.member-profile-permanent{margin:22px 0 12px;padding:18px;border:1px solid #d9c49b;border-radius:14px;background:linear-gradient(135deg,#fffdf8,#f7f0e4)}
+.member-profile-permanent h2,.member-profile-certificate h2{margin:0 0 10px;color:#5b1723;font-size:1.1rem}
+.member-profile-permanent-url{direction:ltr;text-align:left;overflow-wrap:anywhere;margin:8px 0 12px}
+.member-profile-permanent-actions{display:flex;flex-wrap:wrap;gap:8px}
+.member-profile-language-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.member-profile-language-links a{display:inline-flex;padding:6px 12px;border:1px solid #c9ad76;border-radius:999px;text-decoration:none;font-weight:700}
+.member-profile-certificate{margin:20px 0;padding:18px;border:1px solid #c7d8c7;border-radius:14px;background:#f6fbf5;text-align:center}
+.member-profile-certificate[hidden]{display:none!important}
+.member-profile-certificate-preview{display:block;width:100%;max-width:780px;height:auto;margin:14px auto;border:1px solid #d5c5a8;border-radius:8px;background:#fff}
+@media(max-width:600px){.member-profile-permanent-actions{display:grid;grid-template-columns:1fr}.member-profile-language-links a{flex:1;justify-content:center}}
