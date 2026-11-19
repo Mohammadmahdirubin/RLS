@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "design": "rls-certificate-persian-raqm-tehran-date-v10-jpeg-download",
-  "updated_at": "2026-11-19T00:30:46.517334+00:00",
+  "updated_at": "2026-11-19T15:26:08.868286+00:00",
   "certificates": {
     "0a7588ef-945d-4b2b-be50-61eb8fad22c6": {
       "file": "assets/certificates/member-0a7588ef-945d-4b2b-be50-61eb8fad22c6.png",
@@ -242,6 +242,16 @@
       "membership_number": 5,
       "qr_url": "https://rlsj.ir/community.html?member=d1db816a-b33a-4ec8-b103-21331c8f86b5",
       "generated_at": "2026-11-17T15:12:37.727130+00:00"
+    },
+    "fc4b4e09-f4ee-4cc6-82a2-5c0135222044": {
+      "file": "assets/certificates/member-fc4b4e09-f4ee-4cc6-82a2-5c0135222044.png",
+      "full_file": "assets/certificates/member-fc4b4e09-f4ee-4cc6-82a2-5c0135222044.jpg",
+      "preview_file": "assets/certificates/member-fc4b4e09-f4ee-4cc6-82a2-5c0135222044.preview.webp",
+      "preview_version": "rls-preview-persian-raqm-v6-jpeg-download",
+      "fingerprint": "2c21b037d3cdcd6f923e671baa19d97b95733508669d9e7be60fb3bf4524dc44",
+      "membership_number": 34,
+      "qr_url": "https://rlsj.ir/community.html?member=fc4b4e09-f4ee-4cc6-82a2-5c0135222044",
+      "generated_at": "2026-11-19T15:26:08.868253+00:00"
     }
   }
 }
