@@ -20,7 +20,7 @@ FIELDS = [
     "orcid", "researchgate_url", "google_scholar_url", "instagram_url",
     "telegram_url", "linkedin_url", "x_url", "articles_count", "books_count",
     "created_at", "profile_headline", "memberships", "activities", "publications",
-    "research_interests", "languages", "phone", "email", "full_name_en",
+    "research_interests", "languages", "full_name_en",
     "full_name_ru", "display_name_en", "display_name_ru", "profile_headline_en",
     "profile_headline_ru", "country_en", "country_ru", "city_en", "city_ru",
     "institution_en", "institution_ru", "degree_en", "degree_ru", "specialty_en",
