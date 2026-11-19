@@ -6,6 +6,19 @@
     ? (window.RLS_SUPABASE_CLIENT || (window.RLS_SUPABASE_CLIENT = window.supabase.createClient(cfg.url, cfg.publishableKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } })))
     : null;
   let authListenerBound = false;
+  let mirroredMembersPromise = null;
+  async function loadMirroredMembers() {
+    if (!mirroredMembersPromise) {
+      mirroredMembersPromise = fetch('/assets/community-members.json', {cache:'no-cache'})
+        .then(response => { if (!response.ok) throw new Error('Community mirror unavailable'); return response.json(); })
+        .then(payload => Array.isArray(payload?.members) ? payload : null)
+        .catch(() => { mirroredMembersPromise = null; return null; });
+    }
+    return mirroredMembersPromise;
+  }
+  function findMirroredMember(id, payload) {
+    return payload?.members?.find(member => String(member?.user_id||'') === String(id||'')) || null;
+  }
   function loadScriptOnce(src) {
     return new Promise((resolve,reject)=>{
       const existing=document.querySelector('script[data-rls-supabase-fallback]');
@@ -335,9 +348,12 @@
   }
   function avatarUrl(path){
     if(!path)return '';
+    const value=String(path);
+    if(/^https?:\/\//i.test(value)||value.startsWith('/'))return value;
+    if(!db)return '';
     // Use the original public object URL: avoids paid image-transform endpoints
     // and lets the browser/CDN cache the uniquely named member image.
-    return db.storage.from('rls-member-avatars').getPublicUrl(path).data.publicUrl;
+    return db.storage.from('rls-member-avatars').getPublicUrl(value).data.publicUrl;
   }
   function attachAvatarFallback(img,path,salutation){
     if(!img)return;
@@ -406,7 +422,7 @@
     const routes=[['fa','/community.html?member='+encodeURIComponent(id)],['en','/en/community.html?member='+encodeURIComponent(id)],['ru','/ru/community.html?member='+encodeURIComponent(id)]];
     routes.forEach(([code,path])=>setLink('alternate',new URL(path,location.origin).href,code));
     setLink('alternate',new URL(routes[0][1],location.origin).href,'x-default');
-    const image=avatarUrl(m.avatar_path,512);
+    const image=avatarUrl(m.avatar_url||m.avatar_path);
     if(image){setMeta('meta[property="og:image"]','property','og:image',image);setMeta('meta[name="twitter:image"]','name','twitter:image',image);}
     const sameAs=[m.website_url,m.orcid,m.researchgate_url,m.google_scholar_url,m.instagram_url,m.telegram_url,m.linkedin_url,m.x_url].map(safeUrl).filter(Boolean);
     const person={
@@ -426,18 +442,24 @@
   }
 
   async function showMember(id) {
-    const {data:m,error}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,blog_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,email,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,salutation,reviewed_at,member_number,membership_status').eq('user_id',id).maybeSingle();
+    const mirror=await loadMirroredMembers();
+    let m=findMirroredMember(id,mirror),error=null;
+    if(!m&&db){
+      const {data:liveMember,error:readError}=await db.from('rls_public_members').select('user_id,display_name,category,country,city,institution,degree,specialty,bio,avatar_path,website_url,blog_url,orcid,researchgate_url,google_scholar_url,instagram_url,telegram_url,linkedin_url,x_url,articles_count,books_count,created_at,profile_headline,memberships,activities,publications,research_interests,languages,phone,email,full_name_en,full_name_ru,display_name_en,display_name_ru,profile_headline_en,profile_headline_ru,country_en,country_ru,city_en,city_ru,institution_en,institution_ru,degree_en,degree_ru,specialty_en,specialty_ru,bio_en,bio_ru,memberships_en,memberships_ru,activities_en,activities_ru,publications_en,publications_ru,research_interests_en,research_interests_ru,languages_en,languages_ru,salutation,reviewed_at,member_number,membership_status').eq('user_id',id).maybeSingle();
+      m=liveMember;error=readError;
+    }
+
     const detail=document.createElement('section'); detail.className='community-section container member-public-page'; detail.id='member-public-page';
     const directory=root.querySelector('#member-directory');
     directory?.before(detail);
     root.querySelectorAll('.community-section').forEach(section=>{if(section!==detail)section.hidden=true;});
     if(error||!m){markProfileUnavailable();detail.innerHTML='<p class="community-empty">'+esc(lang==='fa'?'پروفایل عمومی این عضو پیدا نشد یا در دسترس نیست.':lang==='ru'?'Публичный профиль не найден или недоступен.':'This public member profile was not found or is unavailable.')+'</p><a class="community-button primary" href="'+esc(location.pathname)+'">'+esc(w.back)+'</a>';return;}
     setProfileSeo(m,id);
-    const name=esc(stripSalutation(localized(m,'display_name')||localized(m,'full_name'))||'RLS Member'),photo=avatarUrl(m.avatar_path,320)||defaultAvatarUrl(m.salutation);
+    const name=esc(stripSalutation(localized(m,'display_name')||localized(m,'full_name'))||'RLS Member'),photo=avatarUrl(m.avatar_url||m.avatar_path)||defaultAvatarUrl(m.salutation);
     const institution=localized(m,'institution'),country=localized(m,'country');
     const fields=[['profile_headline',localized(m,'profile_headline')],['bio',localized(m,'bio')],['phone',m.phone],['email',m.email],['city',localized(m,'city')],['degree',localized(m,'degree')],['specialty',localized(m,'specialty')],['memberships',localized(m,'memberships')],['activities',localized(m,'activities')],['publications',localized(m,'publications')],['research_interests',localized(m,'research_interests')],['languages',localized(m,'languages')],['articles_count',m.articles_count===null||m.articles_count===undefined?'':String(m.articles_count)],['books_count',m.books_count===null||m.books_count===undefined?'':String(m.books_count)],['member_number',formatMemberNumber(m.member_number)],['membership_status',approvedStatusLabel]].filter(x=>String(x[1]||'').trim());
     const website=safeUrl(m.website_url);
-    detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m,true)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path||'')+'" data-default-avatar="'+(m.avatar_path?'0':'1')+'" alt="'+name+'" loading="eager" fetchpriority="high" decoding="async" width="180" height="210">':'<div class="member-public-avatar member-profile-avatar-fallback" role="img" aria-label="'+name+'"></div>')+'<div><h1>'+name+'</h1>'+((institution||country)?'<div class="member-public-identity">'+(institution?'<span class="member-public-identity-item"><strong>'+esc(w.institution)+':</strong> '+esc(institution)+'</span>':'')+(country?'<span class="member-public-identity-item"><strong>'+esc(w.country)+':</strong> '+esc(country)+'</span>':'')+'</div>':'')+'<span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span>'+'<p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':key==='orcid'&&orcidUrl(value)?'<a href="'+esc(orcidUrl(value))+'" target="_blank" rel="noopener noreferrer">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'<section class="member-profile-permanent" aria-label="Permanent profile links"><h2>'+esc(lang==='fa'?'لینک دائمی و استناد به پروفایل':lang==='ru'?'Постоянная ссылка и цитирование профиля':'Permanent profile link and citation')+'</h2><p class="member-profile-permanent-url"><a href="'+esc(permanentMemberUrl(id))+'" target="_blank" rel="noopener noreferrer">'+esc(permanentMemberUrl(id))+'</a></p><div class="member-profile-permanent-actions"><button type="button" class="community-button primary" data-copy-profile-link>'+esc(lang==='fa'?'کپی لینک دائمی':lang==='ru'?'Скопировать постоянную ссылку':'Copy permanent link')+'</button><button type="button" class="community-button outline" data-copy-profile-citation>'+esc(lang==='fa'?'کپی متن استناد':lang==='ru'?'Скопировать цитирование':'Copy citation')+'</button></div>'+memberLanguageLinks(id)+'</section>'+membershipCertificateMarkup(m,id)+'<div class="member-profile-views" data-profile-views role="status" aria-live="polite">'+esc(lang==='fa'?'در حال ثبت بازدید...':lang==='ru'?'Регистрация просмотра...':'Recording view...')+'</div></article>';
+    detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m,true)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_url||m.avatar_path||'')+'" data-default-avatar="'+(m.avatar_path?'0':'1')+'" alt="'+name+'" loading="eager" fetchpriority="high" decoding="async" width="180" height="210">':'<div class="member-public-avatar member-profile-avatar-fallback" role="img" aria-label="'+name+'"></div>')+'<div><h1>'+name+'</h1>'+((institution||country)?'<div class="member-public-identity">'+(institution?'<span class="member-public-identity-item"><strong>'+esc(w.institution)+':</strong> '+esc(institution)+'</span>':'')+(country?'<span class="member-public-identity-item"><strong>'+esc(w.country)+':</strong> '+esc(country)+'</span>':'')+'</div>':'')+'<span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span>'+'<p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':key==='orcid'&&orcidUrl(value)?'<a href="'+esc(orcidUrl(value))+'" target="_blank" rel="noopener noreferrer">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'<section class="member-profile-permanent" aria-label="Permanent profile links"><h2>'+esc(lang==='fa'?'لینک دائمی و استناد به پروفایل':lang==='ru'?'Постоянная ссылка и цитирование профиля':'Permanent profile link and citation')+'</h2><p class="member-profile-permanent-url"><a href="'+esc(permanentMemberUrl(id))+'" target="_blank" rel="noopener noreferrer">'+esc(permanentMemberUrl(id))+'</a></p><div class="member-profile-permanent-actions"><button type="button" class="community-button primary" data-copy-profile-link>'+esc(lang==='fa'?'کپی لینک دائمی':lang==='ru'?'Скопировать постоянную ссылку':'Copy permanent link')+'</button><button type="button" class="community-button outline" data-copy-profile-citation>'+esc(lang==='fa'?'کپی متن استناد':lang==='ru'?'Скопировать цитирование':'Copy citation')+'</button></div>'+memberLanguageLinks(id)+'</section>'+membershipCertificateMarkup(m,id)+'<div class="member-profile-views" data-profile-views role="status" aria-live="polite">'+esc(lang==='fa'?'در حال ثبت بازدید...':lang==='ru'?'Регистрация просмотра...':'Recording view...')+'</div></article>';
     const detailAvatar=detail.querySelector('img[data-avatar-path]');
     if(detailAvatar)attachAvatarFallback(detailAvatar,detailAvatar.dataset.avatarPath,m.salutation);
     detail.querySelector('[data-copy-profile-link]')?.addEventListener('click',event=>copyProfileText(permanentMemberUrl(id),event.currentTarget));
@@ -495,28 +517,31 @@
   }
 
   async function load(forceDirectory = false) {
-    if(!db){wrap.innerHTML='<div class="community-empty">Member directory is temporarily unavailable.</div>';return;}
     const memberId=new URLSearchParams(location.search).get('member');
     const statistics=root.querySelector('#community-statistics');
     if(statistics){statistics.hidden=Boolean(memberId && !forceDirectory);statistics.style.display=memberId && !forceDirectory?'none':'';}
     if(memberId && !forceDirectory){await showMember(memberId);return;}
     wrap.innerHTML=Array.from({length:16},(_,i)=>'<article class="community-member community-member--placeholder" aria-hidden="true" data-placeholder-slot="'+(i+1)+'"><div class="community-placeholder-mark"></div><div class="community-placeholder-line"></div><div class="community-placeholder-line short"></div></article>').join('');
-    let result;
-    let timeoutId;
-    try {
-      // Read the public view's available columns instead of hard-coding a
-      // fragile column list/order clause that can break after schema updates.
-      const request=db.from('rls_public_members').select('*',{count:'exact'}).limit(500);
-      const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
-      result=await Promise.race([request,timeout]);
-    } catch(requestError) {
-      result={data:null,error:requestError};
-    } finally {
-      if(timeoutId)clearTimeout(timeoutId);
+    let data=null,error=null,count=null;
+    const mirror=await loadMirroredMembers();
+    if(Array.isArray(mirror?.members)){
+      data=mirror.members;
+      count=Number.isFinite(mirror.count)?mirror.count:data.length;
+    } else if(db) {
+      let result,timeoutId;
+      try {
+        const request=db.from('rls_public_members').select('*',{count:'exact'}).limit(500);
+        const timeout=new Promise(resolve=>{timeoutId=setTimeout(()=>resolve({data:null,error:{message:'timeout'}}),15000);});
+        result=await Promise.race([request,timeout]);
+      } catch(requestError) {
+        result={data:null,error:requestError};
+      } finally {
+        if(timeoutId)clearTimeout(timeoutId);
+      }
+      ({data,error,count}=result||{});
+    } else {
+      error={message:'No mirror or database client available'};
     }
-    let {data,error,count}=result||{};
-    // Do not replace a valid empty database response (or a failed live request)
-    // with an outdated one-member JSON snapshot. Live database data is authoritative.
     if(error){
       wrap.innerHTML='<div class="community-empty">'+(lang==='fa'?'دریافت فهرست اعضا با تأخیر یا خطا روبه‌رو شد. لطفاً دوباره تلاش کنید.':lang==='ru'?'Не удалось загрузить список участников. Попробуйте ещё раз.':'The member directory could not be loaded. Please try again.')+' <button type="button" class="community-search-btn" data-retry-members>'+(lang==='fa'?'تلاش دوباره':'Retry')+'</button></div>';
       wrap.querySelector('[data-retry-members]')?.addEventListener('click',()=>boot(forceDirectory),{once:true});
@@ -528,7 +553,7 @@
     wrap.innerHTML=data.map(m=>{
       m.category=categoryKey(m.category); const displayName=stripSalutation(localized(m,'display_name')||localized(m,'full_name')),headline=localized(m,'profile_headline'),specialty=localized(m,'specialty'),institution=localized(m,'institution'),city=localized(m,'city'),country=localized(m,'country'),bio=localized(m,'bio'),activities=localized(m,'activities'),publications=localized(m,'publications'),interests=localized(m,'research_interests'); const name=esc(displayName||'RLS Member'),desc=[headline||specialty,institution,city,country].filter(Boolean).join(' · '),hay=[displayName,headline,specialty,institution,city,country,(labels[lang]||labels.en)[m.category],m.category].filter(Boolean).join(' ');
       const profileHref=memberProfileUrl(m.user_id);
-      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-member-id="'+esc(m.user_id)+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'"><div class="member-card-layout"><div class="community-member-link"><div class="member-card-main"><div class="member-avatar-emblem member-avatar-emblem--card"><div class="community-avatar community-avatar-placeholder" data-avatar-placeholder="1" data-avatar-path="'+esc(m.avatar_path||'')+'" data-avatar-salutation="'+esc(m.salutation||'')+'" role="img" aria-label="'+name+'"></div>'+memberEmblem(m,false)+'</div><div class="member-card-identity"><h3>'+name+'</h3>'+categoryBadge(m.category)+'</div></div><p class="member-card-description">'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span></div><aside class="member-card-socials" aria-label="Social and academic links">'+profileLinks(m)+'</aside></div><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a><div class="member-qr-deferred" data-qr-user="'+esc(m.user_id)+'" data-qr-name="'+esc(displayName||'RLS Member')+'"></div></article>';
+      return '<article class="community-member community-member--'+esc(categoryMeta[m.category]?.tone||'other')+'" data-member-id="'+esc(m.user_id)+'" data-category="'+esc(m.category)+'" data-country="'+esc(m.country||'')+'" data-search="'+esc(hay)+'"><div class="member-card-layout"><div class="community-member-link"><div class="member-card-main"><div class="member-avatar-emblem member-avatar-emblem--card"><div class="community-avatar community-avatar-placeholder" data-avatar-placeholder="1" data-avatar-path="'+esc(m.avatar_url||m.avatar_path||'')+'" data-avatar-salutation="'+esc(m.salutation||'')+'" role="img" aria-label="'+name+'"></div>'+memberEmblem(m,false)+'</div><div class="member-card-identity"><h3>'+name+'</h3>'+categoryBadge(m.category)+'</div></div><p class="member-card-description">'+esc(desc)+'</p><span class="community-member-joined">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</span></div><aside class="member-card-socials" aria-label="Social and academic links">'+profileLinks(m)+'</aside></div><a class="member-open-profile" href="'+profileHref+'">'+esc(lang==='fa'?'مشاهده پروفایل کامل':lang==='ru'?'Открыть профиль':'View full profile')+' ←</a><div class="member-qr-deferred" data-qr-user="'+esc(m.user_id)+'" data-qr-name="'+esc(displayName||'RLS Member')+'"></div></article>';
     }).join('');
     const missingSlots=Math.max(0,16-data.length);
     if(missingSlots){wrap.insertAdjacentHTML('beforeend',Array.from({length:missingSlots},(_,i)=>'<article class="community-member community-member--placeholder" aria-hidden="true" data-placeholder-slot="'+(data.length+i+1)+'"><div class="community-placeholder-mark"></div><div class="community-placeholder-line"></div><div class="community-placeholder-line short"></div></article>').join(''));}
@@ -627,8 +652,11 @@
   async function boot(forceDirectory=false) {
     const retryMessage=lang==='fa'?'راه‌اندازی فهرست اعضا ناموفق بود. اتصال را دوباره امتحان کنید.':lang==='ru'?'Не удалось запустить каталог участников. Повторите подключение.':'Could not initialize the member directory. Please retry.';
     try {
-      await ensureDatabase();
-      if(!authListenerBound){
+      try { await ensureDatabase(); } catch(databaseInitError) {
+        console.warn('[RLS community] Supabase client unavailable; trying GitHub mirror:',databaseInitError);
+        db=null;
+      }
+      if(db&&!authListenerBound){
         db.auth.onAuthStateChange(()=>{showAdminLink();});
         authListenerBound=true;
       }
