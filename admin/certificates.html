@@ -93,7 +93,7 @@ function printCert(id){
 const savedApi=sessionStorage.getItem('rlsCertApi'),savedToken=sessionStorage.getItem('rlsCertToken');
 const defaultApi='https://rlsj.ir/worker-api';
 if(savedApi&&savedToken){
- const migratedApi=/workers\\.dev$/i.test(savedApi)?defaultApi:savedApi;
+ const migratedApi=/workers\.dev$/i.test(savedApi)?defaultApi:savedApi;
  $('api').value=migratedApi;$('token').value=savedToken;api=migratedApi;token=savedToken;
  msg('msg','در حال ورود خودکار و دریافت سوابق گواهی‌ها…');
  workerHealth().then(()=>load()).then(()=>{
