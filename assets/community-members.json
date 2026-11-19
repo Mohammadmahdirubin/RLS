@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "rls_public_members",
-  "updated_at": "2026-11-19T15:37:29.918749+00:00",
+  "updated_at": "2026-11-19T16:02:05.941Z",
   "count": 25,
   "members": [
     {
@@ -1030,7 +1030,7 @@
     },
     {
       "user_id": "2885334b-f707-43ba-8ee8-c33f2f1c50d5",
-      "display_name": "سحر",
+      "display_name": "سحر رضایی",
       "category": "honorary",
       "country": "Iran",
       "city": "صومعه سرا",
@@ -1060,8 +1060,8 @@
       "languages": null,
       "full_name_en": "Sahar Rezaei",
       "full_name_ru": "Сахар Резаи",
-      "display_name_en": "Sahar",
-      "display_name_ru": "Сахар",
+      "display_name_en": "Sahar Rezaei",
+      "display_name_ru": "Сахар Резаи",
       "profile_headline_en": null,
       "profile_headline_ru": null,
       "country_en": "Iran",
