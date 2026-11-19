@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "rls_public_members",
-  "updated_at": "2026-11-19T15:22:06.241060+00:00",
+  "updated_at": "2026-11-19T15:26:19.234205+00:00",
   "count": 25,
   "members": [
     {
@@ -67,7 +67,7 @@
       "reviewed_at": "2026-11-08T21:45:37.324+00:00",
       "member_number": 1,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/0d9dd4ab-2acc-471c-9ee1-7784e337b592.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/0d9dd4ab-2acc-471c-9ee1-7784e337b592.jpg"
     },
     {
       "user_id": "b39de401-7b39-478c-88ab-50e89695e11a",
@@ -132,7 +132,7 @@
       "reviewed_at": "2026-11-11T21:04:01.654+00:00",
       "member_number": 2,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/b39de401-7b39-478c-88ab-50e89695e11a.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/b39de401-7b39-478c-88ab-50e89695e11a.jpg"
     },
     {
       "user_id": "7a959afc-c71d-4d3b-a287-e0d3f3262d9f",
@@ -197,7 +197,7 @@
       "reviewed_at": "2026-11-12T07:38:09.706+00:00",
       "member_number": 3,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/7a959afc-c71d-4d3b-a287-e0d3f3262d9f.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/7a959afc-c71d-4d3b-a287-e0d3f3262d9f.jpg"
     },
     {
       "user_id": "97731024-a0d7-4290-a617-b868f8ef9f71",
@@ -327,7 +327,7 @@
       "reviewed_at": "2026-11-13T06:25:19.887+00:00",
       "member_number": 5,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/d1db816a-b33a-4ec8-b103-21331c8f86b5.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/d1db816a-b33a-4ec8-b103-21331c8f86b5.jpg"
     },
     {
       "user_id": "1301d37a-faf9-41cc-8f30-317f7dc56b45",
@@ -457,7 +457,7 @@
       "reviewed_at": "2026-11-12T19:59:44.172+00:00",
       "member_number": 7,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/8ba94f95-0545-4ade-8638-eddc7a699365.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/8ba94f95-0545-4ade-8638-eddc7a699365.jpg"
     },
     {
       "user_id": "5a337db8-87c8-40a0-9c39-06cba5c978e9",
@@ -652,7 +652,7 @@
       "reviewed_at": "2026-11-12T19:55:48.802+00:00",
       "member_number": 12,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/42101e7d-59b2-46b3-97c6-12ce97c29e5b.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/42101e7d-59b2-46b3-97c6-12ce97c29e5b.jpg"
     },
     {
       "user_id": "611bd9f2-13f4-4cf1-8ccf-7f69f04dbc27",
@@ -912,7 +912,7 @@
       "reviewed_at": "2026-11-13T08:28:16.421+00:00",
       "member_number": 21,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/94b8dd8a-d708-4809-8179-1ce995f31e4a.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/94b8dd8a-d708-4809-8179-1ce995f31e4a.jpg"
     },
     {
       "user_id": "69f2abdb-089d-4d03-b080-cbe7089bd1cf",
@@ -1237,7 +1237,7 @@
       "reviewed_at": "2026-11-16T08:33:39.984+00:00",
       "member_number": 27,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/26de3904-34cc-4ef1-a9f8-cf487e9a0b00.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/26de3904-34cc-4ef1-a9f8-cf487e9a0b00.jpg"
     },
     {
       "user_id": "90be7173-fc2c-46ba-a7c9-61ddf2d9e0da",
@@ -1367,7 +1367,7 @@
       "reviewed_at": "2026-11-17T14:16:40.039+00:00",
       "member_number": 29,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/324a01df-9b68-4f5b-8ccd-3f81997a4ce4.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/324a01df-9b68-4f5b-8ccd-3f81997a4ce4.jpg"
     },
     {
       "user_id": "8b637751-681a-4ea0-8891-ba32d66a140c",
@@ -1432,7 +1432,7 @@
       "reviewed_at": "2026-11-17T20:55:51.753+00:00",
       "member_number": 31,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/8b637751-681a-4ea0-8891-ba32d66a140c.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/8b637751-681a-4ea0-8891-ba32d66a140c.jpg"
     },
     {
       "user_id": "3f7eb581-7a1b-4d23-ac46-cac13edaf89c",
@@ -1497,7 +1497,7 @@
       "reviewed_at": "2026-11-18T07:26:53.978+00:00",
       "member_number": 32,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/3f7eb581-7a1b-4d23-ac46-cac13edaf89c.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/3f7eb581-7a1b-4d23-ac46-cac13edaf89c.jpg"
     },
     {
       "user_id": "c1d06db2-2257-4a60-a345-51457df386d3",
@@ -1562,7 +1562,7 @@
       "reviewed_at": "2026-11-18T20:05:48.776+00:00",
       "member_number": 33,
       "membership_status": "approved",
-      "avatar_url": "assets/community-profiles/avatars/c1d06db2-2257-4a60-a345-51457df386d3.jpg"
+      "avatar_url": "/assets/community-profiles/avatars/c1d06db2-2257-4a60-a345-51457df386d3.jpg"
     },
     {
       "user_id": "fc4b4e09-f4ee-4cc6-82a2-5c0135222044",
