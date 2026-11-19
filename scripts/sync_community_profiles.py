@@ -98,7 +98,7 @@ def main() -> None:
     output = []
     for source in members:
         member = {field: source.get(field) for field in FIELDS}
-        old = previous.get(str(member.get("user_id")), {})
+        # Permanent display-name correction for this member: the admin profile\n        # updated full_name, but the preferred display_name remained the old short name.\n        if str(member.get("user_id")) == "2885334b-f707-43ba-8ee8-c33f2f1c50d5":\n            member["display_name"] = member.get("full_name") or "سحر رضایی"\n            member["display_name_en"] = member.get("full_name_en") or "Sahar Rezaei"\n            member["display_name_ru"] = member.get("full_name_ru") or "Сахар Резаи"\n        old = previous.get(str(member.get("user_id")), {})
         # Preserve translations and fingerprints across periodic source syncs.
         for field in FIELDS:
             for lang in ("en", "ru"):
