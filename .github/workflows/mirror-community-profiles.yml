@@ -37,10 +37,6 @@ jobs:
           python -m pip install --no-binary=Pillow pillow
           python -m pip install requests qrcode[pil] pyzbar jdatetime
           python -c "from PIL import features; assert features.check_feature('raqm'), 'Pillow was built without libraqm/RAQM support'"
-      - name: Sync approved public profile data and avatars
-        run: python scripts/sync_community_profiles.py
-      - name: Generate or update approved membership certificates
-        run: python scripts/generate_membership_certificates.py
       - name: Publish profiles, avatars and certificates safely
         run: |
           git config user.name "github-actions[bot]"
