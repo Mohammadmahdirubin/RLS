@@ -483,8 +483,15 @@
         try{
           // The GitHub mirror can render profiles without initializing Supabase.
           // Explicitly initialize the client before invoking the view-count RPC.
-          const client=await ensureDatabase();
-          const {data,error}=await client.rpc('rls_record_profile_view',{p_member_id:id});
+          const client=await Promise.race([
+            ensureDatabase(),
+            new Promise((_,reject)=>setTimeout(()=>reject(new Error('Database initialization timed out')),12000))
+          ]);
+          const rpcResult=await Promise.race([
+            client.rpc('rls_record_profile_view',{p_member_id:id}),
+            new Promise((_,reject)=>setTimeout(()=>reject(new Error('Profile counter request timed out')),15000))
+          ]);
+          const {data,error}=rpcResult;
           if(error || data===null || data===undefined) throw error||new Error('Empty view-count response');
           const count=Number(data);
           if(!Number.isSafeInteger(count)||count<0)throw new Error('Invalid profile view count');
