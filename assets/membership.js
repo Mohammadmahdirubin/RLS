@@ -361,7 +361,7 @@
 
     const editForm = document.getElementById('member-profile-edit');
     if (editForm) {
-      ['full_name','salutation','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','articles_count','books_count'].forEach(key => {
+      ['full_name','salutation','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','articles_count','books_count'].forEach(key => {
         const input = editForm.elements.namedItem(key);
         if (input) input.value = (['full_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].includes(key) && lang !== 'fa') ? localized(key) : (profile[key] || '');
       });
@@ -504,10 +504,10 @@
           'This membership is suspended, so profile editing is disabled until an administrator reviews it.',
           'Членство приостановлено; редактирование профиля недоступно до проверки администратором.'));
       }
-      const keys = ['full_name','salutation','display_name','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','articles_count','books_count'];
+      const keys = ['full_name','salutation','category','profile_headline','phone','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages','full_name_en','full_name_ru','display_name_en','display_name_ru','profile_headline_en','profile_headline_ru','country_en','country_ru','city_en','city_ru','institution_en','institution_ru','degree_en','degree_ru','specialty_en','specialty_ru','bio_en','bio_ru','memberships_en','memberships_ru','activities_en','activities_ru','publications_en','publications_ru','research_interests_en','research_interests_ru','languages_en','languages_ru','website_url','orcid','researchgate_url','google_scholar_url','instagram_url','telegram_url','linkedin_url','x_url','articles_count','books_count'];
       const payload = {};
       keys.forEach(key => { payload[key] = clean(form.elements.namedItem(key)?.value) || null; });
-      if (!['mr','ms'].includes(payload.salutation)) throw new Error(tr('عنوان خطاب را انتخاب کنید.','Select a salutation.','Выберите обращение.'));
+      payload.display_name = payload.full_name;\n      payload.display_name_en = payload.full_name_en;\n      payload.display_name_ru = payload.full_name_ru;\n      if (!['mr','ms'].includes(payload.salutation)) throw new Error(tr('عنوان خطاب را انتخاب کنید.','Select a salutation.','Выберите обращение.'));
       if (lang !== 'fa') ['full_name','display_name','profile_headline','country','city','institution','degree','specialty','bio','memberships','activities','publications','research_interests','languages'].forEach(key => { if (!payload[key + '_' + lang]) payload[key + '_' + lang] = payload[key]; });
       payload.phone_public = !!form.elements.namedItem('phone_public')?.checked;
       payload.email_public = !!form.elements.namedItem('email_public')?.checked;
@@ -711,7 +711,7 @@
       linkedin_url: clean(fd.get('linkedin_url')), x_url: clean(fd.get('x_url')),
       articles_count: clean(fd.get('articles_count')) === '' ? null : Number(fd.get('articles_count')),
       books_count: clean(fd.get('books_count')) === '' ? null : Number(fd.get('books_count')),
-      full_name_en: clean(fd.get('full_name_en')), full_name_ru: clean(fd.get('full_name_ru')),
+      full_name_en: clean(fd.get('full_name_en')), full_name_ru: clean(fd.get('full_name_ru')),\n      display_name_en: clean(fd.get('full_name_en')), display_name_ru: clean(fd.get('full_name_ru')),
       profile_headline_en: clean(fd.get('profile_headline_en')), profile_headline_ru: clean(fd.get('profile_headline_ru')),
       country_en: clean(fd.get('country_en')), country_ru: clean(fd.get('country_ru')),
       city_en: clean(fd.get('city_en')), city_ru: clean(fd.get('city_ru')),
