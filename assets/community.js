@@ -138,6 +138,45 @@
     const page=lang==='fa'?'/community.html':lang==='ru'?'/ru/community.html':'/en/community.html';
     return location.origin+page+'?member='+encodeURIComponent(String(id||''));
   }
+  function permanentMemberUrl(id) {
+    return location.origin+'/community.html?member='+encodeURIComponent(String(id||''));
+  }
+  function memberLanguageLinks(id) {
+    const routes=[['fa','/community.html','فارسی'],['en','/en/community.html','English'],['ru','/ru/community.html','Русский']];
+    return '<nav class="member-profile-language-links" aria-label="Profile languages">'+routes.map(([code,path,label])=>'<a hreflang="'+code+'" lang="'+code+'" href="'+esc(location.origin+path+'?member='+encodeURIComponent(String(id||'')))+'">'+label+'</a>').join('')+'</nav>';
+  }
+  function citationText(name,id) {
+    const url=permanentMemberUrl(id);
+    const org='Russian Language Studies Association (RLS)';
+    if(lang==='fa') return name+'. پروفایل عضو انجمن مطالعات زبان روسی. '+org+'. لینک دائمی: '+url;
+    if(lang==='ru') return name+'. Профиль участника Ассоциации исследований русского языка. '+org+'. Постоянная ссылка: '+url;
+    return name+'. Member profile. '+org+'. Permanent link: '+url;
+  }
+  async function copyProfileText(textValue,button) {
+    let copied=false;
+    try { await navigator.clipboard.writeText(textValue); copied=true; } catch (_) {}
+    if(!copied){
+      const temp=document.createElement('textarea');temp.value=textValue;temp.style.position='fixed';temp.style.opacity='0';document.body.appendChild(temp);temp.select();
+      try{copied=document.execCommand('copy');}catch(_){}
+      temp.remove();
+    }
+    if(button){
+      const original=button.dataset.originalLabel||button.textContent;
+      button.dataset.originalLabel=original;
+      button.textContent=copied?(lang==='fa'?'کپی شد':lang==='ru'?'Скопировано':'Copied'):(lang==='fa'?'کپی نشد؛ لینک را انتخاب کنید':lang==='ru'?'Не скопировано':'Copy failed');
+      setTimeout(()=>{button.textContent=original;},2200);
+    }
+    return copied;
+  }
+  function membershipCertificateMarkup(m,id) {
+    if(m.membership_status!=='approved'||!m.member_number||!id)return '';
+    const number=Number(m.member_number);
+    if(!Number.isSafeInteger(number)||number<1)return '';
+    const base='/assets/certificates/member-'+encodeURIComponent(String(id));
+    const query='?v='+encodeURIComponent(number)+'&cv=rls-cert-jpg-v11';
+    const labels=lang==='fa'?{title:'گواهی معتبر عضویت',note:'این گواهی برای عضویت تأییدشده صادر شده است. اعتبار عضویت از وضعیت جاری پروفایل بررسی می‌شود.',open:'مشاهده / دریافت گواهی'}:lang==='ru'?{title:'Действительный сертификат членства',note:'Сертификат выдан для подтверждённого членства. Актуальный статус проверяется по профилю участника.',open:'Открыть / скачать сертификат'}:{title:'Valid membership certificate',note:'Issued for an approved membership. Current membership status is reflected in this profile.',open:'View / download certificate'};
+    return '<section class="member-profile-certificate" data-member-certificate hidden><h2>'+esc(labels.title)+'</h2><p>'+esc(labels.note)+'</p><img class="member-profile-certificate-preview" src="'+esc(base+'.preview.webp'+query)+'" data-full-src="'+esc(base+'.jpg'+query)+'" alt="'+esc(labels.title)+'" loading="lazy" decoding="async"><p><a class="community-button outline" href="'+esc(base+'.jpg'+query)+'" target="_blank" rel="noopener noreferrer">'+esc(labels.open)+'</a></p></section>';
+  }
   function profileLinks(m, detailed=false) {
     const links=[
 
@@ -398,9 +437,21 @@
     const institution=localized(m,'institution'),country=localized(m,'country');
     const fields=[['profile_headline',localized(m,'profile_headline')],['bio',localized(m,'bio')],['phone',m.phone],['email',m.email],['city',localized(m,'city')],['degree',localized(m,'degree')],['specialty',localized(m,'specialty')],['memberships',localized(m,'memberships')],['activities',localized(m,'activities')],['publications',localized(m,'publications')],['research_interests',localized(m,'research_interests')],['languages',localized(m,'languages')],['articles_count',m.articles_count===null||m.articles_count===undefined?'':String(m.articles_count)],['books_count',m.books_count===null||m.books_count===undefined?'':String(m.books_count)],['member_number',formatMemberNumber(m.member_number)],['membership_status',approvedStatusLabel]].filter(x=>String(x[1]||'').trim());
     const website=safeUrl(m.website_url);
-    detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m,true)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path||'')+'" data-default-avatar="'+(m.avatar_path?'0':'1')+'" alt="'+name+'" loading="eager" fetchpriority="high" decoding="async" width="180" height="210">':'<div class="member-public-avatar member-profile-avatar-fallback" role="img" aria-label="'+name+'"></div>')+'<div><h1>'+name+'</h1>'+((institution||country)?'<div class="member-public-identity">'+(institution?'<span class="member-public-identity-item"><strong>'+esc(w.institution)+':</strong> '+esc(institution)+'</span>':'')+(country?'<span class="member-public-identity-item"><strong>'+esc(w.country)+':</strong> '+esc(country)+'</span>':'')+'</div>':'')+'<span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span>'+'<p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':key==='orcid'&&orcidUrl(value)?'<a href="'+esc(orcidUrl(value))+'" target="_blank" rel="noopener noreferrer">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'<div class="member-profile-views" data-profile-views role="status" aria-live="polite">'+esc(lang==='fa'?'در حال ثبت بازدید...':lang==='ru'?'Регистрация просмотра...':'Recording view...')+'</div></article>';
+    detail.innerHTML='<article class="member-public-card member-public-card--'+esc(categoryMeta[m.category]?.tone||'other')+'">'+profileLinks(m,true)+'<div class="member-public-heading">'+(photo?'<img class="member-public-avatar" src="'+esc(photo)+'" data-avatar-path="'+esc(m.avatar_path||'')+'" data-default-avatar="'+(m.avatar_path?'0':'1')+'" alt="'+name+'" loading="eager" fetchpriority="high" decoding="async" width="180" height="210">':'<div class="member-public-avatar member-profile-avatar-fallback" role="img" aria-label="'+name+'"></div>')+'<div><h1>'+name+'</h1>'+((institution||country)?'<div class="member-public-identity">'+(institution?'<span class="member-public-identity-item"><strong>'+esc(w.institution)+':</strong> '+esc(institution)+'</span>':'')+(country?'<span class="member-public-identity-item"><strong>'+esc(w.country)+':</strong> '+esc(country)+'</span>':'')+'</div>':'')+'<span class="member-category">'+esc((labels[lang]||labels.en)[m.category]||m.category||'')+'</span>'+'<p class="member-public-join-date">'+esc(lang==='fa'?'تاریخ عضویت: ':lang==='ru'?'Дата вступления: ':'Membership date: ')+esc(formatJoinDate(m.created_at))+'</p>'+(m.member_number?'<p class="member-public-number">'+esc(lang==='fa'?'شماره عضویت: ':lang==='ru'?'Номер участника: ':'Membership number: ')+esc(formatMemberNumber(m.member_number))+'</p>':'')+'<p class="member-public-status">'+esc(lang==='fa'?'وضعیت عضویت: تأییدشده':lang==='ru'?'Статус членства: подтверждено':'Membership status: Approved')+'</p></div></div><div class="member-public-fields">'+fields.map(([key,value])=>'<section class="member-public-field"><h2>'+esc(w[key]||key)+'</h2><p>'+(key==='email'?'<a href="mailto:'+esc(value)+'">'+esc(value)+'</a>':key==='phone'?'<a href="tel:'+esc(String(value).replace(/[^0-9+]/g,''))+'">'+esc(value)+'</a>':key==='orcid'&&orcidUrl(value)?'<a href="'+esc(orcidUrl(value))+'" target="_blank" rel="noopener noreferrer">'+esc(value)+'</a>':esc(value).replace(/\\n/g,'<br>'))+'</p></section>').join('')+(website?'<section class="member-public-field"><h2>'+esc(w.website_url)+'</h2><p><a href="'+esc(website)+'" target="_blank" rel="noopener noreferrer">'+esc(new URL(website).hostname)+'</a></p></section>':'')+'</div>'+(fields.length||website?'':'<p class="community-empty">'+esc(w.empty)+'</p>')+'<section class="member-profile-permanent" aria-label="Permanent profile links"><h2>'+esc(lang==='fa'?'لینک دائمی و استناد به پروفایل':lang==='ru'?'Постоянная ссылка и цитирование профиля':'Permanent profile link and citation')+'</h2><p class="member-profile-permanent-url"><a href="'+esc(permanentMemberUrl(id))+'" target="_blank" rel="noopener noreferrer">'+esc(permanentMemberUrl(id))+'</a></p><div class="member-profile-permanent-actions"><button type="button" class="community-button primary" data-copy-profile-link>'+esc(lang==='fa'?'کپی لینک دائمی':lang==='ru'?'Скопировать постоянную ссылку':'Copy permanent link')+'</button><button type="button" class="community-button outline" data-copy-profile-citation>'+esc(lang==='fa'?'کپی متن استناد':lang==='ru'?'Скопировать цитирование':'Copy citation')+'</button></div>'+memberLanguageLinks(id)+'</section>'+membershipCertificateMarkup(m,id)+'<div class="member-profile-views" data-profile-views role="status" aria-live="polite">'+esc(lang==='fa'?'در حال ثبت بازدید...':lang==='ru'?'Регистрация просмотра...':'Recording view...')+'</div></article>';
     const detailAvatar=detail.querySelector('img[data-avatar-path]');
     if(detailAvatar)attachAvatarFallback(detailAvatar,detailAvatar.dataset.avatarPath,m.salutation);
+    detail.querySelector('[data-copy-profile-link]')?.addEventListener('click',event=>copyProfileText(permanentMemberUrl(id),event.currentTarget));
+    detail.querySelector('[data-copy-profile-citation]')?.addEventListener('click',event=>copyProfileText(citationText(stripSalutation(localized(m,'display_name')||localized(m,'full_name'))||'RLS Member',id),event.currentTarget));
+    const certSection=detail.querySelector('[data-member-certificate]');
+    const certImage=certSection?.querySelector('.member-profile-certificate-preview');
+    if(certImage&&certSection){
+      certImage.addEventListener('load',()=>{certSection.hidden=false;},{once:true});
+      certImage.addEventListener('error',()=>{
+        const full=certImage.dataset.fullSrc;
+        if(full&&certImage.src!==new URL(full,location.origin).href){certImage.src=full;return;}
+        certSection.hidden=true;
+      });
+    }
     // Count one actual profile page load. PostgreSQL performs an atomic increment,
     // so concurrent visitors and retries cannot overwrite one another.
     const viewsNode=detail.querySelector('[data-profile-views]');
