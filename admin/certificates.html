@@ -16,19 +16,24 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 async function fetchRetry(url,options={}){
  let lastError;
  for(let attempt=0;attempt<3;attempt++){
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),12000);
   try{
-   const response=await fetch(url,{...options,cache:'no-store'});
+   const response=await fetch(url,{...options,cache:'no-store',signal:controller.signal});
+   clearTimeout(timeout);
    if([429,502,503,504].includes(response.status)&&attempt<2){
     await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));
     continue;
    }
    return response;
   }catch(error){
+   clearTimeout(timeout);
    lastError=error;
    if(attempt<2){await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));continue;}
   }
  }
- throw new Error('ارتباط با Worker پس از سه تلاش برقرار نشد. شبکه، CORS یا وضعیت انتشار Worker را بررسی کنید.'+(lastError?' ('+lastError.message+')':''));
+ const timedOut=lastError?.name==='AbortError';
+ throw new Error((timedOut?'پاسخ Worker در زمان مقرر دریافت نشد (هر تلاش ۱۲ ثانیه). ':'ارتباط با Worker پس از سه تلاش برقرار نشد. ')+(lastError?'('+lastError.message+') ':'')+'شبکه، CORS یا وضعیت انتشار Worker را بررسی کنید.');
 }
 async function req(path,opts={}){
  const r=await fetchRetry(api.replace(/\/$/,'')+path,{...opts,headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json',...(opts.headers||{})}});
@@ -88,6 +93,7 @@ function printCert(id){
 const savedApi=sessionStorage.getItem('rlsCertApi'),savedToken=sessionStorage.getItem('rlsCertToken');
 if(savedApi&&savedToken){
  $('api').value=savedApi;$('token').value=savedToken;api=savedApi;token=savedToken;
+ msg('msg','در حال ورود خودکار و دریافت سوابق گواهی‌ها…');
  workerHealth().then(()=>load()).then(()=>{
   $('connection').classList.add('hidden');$('issuePanel').classList.remove('hidden');$('recordsPanel').classList.remove('hidden');
  }).catch(e=>{
