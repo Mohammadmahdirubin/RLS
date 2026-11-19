@@ -479,21 +479,23 @@
     // so concurrent visitors and retries cannot overwrite one another.
     const viewsNode=detail.querySelector('[data-profile-views]');
     if(viewsNode){
-      db.rpc('rls_record_profile_view',{p_member_id:id}).then(({data,error})=>{
-        if(error || data===null || data===undefined){
+      (async()=>{
+        try{
+          // The GitHub mirror can render profiles without initializing Supabase.
+          // Explicitly initialize the client before invoking the view-count RPC.
+          const client=await ensureDatabase();
+          const {data,error}=await client.rpc('rls_record_profile_view',{p_member_id:id});
+          if(error || data===null || data===undefined) throw error||new Error('Empty view-count response');
+          const count=Number(data);
+          if(!Number.isSafeInteger(count)||count<0)throw new Error('Invalid profile view count');
+          const label=lang==='fa'?'بازدید از این پروفایل':lang==='ru'?'Просмотров профиля':'Profile views';
+          viewsNode.textContent=label+' | '+new Intl.NumberFormat(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US').format(count);
+          viewsNode.setAttribute('data-counter-state','ready');
+        }catch(error){
           viewsNode.textContent=lang==='fa'?'شمارنده بازدید در دسترس نیست':lang==='ru'?'Счётчик просмотров недоступен':'View counter unavailable';
           viewsNode.setAttribute('data-counter-state','error');
-          return;
         }
-        const count=Number(data);
-        if(!Number.isSafeInteger(count)||count<0)throw new Error('Invalid profile view count');
-        const label=lang==='fa'?'بازدید از این پروفایل':lang==='ru'?'Просмотров профиля':'Profile views';
-        viewsNode.textContent=label+' | '+new Intl.NumberFormat(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US').format(count);
-        viewsNode.setAttribute('data-counter-state','ready');
-      }).catch(()=>{
-        viewsNode.textContent=lang==='fa'?'شمارنده بازدید در دسترس نیست':lang==='ru'?'Счётчик просмотров недоступен':'View counter unavailable';
-        viewsNode.setAttribute('data-counter-state','error');
-      });
+      })();
     }
 // Certificates are not rendered on public profiles. Members can download
     // their own certificate from the authenticated member account page.
