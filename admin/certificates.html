@@ -5,7 +5,7 @@
 </style><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head><body><header class="head"><h1>مدیریت گواهی‌های داوری</h1><p>Russian Language Studies · صدور، پیگیری و ابطال گواهی</p></header><main class="wrap">
-<section class="panel" id="connection"><h3>اتصال امن به پنل</h3><div class="note">نشانی Worker و کلید مدیریتی را وارد کنید. کلید فقط در نشست فعلی مرورگر نگهداری می‌شود و در مخزن سایت ذخیره نمی‌شود.</div><div class="row"><input id="api" value="https://rls-manuscript-admin.sheraginrub.workers.dev" aria-label="نشانی API"><input id="token" type="password" placeholder="ADMIN_TOKEN" autocomplete="current-password"><button id="connect">اتصال</button></div><div id="msg"></div></section>
+<section class="panel" id="connection"><h3>اتصال امن به پنل</h3><div class="note">نشانی Worker و کلید مدیریتی را وارد کنید. کلید فقط در نشست فعلی مرورگر نگهداری می‌شود و در مخزن سایت ذخیره نمی‌شود.</div><div class="row"><input id="api" value="https://rlsj.ir/worker-api" aria-label="نشانی API"><input id="token" type="password" placeholder="ADMIN_TOKEN" autocomplete="current-password"><button id="connect">اتصال</button></div><div id="msg"></div></section>
 <section class="panel hidden" id="issuePanel"><h3>صدور گواهی جدید</h3><div class="grid"><div><label for="name">نام و نام خانوادگی داور</label><input id="name" maxlength="200" placeholder="نام کامل داور"></div><div><label for="count">تعداد کل داوری‌های انجام‌شده تا تاریخ صدور</label><input id="count" type="number" min="1" max="10000" step="1" placeholder="مثلاً ۵"></div><div><label for="date">تاریخ صدور گواهی (شمسی)</label><input id="date" placeholder="۱۴۰۵/۰۸/۲۶"></div></div><p class="small">تعداد داوری را مدیر نشریه تعیین می‌کند. هر بار صدور، شناسه و QR مستقل ایجاد می‌شود و گواهی‌های قبلی باقی می‌مانند.</p><div class="row"><button id="create">ثبت و صدور گواهی</button><button class="alt" id="refresh">به‌روزرسانی سوابق</button><button class="alt" id="logout">خروج</button></div><div id="createMsg"></div></section>
 <section class="panel hidden" id="recordsPanel"><h3>سوابق صدور</h3><div class="tablewrap"><table><thead><tr><th>شناسه</th><th>داور</th><th>تعداد</th><th>تاریخ صدور</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="rows"><tr><td colspan="6">هنوز داده‌ای بارگذاری نشده است.</td></tr></tbody></table></div></section></main>
 <script>
@@ -91,8 +91,10 @@ function printCert(id){
 }
 
 const savedApi=sessionStorage.getItem('rlsCertApi'),savedToken=sessionStorage.getItem('rlsCertToken');
+const defaultApi='https://rlsj.ir/worker-api';
 if(savedApi&&savedToken){
- $('api').value=savedApi;$('token').value=savedToken;api=savedApi;token=savedToken;
+ const migratedApi=/workers\\.dev$/i.test(savedApi)?defaultApi:savedApi;
+ $('api').value=migratedApi;$('token').value=savedToken;api=migratedApi;token=savedToken;
  msg('msg','در حال ورود خودکار و دریافت سوابق گواهی‌ها…');
  workerHealth().then(()=>load()).then(()=>{
   $('connection').classList.add('hidden');$('issuePanel').classList.remove('hidden');$('recordsPanel').classList.remove('hidden');
