@@ -12,6 +12,7 @@ on:
       - "assets/membership-certificate-aligned.js"
       - "assets/membership-certificate-v4.js"
       - "member-account.html"
+      - "assets/community-members.json"
 
 permissions:
   contents: write
