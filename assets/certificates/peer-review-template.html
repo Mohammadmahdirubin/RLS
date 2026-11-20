@@ -30,6 +30,11 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 .qr svg{display:block!important;flex:0 0 100%;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:hidden;shape-rendering:crispEdges}
 @media screen and (max-width:1122px){.sheet{width:100vw;height:calc(100vw * 210 / 297);margin:0 auto;box-shadow:none}}
 @page{size:A4 landscape;margin:0}\n@media print{html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important;background:#f8f1e2!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}.certificate-bg{display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;width:297mm!important;height:210mm!important;object-fit:fill!important;z-index:0!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important}}\nbody.printing>.no-print{display:none!important;visibility:hidden!important}
+
+/* Keep download controls visible on screen; hide only in print output. */
+body>.no-print{display:flex!important;visibility:visible!important;opacity:1!important;width:auto!important;height:auto!important;overflow:visible!important}
+body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!important;height:auto!important;overflow:visible!important}
+@media print{body>.no-print,body>.no-print *{display:none!important;visibility:hidden!important;opacity:0!important}}
 </style><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی, نشریه دانشگاهی, پژوهش‌های علمی, داوری علمی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head>
@@ -58,8 +63,9 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   <div class="qr-frame-left-line" aria-hidden="true"></div>
   <div class="qr" id="qr" role="img" aria-label="کد QR استعلام گواهی"></div>
 </div>
-<div class="no-print" style="position:fixed;top:10px;left:10px;z-index:10;display:flex;gap:8px;align-items:center">
-  <button id="printButton" style="border:0;border-radius:7px;background:#5b1723;color:#fff;padding:9px 14px;font:13px Tahoma;cursor:pointer">چاپ / ذخیره PDF</button>
+<div class="no-print" style="position:fixed;top:10px;left:10px;z-index:10;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+  <button id="downloadPdfButton" disabled style="border:0;border-radius:7px;background:#17643b;color:#fff;padding:9px 14px;font:13px Tahoma;cursor:pointer">در حال تولید PDF…</button>
+  <button id="printButton" style="border:0;border-radius:7px;background:#5b1723;color:#fff;padding:9px 14px;font:13px Tahoma;cursor:pointer">چاپ</button>
   <span id="saveStatus" style="background:#fffaf0;border:1px solid #c08d35;border-radius:7px;padding:8px 10px;font:12px Tahoma;color:#5b1723">در حال آماده‌سازی گواهی…</span>
 </div>
 <script src="/assets/qrcode-generator-2.0.4.js?v=20261118"></script>
@@ -146,7 +152,71 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     document.getElementById("saveStatus").style.removeProperty("display");
   });
   const status = document.getElementById("saveStatus");
-  if (!id) { status.textContent = "پیش‌نمایش؛ برای ذخیره خودکار از پنل صدور باز کنید."; return; }
+  const pdfButton = document.getElementById("downloadPdfButton");
+  const filename = "RLS-Reviewer-Certificate-" + code + ".pdf";
+  if (!id) {
+    status.textContent = "پیش‌نمایش؛ برای تولید و ثبت PDF از پنل صدور باز کنید.";
+    pdfButton.textContent = "PDF فقط از پنل صدور";
+    return;
+  }
+  function pdfFromCanvas(canvas) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const jpegBlob = await new Promise((ok, fail) => canvas.toBlob(blob => blob ? ok(blob) : fail(new Error("تبدیل تصویر گواهی به JPEG ناموفق بود.")), "image/jpeg", 0.96));
+        const jpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
+        const pageWidth = 841.8898;
+        const pageHeight = 595.2756;
+        const content = "q\n" + pageWidth + " 0 0 " + pageHeight + " 0 0 cm\n/Im0 Do\nQ\n";
+        const encoder = new TextEncoder();
+        const parts = [];
+        let length = 0;
+        const offsets = [0];
+        const add = value => {
+          const bytes = typeof value === "string" ? encoder.encode(value) : value;
+          parts.push(bytes);
+          length += bytes.length;
+        };
+        add("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+        offsets[1] = length;
+        add("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+        offsets[2] = length;
+        add("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+        offsets[3] = length;
+        add("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageWidth + " " + pageHeight + "] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n");
+        offsets[4] = length;
+        add("4 0 obj\n<< /Type /XObject /Subtype /Image /Width " + canvas.width + " /Height " + canvas.height + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpegBytes.length + " >>\nstream\n");
+        add(jpegBytes);
+        add("\nendstream\nendobj\n");
+        offsets[5] = length;
+        add("5 0 obj\n<< /Length " + encoder.encode(content).length + " >>\nstream\n" + content + "endstream\nendobj\n");
+        const xrefOffset = length;
+        let xref = "xref\n0 6\n0000000000 65535 f \n";
+        for (let i = 1; i <= 5; i++) xref += String(offsets[i]).padStart(10, "0") + " 00000 n \n";
+        xref += "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF\n";
+        add(xref);
+        resolve(new Blob(parts, {type:"application/pdf"}));
+      } catch (error) { reject(error); }
+    });
+  }
+  function saveBlob(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = name;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+  function blobAsDataUrl(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(new Error("خواندن فایل PDF برای ثبت در GitHub ناموفق بود."));
+      reader.readAsDataURL(blob);
+    });
+  }
   try {
     const api = localStorage.getItem("rlsCertApi") || sessionStorage.getItem("rlsCertApi") || "https://api.rlsj.ir";
     const token = localStorage.getItem("rlsCertToken") || sessionStorage.getItem("rlsCertToken") || "";
@@ -156,6 +226,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     if (!window.html2canvas) throw new Error("کتابخانه ساخت تصویر بارگذاری نشد.");
     let image = "";
+    let renderCanvas = null;
     let usedScale = 4;
     const maxImageChars = 4200000;
     for (const scale of [4, 3.5, 3, 2.5, 2]) {
@@ -163,19 +234,48 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
       const candidate = canvas.toDataURL("image/png");
       if (candidate.length <= maxImageChars) {
         image = candidate;
+        renderCanvas = canvas;
         usedScale = scale;
         break;
       }
     }
-    if (!image) throw new Error("حجم تصویر حتی پس از بهینه‌سازی از حد مجاز بیشتر است. لطفاً دوباره تلاش کنید.");
-    const response = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/image", {method:"POST", headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}, body:JSON.stringify({image})});
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || "ذخیره تصویر گواهی ناموفق بود: " + response.status);
-    status.textContent = "تصویر گواهی با موفقیت ذخیره شد (وضوح خروجی: "+usedScale+"×).";
+    if (!image || !renderCanvas) throw new Error("حجم تصویر حتی پس از بهینه‌سازی از حد مجاز بیشتر است. لطفاً دوباره تلاش کنید.");
+
+    // Generate a real one-page A4 landscape PDF from the certificate artwork.
+    const pdfBlob = await pdfFromCanvas(renderCanvas);
+    pdfButton.disabled = false;
+    pdfButton.textContent = "دانلود فایل PDF";
+    pdfButton.onclick = () => saveBlob(pdfBlob, filename);
+    saveBlob(pdfBlob, filename);
+
+    status.textContent = "فایل PDF تولید و دانلود شد؛ در حال ثبت فایل‌ها در GitHub…";
+    status.style.color = "#17643b";
+
+    const imageResponse = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/image", {
+      method:"POST",
+      headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},
+      body:JSON.stringify({image})
+    });
+    const imageResult = await imageResponse.json().catch(() => ({}));
+    if (!imageResponse.ok) throw new Error(imageResult.error || "ذخیره تصویر گواهی ناموفق بود: " + imageResponse.status);
+
+    const pdfDataUrl = await blobAsDataUrl(pdfBlob);
+    const pdfResponse = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/pdf", {
+      method:"POST",
+      headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},
+      body:JSON.stringify({pdf:pdfDataUrl})
+    });
+    const pdfResult = await pdfResponse.json().catch(() => ({}));
+    if (!pdfResponse.ok || pdfResult.github_saved !== true) {
+      throw new Error(pdfResult.error || "ثبت PDF در GitHub تأیید نشد.");
+    }
+    status.textContent = "PDF دانلود و در GitHub ذخیره شد؛ تصویر پیش‌نمایش نیز ثبت شد ("+usedScale+"×).";
     status.style.color = "#17643b";
   } catch (error) {
-    status.textContent = "ذخیره تصویر انجام نشد: " + (error.message || error);
+    status.textContent = "تولید یا ثبت PDF کامل نشد: " + (error.message || error);
     status.style.color = "#9b2020";
+    pdfButton.disabled = true;
+    pdfButton.textContent = "تولید PDF ناموفق";
   }
 })();
 </script>
