@@ -36,7 +36,9 @@ async function updateReviewerRegistry(env,certificates,message) {
         id:certificate.id??null,certificate_code:certificate.certificate_code,
         reviewer_name:String(certificate.reviewer_name||""),review_count:Number(certificate.review_count||0),
         issue_date:String(certificate.issue_date||""),status:certificate.status==="revoked"?"revoked":"active",
-        created_at:certificate.created_at||null,certificate_image:certificate.certificate_image||null
+        created_at:certificate.created_at||null,
+        certificate_image:certificate.certificate_image||registry.certificates[certificate.certificate_code]?.certificate_image||null,
+        certificate_pdf:certificate.certificate_pdf||registry.certificates[certificate.certificate_code]?.certificate_pdf||null
       };
       if(JSON.stringify(registry.certificates[certificate.certificate_code]||null)!==JSON.stringify(record)){
         registry.certificates[certificate.certificate_code]=record;changed=true;
@@ -137,6 +139,41 @@ export default {
     const github=await updateReviewerRegistry(env,[updatedCert],"Save reviewer certificate image "+cert.certificate_code);
     return reply({success:true,id,certificate_code:cert.certificate_code,certificate_image:imageUrl,github_saved:true,github_commit:github.commit_url});
    } catch(error) {return reply({error:"تصویر در GitHub ذخیره شد، اما به‌روزرسانی دفتر ثبت گواهی انجام نشد: "+String(error?.message||error).slice(0,250),saved_in_database:true,github_saved:false},502);}
+  }
+  const certificatePdfMatch=path.match(/^\/admin-api\/certificates\/(\d+)\/pdf$/);
+  if(certificatePdfMatch && request.method==="POST"){
+   if(!env.GITHUB_TOKEN)return reply({error:"GitHub storage is not configured. Set GITHUB_TOKEN."},503);
+   const id=Number(certificatePdfMatch[1]);
+   const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE id=?").bind(id).first();
+   if(!cert)return reply({error:"Certificate not found"},404);
+   const declaredLength=Number(request.headers.get("Content-Length")||0);
+   if(declaredLength>8500000)return reply({error:"PDF file is too large"},413);
+   let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
+   const pdf=String(body.pdf||"");
+   const prefix="data:application/pdf;base64,";
+   if(!pdf.startsWith(prefix))return reply({error:"A PDF data URL is required"},400);
+   const pdfBase64=pdf.slice(prefix.length).replace(/\s/g,"");
+   if(pdfBase64.length<100||pdfBase64.length>8000000||!pdfBase64.startsWith("JVBERi0"))return reply({error:"Invalid or oversized PDF file"},400);
+   const ghHeaders={"Authorization":"Bearer "+env.GITHUB_TOKEN,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"RLS-Manuscript-Admin/1.0 (https://rlsj.ir)","Content-Type":"application/json"};
+   const pdfPath="assets/certificates/"+cert.certificate_code+".pdf";
+   const contentUrl="https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/"+pdfPath.split("/").map(encodeURIComponent).join("/");
+   let existingSha=null;
+   const previous=await fetch(contentUrl,{headers:ghHeaders});
+   if(previous.ok){const old=await previous.json();existingSha=old.sha;}
+   else if(previous.status!==404){const detail=await previous.text();return reply({error:"GitHub PDF lookup failed: "+previous.status+" "+detail.slice(0,250)},502);}
+   const payload={message:"Store reviewer certificate PDF "+cert.certificate_code,content:pdfBase64};
+   if(existingSha)payload.sha=existingSha;
+   const saved=await fetch(contentUrl,{method:"PUT",headers:ghHeaders,body:JSON.stringify(payload)});
+   if(!saved.ok){const detail=await saved.text();return reply({error:"GitHub PDF upload failed: "+saved.status+" "+detail.slice(0,350)},502);}
+   const savedJson=await saved.json();
+   const pdfUrl=savedJson?.content?.download_url?savedJson.content.download_url+"?v="+Date.now():null;
+   if(!pdfUrl)return reply({error:"GitHub stored the PDF but did not return a download URL"},502);
+   try{
+    const github=await updateReviewerRegistry(env,[{...cert,certificate_pdf:pdfUrl}],"Publish reviewer certificate PDF "+cert.certificate_code);
+    return reply({success:true,id,certificate_code:cert.certificate_code,certificate_pdf:pdfUrl,github_saved:true,github_commit:github.commit_url});
+   }catch(error){
+    return reply({error:"PDF was uploaded to GitHub but the public registry update failed: "+String(error?.message||error).slice(0,250),pdf_uploaded:true,certificate_pdf:pdfUrl,github_saved:false},502);
+   }
   }
   if(path==="/admin-api/certificates" && request.method==="GET"){
    const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
