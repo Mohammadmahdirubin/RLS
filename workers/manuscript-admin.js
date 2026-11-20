@@ -29,17 +29,23 @@ async function updateReviewerRegistry(env,certificates,message) {
   const headers=reviewerGithubHeaders(env);
   for(let attempt=0;attempt<5;attempt++){
     const current=await readReviewerRegistry(env);const registry=current.registry;
+    let changed=!current.sha;
     for(const certificate of certificates){
       if(!certificate||!/^RLS-RV-\d{4}-\d{6}$/.test(String(certificate.certificate_code||"")))throw new Error("A certificate has an invalid verification code.");
-      registry.certificates[certificate.certificate_code]={
+      const record={
         id:certificate.id??null,certificate_code:certificate.certificate_code,
         reviewer_name:String(certificate.reviewer_name||""),review_count:Number(certificate.review_count||0),
         issue_date:String(certificate.issue_date||""),status:certificate.status==="revoked"?"revoked":"active",
         created_at:certificate.created_at||null,certificate_image:certificate.certificate_image||null
       };
+      if(JSON.stringify(registry.certificates[certificate.certificate_code]||null)!==JSON.stringify(record)){
+        registry.certificates[certificate.certificate_code]=record;changed=true;
+      }
     }
-    registry.schema=1;registry.source="rls_reviewer_certificates";registry.updated_at=new Date().toISOString();
+    registry.schema=1;registry.source="rls_reviewer_certificates";
     registry.count=Object.keys(registry.certificates).length;
+    if(!changed)return {saved:true,count:registry.count,commit:null,commit_url:null,unchanged:true};
+    registry.updated_at=new Date().toISOString();
     const payload={message:message||"Update RLS reviewer certificate registry",content:encodeGithubFileBase64(JSON.stringify(registry,null,2)+"\n")};
     if(current.sha)payload.sha=current.sha;
     const response=await fetch(REVIEWER_REGISTRY_URL,{method:"PUT",headers,body:JSON.stringify(payload)});
