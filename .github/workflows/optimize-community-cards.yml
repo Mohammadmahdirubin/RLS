@@ -181,7 +181,7 @@ jobs:
 
       - name: Upload optimization report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: community-council-card-optimization
           path: community-card-image-optimization.txt
