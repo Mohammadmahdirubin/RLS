@@ -14,11 +14,11 @@ function cors(origin) {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
-    "Vary: Origin": "Vary"
+    "Vary": "Origin"
   };
 }
 function json(data,status=200,origin="") {
-  const h=cors(origin); delete h["Vary: Origin"]; h["Vary"]="Origin";
+  const h=cors(origin);
   return new Response(JSON.stringify(data),{status,headers:{...h,"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"}});
 }
 function validMember(id){return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||"");}
