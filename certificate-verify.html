@@ -44,26 +44,49 @@ function decodeGithubBase64(value){
  const bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));
  return new TextDecoder().decode(bytes);
 }
-async function loadGithubRegistry(){
- const urls=[
-  {url:REGISTRY_RAW+'?v='+Date.now(),type:'raw'},
-  {url:REGISTRY_API+'?ref=main&v='+Date.now(),type:'api'}
+async function loadCertificateRecord(requestedCode){
+ const localRegistry=new URL('/assets/reviewer-certificates.json',location.origin).href;
+ const registrySources=[
+  {url:localRegistry+'?v='+Date.now(),type:'raw',label:'نسخهٔ محلی نشریه'},
+  {url:REGISTRY_RAW+'?v='+Date.now(),type:'raw',label:'GitHub Raw'},
+  {url:REGISTRY_API+'?ref=main&v='+Date.now(),type:'api',label:'GitHub API'}
  ];
  let lastError=null;
- for(const item of urls){
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+ for(const item of registrySources){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
   try{
    const response=await fetch(item.url,{method:'GET',mode:'cors',credentials:'omit',cache:'no-store',headers:{'Accept':'application/vnd.github+json'},signal:controller.signal});
-   clearTimeout(timer);
-   if(!response.ok)throw new Error('GitHub HTTP '+response.status);
-   if(item.type==='raw')return await response.json();
-   const file=await response.json();
-   return JSON.parse(decodeGithubBase64(file.content));
-  }catch(error){
-   clearTimeout(timer);lastError=error;
-  }
+   if(!response.ok)throw new Error(item.label+' HTTP '+response.status);
+   let registry;
+   if(item.type==='raw')registry=await response.json();
+   else{const file=await response.json();registry=JSON.parse(decodeGithubBase64(file.content));}
+   if(!registry||registry.source!=='rls_reviewer_certificates'||!registry.certificates||typeof registry.certificates!=='object')
+    throw new Error(item.label+': ساختار دفتر ثبت معتبر نیست.');
+   const certificate=registry.certificates[requestedCode];
+   if(certificate&&certificate.certificate_code===requestedCode&&['active','revoked'].includes(certificate.status))
+    return {registry,certificate};
+   lastError=new Error(item.label+': شناسه در این نسخه از دفتر ثبت پیدا نشد.');
+  }catch(error){lastError=error;}
+  finally{clearTimeout(timer);}
  }
- throw new Error('خواندن دفتر ثبت عمومی GitHub ناموفق بود: '+(lastError?.message||'خطای ارتباط'));
+ const workerBases=['https://rls-manuscript-admin.sheraginrub.workers.dev','https://api.rlsj.ir'];
+ for(const base of workerBases){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
+  try{
+   const response=await fetch(base+'/certificate-api/verify?code='+encodeURIComponent(requestedCode),{
+    method:'GET',mode:'cors',credentials:'omit',cache:'no-store',
+    headers:{'Accept':'application/json'},signal:controller.signal
+   });
+   const payload=await response.json().catch(()=>({}));
+   if(!response.ok)throw new Error(payload.error||'سامانهٔ پشتیبان HTTP '+response.status);
+   const certificate=payload.certificate;
+   if(!certificate||certificate.certificate_code!==requestedCode||!['active','revoked'].includes(certificate.status))
+    throw new Error('پاسخ سامانهٔ پشتیبان با شناسهٔ درخواست‌شده مطابقت ندارد.');
+   return {registry:{updated_at:null},certificate};
+  }catch(error){lastError=error;}
+  finally{clearTimeout(timer);}
+ }
+ throw new Error('استعلام انجام نشد. دفتر ثبت GitHub و سامانهٔ پشتیبان پاسخ معتبر ندادند: '+(lastError?.message||'خطای ارتباط'));
 }
 if(!code){
  box.className='status error';box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';
@@ -72,14 +95,11 @@ if(!code){
 }else{
  (async()=>{
   try{
-   const registry=await loadGithubRegistry();
-   if(!registry||registry.source!=='rls_reviewer_certificates'||!registry.certificates||typeof registry.certificates!=='object')
-    throw new Error('ساختار دفتر ثبت گواهی‌های GitHub معتبر نیست.');
-   const c=registry.certificates[code];
+   const {registry,certificate:c}=await loadCertificateRecord(code);
    if(!c||c.certificate_code!==code)
-    throw new Error('این شناسه در دفتر ثبت رسمی GitHub نشریه یافت نشد.');
+    throw new Error('پاسخ سامانه با شناسهٔ درخواست‌شده مطابقت ندارد.');
    if(!['active','revoked'].includes(c.status))
-    throw new Error('وضعیت ثبت‌شدهٔ گواهی در GitHub معتبر نیست.');
+    throw new Error('وضعیت ثبت‌شدهٔ گواهی معتبر نیست.');
    const reviewerFa=String(c.reviewer_name||'');
    const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
    const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
