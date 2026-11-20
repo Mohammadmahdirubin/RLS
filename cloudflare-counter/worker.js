@@ -85,19 +85,19 @@ export default {
       }
       // Article counter (existing article API)
       if(url.pathname==="/api/count"&&request.method==="GET") {
-        if(!env.DB)return json({error:"D1_binding_missing"},500,origin);
+        if(!env.RLS_COUNTER_DB)return json({error:"RLS_COUNTER_DB_binding_missing"},500,origin);
         const slug=url.searchParams.get("article");
         if(!ALLOWED_ARTICLES.has(slug))return json({error:"invalid_article"},400,origin);
-        const row=await env.DB.prepare("SELECT views FROM article_views WHERE slug=?1").bind(slug).first();
+        const row=await env.RLS_COUNTER_DB.prepare("SELECT views FROM article_views WHERE slug=?1").bind(slug).first();
         return json({article:slug,views:Number(row?.views||0)},200,origin);
       }
       if(url.pathname==="/api/view"&&request.method==="POST") {
-        if(!env.DB)return json({error:"D1_binding_missing"},500,origin);
+        if(!env.RLS_COUNTER_DB)return json({error:"RLS_COUNTER_DB_binding_missing"},500,origin);
         let body;try{body=await request.json();}catch{return json({error:"invalid_json"},400,origin);}
         const slug=body?.article;
         if(!ALLOWED_ARTICLES.has(slug))return json({error:"invalid_article"},400,origin);
-        await env.DB.prepare("INSERT INTO article_views (slug,views) VALUES (?1,1) ON CONFLICT(slug) DO UPDATE SET views=views+1").bind(slug).run();
-        const row=await env.DB.prepare("SELECT views FROM article_views WHERE slug=?1").bind(slug).first();
+        await env.RLS_COUNTER_DB.prepare("INSERT INTO article_views (slug,views) VALUES (?1,1) ON CONFLICT(slug) DO UPDATE SET views=views+1").bind(slug).run();
+        const row=await env.RLS_COUNTER_DB.prepare("SELECT views FROM article_views WHERE slug=?1").bind(slug).first();
         return json({article:slug,views:Number(row?.views||0)},200,origin);
       }
       // Member profile counter (GitHub JSON storage)
