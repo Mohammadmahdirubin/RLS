@@ -47,36 +47,41 @@
     applyAdminSearch();
     adminSearch?.focus();
   });
-  async function checkAdmin(){
-    if(checking)return;checking=true;
-    try{
-      const {data:{session}}=await client.auth.getSession();
-      if(!session){login.hidden=false;dashboard.hidden=true;return;}
-      const {data:role,error}=await client.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
-      if(error){
-        msg.textContent='ارتباط موقت برای بررسی سطح دسترسی برقرار نشد: '+error.message+' · نشست مدیر حفظ شده و از پنل خارج نشده‌اید. چند لحظه بعد صفحه را به‌روزرسانی کنید.';
-        if(!hasVerifiedAdmin){login.hidden=false;dashboard.hidden=true;}
-        return;
+  let checkAdminPromise=null;
+  function checkAdmin(){
+    if(checkAdminPromise)return checkAdminPromise;
+    checkAdminPromise=(async()=>{
+      try{
+        const {data:{session},error:sessionError}=await client.auth.getSession();
+        if(sessionError)throw sessionError;
+        if(!session){login.hidden=false;dashboard.hidden=true;return;}
+        const {data:role,error}=await client.from('rls_user_roles').select('role').eq('user_id',session.user.id).maybeSingle();
+        if(error){
+          msg.textContent='ارتباط موقت برای بررسی سطح دسترسی برقرار نشد: '+error.message+' · نشست مدیر حفظ شده و از پنل خارج نشده‌اید. چند لحظه بعد صفحه را به‌روزرسانی کنید.';
+          if(!hasVerifiedAdmin){login.hidden=false;dashboard.hidden=true;}
+          return;
+        }
+        const staffIds=new Set(['b39de401-7b39-478c-88ab-50e89695e11a','1301d37a-faf9-41cc-8f30-317f7dc56b45']);
+        if(role?.role==='instructor_admin'&&staffIds.has(session.user.id)){
+          window.location.replace('staff-panel.html');
+          return;
+        }
+        if(role?.role!=='admin'){
+          hasVerifiedAdmin=false;
+          msg.textContent='این حساب دسترسی مدیر انجمن را ندارد. نشست کاربری شما حفظ شده است.';
+          login.hidden=false;dashboard.hidden=true;return;
+        }
+        hasVerifiedAdmin=true;
+        login.hidden=true;dashboard.hidden=false;
+        document.getElementById('admin-identity').textContent=session.user.email||'مدیر انجمن';
+        await load();
+      }catch(error){
+        console.error('RLS admin access check failed:',error);
+        if(msg)msg.textContent='ارتباط با سامانهٔ احراز هویت برقرار نشد: '+(error?.message||'خطای نامشخص')+' · صفحه را دوباره بارگذاری کنید.';
+        if(!hasVerifiedAdmin){if(login)login.hidden=false;if(dashboard)dashboard.hidden=true;}
       }
-      const staffIds=new Set(['b39de401-7b39-478c-88ab-50e89695e11a','1301d37a-faf9-41cc-8f30-317f7dc56b45']);
-      if(role?.role==='instructor_admin'&&staffIds.has(session.user.id)){
-        window.location.replace('staff-panel.html');
-        return;
-      }
-      if(role?.role!=='admin'){
-        hasVerifiedAdmin=false;
-        msg.textContent='این حساب دسترسی مدیر انجمن را ندارد. نشست کاربری شما حفظ شده است.';
-        login.hidden=false;dashboard.hidden=true;return;
-      }
-      hasVerifiedAdmin=true;
-      login.hidden=true;dashboard.hidden=false;
-      document.getElementById('admin-identity').textContent=session.user.email||'مدیر انجمن';
-      await load();
-    }catch(error){
-      console.error('RLS admin access check failed:',error);
-      if(msg)msg.textContent='ارتباط با سامانهٔ احراز هویت برقرار نشد: '+(error?.message||'خطای نامشخص')+' · صفحه را دوباره بارگذاری کنید.';
-      if(!hasVerifiedAdmin){if(login)login.hidden=false;if(dashboard)dashboard.hidden=true;}
-    }finally{checking=false;}
+    })().finally(()=>{checkAdminPromise=null;});
+    return checkAdminPromise;
   }
   async function loadCertificates(){
     list.textContent='در حال دریافت فهرست گواهی‌ها…';
@@ -649,8 +654,7 @@
   document.getElementById('admin-logout').addEventListener('click',async()=>{
     await client.auth.signOut();await checkAdmin();
   });
-  client.auth.onAuthStateChange(event=>{
-    if(event==='SIGNED_IN'||event==='SIGNED_OUT'||event==='TOKEN_REFRESHED')setTimeout(checkAdmin,0);
-  });
+  // Do not call Supabase auth APIs from onAuthStateChange: this can re-enter the auth lock.
+  // Initial session check, successful login, and explicit logout each call checkAdmin directly.
   checkAdmin();
 })();
