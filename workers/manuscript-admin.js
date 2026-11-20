@@ -88,9 +88,8 @@ export default {
     return new Response(null,{status:204,headers:preflightHeaders});
   }
   if((path==="/admin-api/health" && request.method==="GET") && (!origin || allowed)){
-   return reply({ok:true,worker:"rls-manuscript-admin",release:"custom-domain-api-2026-11-20-a",databaseConfigured:!!env.DB,adminTokenConfigured:!!env.ADMIN_TOKEN,githubTokenConfigured:!!env.GITHUB_TOKEN,origin});
+   return reply({ok:true,worker:"rls-manuscript-admin",release:"github-reviewer-registry-2026-11-20-b",databaseConfigured:!!env.DB,adminTokenConfigured:!!env.ADMIN_TOKEN,githubTokenConfigured:!!env.GITHUB_TOKEN,origin});
   }
-  if (!env.DB) return reply({error:"Database is not configured"},503);
   if(path==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
    if(!/^RLS-RV-\d{4}-\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
@@ -100,6 +99,7 @@ export default {
     return reply({certificate:cert,source:"github",registry_updated_at:registry.updated_at});
    } catch(error) {return reply({error:"دفتر ثبت گواهی‌های GitHub در دسترس نیست: "+String(error?.message||error).slice(0,300)},502);}
   }
+  if (!env.DB) return reply({error:"Database is not configured"},503);
   if (!env.ADMIN_TOKEN) return reply({error:"Admin API is not configured"},503);
   const auth=request.headers.get("Authorization")||"";
   if (auth !== "Bearer "+env.ADMIN_TOKEN) return reply({error:"Unauthorized"},401);
