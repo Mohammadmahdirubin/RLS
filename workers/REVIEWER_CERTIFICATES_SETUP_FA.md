@@ -3,29 +3,33 @@
 ## فایل‌ها و مسیرها
 - صفحه عمومی استعلام: `/certificate-verify.html`
 - پنل داخلی صدور: `/admin/certificates.html`
-- API: همان Worker مدیریتی `rls-manuscript-admin`
-- جدول جدید D1: `reviewer_certificates`
+- API صدور و مدیریت: همان Worker مدیریتی `rls-manuscript-admin`
+- دفتر ثبت عمومی GitHub: `assets/reviewer-certificates.json`
+- جدول داخلی D1: `reviewer_certificates` (نسخهٔ پشتیبان و مدیریت پنل)
 
 ## ۱. مهاجرت پایگاه داده
 در Cloudflare Dashboard → Workers & Pages → D1 → پایگاه داده `rls-manuscripts` → Console، فایل `workers/migrations/002_reviewer_certificates.sql` را اجرا کنید. این مهاجرت مستقل است و جدول مقالات را تغییر نمی‌دهد. اجرای مجدد بی‌خطر است.
 
 ## ۲. انتشار Worker
-محتوای به‌روزشده `workers/manuscript-admin.js` را در Worker موجود `rls-manuscript-admin` جایگزین و Deploy کنید. اتصال D1 با نام `DB` و Secret موجود `ADMIN_TOKEN` را حفظ کنید. Worker ارسال مقاله را تغییر ندهید.
+محتوای به‌روزشده `workers/manuscript-admin.js` را در Worker موجود `rls-manuscript-admin` جایگزین و Deploy کنید. اتصال D1 با نام `DB` و Secretهای `ADMIN_TOKEN` و `GITHUB_TOKEN` را حفظ کنید. توکن GitHub باید دسترسی Contents: Read and Write به مخزن `Mohammadmahdirubin/RLS` داشته باشد. Worker ارسال مقاله را تغییر ندهید.
+
+پس از Deploy، یک بار پنل صدور را باز و به آن متصل شوید. درخواست دریافت سوابق، تمام گواهی‌های موجود در D1 را به‌صورت خودکار با فایل `assets/reviewer-certificates.json` در GitHub همگام می‌کند. این مرحله سوابق قبلی را نیز وارد دفتر ثبت عمومی می‌کند.
 
 ## ۳. مهر نشریه
 تصویر مهر رسمی در پنل صدور به‌صورت تعبیه‌شده نگهداری می‌شود و برای نمایش آن به فایل جداگانه‌ای در مخزن نیاز نیست.
 
 ## ۴. آزمایش
-1. در `https://rlsj.ir/admin/certificates.html` به پنل متصل شوید.
-2. یک گواهی آزمایشی با نام و تعداد دلخواه ثبت کنید.
-3. QR را با تلفن همراه اسکن و صفحه `certificate-verify.html` را بررسی کنید.
+1. در `https://rlsj.ir/admin/certificates.html` به پنل متصل شوید و منتظر بمانید تا همگام‌سازی سوابق با GitHub تأیید شود.
+2. بررسی کنید فایل `assets/reviewer-certificates.json` در مخزن GitHub سوابق قبلی را دارد.
+3. یک گواهی آزمایشی با نام و تعداد دلخواه ثبت کنید؛ پاسخ موفق باید شامل `github_saved: true` باشد و یک commit جدید در GitHub ایجاد شود.
+4. QR را با تلفن همراه اسکن و صفحه `certificate-verify.html` را بررسی کنید. صفحهٔ عمومی مستقیماً دفتر ثبت GitHub را می‌خواند و برای استعلام به Worker یا D1 وابسته نیست.
 4. PDF را از پنجره چاپ با گزینه Save as PDF ذخیره کنید.
 5. یک گواهی آزمایشی را باطل و بررسی کنید که صفحه استعلام وضعیت «باطل‌شده» را نشان دهد.
 6. گواهی جدید برای همان داور صادر کنید و مطمئن شوید شناسه و سابقه گواهی قبلی تغییر نکرده است.
 
 ## API
-- عمومی: `GET /certificate-api/verify?code=RLS-RV-YYYY-000001`
-- مدیریتی: `GET /admin-api/certificates`
+- عمومی قدیمی/سازگاری: `GET /certificate-api/verify?code=RLS-RV-YYYY-000001`؛ این مسیر نیز دفتر ثبت GitHub را می‌خواند.
+- مدیریتی: `GET /admin-api/certificates`؛ سوابق D1 را با دفتر ثبت GitHub همگام می‌کند.
 - مدیریتی: `POST /admin-api/certificates`
 - مدیریتی: `PATCH /admin-api/certificates/{id}` با وضعیت `active` یا `revoked`
 
@@ -33,5 +37,8 @@
 - تعداد داوری را مدیر نشریه تعیین می‌کند.
 - تاریخ صدور در پنل به‌صورت خودکار با تقویم هجری شمسی پیشنهاد می‌شود و قابل ویرایش است.
 - هر بار صدور شناسه مستقل می‌گیرد؛ رکوردهای قبلی حذف یا بازنویسی نمی‌شوند.
+- هر صدور موفق، یک commit در GitHub ایجاد می‌کند. ابطال و تغییر تصویر نیز دفتر ثبت GitHub را به‌روزرسانی می‌کند.
+- استعلام عمومی فقط بر اساس `assets/reviewer-certificates.json` در مخزن رسمی GitHub انجام می‌شود؛ اگر GitHub در دسترس نباشد، صفحه خطای ارتباط نشان می‌دهد و اعتبار گواهی را حدس نمی‌زند.
+- اگر نوشتن در GitHub هنگام صدور موقتاً شکست بخورد، پنل موفقیت نهایی را اعلام نمی‌کند؛ دکمهٔ «به‌روزرسانی سوابق» همگام‌سازی مجدد را اجرا می‌کند.
 - QR به صفحه عمومی استعلام همان گواهی وصل می‌شود.
 - PDF از پنجره چاپ مرورگر ساخته می‌شود؛ برای خروجی A4 افقی، گزینه Background graphics را فعال کنید.
