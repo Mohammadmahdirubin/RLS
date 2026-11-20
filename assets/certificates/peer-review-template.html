@@ -154,6 +154,7 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
   const status = document.getElementById("saveStatus");
   const pdfButton = document.getElementById("downloadPdfButton");
   const filename = "RLS-Reviewer-Certificate-" + code + ".pdf";
+  let pdfReady = false;
   if (!id) {
     status.textContent = "پیش‌نمایش؛ برای تولید و ثبت PDF از پنل صدور باز کنید.";
     pdfButton.textContent = "PDF فقط از پنل صدور";
@@ -243,6 +244,7 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
 
     // Generate a real one-page A4 landscape PDF from the certificate artwork.
     const pdfBlob = await pdfFromCanvas(renderCanvas);
+    pdfReady = true;
     pdfButton.disabled = false;
     pdfButton.textContent = "دانلود فایل PDF";
     pdfButton.onclick = () => saveBlob(pdfBlob, filename);
@@ -272,10 +274,15 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
     status.textContent = "PDF دانلود و در GitHub ذخیره شد؛ تصویر پیش‌نمایش نیز ثبت شد ("+usedScale+"×).";
     status.style.color = "#17643b";
   } catch (error) {
-    status.textContent = "تولید یا ثبت PDF کامل نشد: " + (error.message || error);
+    status.textContent = (pdfReady ? "PDF تولید شد و قابل دانلود است، اما ثبت کامل آن در GitHub انجام نشد: " : "تولید PDF انجام نشد: ") + (error.message || error);
     status.style.color = "#9b2020";
-    pdfButton.disabled = true;
-    pdfButton.textContent = "تولید PDF ناموفق";
+    if (pdfReady) {
+      pdfButton.disabled = false;
+      pdfButton.textContent = "دانلود فایل PDF";
+    } else {
+      pdfButton.disabled = true;
+      pdfButton.textContent = "تولید PDF ناموفق";
+    }
   }
 })();
 </script>
