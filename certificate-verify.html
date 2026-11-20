@@ -35,7 +35,7 @@ function jalaliToGregorianText(input){
  const pad=n=>String(n).padStart(2,'0');
  return String(gy)+'-'+pad(gm)+'-'+pad(days+1);
 }
-const API='https://api.rlsj.ir';
+const API_ENDPOINTS=['https://api.rlsj.ir','https://rls-manuscript-admin.sheraginrub.workers.dev'];
 const p=new URLSearchParams(location.search),code=(p.get('code')||'').trim().toUpperCase();
 document.getElementById('code').textContent=code||'شناسه وارد نشده است';
 const box=document.getElementById('result');
@@ -48,19 +48,23 @@ if(!code){
 }else{
  (async()=>{
   try{
-   const response=await fetch(API+'/certificate-api/verify?code='+encodeURIComponent(code),{
-    method:'GET',
-    mode:'cors',
-    credentials:'omit',
-    cache:'no-store',
-    headers:{'Accept':'application/json'}
-   });
-   const raw=await response.text();
-   let payload;
-   try{payload=JSON.parse(raw)}catch{
-    throw new Error('پاسخ سرویس استعلام قابل خواندن نیست (HTTP '+response.status+'). انتشار Worker و اتصال پایگاه داده را بررسی کنید.');
+   let response=null,payload=null,lastError=null;
+   for(const endpoint of API_ENDPOINTS){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),10000);
+    try{
+     response=await fetch(endpoint+'/certificate-api/verify?code='+encodeURIComponent(code),{
+      method:'GET',mode:'cors',credentials:'omit',cache:'no-store',
+      headers:{'Accept':'application/json'},signal:controller.signal
+     });
+     clearTimeout(timer);
+     const raw=await response.text();
+     try{payload=JSON.parse(raw)}catch{throw new Error('پاسخ غیرقابل‌خواندن از '+endpoint+' (HTTP '+response.status+')')}
+     if(response.ok)break;
+     lastError=new Error(payload.error||'HTTP '+response.status);
+    }catch(e){clearTimeout(timer);lastError=e;}
    }
-   if(!response.ok)throw new Error(payload.error||'استعلام ناموفق بود (HTTP '+response.status+').');
+   if(!response||!response.ok)throw new Error('هر دو مسیر استعلام ناموفق بودند: '+(lastError?.name==='AbortError'?'زمان پاسخ تمام شد':lastError?.message||'خطای ارتباط'));
    const c=payload.certificate;
    if(!c||c.certificate_code!==code)throw new Error('پاسخ سامانه با شناسهٔ درخواست‌شده مطابقت ندارد.');
    const reviewerFa=c.reviewer_name;
