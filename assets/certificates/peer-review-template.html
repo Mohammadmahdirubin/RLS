@@ -27,7 +27,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 .verification-copy span{display:block;width:100%}
 .qr-frame-left-line{position:absolute;left:86.25%;top:77.35%;width:1.15px;height:13.15%;z-index:4;background:linear-gradient(to bottom,rgba(190,151,75,.25),#b89143 12%,#b89143 88%,rgba(190,151,75,.25));box-shadow:0 0 .35mm rgba(139,101,40,.35);pointer-events:none}
 .qr{position:absolute;left:91.35%;top:83.57%;transform:translate(-50%,-50%);width:7.8%;height:11.05%;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;background:#fff;padding:.55mm;border:1px solid #c69a45;border-radius:1mm;z-index:5}
-.qr svg{display:block!important;flex:0 0 100%;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:hidden;shape-rendering:crispEdges}
+.qr img{display:block!important;flex:0 0 100%;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain;image-rendering:pixelated}
 @media screen and (max-width:1122px){.sheet{width:100vw;height:calc(100vw * 210 / 297);margin:0 auto;box-shadow:none}}
 @page{size:A4 landscape;margin:0}\n@media print{html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important;background:#f8f1e2!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}.certificate-bg{display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;width:297mm!important;height:210mm!important;object-fit:fill!important;z-index:0!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important}}\nbody.printing>.no-print{display:none!important;visibility:hidden!important}
 
@@ -68,7 +68,7 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
   <button id="printButton" style="border:0;border-radius:7px;background:#5b1723;color:#fff;padding:9px 14px;font:13px Tahoma;cursor:pointer">چاپ</button>
   <span id="saveStatus" style="background:#fffaf0;border:1px solid #c08d35;border-radius:7px;padding:8px 10px;font:12px Tahoma;color:#5b1723">در حال آماده‌سازی گواهی…</span>
 </div>
-<script src="/assets/qrcode-generator-2.0.4.js?v=20261118"></script>
+<script src="/assets/qrcode-generator-2.0.4.js?v=20261120-pngqr-v30"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (async () => {
@@ -106,29 +106,29 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
   document.querySelector(".meta strong").textContent = count + " مورد";
   document.querySelectorAll(".meta strong")[1].textContent = date;
   document.querySelector(".code").textContent = code;
-  const verifyUrl = "https://rlsj.ir/certificate-verify.html?code=" + encodeURIComponent(code) + "&v=20261120-certfix";
+  const verifyUrl = new URL("/certificate-verify.html", location.origin);
+  verifyUrl.searchParams.set("code", code);
+  const verifyLink = verifyUrl.href;
   const holder = document.getElementById("qr");
   holder.innerHTML = "";
-  holder.title = verifyUrl;
+  holder.title = verifyLink;
   let qrReady = false;
   try {
-    if (typeof window.qrcode !== "function") throw new Error("مولد QR جدید بارگذاری نشد.");
+    if (typeof window.qrcode !== "function") throw new Error("مولد QR بارگذاری نشد.");
     const qr = window.qrcode(0, "Q");
-    qr.addData(verifyUrl, "Byte");
+    qr.addData(verifyLink, "Byte");
     qr.make();
-    holder.innerHTML = qr.createSvgTag({
-      cellSize: 5,
-      margin: 4,
-      scalable: true,
-      alt: {text: "کد QR اعتبارسنجی گواهی"},
-      title: {text: "استعلام آنلاین گواهی در سایت مطالعات زبان روسی"}
+    const qrImage = document.createElement("img");
+    qrImage.alt = "کد QR اعتبارسنجی گواهی";
+    qrImage.decoding = "sync";
+    qrImage.draggable = false;
+    qrImage.src = qr.createDataURL(10, 48);
+    await new Promise((resolve, reject) => {
+      if (qrImage.complete && qrImage.naturalWidth) return resolve();
+      qrImage.onload = resolve;
+      qrImage.onerror = () => reject(new Error("تصویر QR بارگذاری نشد."));
     });
-    const svg = holder.querySelector("svg");
-    if (!svg) throw new Error("تصویر برداری QR ساخته نشد.");
-    svg.setAttribute("width", "100%");
-    svg.setAttribute("height", "100%");
-    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-    svg.style.display = "block";
+    holder.appendChild(qrImage);
     qrReady = true;
   } catch (qrError) {
     holder.textContent = "ساخت کد QR ناموفق بود";
