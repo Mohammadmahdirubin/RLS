@@ -1,3 +1,56 @@
+
+const REVIEWER_REGISTRY_PATH = "assets/reviewer-certificates.json";
+const REVIEWER_REGISTRY_URL = "https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/" + REVIEWER_REGISTRY_PATH;
+function reviewerGithubHeaders(env) {
+  if (!env.GITHUB_TOKEN) throw new Error("GitHub token is not configured.");
+  return {"Authorization":"Bearer "+env.GITHUB_TOKEN,"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"RLS-Reviewer-Certificate-Registry/1.0","Content-Type":"application/json"};
+}
+function decodeGithubFileBase64(value) {
+  const binary=atob(String(value||"").replace(/\s/g,""));
+  const bytes=Uint8Array.from(binary,character=>character.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+function encodeGithubFileBase64(value) {
+  const bytes=new TextEncoder().encode(value);let binary="";
+  for(let offset=0;offset<bytes.length;offset+=0x8000)binary+=String.fromCharCode(...bytes.subarray(offset,offset+0x8000));
+  return btoa(binary);
+}
+function emptyReviewerRegistry(){return {schema:1,source:"rls_reviewer_certificates",updated_at:null,count:0,certificates:{}};}
+async function readReviewerRegistry(env) {
+  const response=await fetch(REVIEWER_REGISTRY_URL,{headers:reviewerGithubHeaders(env)});
+  if(response.status===404)return {registry:emptyReviewerRegistry(),sha:null};
+  if(!response.ok){const detail=await response.text();throw new Error("GitHub registry read failed ("+response.status+"): "+detail.slice(0,250));}
+  const file=await response.json();const registry=JSON.parse(decodeGithubFileBase64(file.content));
+  if(!registry||typeof registry!=="object"||Array.isArray(registry))throw new Error("GitHub reviewer registry has an invalid structure.");
+  if(!registry.certificates||typeof registry.certificates!=="object"||Array.isArray(registry.certificates))registry.certificates={};
+  return {registry,sha:file.sha};
+}
+async function updateReviewerRegistry(env,certificates,message) {
+  const headers=reviewerGithubHeaders(env);
+  for(let attempt=0;attempt<5;attempt++){
+    const current=await readReviewerRegistry(env);const registry=current.registry;
+    for(const certificate of certificates){
+      if(!certificate||!/^RLS-RV-\d{4}-\d{6}$/.test(String(certificate.certificate_code||"")))throw new Error("A certificate has an invalid verification code.");
+      registry.certificates[certificate.certificate_code]={
+        id:certificate.id??null,certificate_code:certificate.certificate_code,
+        reviewer_name:String(certificate.reviewer_name||""),review_count:Number(certificate.review_count||0),
+        issue_date:String(certificate.issue_date||""),status:certificate.status==="revoked"?"revoked":"active",
+        created_at:certificate.created_at||null,certificate_image:certificate.certificate_image||null
+      };
+    }
+    registry.schema=1;registry.source="rls_reviewer_certificates";registry.updated_at=new Date().toISOString();
+    registry.count=Object.keys(registry.certificates).length;
+    const payload={message:message||"Update RLS reviewer certificate registry",content:encodeGithubFileBase64(JSON.stringify(registry,null,2)+"\n")};
+    if(current.sha)payload.sha=current.sha;
+    const response=await fetch(REVIEWER_REGISTRY_URL,{method:"PUT",headers,body:JSON.stringify(payload)});
+    if(response.ok){const saved=await response.json();return {saved:true,count:registry.count,commit:saved.commit?.sha||null,commit_url:saved.commit?.html_url||null};}
+    const detail=await response.text();
+    if((response.status===409||response.status===422)&&attempt<4)continue;
+    throw new Error("GitHub registry write failed ("+response.status+"): "+detail.slice(0,300));
+  }
+  throw new Error("GitHub registry changed repeatedly; retry the synchronization.");
+}
+
 export default {
  async fetch(request, env) {
   const url = new URL(request.url);
@@ -35,9 +88,11 @@ export default {
   if(path==="/certificate-api/verify" && request.method==="GET"){
    const code=(url.searchParams.get("code")||"").trim().toUpperCase();
    if(!/^RLS-RV-\d{4}-\d{6}$/.test(code))return reply({error:"شناسه گواهی معتبر نیست."},400);
-   const cert=await env.DB.prepare("SELECT certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE certificate_code=?").bind(code).first();
-   if(!cert)return reply({error:"گواهی با این شناسه یافت نشد."},404);
-   return reply({certificate:cert});
+   try {
+    const {registry}=await readReviewerRegistry(env);const cert=registry.certificates[code];
+    if(!cert||cert.certificate_code!==code)return reply({error:"گواهی با این شناسه در دفتر ثبت GitHub یافت نشد."},404);
+    return reply({certificate:cert,source:"github",registry_updated_at:registry.updated_at});
+   } catch(error) {return reply({error:"دفتر ثبت گواهی‌های GitHub در دسترس نیست: "+String(error?.message||error).slice(0,300)},502);}
   }
   if (!env.ADMIN_TOKEN) return reply({error:"Admin API is not configured"},503);
   const auth=request.headers.get("Authorization")||"";
@@ -71,11 +126,21 @@ export default {
    const imageUrl=savedJson?.content?.download_url ? savedJson.content.download_url+"?v="+Date.now() : null;
    if(!imageUrl)return reply({error:"GitHub uploaded the image but did not return a download URL"},502);
    await env.DB.prepare("UPDATE reviewer_certificates SET certificate_image=? WHERE id=?").bind(imageUrl,id).run();
-   return reply({success:true,id,certificate_code:cert.certificate_code,certificate_image:imageUrl});
+   const updatedCert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE id=?").bind(id).first();
+   try {
+    const github=await updateReviewerRegistry(env,[updatedCert],"Save reviewer certificate image "+cert.certificate_code);
+    return reply({success:true,id,certificate_code:cert.certificate_code,certificate_image:imageUrl,github_saved:true,github_commit:github.commit_url});
+   } catch(error) {return reply({error:"تصویر در GitHub ذخیره شد، اما به‌روزرسانی دفتر ثبت گواهی انجام نشد: "+String(error?.message||error).slice(0,250),saved_in_database:true,github_saved:false},502);}
   }
   if(path==="/admin-api/certificates" && request.method==="GET"){
    const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
-   return reply({certificates:result.results||[]});
+   const certificates=result.results||[];
+   try {
+    const github=await updateReviewerRegistry(env,certificates,"Sync RLS reviewer certificates to public GitHub registry");
+    return reply({certificates,github_saved:true,github_count:github.count,github_commit:github.commit_url});
+   } catch(error) {
+    return reply({error:"خواندن سوابق انجام شد، اما همگام‌سازی با GitHub ناموفق بود: "+String(error?.message||error).slice(0,250),certificates,github_saved:false},502);
+   }
   }
   if(path==="/admin-api/certificates" && request.method==="POST"){
    let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
@@ -92,8 +157,13 @@ export default {
    const year=new Date().getUTCFullYear();
    const code="RLS-RV-"+year+"-"+String(id).padStart(6,"0");
    await env.DB.prepare("UPDATE reviewer_certificates SET certificate_code=? WHERE id=?").bind(code,id).run();
-   const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at FROM reviewer_certificates WHERE id=?").bind(id).first();
-   return reply({success:true,certificate:cert},201);
+   const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE id=?").bind(id).first();
+   try {
+    const github=await updateReviewerRegistry(env,[cert],"Register reviewer certificate "+code);
+    return reply({success:true,certificate:cert,github_saved:true,github_commit:github.commit_url},201);
+   } catch(error) {
+    return reply({error:"گواهی در پایگاه داده ثبت شد، اما ثبت آن در GitHub کامل نشد. روی «به‌روزرسانی سوابق» بزنید تا همگام‌سازی دوباره انجام شود. جزئیات: "+String(error?.message||error).slice(0,220),certificate:cert,saved_in_database:true,github_saved:false},502);
+   }
   }
   const certMatch=path.match(/^\/admin-api\/certificates\/(\d+)$/);
   if(certMatch && request.method==="PATCH"){
@@ -102,7 +172,13 @@ export default {
    if(!["active","revoked"].includes(status))return reply({error:"Invalid certificate status"},400);
    const result=await env.DB.prepare("UPDATE reviewer_certificates SET status=? WHERE id=?").bind(status,id).run();
    if(!(result?.meta?.changes>0))return reply({error:"Certificate not found"},404);
-   return reply({success:true,id,status});
+   const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE id=?").bind(id).first();
+   try {
+    const github=await updateReviewerRegistry(env,[cert],"Update reviewer certificate status "+cert.certificate_code);
+    return reply({success:true,id,status,github_saved:true,github_commit:github.commit_url});
+   } catch(error) {
+    return reply({error:"وضعیت در پایگاه داده تغییر کرد، اما همگام‌سازی وضعیت در GitHub انجام نشد؛ «به‌روزرسانی سوابق» را اجرا کنید. جزئیات: "+String(error?.message||error).slice(0,220),updated_in_database:true,github_saved:false},502);
+   }
   }
   if(path==="/admin-api/manuscripts" && request.method==="GET"){
    const result=await env.DB.prepare("SELECT id,tracking_code,author,email,title,institution,orcid,abstract,message,main_filename,supplementary_filename,status,received_at,updated_at,editor_note FROM manuscripts ORDER BY received_at DESC LIMIT 500").all();
