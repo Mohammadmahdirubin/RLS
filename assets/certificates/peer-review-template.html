@@ -148,8 +148,8 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
   const status = document.getElementById("saveStatus");
   if (!id) { status.textContent = "پیش‌نمایش؛ برای ذخیره خودکار از پنل صدور باز کنید."; return; }
   try {
-    const api = sessionStorage.getItem("rlsCertApi") || "https://rls-manuscript-admin.sheraginrub.workers.dev";
-    const token = sessionStorage.getItem("rlsCertToken") || "";
+    const api = localStorage.getItem("rlsCertApi") || sessionStorage.getItem("rlsCertApi") || "https://api.rlsj.ir";
+    const token = localStorage.getItem("rlsCertToken") || sessionStorage.getItem("rlsCertToken") || "";
     if (!token) throw new Error("نشست مدیریتی پیدا نشد؛ از پنل صدور دوباره وارد شوید.");
     await document.fonts.ready;
     await Promise.all(Array.from(document.images).map(img => img.complete ? Promise.resolve() : new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; })));
