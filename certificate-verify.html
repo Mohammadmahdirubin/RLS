@@ -20,14 +20,13 @@ function jalaliToGregorianText(input){
  const m=digits.match(/^(\d{3,4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
  if(!m)return input;
  let jy=+m[1],jm=+m[2],jd=+m[3];
- const g_d_m=[0,31,((jy%4===3)?29:28),31,30,31,30,31,31,30,31,30,31];
  let jy2=jy-979;
  let days=365*jy2+Math.floor(jy2/33)*8+Math.floor((jy2%33+3)/4);
  for(let i=1;i<jm;i++)days+=(i<=6?31:30);
  days+=jd-1+79;
  let gy=1600+400*Math.floor(days/146097);days%=146097;
  let leap=true;
- if(days>=36525){days--;gy+=100*Math.floor(days/36524);days%=36524;if(days>=365)days++ ;else leap=false;}
+ if(days>=36525){days--;gy+=100*Math.floor(days/36524);days%=36524;if(days>=365)days++;else leap=false;}
  gy+=4*Math.floor(days/1461);days%=1461;
  if(days>=366){leap=false;days--;gy+=Math.floor(days/365);days%=365;}
  let gm=1;
@@ -35,39 +34,53 @@ function jalaliToGregorianText(input){
  const pad=n=>String(n).padStart(2,'0');
  return String(gy)+'-'+pad(gm)+'-'+pad(days+1);
 }
-const API_ENDPOINTS=['https://api.rlsj.ir','https://rls-manuscript-admin.sheraginrub.workers.dev'];
+const REGISTRY_RAW='https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/reviewer-certificates.json';
+const REGISTRY_API='https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/assets/reviewer-certificates.json';
 const p=new URLSearchParams(location.search),code=(p.get('code')||'').trim().toUpperCase();
 document.getElementById('code').textContent=code||'شناسه وارد نشده است';
 const box=document.getElementById('result');
+function decodeGithubBase64(value){
+ const binary=atob(String(value||'').replace(/\s/g,''));
+ const bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));
+ return new TextDecoder().decode(bytes);
+}
+async function loadGithubRegistry(){
+ const urls=[
+  {url:REGISTRY_RAW+'?v='+Date.now(),type:'raw'},
+  {url:REGISTRY_API+'?ref=main&v='+Date.now(),type:'api'}
+ ];
+ let lastError=null;
+ for(const item of urls){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+  try{
+   const response=await fetch(item.url,{method:'GET',mode:'cors',credentials:'omit',cache:'no-store',headers:{'Accept':'application/vnd.github+json'},signal:controller.signal});
+   clearTimeout(timer);
+   if(!response.ok)throw new Error('GitHub HTTP '+response.status);
+   if(item.type==='raw')return await response.json();
+   const file=await response.json();
+   return JSON.parse(decodeGithubBase64(file.content));
+  }catch(error){
+   clearTimeout(timer);lastError=error;
+  }
+ }
+ throw new Error('خواندن دفتر ثبت عمومی GitHub ناموفق بود: '+(lastError?.message||'خطای ارتباط'));
+}
 if(!code){
- box.className='status error';
- box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';
+ box.className='status error';box.textContent='شناسه گواهی در نشانی صفحه وجود ندارد.';
 }else if(!/^RLS-RV-\d{4}-\d{6}$/.test(code)){
- box.className='status error';
- box.textContent='قالب شناسه گواهی معتبر نیست.';
+ box.className='status error';box.textContent='قالب شناسه گواهی معتبر نیست.';
 }else{
  (async()=>{
   try{
-   let response=null,payload=null,lastError=null;
-   for(const endpoint of API_ENDPOINTS){
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),10000);
-    try{
-     response=await fetch(endpoint+'/certificate-api/verify?code='+encodeURIComponent(code),{
-      method:'GET',mode:'cors',credentials:'omit',cache:'no-store',
-      headers:{'Accept':'application/json'},signal:controller.signal
-     });
-     clearTimeout(timer);
-     const raw=await response.text();
-     try{payload=JSON.parse(raw)}catch{throw new Error('پاسخ غیرقابل‌خواندن از '+endpoint+' (HTTP '+response.status+')')}
-     if(response.ok)break;
-     lastError=new Error(payload.error||'HTTP '+response.status);
-    }catch(e){clearTimeout(timer);lastError=e;}
-   }
-   if(!response||!response.ok)throw new Error('هر دو مسیر استعلام ناموفق بودند: '+(lastError?.name==='AbortError'?'زمان پاسخ تمام شد':lastError?.message||'خطای ارتباط'));
-   const c=payload.certificate;
-   if(!c||c.certificate_code!==code)throw new Error('پاسخ سامانه با شناسهٔ درخواست‌شده مطابقت ندارد.');
-   const reviewerFa=c.reviewer_name;
+   const registry=await loadGithubRegistry();
+   if(!registry||registry.source!=='rls_reviewer_certificates'||!registry.certificates||typeof registry.certificates!=='object')
+    throw new Error('ساختار دفتر ثبت گواهی‌های GitHub معتبر نیست.');
+   const c=registry.certificates[code];
+   if(!c||c.certificate_code!==code)
+    throw new Error('این شناسه در دفتر ثبت رسمی GitHub نشریه یافت نشد.');
+   if(!['active','revoked'].includes(c.status))
+    throw new Error('وضعیت ثبت‌شدهٔ گواهی در GitHub معتبر نیست.');
+   const reviewerFa=String(c.reviewer_name||'');
    const reviewerEn=reviewerFa==='خانم دکتر پروانه راداندیش'?'Dr. Parvaneh Radandish':reviewerFa;
    const reviewerRu=reviewerFa==='خانم دکتر پروانه راداندیش'?'д-р Парване Радандиш':reviewerFa;
    const gregorianISO=jalaliToGregorianText(c.issue_date);
@@ -89,28 +102,21 @@ if(!code){
    document.getElementById('stateRu').textContent=active?'Действительно':'Аннулировано';
    document.getElementById('codeRu').textContent=c.certificate_code;
    document.getElementById('details').hidden=false;
-   const imageBox=document.getElementById("certificateImage");
-   const imageEl=document.getElementById("certificateImageSrc");
-   const safeStoredImage=typeof c.certificate_image==="string" &&
-     /^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\//.test(c.certificate_image)
-       ? c.certificate_image : "";
-   const fallbackImage="https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/"+encodeURIComponent(code)+".png";
-   imageEl.style.cursor="zoom-in";
-   imageEl.title="برای مشاهدهٔ تصویر با وضوح کامل لمس کنید";
-   imageEl.onclick=()=>{if(imageEl.src)window.open(imageEl.src,"_blank","noopener,noreferrer");};
-   imageEl.onerror=()=>{
-     if(imageEl.src!==fallbackImage){imageEl.src=fallbackImage;return;}
-     imageBox.hidden=true;
-   };
-   imageEl.src=safeStoredImage || fallbackImage;
-   imageBox.hidden=false;
+   const imageBox=document.getElementById('certificateImage');
+   const imageEl=document.getElementById('certificateImageSrc');
+   const safeStoredImage=typeof c.certificate_image==='string'&&/^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\//.test(c.certificate_image)?c.certificate_image:'';
+   const fallbackImage='https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/'+encodeURIComponent(code)+'.png';
+   imageEl.style.cursor='zoom-in';imageEl.title='برای مشاهدهٔ تصویر با وضوح کامل لمس کنید';
+   imageEl.onclick=()=>{if(imageEl.src)window.open(imageEl.src,'_blank','noopener,noreferrer');};
+   imageEl.onerror=()=>{if(imageEl.src!==fallbackImage){imageEl.src=fallbackImage;return;}imageBox.hidden=true;};
+   imageEl.src=safeStoredImage||fallbackImage;imageBox.hidden=false;
    box.className='status '+(active?'valid':'revoked');
-   box.textContent=active?'این گواهی در سامانه نشریه ثبت شده و معتبر است.':'این گواهی در سامانه نشریه باطل شده است.';
+   box.textContent=active
+    ?'این گواهی در دفتر ثبت عمومی GitHub نشریه ثبت شده و معتبر است.'
+    :'این گواهی در دفتر ثبت عمومی GitHub نشریه باطل شده است.';
   }catch(error){
    box.className='status error';
-   box.textContent=error instanceof TypeError
-    ?'ارتباط با سامانهٔ استعلام برقرار نشد. پس از انتشار نسخهٔ جدید Worker دوباره امتحان کنید.'
-    :(error.message||'خطای نامشخص در استعلام گواهی.');
+   box.textContent=error.message||'خطای نامشخص در استعلام گواهی از GitHub.';
   }
  })();
 }
