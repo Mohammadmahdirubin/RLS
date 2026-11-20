@@ -480,7 +480,7 @@
     const viewsNode=detail.querySelector('[data-profile-views]');
     if(viewsNode){
       (async()=>{
-        const endpoint='https://rls-profile-views.YOUR-SUBDOMAIN.workers.dev/count?member='+encodeURIComponent(String(id));
+        const endpoint='https://rlsj-visitor-counter.sheraginrub.workers.dev/profile/count?member='+encodeURIComponent(String(id));
         try{
           const response=await fetch(endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Accept':'application/json'}});
           if(!response.ok)throw new Error('Counter HTTP '+response.status);
