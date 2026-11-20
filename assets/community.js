@@ -476,25 +476,16 @@
         certSection.hidden=true;
       });
     }
-    // Count one actual profile page load. PostgreSQL performs an atomic increment,
-    // so concurrent visitors and retries cannot overwrite one another.
+    // Count profile views through the GitHub-backed Cloudflare Worker (no Supabase dependency).
     const viewsNode=detail.querySelector('[data-profile-views]');
     if(viewsNode){
       (async()=>{
+        const endpoint='https://rls-profile-views.YOUR-SUBDOMAIN.workers.dev/count?member='+encodeURIComponent(String(id));
         try{
-          // The GitHub mirror can render profiles without initializing Supabase.
-          // Explicitly initialize the client before invoking the view-count RPC.
-          const client=await Promise.race([
-            ensureDatabase(),
-            new Promise((_,reject)=>setTimeout(()=>reject(new Error('Database initialization timed out')),12000))
-          ]);
-          const rpcResult=await Promise.race([
-            client.rpc('rls_record_profile_view',{p_member_id:id}),
-            new Promise((_,reject)=>setTimeout(()=>reject(new Error('Profile counter request timed out')),15000))
-          ]);
-          const {data,error}=rpcResult;
-          if(error || data===null || data===undefined) throw error||new Error('Empty view-count response');
-          const count=Number(data);
+          const response=await fetch(endpoint,{method:'POST',mode:'cors',cache:'no-store',headers:{'Accept':'application/json'}});
+          if(!response.ok)throw new Error('Counter HTTP '+response.status);
+          const payload=await response.json();
+          const count=Number(payload.count);
           if(!Number.isSafeInteger(count)||count<0)throw new Error('Invalid profile view count');
           const label=lang==='fa'?'بازدید از این پروفایل':lang==='ru'?'Просмотров профиля':'Profile views';
           viewsNode.textContent=label+' | '+new Intl.NumberFormat(lang==='fa'?'fa-IR':lang==='ru'?'ru-RU':'en-US').format(count);
@@ -502,6 +493,7 @@
         }catch(error){
           viewsNode.textContent=lang==='fa'?'شمارنده بازدید در دسترس نیست':lang==='ru'?'Счётчик просмотров недоступен':'View counter unavailable';
           viewsNode.setAttribute('data-counter-state','error');
+          console.warn('[RLS profile views]',error);
         }
       })();
     }
