@@ -32,6 +32,7 @@ html,body{margin:0;padding:0;background:#e8e3d9;font-family:Tahoma,Arial,sans-se
 @page{size:A4 landscape;margin:0}\n@media print{html,body{background:#fff!important;margin:0!important;padding:0!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important;background:#f8f1e2!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}.certificate-bg{display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;inset:0!important;width:297mm!important;height:210mm!important;object-fit:fill!important;z-index:0!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}}body>.no-print,body>.no-print *,#printButton,#saveStatus,.no-print{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}.sheet{margin:0!important;box-shadow:none!important;break-inside:avoid!important;page-break-inside:avoid!important}}\nbody.printing>.no-print{display:none!important;visibility:hidden!important}
 
 /* Keep download controls visible on screen; hide only in print output. */
+.embed-mode>.no-print,.embed-mode>.no-print *{display:none!important;visibility:hidden!important;opacity:0!important;width:0!important;height:0!important;overflow:hidden!important}
 body>.no-print{display:flex!important;visibility:visible!important;opacity:1!important;width:auto!important;height:auto!important;overflow:visible!important}
 body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!important;height:auto!important;overflow:visible!important}
 @media print{body>.no-print,body>.no-print *{display:none!important;visibility:hidden!important;opacity:0!important}}
@@ -73,6 +74,7 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
 <script>
 (async () => {
   const p = new URLSearchParams(location.search);
+  if (p.get("embed") === "1") document.body.classList.add("embed-mode");
   const get = (key, fallback) => p.get(key) || fallback;
   const name = get("name", "دکتر پروانه راداندیش");
   const count = get("count", "۳");
