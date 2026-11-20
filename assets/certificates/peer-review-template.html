@@ -253,14 +253,7 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
     status.textContent = "فایل PDF تولید و دانلود شد؛ در حال ثبت فایل‌ها در GitHub…";
     status.style.color = "#17643b";
 
-    const imageResponse = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/image", {
-      method:"POST",
-      headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},
-      body:JSON.stringify({image})
-    });
-    const imageResult = await imageResponse.json().catch(() => ({}));
-    if (!imageResponse.ok) throw new Error(imageResult.error || "ذخیره تصویر گواهی ناموفق بود: " + imageResponse.status);
-
+    // Publish the PDF first so the main deliverable is preserved even if preview-image storage fails.
     const pdfDataUrl = await blobAsDataUrl(pdfBlob);
     const pdfResponse = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/pdf", {
       method:"POST",
@@ -271,6 +264,14 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
     if (!pdfResponse.ok || pdfResult.github_saved !== true) {
       throw new Error(pdfResult.error || "ثبت PDF در GitHub تأیید نشد.");
     }
+
+    const imageResponse = await fetch(api.replace(/\/$/, "") + "/admin-api/certificates/" + id + "/image", {
+      method:"POST",
+      headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},
+      body:JSON.stringify({image})
+    });
+    const imageResult = await imageResponse.json().catch(() => ({}));
+    if (!imageResponse.ok) throw new Error(imageResult.error || "ذخیره تصویر گواهی ناموفق بود: " + imageResponse.status);
     status.textContent = "PDF دانلود و در GitHub ذخیره شد؛ تصویر پیش‌نمایش نیز ثبت شد ("+usedScale+"×).";
     status.style.color = "#17643b";
   } catch (error) {
