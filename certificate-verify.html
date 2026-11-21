@@ -141,16 +141,19 @@ if(!code){
      code:c.certificate_code,
      embed:'1'
     });
-    fallbackFrame.onload=()=>{
-      // Keep the currently visible preview until the replacement iframe has fully loaded.
-      imageBox.hidden=true;
-      fallbackBox.hidden=false;
-    };
+    // Reveal the iframe immediately; do not depend on iframe load events to unhide it.
+    imageBox.hidden=true;
+    fallbackBox.hidden=false;
+    fallbackFrame.style.display='block';
+    fallbackFrame.style.width='100%';
+    fallbackFrame.style.height='auto';
+    fallbackFrame.style.aspectRatio='297 / 210';
+    fallbackFrame.onload=null;
     fallbackFrame.onerror=()=>{
       box.className='status error';
-      box.textContent='بارگذاری تصویر گواهی ناموفق بود؛ لطفاً صفحه را دوباره بارگذاری کنید.';
+      box.textContent='بارگذاری نسخه جایگزین گواهی ناموفق بود.';
     };
-    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-stable-fallback&'+params.toString();
+    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-visible-iframe&'+params.toString();
    };
    imageEl.style.cursor='zoom-in';imageEl.title='برای مشاهدهٔ تصویر با وضوح کامل لمس کنید';
    imageEl.onclick=()=>{if(imageEl.src)window.open(imageEl.src,'_blank','noopener,noreferrer');};
