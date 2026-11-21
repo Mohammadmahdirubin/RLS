@@ -153,8 +153,12 @@ if(!code){
    const pdfLink=document.getElementById('certificatePdfLink');
    const savedPdf=typeof c.certificate_pdf==='string'&&/^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\/.+\.pdf(?:\?.*)?$/.test(c.certificate_pdf);
    if(savedPdf){
-    pdfLink.href='/assets/certificates/'+encodeURIComponent(code)+'.pdf?v='+encodeURIComponent(registry.updated_at||'latest');
-    pdfLink.download='RLS-Reviewer-Certificate-'+code+'.pdf';
+    // Use the actual registered GitHub PDF URL (not an assumed local path).
+    pdfLink.href=c.certificate_pdf;
+    pdfLink.target='_blank';
+    pdfLink.rel='noopener noreferrer';
+    pdfLink.removeAttribute('download');
+    pdfLink.textContent='مشاهده و دریافت فایل PDF رسمی گواهی';
     pdfBox.hidden=false;
    }
    box.className='status '+(active?'valid':'revoked');
