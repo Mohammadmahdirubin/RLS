@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "source": "rls_reviewer_certificates",
-  "updated_at": "2026-11-20T17:32:28.678Z",
-  "count": 16,
+  "updated_at": "2026-11-21T10:00:02.690Z",
+  "count": 5,
   "certificates": {
     "RLS-RV-2026-000016": {
       "id": 16,
@@ -57,127 +57,6 @@
       "status": "active",
       "created_at": "2026-11-18T13:07:43.959Z",
       "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000012.png?v=1795008473402",
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000011": {
-      "id": 11,
-      "certificate_code": "RLS-RV-2026-000011",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 3,
-      "issue_date": "1405/08/27",
-      "status": "revoked",
-      "created_at": "2026-11-18T13:05:05.491Z",
-      "certificate_image": null,
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000010": {
-      "id": 10,
-      "certificate_code": "RLS-RV-2026-000010",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 3,
-      "issue_date": "1405/08/27",
-      "status": "revoked",
-      "created_at": "2026-11-18T12:06:32.397Z",
-      "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000010.png?v=1795003855433",
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000009": {
-      "id": 9,
-      "certificate_code": "RLS-RV-2026-000009",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 3,
-      "issue_date": "1405/08/27",
-      "status": "revoked",
-      "created_at": "2026-11-18T11:47:38.738Z",
-      "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000009.png?v=1795003546801",
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000008": {
-      "id": 8,
-      "certificate_code": "RLS-RV-2026-000008",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 2,
-      "issue_date": "1405/08/27",
-      "status": "revoked",
-      "created_at": "2026-11-18T10:34:39.911Z",
-      "certificate_image": null,
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000007": {
-      "id": 7,
-      "certificate_code": "RLS-RV-2026-000007",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 2,
-      "issue_date": "1405/08/27",
-      "status": "revoked",
-      "created_at": "2026-11-17T21:11:51.948Z",
-      "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000007.png?v=1794995533081",
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000006": {
-      "id": 6,
-      "certificate_code": "RLS-RV-2026-000006",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 2,
-      "issue_date": "1405/08/27",
-      "status": "revoked",
-      "created_at": "2026-11-17T21:07:58.544Z",
-      "certificate_image": null,
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000005": {
-      "id": 5,
-      "certificate_code": "RLS-RV-2026-000005",
-      "reviewer_name": "سرکار خانم دکتر پروانه راداندیش",
-      "review_count": 3,
-      "issue_date": "1405/08/26",
-      "status": "revoked",
-      "created_at": "2026-11-17T20:12:39.357Z",
-      "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000005.png?v=1794949636454",
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000004": {
-      "id": 4,
-      "certificate_code": "RLS-RV-2026-000004",
-      "reviewer_name": "خانم دکتر پروانه راداندیش",
-      "review_count": 3,
-      "issue_date": "1405/08/26",
-      "status": "revoked",
-      "created_at": "2026-11-17T19:28:56.901Z",
-      "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000004.png",
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000003": {
-      "id": 3,
-      "certificate_code": "RLS-RV-2026-000003",
-      "reviewer_name": "محمد مهدی روبین",
-      "review_count": 3,
-      "issue_date": "1405/08/26",
-      "status": "revoked",
-      "created_at": "2026-11-16T21:22:28.489Z",
-      "certificate_image": null,
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000002": {
-      "id": 2,
-      "certificate_code": "RLS-RV-2026-000002",
-      "reviewer_name": "محمد مهدی روبین",
-      "review_count": 3,
-      "issue_date": "1405/08/26",
-      "status": "revoked",
-      "created_at": "2026-11-16T21:21:49.509Z",
-      "certificate_image": null,
-      "certificate_pdf": null
-    },
-    "RLS-RV-2026-000001": {
-      "id": 1,
-      "certificate_code": "RLS-RV-2026-000001",
-      "reviewer_name": "محمد مهدی روبین",
-      "review_count": 3,
-      "issue_date": "1405/08/26",
-      "status": "revoked",
-      "created_at": "2026-11-16T21:19:20.571Z",
-      "certificate_image": null,
       "certificate_pdf": null
     }
   }
