@@ -37,7 +37,7 @@ async function removeReviewerRegistryCodes(env,codes,message) {
   registry.schema=1;registry.source="rls_reviewer_certificates";registry.count=Object.keys(registry.certificates).length;
   if(!changed)return {saved:true,count:registry.count,unchanged:true};
   registry.updated_at=new Date().toISOString();
-  const payload={message:message||"Remove revoked RLS reviewer certificates",content:encodeGithubFileBase64(JSON.stringify(registry,null,2)+"\\n")};
+  const payload={message:message||"Remove revoked RLS reviewer certificates",content:encodeGithubFileBase64(JSON.stringify(registry,null,2)+"\n")};
   if(current.sha)payload.sha=current.sha;
   const response=await fetch(REVIEWER_REGISTRY_URL,{method:"PUT",headers,body:JSON.stringify(payload)});
   if(response.ok){const saved=await response.json();return {saved:true,count:registry.count,commit:saved.commit?.sha||null,commit_url:saved.commit?.html_url||null};}
