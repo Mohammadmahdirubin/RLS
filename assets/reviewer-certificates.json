@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "source": "rls_reviewer_certificates",
-  "updated_at": "2026-11-21T18:24:57.430Z",
+  "updated_at": "2026-11-21T18:25:53.357Z",
   "count": 16,
   "certificates": {
     "RLS-RV-2026-000016": {
@@ -34,7 +34,7 @@
       "issue_date": "1405/08/29",
       "status": "active",
       "created_at": "2026-11-20T15:12:46.473Z",
-      "certificate_image": null,
+      "certificate_image": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000014.png?v=1795285552765",
       "certificate_pdf": "https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/RLS-RV-2026-000014.pdf?v=1795285496973"
     },
     "RLS-RV-2026-000013": {
