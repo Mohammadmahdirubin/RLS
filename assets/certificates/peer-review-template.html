@@ -37,6 +37,7 @@ body>.no-print{display:flex!important;visibility:visible!important;opacity:1!imp
 body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!important;height:auto!important;overflow:visible!important}
 @media print{body>.no-print,body>.no-print *{display:none!important;visibility:hidden!important;opacity:0!important}}
 
+@media print{.embed-mode .sheet{width:297mm!important;height:210mm!important;margin:0!important;transform:none!important;box-shadow:none!important}.embed-mode .certificate-bg{width:297mm!important;height:210mm!important;object-fit:fill!important}}
 /* STABLE EMBED RULE: native responsive A4 landscape; no JS transform/zoom. */
 .embed-mode{margin:0!important;padding:0!important;width:100%!important;overflow:hidden!important;background:transparent!important}
 .embed-mode .sheet{width:100%!important;height:calc(100vw * 210 / 297)!important;margin:0!important;transform:none!important;box-shadow:none!important}
