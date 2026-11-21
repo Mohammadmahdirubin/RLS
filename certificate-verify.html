@@ -123,60 +123,32 @@ if(!code){
    document.getElementById('codeRu').textContent=c.certificate_code;
    document.getElementById('details').hidden=false;
    const imageBox=document.getElementById('certificateImage');
-   const imageEl=document.getElementById('certificateImageSrc');
    const fallbackBox=document.getElementById('certificateFallback');
    const fallbackFrame=document.getElementById('certificateFallbackFrame');
-   const safeStoredImage=typeof c.certificate_image==='string'&&/^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\//.test(c.certificate_image)?c.certificate_image:'';
-   const fallbackImage='https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/'+encodeURIComponent(code)+'.png';
-   let fallbackActivated=false;
-   const showRenderedCertificate=()=>{
-    if(fallbackActivated)return;
-    fallbackActivated=true;
-    imageEl.onload=null;
-    imageEl.onerror=null;
-    const params=new URLSearchParams({
-     name:String(c.reviewer_name||''),
-     count:Number(c.review_count||0).toLocaleString('fa-IR'),
-     date:String(c.issue_date||''),
-     code:c.certificate_code,
-     embed:'1'
-    });
-    // STABLE EMBED RULE: responsive A4 ratio, explicit iframe height, no transform scaling.
-    imageBox.hidden=true;
-    fallbackBox.hidden=false;
-    fallbackFrame.style.display='block';
-    fallbackFrame.style.width='100%';
-    const fitCertificateFrame=()=>{
-      const width=fallbackFrame.clientWidth || fallbackBox.clientWidth;
-      if(width>0)fallbackFrame.style.height=(width*210/297)+'px';
-    };
-    fitCertificateFrame();
-    fallbackFrame.onload=fitCertificateFrame;
-    fallbackFrame.onerror=()=>{
-      box.className='status error';
-      box.textContent='بارگذاری نسخه جایگزین گواهی ناموفق بود.';
-    };
-    window.addEventListener('resize',fitCertificateFrame,{passive:true});
-    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-stable-responsive-v1&'+params.toString();
-   };
-   imageEl.style.cursor='zoom-in';imageEl.title='برای مشاهدهٔ تصویر با وضوح کامل لمس کنید';
-   imageEl.onclick=()=>{if(imageEl.src)window.open(imageEl.src,'_blank','noopener,noreferrer');};
-   imageEl.onload=()=>{
-    if(fallbackActivated)return;
-    imageBox.hidden=false;
-    fallbackBox.hidden=true;
-   };
-   imageEl.onerror=()=>{
-    if(fallbackActivated)return;
-    if(safeStoredImage && imageEl.src===safeStoredImage){
-      imageEl.src=fallbackImage;
-      return;
-    }
-    showRenderedCertificate();
-   };
+   // Permanent rule: all certificates render from the shared template.
    imageBox.hidden=true;
-   fallbackBox.hidden=true;
-   imageEl.src=safeStoredImage||fallbackImage;
+   fallbackBox.hidden=false;
+   fallbackFrame.style.display='block';
+   fallbackFrame.style.width='100%';
+   const fitCertificateFrame=()=>{
+    const width=fallbackFrame.clientWidth || fallbackBox.clientWidth;
+    if(width>0)fallbackFrame.style.height=(width*210/297)+'px';
+   };
+   fitCertificateFrame();
+   fallbackFrame.onload=fitCertificateFrame;
+   fallbackFrame.onerror=()=>{
+    box.className='status error';
+    box.textContent='بارگذاری نسخه جایگزین گواهی ناموفق بود.';
+   };
+   window.addEventListener('resize',fitCertificateFrame,{passive:true});
+   const params=new URLSearchParams({
+    name:String(c.reviewer_name||''),
+    count:Number(c.review_count||0).toLocaleString('fa-IR'),
+    date:String(c.issue_date||''),
+    code:c.certificate_code,
+    embed:'1'
+   });
+   fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-unified-all-certificates-v2&'+params.toString();
    const pdfBox=document.getElementById('certificatePdf');
    const pdfLink=document.getElementById('certificatePdfLink');
    const savedPdf=typeof c.certificate_pdf==='string'&&/^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\/.+\.pdf(?:\?.*)?$/.test(c.certificate_pdf);
