@@ -132,7 +132,6 @@ if(!code){
    const showRenderedCertificate=()=>{
     if(fallbackActivated)return;
     fallbackActivated=true;
-    imageBox.hidden=true;
     imageEl.onload=null;
     imageEl.onerror=null;
     const params=new URLSearchParams({
@@ -142,9 +141,16 @@ if(!code){
      code:c.certificate_code,
      embed:'1'
     });
-    fallbackFrame.onload=null;
-    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-uniform-scale-v36-all-issued&'+params.toString();
-    fallbackBox.hidden=false;
+    fallbackFrame.onload=()=>{
+      // Keep the currently visible preview until the replacement iframe has fully loaded.
+      imageBox.hidden=true;
+      fallbackBox.hidden=false;
+    };
+    fallbackFrame.onerror=()=>{
+      box.className='status error';
+      box.textContent='بارگذاری تصویر گواهی ناموفق بود؛ لطفاً صفحه را دوباره بارگذاری کنید.';
+    };
+    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-stable-fallback&'+params.toString();
    };
    imageEl.style.cursor='zoom-in';imageEl.title='برای مشاهدهٔ تصویر با وضوح کامل لمس کنید';
    imageEl.onclick=()=>{if(imageEl.src)window.open(imageEl.src,'_blank','noopener,noreferrer');};
