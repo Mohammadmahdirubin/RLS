@@ -126,9 +126,22 @@ if(!code){
    const fallbackBox=document.getElementById('certificateFallback');
    const fallbackFrame=document.getElementById('certificateFallbackFrame');
    const printButton=document.getElementById('certificatePrintButton');
+   printButton.textContent='باز کردن گواهی برای ذخیره PDF';
    printButton.onclick=()=>{
-    try{fallbackFrame.contentWindow.focus();fallbackFrame.contentWindow.print();}
-    catch(e){box.className='status error';box.textContent='امکان باز کردن پنجرهٔ چاپ وجود ندارد؛ صفحه را در مرورگر اصلی باز کنید.';}
+    // Mobile browsers often block print() from nested iframes. Open the certificate
+    // as a top-level page from the direct user gesture; its own print control works.
+    const printParams=new URLSearchParams({
+     name:String(c.reviewer_name||''),
+     count:Number(c.review_count||0).toLocaleString('fa-IR'),
+     date:String(c.issue_date||''),
+     code:c.certificate_code
+    });
+    const printUrl='/assets/certificates/peer-review-template.html?'+printParams.toString()+'&v=20261121-top-level-print';
+    const opened=window.open(printUrl,'_blank');
+    if(!opened){
+     box.className='status error';
+     box.textContent='مرورگر بازکردن صفحه جدید را مسدود کرد؛ اجازه بازشدن پنجره را بدهید یا لینک گواهی را در تب جدید باز کنید.';
+    }
    };
    // Permanent rule: all certificates render from the shared template.
    imageBox.hidden=true;
