@@ -25,6 +25,42 @@ async function readReviewerRegistry(env) {
   if(!registry.certificates||typeof registry.certificates!=="object"||Array.isArray(registry.certificates))registry.certificates={};
   return {registry,sha:file.sha};
 }
+async function removeReviewerRegistryCodes(env,codes,message) {
+ const removeSet=new Set((codes||[]).map(String));
+ const headers=reviewerGithubHeaders(env);
+ for(let attempt=0;attempt<5;attempt++){
+  const current=await readReviewerRegistry(env),registry=current.registry;
+  let changed=false;
+  for(const code of removeSet){if(Object.prototype.hasOwnProperty.call(registry.certificates,code)){delete registry.certificates[code];changed=true;}}
+  // Permanently exclude all revoked records from the public registry.
+  for(const [code,record] of Object.entries(registry.certificates)){if(record&&record.status==="revoked"){delete registry.certificates[code];changed=true;}}
+  registry.schema=1;registry.source="rls_reviewer_certificates";registry.count=Object.keys(registry.certificates).length;
+  if(!changed)return {saved:true,count:registry.count,unchanged:true};
+  registry.updated_at=new Date().toISOString();
+  const payload={message:message||"Remove revoked RLS reviewer certificates",content:encodeGithubFileBase64(JSON.stringify(registry,null,2)+"\\n")};
+  if(current.sha)payload.sha=current.sha;
+  const response=await fetch(REVIEWER_REGISTRY_URL,{method:"PUT",headers,body:JSON.stringify(payload)});
+  if(response.ok){const saved=await response.json();return {saved:true,count:registry.count,commit:saved.commit?.sha||null,commit_url:saved.commit?.html_url||null};}
+  const detail=await response.text();if((response.status===409||response.status===422)&&attempt<4)continue;
+  throw new Error("GitHub registry removal failed ("+response.status+"): "+detail.slice(0,300));
+ }
+ throw new Error("GitHub registry changed repeatedly; retry removal.");
+}
+async function deleteReviewerCertificateAssets(env,code) {
+ const headers=reviewerGithubHeaders(env);
+ const paths=["assets/certificates/"+code+".png","assets/certificates/"+code+".pdf"];
+ const deleted=[];
+ for(const path of paths){
+  const get=await fetch("https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/"+path,{headers});
+  if(get.status===404)continue;
+  if(!get.ok)throw new Error("GitHub asset lookup failed for "+path+" ("+get.status+")");
+  const file=await get.json();
+  const response=await fetch("https://api.github.com/repos/Mohammadmahdirubin/RLS/contents/"+path,{method:"DELETE",headers,body:JSON.stringify({message:"Delete revoked reviewer certificate asset "+code,sha:file.sha})});
+  if(!response.ok&&response.status!==404){const detail=await response.text();throw new Error("GitHub asset deletion failed ("+response.status+"): "+detail.slice(0,200));}
+  if(response.ok)deleted.push(path);
+ }
+ return deleted;
+}
 async function updateReviewerRegistry(env,certificates,message) {
   const headers=reviewerGithubHeaders(env);
   for(let attempt=0;attempt<5;attempt++){
@@ -176,13 +212,23 @@ export default {
    }
   }
   if(path==="/admin-api/certificates" && request.method==="GET"){
-   const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates ORDER BY id DESC LIMIT 500").all();
-   const certificates=result.results||[];
    try {
-    const github=await updateReviewerRegistry(env,certificates,"Sync RLS reviewer certificates to public GitHub registry");
-    return reply({certificates,github_saved:true,github_count:github.count,github_commit:github.commit_url});
+    const revokedResult=await env.DB.prepare("SELECT id,certificate_code FROM reviewer_certificates WHERE status='revoked'").all();
+    const revoked=revokedResult.results||[];
+    const revokedCodes=revoked.map(c=>c.certificate_code).filter(Boolean);
+    if(revokedCodes.length){
+     await removeReviewerRegistryCodes(env,revokedCodes,"Permanently remove revoked reviewer certificates from public registry");
+     for(const code of revokedCodes){try{await deleteReviewerCertificateAssets(env,code);}catch(error){/* registry and DB cleanup take priority; assets can be retried */}}
+     await env.DB.prepare("DELETE FROM reviewer_certificates WHERE status='revoked'").run();
+    }else{
+     await removeReviewerRegistryCodes(env,[],"Purge revoked reviewer certificates from public registry");
+    }
+    const result=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE status='active' ORDER BY id DESC LIMIT 500").all();
+    const certificates=result.results||[];
+    const github=await updateReviewerRegistry(env,certificates,"Sync active RLS reviewer certificates to public GitHub registry");
+    return reply({certificates,github_saved:true,github_count:github.count,github_commit:github.commit_url,revoked_deleted:revokedCodes.length});
    } catch(error) {
-    return reply({error:"خواندن سوابق انجام شد، اما همگام‌سازی با GitHub ناموفق بود: "+String(error?.message||error).slice(0,250),certificates,github_saved:false},502);
+    return reply({error:"پاک‌سازی گواهی‌های باطل یا همگام‌سازی GitHub ناموفق بود: "+String(error?.message||error).slice(0,250),github_saved:false},502);
    }
   }
   if(path==="/admin-api/certificates" && request.method==="POST"){
@@ -213,14 +259,22 @@ export default {
    let body;try{body=await request.json()}catch{return reply({error:"Invalid JSON"},400)}
    const id=Number(certMatch[1]),status=String(body.status||"");
    if(!["active","revoked"].includes(status))return reply({error:"Invalid certificate status"},400);
-   const result=await env.DB.prepare("UPDATE reviewer_certificates SET status=? WHERE id=?").bind(status,id).run();
-   if(!(result?.meta?.changes>0))return reply({error:"Certificate not found"},404);
    const cert=await env.DB.prepare("SELECT id,certificate_code,reviewer_name,review_count,issue_date,status,created_at,certificate_image FROM reviewer_certificates WHERE id=?").bind(id).first();
+   if(!cert)return reply({error:"Certificate not found"},404);
    try {
-    const github=await updateReviewerRegistry(env,[cert],"Update reviewer certificate status "+cert.certificate_code);
-    return reply({success:true,id,status,github_saved:true,github_commit:github.commit_url});
+    if(status==="revoked"){
+     await removeReviewerRegistryCodes(env,[cert.certificate_code],"Delete revoked reviewer certificate "+cert.certificate_code);
+     await env.DB.prepare("DELETE FROM reviewer_certificates WHERE id=?").bind(id).run();
+     let assetsDeleted=[];try{assetsDeleted=await deleteReviewerCertificateAssets(env,cert.certificate_code);}catch(error){return reply({success:true,id,status:"deleted",github_saved:true,assets_deleted:false,warning:String(error?.message||error).slice(0,200)});}
+     return reply({success:true,id,status:"deleted",github_saved:true,assets_deleted:true,deleted_assets:assetsDeleted});
+    }
+    const result=await env.DB.prepare("UPDATE reviewer_certificates SET status='active' WHERE id=?").bind(id).run();
+    if(!(result?.meta?.changes>0))return reply({error:"Certificate not found"},404);
+    const activeCert={...cert,status:"active"};
+    const github=await updateReviewerRegistry(env,[activeCert],"Restore active reviewer certificate "+cert.certificate_code);
+    return reply({success:true,id,status:"active",github_saved:true,github_commit:github.commit_url});
    } catch(error) {
-    return reply({error:"وضعیت در پایگاه داده تغییر کرد، اما همگام‌سازی وضعیت در GitHub انجام نشد؛ «به‌روزرسانی سوابق» را اجرا کنید. جزئیات: "+String(error?.message||error).slice(0,220),updated_in_database:true,github_saved:false},502);
+    return reply({error:"حذف یا همگام‌سازی گواهی در GitHub انجام نشد: "+String(error?.message||error).slice(0,220),github_saved:false},502);
    }
   }
   if(path==="/admin-api/manuscripts" && request.method==="GET"){
