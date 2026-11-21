@@ -137,7 +137,13 @@ if(!code){
      code:c.certificate_code,
      embed:'1'
     });
-    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-responsive-v31&'+params.toString();
+    const resizeFallbackFrame=()=>{
+    const w=fallbackFrame.getBoundingClientRect().width;
+    if(w>0) fallbackFrame.style.height=(w*210/297)+'px';
+   };
+   fallbackFrame.onload=resizeFallbackFrame;
+   window.addEventListener('resize',resizeFallbackFrame,{passive:true});
+   fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-responsive-v32&'+params.toString();
     fallbackBox.hidden=false;
    };
    imageEl.style.cursor='zoom-in';imageEl.title='برای مشاهدهٔ تصویر با وضوح کامل لمس کنید';
