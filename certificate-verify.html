@@ -128,8 +128,13 @@ if(!code){
    const fallbackFrame=document.getElementById('certificateFallbackFrame');
    const safeStoredImage=typeof c.certificate_image==='string'&&/^https:\/\/raw\.githubusercontent\.com\/Mohammadmahdirubin\/RLS\//.test(c.certificate_image)?c.certificate_image:'';
    const fallbackImage='https://raw.githubusercontent.com/Mohammadmahdirubin/RLS/main/assets/certificates/'+encodeURIComponent(code)+'.png';
+   let fallbackActivated=false;
    const showRenderedCertificate=()=>{
+    if(fallbackActivated)return;
+    fallbackActivated=true;
     imageBox.hidden=true;
+    imageEl.onload=null;
+    imageEl.onerror=null;
     const params=new URLSearchParams({
      name:String(c.reviewer_name||''),
      count:Number(c.review_count||0).toLocaleString('fa-IR'),
@@ -137,23 +142,27 @@ if(!code){
      code:c.certificate_code,
      embed:'1'
     });
-    const resizeFallbackFrame=()=>{
-    const w=fallbackFrame.getBoundingClientRect().width;
-    if(w>0) fallbackFrame.style.height=(w*210/297)+'px';
-   };
-   fallbackFrame.onload=resizeFallbackFrame;
-   window.addEventListener('resize',resizeFallbackFrame,{passive:true});
-   fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-responsive-v32&'+params.toString();
+    fallbackFrame.onload=null;
+    fallbackFrame.src='/assets/certificates/peer-review-template.html?v=20261121-stable-v33&'+params.toString();
     fallbackBox.hidden=false;
    };
    imageEl.style.cursor='zoom-in';imageEl.title='برای مشاهدهٔ تصویر با وضوح کامل لمس کنید';
    imageEl.onclick=()=>{if(imageEl.src)window.open(imageEl.src,'_blank','noopener,noreferrer');};
-   imageEl.onload=()=>{imageBox.hidden=false;fallbackBox.hidden=true;};
+   imageEl.onload=()=>{
+    if(fallbackActivated)return;
+    imageBox.hidden=false;
+    fallbackBox.hidden=true;
+   };
    imageEl.onerror=()=>{
-    if(imageEl.src!==fallbackImage){imageEl.src=fallbackImage;return;}
+    if(fallbackActivated)return;
+    if(safeStoredImage && imageEl.src===safeStoredImage){
+      imageEl.src=fallbackImage;
+      return;
+    }
     showRenderedCertificate();
    };
    imageBox.hidden=true;
+   fallbackBox.hidden=true;
    imageEl.src=safeStoredImage||fallbackImage;
    const pdfBox=document.getElementById('certificatePdf');
    const pdfLink=document.getElementById('certificatePdfLink');
