@@ -39,8 +39,8 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
 
 /* Embedded mobile preview: fixed design canvas, uniformly scaled as one object. */
 .embed-mode{margin:0!important;padding:0!important;width:100%!important;overflow:hidden!important;background:transparent!important}
-.embed-mode .sheet{width:100vw!important;height:calc(100vw * 210 / 297)!important;margin:0!important;transform:none!important;box-shadow:none!important}
-.embed-mode .certificate-bg{width:100%!important;height:100%!important}
+.embed-mode .sheet{width:1122px!important;height:794px!important;margin:0!important;transform-origin:top left!important;box-shadow:none!important}
+.embed-mode .certificate-bg{width:1122px!important;height:794px!important}
 </style><meta name="keywords" content="مطالعات زبان روسی, زبان روسی, آموزش زبان روسی, مقالات روسی, پژوهش زبان روسی, زبان‌شناسی روسی, ادبیات روسیه, فرهنگ روسیه, ترجمه روسی, نشریه علمی زبان روسی, دوفصلنامه مطالعات زبان روسی, نشریه دانشگاهی, پژوهش‌های علمی, داوری علمی">
 <meta name="description" content="دوفصلنامه مطالعات زبان روسی؛ مقالات علمی و پژوهش‌های تخصصی در زبان روسی، آموزش زبان، زبان‌شناسی، ادبیات، فرهنگ و ترجمه.">
 </head>
@@ -81,9 +81,19 @@ body>.no-print *{visibility:visible!important;opacity:1!important;width:auto!imp
   const p = new URLSearchParams(location.search);
   if (p.get("embed") === "1") {
     document.body.classList.add("embed-mode");
-    document.body.style.width="100%";
-    document.body.style.height="auto";
-    document.documentElement.style.height="auto";
+    const sheet=document.getElementById("certificate");
+    const fitCanvas=()=>{
+      const width=document.documentElement.clientWidth || window.innerWidth;
+      const scale=width/1122;
+      sheet.style.transform="scale("+scale+")";
+      sheet.style.transformOrigin="top left";
+      document.body.style.width=width+"px";
+      document.body.style.height=(794*scale)+"px";
+      document.documentElement.style.width=width+"px";
+      document.documentElement.style.height=(794*scale)+"px";
+    };
+    fitCanvas();
+    window.addEventListener("resize",fitCanvas,{passive:true});
   }
   const get = (key, fallback) => p.get(key) || fallback;
   const name = get("name", "دکتر پروانه راداندیش");
